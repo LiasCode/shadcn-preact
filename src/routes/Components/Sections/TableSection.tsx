@@ -202,7 +202,6 @@ export function TableSection() {
   } from "@ui/pagination";
   import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@ui/table";
   import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@ui/tooltip";
-  import { ChevronLeft, ChevronRight } from "lucide-preact";
   import { Trash } from "lucide-preact";
 
   const data: { title: string; pages: number; author: string; price: string }[] = [
