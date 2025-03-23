@@ -44,7 +44,7 @@ export default function CollapsibleSection() {
 
 `}
         previewElement={
-          <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
+          <div className="flex w-full flex-col items-center justify-center space-x-2 px-2">
             <CollapsibleDemo />
           </div>
         }
@@ -106,7 +106,7 @@ export function CollapsibleDemo() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-[350px] space-y-2">
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full max-w-[350px] space-y-2">
       <div className="flex items-center justify-between space-x-4 px-4">
         <h4 className="font-semibold text-sm">@peduarte starred 3 repositories</h4>
         <CollapsibleTrigger asChild>
