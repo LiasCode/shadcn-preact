@@ -87,7 +87,7 @@ export default function CommandSection() {
 
 `}
         previewElement={
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col items-center justify-center px-4 *:max-w-screen-md">
             <CommandDemo />
           </div>
         }

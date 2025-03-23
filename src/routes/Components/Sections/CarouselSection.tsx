@@ -46,7 +46,7 @@ export function CarouselSection() {
 
 `}
         previewElement={
-          <Carousel className="w-full max-w-xs">
+          <Carousel className="w-44 max-w-xs md:w-full">
             <CarouselContent>
               {Array.from({ length: 5 }).map((_, index) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>

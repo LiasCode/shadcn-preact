@@ -39,7 +39,7 @@ export function InputOtpSection() {
 
 `}
         previewElement={
-          <div className="flex w-full max-w-[320px] items-center space-x-2">
+          <div className="flex w-full max-w-[320px] items-center justify-center space-x-2">
             <InputOTPDemo />
           </div>
         }

@@ -74,7 +74,7 @@ export function CardsSection() {
 
 `}
         previewElement={
-          <Card className="h-fit w-full max-w-[400px]">
+          <Card className="h-fit w-[96%] max-w-[400px]">
             <CardHeader>
               <CardTitle>Create project</CardTitle>
               <CardDescription>Deploy your new project in one-click.</CardDescription>
@@ -275,7 +275,7 @@ const notifications = [
 
 const CardExample = () => {
   return (
-    <Card className="w-full max-w-[400px]">
+    <Card className="w-[96%] max-w-[400px]">
       <CardHeader>
         <CardTitle>Notifications</CardTitle>
         <CardDescription>You have 3 unread messages.</CardDescription>
