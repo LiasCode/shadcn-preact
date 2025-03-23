@@ -291,9 +291,9 @@ export function CheckboxSection() {
             </A>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.COMMAND}>
+            <A href={AppRoutes.COMPONENTS.COLLAPSIBLE}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
-                Command
+                Collapsible
                 <ChevronRight />
               </Button>
             </A>

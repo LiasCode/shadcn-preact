@@ -17,6 +17,7 @@ import CardPage from "./routes/Components/Card";
 import CarouselPage from "./routes/Components/Carousel";
 import ChartPage from "./routes/Components/Chart";
 import CheckboxPage from "./routes/Components/Checkbox";
+import CollapsiblePage from "./routes/Components/Collapsible";
 import CommandPage from "./routes/Components/Command";
 import DialogPage from "./routes/Components/Dialog";
 import DrawerPage from "./routes/Components/Drawer";
@@ -188,6 +189,10 @@ export function App() {
 
           <Route path={AppRoutes.COMPONENTS.CALENDAR}>
             <CalendarPage />
+          </Route>
+
+          <Route path={AppRoutes.COMPONENTS.COLLAPSIBLE}>
+            <CollapsiblePage />
           </Route>
 
           <ErrorRoute>

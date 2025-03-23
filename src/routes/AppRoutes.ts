@@ -37,5 +37,6 @@ export const AppRoutes = {
     SELECT: "/component/select",
     TABLE: "/component/table",
     CAROUSEL: "/component/carousel",
+    COLLAPSIBLE: "/component/collapsible",
   },
 } as const;
