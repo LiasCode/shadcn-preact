@@ -6,8 +6,6 @@ import { ExternalLink } from "lucide-preact";
 import { A, ErrorRoute, Route, Router, RouterErrorBoundary } from "preact-hashish-router";
 import { AppRoutes } from "./routes/AppRoutes";
 
-// Pages
-import ExamplePage from "./routes/Example";
 import AlertPage from "./routes/Components/Alert";
 import AlertDialogPage from "./routes/Components/AlertDialog";
 import AvatarPage from "./routes/Components/Avatar";
@@ -41,6 +39,8 @@ import InstallationAstroPage from "./routes/Docs/InstallationAstro";
 import InstallationVitePage from "./routes/Docs/InstallationVite";
 import IntroductionPage from "./routes/Docs/Introduction";
 import ThemingPage from "./routes/Docs/Theming";
+// Pages
+import ExamplePage from "./routes/Example";
 import HomePage from "./routes/Home";
 
 export function App() {
