@@ -1,5 +1,5 @@
 import { Footer } from "@/components/Layout/Footer";
-import { Header } from "../components/Layout/Header";
+import Header from "../components/Layout/Header";
 import { Login01 } from "./Examples/Login01";
 import { Login04 } from "./Examples/Login04";
 
