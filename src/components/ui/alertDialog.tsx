@@ -64,12 +64,13 @@ export function AlertDialogContent({ children }: PropsWithChildren) {
   return (
     <Show when={open}>
       <Modal onClose={closeDialog} show={true}>
-        <div
-          onClick={(e) => e.stopPropagation()}
-          data-state="open"
-          className="fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg"
-        >
-          {children}
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg"
+          >
+            {children}
+          </div>
         </div>
       </Modal>
     </Show>
