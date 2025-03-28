@@ -1,6 +1,6 @@
-import { Badge, type BadgeProps } from "@ui/badge";
-import { cn } from "@ui/share/cn";
 import { type InputHTMLAttributes, createRef, forwardRef, useEffect, useState } from "preact/compat";
+import { Badge, type BadgeProps } from "./badge";
+import { cn } from "./share/cn";
 import { Show } from "./show";
 
 type TokenInputProps = Omit<InputHTMLAttributes, "value"> & {
@@ -11,7 +11,7 @@ type TokenInputProps = Omit<InputHTMLAttributes, "value"> & {
 
 const SPLITTER_CHARACTER = " ";
 
-export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
+export const InputToken = forwardRef<HTMLInputElement, TokenInputProps>(
   ({ className, class: classNative, onInput, onFocus, onFocusOut, value, ...props }, ref) => {
     const [raw, setRaw] = useState(value ? value.join(SPLITTER_CHARACTER) : "");
     const [tokens, setTokens] = useState<string[]>([]);
@@ -70,13 +70,15 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                     "animate-pulse duration-500",
                     props.variant === "secondary"
                       ? "text-primary"
-                      : props.variant === "intercalate"
-                        ? i % 2 === 0
-                          ? "text-primary-foreground"
-                          : "text-primary"
-                        : props.variant === "outline"
-                          ? "text-primary"
-                          : "text-primary-foreground"
+                      : props.variant === "destructive"
+                        ? "text-destructive-foreground"
+                        : props.variant === "intercalate"
+                          ? i % 2 === 0
+                            ? "text-primary-foreground"
+                            : "text-primary"
+                          : props.variant === "outline"
+                            ? "text-primary"
+                            : "text-primary-foreground"
                   )}
                 >
                   {i === tokens.length - 1 || tokens.length === 0 ? "|" : ""}

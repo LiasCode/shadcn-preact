@@ -23,6 +23,7 @@ export const AppRoutes = {
     DIALOG: "/component/dialog",
     SHEET: "/component/sheet",
     INPUT: "/component/input",
+    INPUT_TOKEN: "/component/input_token",
     INPUT_OTP: "/component/input_otp",
     LABEL: "/component/label",
     SWITCH: "/component/switch",

@@ -23,6 +23,7 @@ import DialogPage from "./routes/Components/Dialog";
 import DrawerPage from "./routes/Components/Drawer";
 import InputPage from "./routes/Components/Input";
 import InputOtpPage from "./routes/Components/InputOtp";
+import InputTokenPage from "./routes/Components/InputToken";
 import LabelPage from "./routes/Components/Label";
 import PopoverPage from "./routes/Components/Popover";
 import SelectPage from "./routes/Components/Select";
@@ -157,6 +158,10 @@ export function App() {
 
           <Route path={AppRoutes.COMPONENTS.INPUT}>
             <InputPage />
+          </Route>
+
+          <Route path={AppRoutes.COMPONENTS.INPUT_TOKEN}>
+            <InputTokenPage />
           </Route>
 
           <Route path={AppRoutes.COMPONENTS.INPUT_OTP}>
