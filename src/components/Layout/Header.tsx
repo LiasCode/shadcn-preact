@@ -5,8 +5,8 @@ import { useTheme } from "@ui/theme";
 import { Moon, Sun } from "lucide-preact";
 import { A } from "preact-hashish-router";
 import { Suspense, lazy } from "preact/compat";
-import { ShadcnIcon } from "./ShadcnIcon";
 import CommandSearchDialog from "./CommandSearchDialog";
+import { ShadcnIcon } from "./ShadcnIcon";
 
 const MobileSidebarMenu = lazy(() => import("@/components/MobileSidebarMenu"));
 

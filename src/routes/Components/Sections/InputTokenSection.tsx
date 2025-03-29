@@ -172,17 +172,17 @@ export function InputTokenSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.DRAWER}>
+            <A href={AppRoutes.COMPONENTS.INPUT_OTP}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
-                Drawer
+                Input Otp
               </Button>
             </A>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.INPUT_OTP}>
+            <A href={AppRoutes.COMPONENTS.LABEL}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
-                Input Otp
+                Label
                 <ChevronRight />
               </Button>
             </A>
