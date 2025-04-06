@@ -3,16 +3,16 @@ import { useContext, useEffect, useState } from "preact/hooks";
 import { cn } from "./share/cn";
 import { Show } from "./show";
 
-type CollapsibleContextT = {
+export type CollapsibleContextT = {
   isOpen: boolean;
   open: () => void;
   close: () => void;
   disabled: boolean;
 };
 
-const CollapsibleContext = createContext<CollapsibleContextT | null>(null);
+export const CollapsibleContext = createContext<CollapsibleContextT | null>(null);
 
-type CollapsibleProps = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & {
+export type CollapsibleProps = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & {
   asChild?: boolean;
   defaultOpen?: boolean;
   open?: boolean;
@@ -56,7 +56,7 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
         <div
           data-state={isOpen ? "open" : "closed"}
           data-disabled={disabled}
-          className={cn("", className, classNative)}
+          className={cn(className, classNative)}
           {...props}
         >
           {children}
@@ -65,6 +65,7 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
     );
   }
 );
+Collapsible.displayName = "Collapsible";
 
 function useCollapsible() {
   const context = useContext(CollapsibleContext);
@@ -74,7 +75,9 @@ function useCollapsible() {
   return context;
 }
 
-export function CollapsibleTrigger({ children }: PropsWithChildren & { asChild?: boolean }) {
+export type CollapsibleTriggerProps = PropsWithChildren & { asChild?: boolean };
+
+export function CollapsibleTrigger({ children }: CollapsibleTriggerProps) {
   const { open, close, isOpen, disabled } = useCollapsible();
 
   return (
@@ -88,8 +91,11 @@ export function CollapsibleTrigger({ children }: PropsWithChildren & { asChild?:
     </div>
   );
 }
+CollapsibleTrigger.displayName = "CollapsibleTrigger";
 
-export const CollapsibleContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+export type CollapsibleContentProps = HTMLAttributes<HTMLDivElement>;
+
+export const CollapsibleContent = forwardRef<HTMLDivElement, CollapsibleContentProps>(
   ({ children, className, class: classNative, ...props }) => {
     const { isOpen, disabled } = useCollapsible();
 
@@ -107,3 +113,4 @@ export const CollapsibleContent = forwardRef<HTMLDivElement, HTMLAttributes<HTML
     );
   }
 );
+CollapsibleContent.displayName = "CollapsibleContent";
