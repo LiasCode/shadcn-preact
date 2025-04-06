@@ -20,7 +20,7 @@ export const AvatarContext = createContext<{
 
 export type AvatarProps = HTMLAttributes<HTMLDivElement>;
 
-const Avatar = forwardRef<HTMLDivElement, AvatarProps>(({ className, class: classNative, ...props }, ref) => {
+export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(({ className, class: classNative, ...props }, ref) => {
   const [imgStatus, setImgStatus] = useState<ImageLoadingStatus>("idle");
 
   const changeImgStatus = (s: ImageLoadingStatus) => setImgStatus(s);
@@ -39,7 +39,7 @@ Avatar.displayName = "Avatar";
 
 export type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement>;
 
-const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
+export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
   ({ className, class: classNative, ...props }, ref) => {
     const { status, changeStatus } = useAvatar();
     const loadingStatus = useImageLoadingStatus(props.src as string, {
@@ -63,7 +63,7 @@ AvatarImage.displayName = "AvatarImage";
 
 export type AvatarFallbackProps = HTMLAttributes<HTMLSpanElement>;
 
-const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
+export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
   ({ className, class: classNative, ...props }, ref) => {
     const { status } = useAvatar();
 
@@ -127,5 +127,3 @@ export function useAvatar() {
   if (!c) throw new Error("useAvatar should be used inside of an AvatarContextProvider");
   return c;
 }
-
-export { Avatar, AvatarFallback, AvatarImage };
