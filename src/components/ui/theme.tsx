@@ -37,10 +37,10 @@ export const useTheme = () => {
 };
 
 function getThemeFromLocalStorage(): ThemeOption {
-  if (window !== undefined) {
+  if (typeof window !== "undefined") {
     return (localStorage.getItem("--theme--") || "light") as ThemeOption;
   }
-  return "dark";
+  return "light";
 }
 
 function setThemeFromLocalStorage(t: ThemeOption) {

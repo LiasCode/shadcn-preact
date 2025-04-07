@@ -11,12 +11,15 @@ type ModalProps = PropsWithChildren<
 >;
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(({ show, ...props }, ref) => {
-  return createPortal(
-    <Show when={show}>
-      <ModalContent {...props} ref={ref} />
-    </Show>,
-    document.body
-  );
+  if (typeof window !== "undefined") {
+    return createPortal(
+      <Show when={show}>
+        <ModalContent {...props} ref={ref} />
+      </Show>,
+      document.body
+    );
+  }
+  return null;
 });
 Modal.displayName = "Modal";
 

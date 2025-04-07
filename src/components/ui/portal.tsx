@@ -6,5 +6,8 @@ type PortalProps = PropsWithChildren & {
 };
 
 export const Portal = ({ show, ...props }: PortalProps) => {
-  return createPortal(<Show when={show}>{props.children}</Show>, document.body);
+  if (typeof window !== "undefined") {
+    return createPortal(<Show when={show}>{props.children}</Show>, document.body);
+  }
+  return null;
 };
