@@ -248,6 +248,7 @@ export const SelectTrigger = forwardRef<HTMLDivElement, SelectContentProps>(
     }, [isFocused]);
 
     return (
+      // TODO: FIX focus does not work with Label
       <div
         ref={(v) => ref.setReference(v!)}
         onClick={openDebounced}
