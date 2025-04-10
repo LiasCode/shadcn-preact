@@ -1,6 +1,6 @@
 import { autoPlacement, autoUpdate, offset, shift, useFloating } from "@floating-ui/react-dom";
 import { Check, ChevronDown } from "lucide-preact";
-import type { VNode } from "preact";
+import { type VNode, toChildArray } from "preact";
 import {
   type CSSProperties,
   type HTMLAttributes,
@@ -68,7 +68,6 @@ export type SelectProps = PropsWithChildren & {
 
   value?: string;
 
-  /* TODO: Fix bug for initial default value no render children node correctly */
   defaultValue?: string;
 
   onValueChange?(value: string): void;
@@ -145,6 +144,10 @@ export function Select({
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    console.log({
+      value,
+      controlledValue,
+    });
     if (props.onValueChange && value !== controlledValue) {
       props.onValueChange(value);
     }
@@ -298,16 +301,63 @@ export type SelectContentProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
   ({ children, className, class: classNative, ...props }) => {
-    const { open: isOpen, ref, floatingStyles, closeSelect, id } = useSelect();
+    const { open: isOpen, ref, floatingStyles, closeSelect, id, nodeForTheSelectedValueChange, value } = useSelect();
 
     const triggerWidth = useMemo(() => {
       return ref.reference.current?.getBoundingClientRect().width;
     }, [ref.reference.current]);
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       if (!isOpen) return;
-      (ref.floating.current?.querySelector("[role=option]") as HTMLOptionElement | undefined)?.focus();
+      if (!value) {
+        (ref.floating.current?.querySelector("[role=option]") as HTMLOptionElement | undefined)?.focus();
+      } else {
+        (
+          ref.floating.current?.querySelector(`[role=option][data-option-value=${value}`) as
+            | HTMLOptionElement
+            | undefined
+        )?.focus();
+      }
     }, [isOpen, ref.floating.current]);
+
+    // This is for fix initial render defaultValue to capture the correctly `nodeForTheSelectedValue`
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
+      const search_value = value;
+
+      if (!search_value) return;
+
+      const childrensArray = toChildArray(children);
+
+      let target: VNode<any> | null = null;
+
+      try {
+        for (const child of childrensArray) {
+          if (typeof child === "string") continue;
+          if (typeof child === "number") continue;
+          if (!child.props.children) continue;
+
+          if ("value" in child.props) {
+            //@ts-expect-error
+            if (child.type?.displayName === "SelectItem" && child.props.value === search_value) {
+              target = child;
+              break;
+            }
+          }
+
+          target = findNodeOptionByValue(child, search_value);
+          if (target) break;
+        }
+      } catch (error) {
+        console.error("Error while finding node option by value:", error);
+        console.warn("Make sure that the SelectItem component is used correctly.");
+      }
+
+      if (!target) return;
+
+      nodeForTheSelectedValueChange(target?.props?.children);
+    }, []);
 
     return (
       <Modal onClose={closeSelect} show={isOpen} className="bg-transparent">
@@ -503,4 +553,28 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
     );
   }
 );
+// If this name changes, the `findNodeOptionByValue` function will not work and will break the entire app. Must be always "SelectItem"
 SelectItem.displayName = "SelectItem";
+
+function findNodeOptionByValue(root: VNode<any>, value: string): VNode<any> | null {
+  const stack: VNode[] = [root];
+
+  while (stack.length) {
+    const node = stack.pop()!;
+
+    if (typeof node === "string") continue;
+    if (typeof node === "number") continue;
+    if (!node.props.children) continue;
+
+    if ("value" in node.props) {
+      // @ts-expect-error
+      if (node.type?.displayName === "SelectItem" && node.props.value === value) {
+        return node;
+      }
+    }
+
+    stack.push(...(node.props.children as VNode[]));
+  }
+
+  return null;
+}

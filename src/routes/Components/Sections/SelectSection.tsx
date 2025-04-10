@@ -15,7 +15,7 @@ export function SelectSection() {
         <AlertDescription>Select component guide page is on work in progress.</AlertDescription>
       </Alert>
 
-      <Select defaultValue="blueberry">
+      <Select>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a fruit" />
         </SelectTrigger>
