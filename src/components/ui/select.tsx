@@ -190,6 +190,7 @@ export function Select({
         disabled={props.disabled}
         required={props.required}
         autoComplete={props.autoComplete}
+        defaultValue={defaultValue}
         tabIndex={-1}
         value={value}
         className="-top-[99999px] pointer-events-none fixed h-0 w-0 cursor-none"
@@ -303,6 +304,13 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       return ref.reference.current?.getBoundingClientRect().width;
     }, [ref.reference.current]);
 
+    const maxHeight = useMemo(() => {
+      const fromTopToScreenOffset = window.innerHeight - (ref.reference.current?.getBoundingClientRect().top || 0);
+      const fromBottomToScreenOffset =
+        window.innerHeight - (ref.reference.current?.getBoundingClientRect().bottom || 0);
+      return Math.min(fromTopToScreenOffset, fromBottomToScreenOffset);
+    }, [ref.reference.current]);
+
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       if (!isOpen) return;
@@ -365,10 +373,11 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
           style={{
             ...floatingStyles,
             minWidth: `${triggerWidth}px`,
+            maxHeight: `${maxHeight}px`,
           }}
           data-state={isOpen ? "open" : "closed"}
           className={cn(
-            "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 flex max-h-[90vh] flex-col overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
+            "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 flex h-fit flex-col overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
             className,
             classNative
           )}
@@ -382,7 +391,9 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
 );
 
 // Select Group
-export type SelectGroupProps = HTMLAttributes<HTMLDivElement>;
+export type SelectGroupProps = HTMLAttributes<HTMLDivElement> & {
+  asChild?: boolean;
+};
 
 export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
   ({ className, class: classNative, ...props }, ref) => (
@@ -392,7 +403,9 @@ export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
 SelectGroup.displayName = "SelectGroup";
 
 // Select Label
-export type SelectLabelProps = HTMLAttributes<HTMLDivElement>;
+export type SelectLabelProps = HTMLAttributes<HTMLDivElement> & {
+  asChild?: boolean;
+};
 
 export const SelectLabel = forwardRef<HTMLDivElement, SelectLabelProps>(
   ({ className, class: classNative, ...props }, ref) => (
@@ -575,3 +588,17 @@ function findNodeOptionByValue(root: VNode<any>, value: string): VNode<any> | nu
 
   return null;
 }
+
+// Select Separator
+export type SelectSeparatorProps = HTMLAttributes<HTMLDivElement> & {
+  asChild?: boolean;
+};
+
+export const SelectSeparator = forwardRef<HTMLDivElement, SelectSeparatorProps>(
+  ({ className, class: classNative, ...props }, ref) => (
+    <div ref={ref} tabindex={-1} className={cn("-mx-1 my-1 h-px bg-muted", className, classNative)} {...props} />
+  )
+);
+SelectSeparator.displayName = "SelectSeparator";
+
+// TODO: SelectScrollUpButton and SelectScrollDownButton
