@@ -183,7 +183,6 @@ export function Select({
     >
       {children}
 
-      {/* TODO: TEST if the usage of this with a external form work correctly */}
       <select
         name={props.name}
         form={props.form}
@@ -193,8 +192,10 @@ export function Select({
         defaultValue={defaultValue}
         tabIndex={-1}
         value={value}
-        className="-top-[99999px] pointer-events-none fixed h-0 w-0 cursor-none"
-      />
+        className="-top-[99999px] pointer-events-none fixed h-1 w-1 cursor-none"
+      >
+        <option value={value}>{value}</option>
+      </select>
     </SelectContext.Provider>
   );
 }
