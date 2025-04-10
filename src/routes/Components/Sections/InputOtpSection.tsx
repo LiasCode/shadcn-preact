@@ -39,7 +39,7 @@ export function InputOtpSection() {
 
 `}
         previewElement={
-          <div className="flex w-full max-w-[320px] items-center space-x-2">
+          <div className="flex w-full max-w-[320px] items-center justify-center space-x-2">
             <InputOTPDemo />
           </div>
         }
@@ -115,9 +115,9 @@ export function InputOtpSection() {
             </A>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.LABEL}>
+            <A href={AppRoutes.COMPONENTS.INPUT_TOKEN}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
-                Label
+                Input Token
                 <ChevronRight />
               </Button>
             </A>

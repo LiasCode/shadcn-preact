@@ -1,5 +1,5 @@
 import { Footer } from "@/components/Layout/Footer";
-import { Header } from "@/components/Layout/Header";
+import Header from "@/components/Layout/Header";
 import { AppRoutes } from "@/routes/AppRoutes";
 import { BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@ui/breadCrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/card";

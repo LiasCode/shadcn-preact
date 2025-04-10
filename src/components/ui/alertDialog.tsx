@@ -4,13 +4,13 @@ import { Button } from "./button";
 import { Modal } from "./modal";
 import { Show } from "./show";
 
-const AlertContext = createContext<{
+export const AlertContext = createContext<{
   open: boolean;
   openDialog: () => void;
   closeDialog: () => void;
 } | null>(null);
 
-type AlertDialogProviderProps = PropsWithChildren & {
+export type AlertDialogProviderProps = PropsWithChildren & {
   open?: boolean;
   onChange?: (open: boolean) => void;
 };
@@ -36,16 +36,19 @@ export function AlertDialog({ open: controlledIsOpen = false, children, onChange
 
   return <AlertContext.Provider value={contextValue}>{children}</AlertContext.Provider>;
 }
+AlertDialog.displayName = "AlertDialog";
 
 export function useAlertDialog() {
-  const context = useContext(AlertContext);
-  if (!context) {
-    throw new Error("useAlertDialog should be used inside of an AlertDialogProvider");
-  }
-  return context;
+  const c = useContext(AlertContext);
+
+  if (!c) throw new Error("useAlertDialog should be used inside of an AlertDialogProvider");
+
+  return c;
 }
 
-export function AlertDialogTrigger({ children }: PropsWithChildren & { asChild?: boolean }) {
+export type AlertDialogTriggerProps = PropsWithChildren & { asChild?: boolean };
+
+export function AlertDialogTrigger({ children }: AlertDialogTriggerProps) {
   const { openDialog } = useAlertDialog();
 
   return (
@@ -57,46 +60,61 @@ export function AlertDialogTrigger({ children }: PropsWithChildren & { asChild?:
     </div>
   );
 }
+AlertDialogTrigger.displayName = "AlertDialogTrigger";
 
-export function AlertDialogContent({ children }: PropsWithChildren) {
+export type AlertDialogContentProps = PropsWithChildren;
+
+export function AlertDialogContent({ children }: AlertDialogContentProps) {
   const { open, closeDialog } = useAlertDialog();
 
   return (
     <Show when={open}>
       <Modal onClose={closeDialog} show={true}>
-        <div
-          onClick={(e) => e.stopPropagation()}
-          data-state="open"
-          className="fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg"
-        >
-          {children}
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg"
+          >
+            {children}
+          </div>
         </div>
       </Modal>
     </Show>
   );
 }
+AlertDialogContent.displayName = "AlertDialogContent";
 
-export const AlertDialogHeader = ({ children }: PropsWithChildren) => {
+export type AlertDialogHeaderProps = PropsWithChildren;
+
+export const AlertDialogHeader = ({ children }: AlertDialogHeaderProps) => {
   return <div className="flex flex-col space-y-2 text-center sm:text-left">{children}</div>;
 };
 AlertDialogHeader.displayName = "AlertDialogHeader";
 
-export const AlertDialogFooter = ({ children }: PropsWithChildren) => {
+export type AlertDialogFooterProps = PropsWithChildren;
+
+export const AlertDialogFooter = ({ children }: AlertDialogFooterProps) => {
   return <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">{children}</div>;
 };
 AlertDialogFooter.displayName = "AlertDialogFooter";
 
-export const AlertDialogTitle = ({ children }: PropsWithChildren) => {
+export type AlertDialogTitleProps = PropsWithChildren;
+
+export const AlertDialogTitle = ({ children }: AlertDialogTitleProps) => {
   return <div className="font-semibold text-lg">{children}</div>;
 };
 AlertDialogTitle.displayName = "AlertDialogTitle";
 
-export const AlertDialogDescription = ({ children }: PropsWithChildren) => {
+export type AlertDialogDescriptionProps = PropsWithChildren;
+
+export const AlertDialogDescription = ({ children }: AlertDialogDescriptionProps) => {
   return <div className="text-muted-foreground text-sm">{children}</div>;
 };
 AlertDialogDescription.displayName = "AlertDialogDescription";
 
-export const AlertDialogCancel = ({ children, onCancel }: PropsWithChildren<{ onCancel?: () => void }>) => {
+export type AlertDialogCancelProps = PropsWithChildren<{ onCancel?: () => void }>;
+
+export const AlertDialogCancel = ({ children, onCancel }: AlertDialogCancelProps) => {
   const { closeDialog } = useAlertDialog();
 
   return (
@@ -104,7 +122,7 @@ export const AlertDialogCancel = ({ children, onCancel }: PropsWithChildren<{ on
       variant="outline"
       onClick={() => {
         closeDialog();
-        if (onCancel) onCancel();
+        onCancel?.();
       }}
       className="mt-2 sm:mt-0"
     >
@@ -114,17 +132,20 @@ export const AlertDialogCancel = ({ children, onCancel }: PropsWithChildren<{ on
 };
 AlertDialogCancel.displayName = "AlertDialogCancel";
 
-export function AlertDialogAction({ children, onConfirm }: PropsWithChildren<{ onConfirm?: () => void }>) {
+export type AlertDialogActionProps = PropsWithChildren<{ onConfirm?: () => void }>;
+
+export function AlertDialogAction({ children, onConfirm }: AlertDialogActionProps) {
   const { closeDialog } = useAlertDialog();
 
   return (
     <Button
       onClick={() => {
         closeDialog();
-        if (onConfirm) onConfirm();
+        onConfirm?.();
       }}
     >
       {children}
     </Button>
   );
 }
+AlertDialogAction.displayName = "AlertDialogAction";

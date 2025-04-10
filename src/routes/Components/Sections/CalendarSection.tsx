@@ -38,7 +38,9 @@ export default function CalendarSection() {
 
 `}
         previewElement={
-          <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border shadow" />
+          <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
+            <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border shadow" />
+          </div>
         }
       />
 
@@ -149,7 +151,11 @@ export default function CalendarSection() {
   };
 
 `}
-        previewElement={<CalendarExample />}
+        previewElement={
+          <div className="flex w-full flex-col items-center justify-center space-x-2 px-4 *:max-w-screen-md">
+            <CalendarExample />
+          </div>
+        }
       />
 
       <Pagination className="mt-10">

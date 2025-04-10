@@ -39,7 +39,7 @@ export function TooltipProvider({ children, ...props }: TooltipProviderProps) {
     placement: props.side,
     middleware: [
       autoPlacement({
-        allowedPlacements: props.side ? [`${props.side}-end`, `${props.side}-start`, props.side] : undefined,
+        allowedPlacements: props.side ? [props.side, `${props.side}-start`, `${props.side}-end`] : undefined,
         alignment: props.alignment,
       }),
       shift(),

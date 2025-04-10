@@ -1,6 +1,5 @@
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-preact";
 import type { ComponentProps } from "preact";
-import { A } from "preact-hashish-router";
 import { forwardRef } from "preact/compat";
 import { type ButtonProps, buttonVariants } from "./button";
 import { cn } from "./share/cn";
@@ -34,7 +33,7 @@ type PaginationLinkProps = {
   ComponentProps<"a">;
 
 const PaginationLink = ({ className, class: classNative, isActive, size = "icon", ...props }: PaginationLinkProps) => (
-  <A
+  <a
     aria-current={isActive ? "page" : undefined}
     className={cn(
       "cursor-pointer",

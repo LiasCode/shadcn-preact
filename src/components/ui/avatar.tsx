@@ -11,33 +11,35 @@ import {
 import { cn } from "./share/cn";
 import { Show } from "./show";
 
-type ImageLoadingStatus = "idle" | "loading" | "loaded" | "error";
+export type ImageLoadingStatus = "idle" | "loading" | "loaded" | "error";
 
-const AvatarContext = createContext<{
+export const AvatarContext = createContext<{
   status: ImageLoadingStatus;
   changeStatus: (s: ImageLoadingStatus) => void;
 } | null>(null);
 
-const Avatar = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  ({ className, class: classNative, ...props }, ref) => {
-    const [imgStatus, setImgStatus] = useState<ImageLoadingStatus>("idle");
+export type AvatarProps = HTMLAttributes<HTMLDivElement>;
 
-    const changeImgStatus = (s: ImageLoadingStatus) => setImgStatus(s);
+export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(({ className, class: classNative, ...props }, ref) => {
+  const [imgStatus, setImgStatus] = useState<ImageLoadingStatus>("idle");
 
-    return (
-      <AvatarContext.Provider value={{ status: imgStatus, changeStatus: changeImgStatus }}>
-        <div
-          ref={ref}
-          className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className, classNative)}
-          {...props}
-        />
-      </AvatarContext.Provider>
-    );
-  }
-);
+  const changeImgStatus = (s: ImageLoadingStatus) => setImgStatus(s);
+
+  return (
+    <AvatarContext.Provider value={{ status: imgStatus, changeStatus: changeImgStatus }}>
+      <div
+        ref={ref}
+        className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className, classNative)}
+        {...props}
+      />
+    </AvatarContext.Provider>
+  );
+});
 Avatar.displayName = "Avatar";
 
-const AvatarImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImageElement>>(
+export type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement>;
+
+export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
   ({ className, class: classNative, ...props }, ref) => {
     const { status, changeStatus } = useAvatar();
     const loadingStatus = useImageLoadingStatus(props.src as string, {
@@ -59,7 +61,9 @@ const AvatarImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImageElem
 );
 AvatarImage.displayName = "AvatarImage";
 
-const AvatarFallback = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(
+export type AvatarFallbackProps = HTMLAttributes<HTMLSpanElement>;
+
+export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
   ({ className, class: classNative, ...props }, ref) => {
     const { status } = useAvatar();
 
@@ -74,7 +78,7 @@ const AvatarFallback = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElemen
 );
 AvatarFallback.displayName = "AvatarFallback";
 
-function useImageLoadingStatus(
+export function useImageLoadingStatus(
   src: string | undefined,
   {
     referrerPolicy,
@@ -119,11 +123,7 @@ function useImageLoadingStatus(
 }
 
 export function useAvatar() {
-  const context = useContext(AvatarContext);
-  if (!context) {
-    throw new Error("useAvatar should be used inside of an AvatarContextProvider");
-  }
-  return context;
+  const c = useContext(AvatarContext);
+  if (!c) throw new Error("useAvatar should be used inside of an AvatarContextProvider");
+  return c;
 }
-
-export { Avatar, AvatarFallback, AvatarImage };

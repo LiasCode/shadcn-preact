@@ -87,7 +87,7 @@ export default function CommandSection() {
 
 `}
         previewElement={
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col items-center justify-center px-4 *:max-w-screen-md">
             <CommandDemo />
           </div>
         }
@@ -261,10 +261,10 @@ export default function CommandSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.CHECKBOX}>
+            <A href={AppRoutes.COMPONENTS.COLLAPSIBLE}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
-                Checkbox
+                Collapsible
               </Button>
             </A>
           </PaginationItem>

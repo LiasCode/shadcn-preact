@@ -20,7 +20,7 @@ export function TextareaSection() {
 
 `}
         previewElement={
-          <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
+          <div className="flex w-full flex-col items-center justify-center space-x-2 px-4 *:max-w-screen-md">
             <Textarea placeholder="Type your message here." />
           </div>
         }

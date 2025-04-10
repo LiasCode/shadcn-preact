@@ -9,15 +9,18 @@ import {
 } from "preact/compat";
 import { cn } from "./share/cn";
 
-const Breadcrumb = forwardRef<
-  HTMLElement,
-  ComponentPropsWithoutRef<"nav"> & {
-    separator?: ReactNode;
-  }
->(({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />);
+export type BreadcrumbProps = ComponentPropsWithoutRef<"nav"> & {
+  separator?: ReactNode;
+};
+
+export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(({ ...props }, ref) => (
+  <nav ref={ref} aria-label="breadcrumb" {...props} />
+));
 Breadcrumb.displayName = "Breadcrumb";
 
-const BreadcrumbList = forwardRef<HTMLOListElement, ComponentPropsWithoutRef<"ol">>(
+export type BreadcrumbListProps = ComponentPropsWithoutRef<"ol">;
+
+export const BreadcrumbList = forwardRef<HTMLOListElement, BreadcrumbListProps>(
   ({ className, class: classNative, ...props }, ref) => (
     <ol
       ref={ref}
@@ -32,40 +35,45 @@ const BreadcrumbList = forwardRef<HTMLOListElement, ComponentPropsWithoutRef<"ol
 );
 BreadcrumbList.displayName = "BreadcrumbList";
 
-const BreadcrumbItem = forwardRef<HTMLLIElement, ComponentPropsWithoutRef<"li">>(
+export type BreadcrumbItemProps = ComponentPropsWithoutRef<"li">;
+
+export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
   ({ className, class: classNative, ...props }, ref) => (
     <li ref={ref} className={cn("inline-flex items-center gap-1.5", className, classNative)} {...props} />
   )
 );
 BreadcrumbItem.displayName = "BreadcrumbItem";
 
-const BreadcrumbLink = forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & {
-    asChild?: boolean;
-    href?: AnchorHTMLAttributes["href"];
-  }
->(({ asChild, children, className, class: classNative, ...props }, ref) => {
-  if (asChild) {
+export type BreadcrumbLinkProps = HTMLAttributes<HTMLDivElement> & {
+  asChild?: boolean;
+  href?: AnchorHTMLAttributes["href"];
+};
+
+export const BreadcrumbLink = forwardRef<HTMLDivElement, BreadcrumbLinkProps>(
+  ({ asChild, children, className, class: classNative, ...props }, ref) => {
+    if (asChild) {
+      return (
+        <div ref={ref} className={cn("transition-colors hover:text-foreground", className, classNative)} {...props}>
+          {children}
+        </div>
+      );
+    }
     return (
-      <div ref={ref} className={cn("transition-colors hover:text-foreground", className, classNative)} {...props}>
-        {children}
+      <div
+        ref={ref}
+        className={cn("transition-colors *:h-full *:w-full hover:text-foreground", className, classNative)}
+        {...props}
+      >
+        <a href={props.href}>{children}</a>
       </div>
     );
   }
-  return (
-    <div
-      ref={ref}
-      className={cn("transition-colors *:h-full *:w-full hover:text-foreground", className, classNative)}
-      {...props}
-    >
-      <a href={props.href}>{children}</a>
-    </div>
-  );
-});
+);
 BreadcrumbLink.displayName = "BreadcrumbLink";
 
-const BreadcrumbPage = forwardRef<HTMLSpanElement, ComponentPropsWithoutRef<"span">>(
+export type BreadcrumbPageProps = ComponentPropsWithoutRef<"span">;
+
+export const BreadcrumbPage = forwardRef<HTMLSpanElement, BreadcrumbPageProps>(
   ({ className, class: classNative, ...props }, ref) => (
     // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
     <span
@@ -80,7 +88,14 @@ const BreadcrumbPage = forwardRef<HTMLSpanElement, ComponentPropsWithoutRef<"spa
 );
 BreadcrumbPage.displayName = "BreadcrumbPage";
 
-const BreadcrumbSeparator = ({ children, className, class: classNative, ...props }: ComponentProps<"li">) => (
+export type BreadcrumbSeparatorProps = ComponentProps<"li">;
+
+export const BreadcrumbSeparator = ({
+  children,
+  className,
+  class: classNative,
+  ...props
+}: BreadcrumbSeparatorProps) => (
   <li
     role="presentation"
     aria-hidden="true"
@@ -92,7 +107,9 @@ const BreadcrumbSeparator = ({ children, className, class: classNative, ...props
 );
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator";
 
-const BreadcrumbEllipsis = ({ className, class: classNative, ...props }: ComponentProps<"span">) => (
+export type BreadcrumbEllipsisProps = ComponentProps<"span">;
+
+export const BreadcrumbEllipsis = ({ className, class: classNative, ...props }: BreadcrumbEllipsisProps) => (
   <span
     role="presentation"
     aria-hidden="true"
@@ -104,13 +121,3 @@ const BreadcrumbEllipsis = ({ className, class: classNative, ...props }: Compone
   </span>
 );
 BreadcrumbEllipsis.displayName = "BreadcrumbElipssis";
-
-export {
-  Breadcrumb,
-  BreadcrumbEllipsis,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-};

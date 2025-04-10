@@ -92,7 +92,7 @@ export function TabsSection() {
 
 `}
         previewElement={
-          <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
+          <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-[450px]">
             <TabsDemo />
           </div>
         }
@@ -149,7 +149,7 @@ export function TabsSection() {
 
 export function TabsDemo() {
   return (
-    <Tabs defaultValue="account" className="w-[400px]">
+    <Tabs defaultValue="account" className="w-full px-4">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="account">Account</TabsTrigger>
         <TabsTrigger value="password">Password</TabsTrigger>

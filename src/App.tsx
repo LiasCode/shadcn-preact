@@ -6,8 +6,6 @@ import { ExternalLink } from "lucide-preact";
 import { A, ErrorRoute, Route, Router, RouterErrorBoundary } from "preact-hashish-router";
 import { AppRoutes } from "./routes/AppRoutes";
 
-// Pages
-import ExamplePage from "./routes/Example";
 import AlertPage from "./routes/Components/Alert";
 import AlertDialogPage from "./routes/Components/AlertDialog";
 import AvatarPage from "./routes/Components/Avatar";
@@ -19,11 +17,13 @@ import CardPage from "./routes/Components/Card";
 import CarouselPage from "./routes/Components/Carousel";
 import ChartPage from "./routes/Components/Chart";
 import CheckboxPage from "./routes/Components/Checkbox";
+import CollapsiblePage from "./routes/Components/Collapsible";
 import CommandPage from "./routes/Components/Command";
 import DialogPage from "./routes/Components/Dialog";
 import DrawerPage from "./routes/Components/Drawer";
 import InputPage from "./routes/Components/Input";
 import InputOtpPage from "./routes/Components/InputOtp";
+import InputTokenPage from "./routes/Components/InputToken";
 import LabelPage from "./routes/Components/Label";
 import PopoverPage from "./routes/Components/Popover";
 import SelectPage from "./routes/Components/Select";
@@ -41,6 +41,8 @@ import InstallationAstroPage from "./routes/Docs/InstallationAstro";
 import InstallationVitePage from "./routes/Docs/InstallationVite";
 import IntroductionPage from "./routes/Docs/Introduction";
 import ThemingPage from "./routes/Docs/Theming";
+// Pages
+import ExamplePage from "./routes/Example";
 import HomePage from "./routes/Home";
 
 export function App() {
@@ -158,6 +160,10 @@ export function App() {
             <InputPage />
           </Route>
 
+          <Route path={AppRoutes.COMPONENTS.INPUT_TOKEN}>
+            <InputTokenPage />
+          </Route>
+
           <Route path={AppRoutes.COMPONENTS.INPUT_OTP}>
             <InputOtpPage />
           </Route>
@@ -188,6 +194,10 @@ export function App() {
 
           <Route path={AppRoutes.COMPONENTS.CALENDAR}>
             <CalendarPage />
+          </Route>
+
+          <Route path={AppRoutes.COMPONENTS.COLLAPSIBLE}>
+            <CollapsiblePage />
           </Route>
 
           <ErrorRoute>

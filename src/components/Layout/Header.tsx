@@ -5,11 +5,12 @@ import { useTheme } from "@ui/theme";
 import { Moon, Sun } from "lucide-preact";
 import { A } from "preact-hashish-router";
 import { Suspense, lazy } from "preact/compat";
+import CommandSearchDialog from "./CommandSearchDialog";
 import { ShadcnIcon } from "./ShadcnIcon";
 
 const MobileSidebarMenu = lazy(() => import("@/components/MobileSidebarMenu"));
 
-export function Header() {
+export default function Header() {
   return (
     <header className="sticky top-0 z-50 flex h-14 w-full flex-row items-center justify-center border-accent border-grid border-b border-dashed bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-full w-full max-w-screen-2xl flex-1 flex-row border-accent border-dashed px-0 py-1 md:px-2 md:py-2 2xl:border-x">
@@ -73,6 +74,8 @@ function HeaderRightSide() {
   return (
     <div className="flex h-full flex-1 flex-row items-center justify-center">
       <div className="flex flex-1 flex-row items-center justify-end gap-2 px-2">
+        <CommandSearchDialog />
+
         <a href="https://github.com/LiasCode/shadcn-preact" target="_blank" rel="noreferrer">
           <Button variant="ghost" size="icon" className="text-foreground">
             <svg role="img" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

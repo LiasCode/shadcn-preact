@@ -165,7 +165,7 @@ export function SwitchForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="w-full max-w-[520px] space-y-6">
+    <form onSubmit={onSubmit} className="w-full max-w-[520px] space-y-6 px-4">
       <h3 className="mb-4 font-medium text-lg">Email Notifications</h3>
       <div className="space-y-4">
         <div className="flex flex-row items-center justify-between gap-4 rounded-lg border p-3 shadow-sm">

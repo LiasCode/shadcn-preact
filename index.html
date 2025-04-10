@@ -1,130 +1,315 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
 
-<head>
-  <meta charset="utf-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
 
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Build your component library - shadcn-preact</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Shadcn port for preact, a set of beautifully-designed, accessible components and a code distribution platform. Works with your favorite frameworks. Open Source. Open Code."
+    />
 
-  <meta name="description"
-    content="Shadcn port for preact, a set of beautifully-designed, accessible components and a code distribution platform. Works with your favorite frameworks. Open Source. Open Code." />
+    <meta
+      name="keywords"
+      content="Preact,Tailwind CSS,Shadcn,Port,Astro"
+    />
 
-  <meta name="color-scheme" content="light dark" />
+    <meta
+      name="robots"
+      content="index, follow"
+    />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
 
-  <title>Build your component library - shadcn-preact</title>
+    <meta
+      name="color-scheme"
+      content="light dark"
+    />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+    />
 
-  <meta name="theme-color" content="#ffffff">
+    <!-- Preconnect to improve performance -->
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
 
-  <link rel="author" href="https://github.com/LiasCode/shadcn-preact">
+    <!-- Load Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
 
-  <meta name="author" content="LiasCode">
+    <link
+      rel="author"
+      href="https://github.com/LiasCode/shadcn-preact"
+    />
+    <meta
+      name="author"
+      content="LiasCode"
+    />
 
-  <meta name="keywords" content="Preact,Tailwind CSS,Shadcn,Port,Astro">
-</head>
+    <!-- Open Graph meta tags for better social sharing -->
+    <meta
+      property="og:title"
+      content="Build your component library - shadcn-preact"
+    />
+    <meta
+      property="og:description"
+      content="Shadcn port for preact, a set of beautifully-designed, accessible components and a code distribution platform. Works with your favorite frameworks. Open Source. Open Code."
+    />
+    <meta
+      property="og:url"
+      content="https://shadcn-preact.onrender.com/"
+    />
+    <meta
+      property="og:type"
+      content="website"
+    />
+    <meta
+      property="og:image"
+      content="https://shadcn-preact.onrender.com/og-website-image.png"
+    />
+  </head>
 
-<body class="scroll-smooth bg-background dark">
-  <div id="app">
-    <div class="relative flex h-auto min-h-screen w-full flex-1 flex-col items-center justify-start bg-background">
-      <header
-        class="sticky top-0 z-50 flex h-14 w-full flex-row items-center justify-center border-accent border-grid border-b border-dashed bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div
-          class="flex h-full w-full max-w-screen-2xl flex-1 flex-row border-accent border-dashed px-0 py-1 md:px-2 md:py-2 2xl:border-x">
-          <div class="flex h-full flex-2 flex-row items-center justify-start max-md:border-none md:flex-1">
-            <div class="relative flex max-w-fit flex-1 flex-row items-center justify-start gap-2 px-2 py-1">
-              <div class="flex h-fit w-fit pl-1 md:hidden"><button type="button" aria-haspopup="dialog"
-                  aria-expanded="false" aria-controls="radix-P0-6" data-state="closed"
-                  class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 gap-2 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 w-8"><svg
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-menu">
-                    <line x1="4" x2="20" y1="12" y2="12"></line>
-                    <line x1="4" x2="20" y1="6" y2="6"></line>
-                    <line x1="4" x2="20" y1="18" y2="18"></line>
-                  </svg></button></div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
-                style="width: 24px; height: 24px; color: rgb(168, 85, 247);">
-                <title>Shadcn Icon</title>
-                <rect width="256" height="256" fill="none"></rect>
-                <line x1="208" y1="128" x2="128" y2="208" fill="none" stroke="currentColor" stroke-linecap="round"
-                  stroke-linejoin="round" stroke-width="32"></line>
-                <line x1="192" y1="40" x2="40" y2="192" fill="none" stroke="currentColor" stroke-linecap="round"
-                  stroke-linejoin="round" stroke-width="32"></line>
-              </svg><a href="/" data-route-active="true" class="flex items-center gap-2"><span
-                  class="inline-block text-nowrap font-bold text-primary text-sm md:text-base">shadcn-<span
-                    class="text-purple-500">preact</span></span></a>
+  <body class="dark scroll-smooth bg-background">
+    <div id="app">
+      <div class="relative flex h-auto min-h-screen w-full flex-1 flex-col items-center justify-start bg-background">
+        <header
+          class="border-grid sticky top-0 z-50 flex h-14 w-full flex-row items-center justify-center border-b border-dashed border-accent bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+        >
+          <div
+            class="flex h-full w-full max-w-screen-2xl flex-1 flex-row border-dashed border-accent px-0 py-1 md:px-2 md:py-2 2xl:border-x"
+          >
+            <div class="flex-2 flex h-full flex-row items-center justify-start max-md:border-none md:flex-1">
+              <div class="relative flex max-w-fit flex-1 flex-row items-center justify-start gap-2 px-2 py-1">
+                <div class="flex h-fit w-fit pl-1 md:hidden">
+                  <button
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-expanded="false"
+                    aria-controls="radix-P0-6"
+                    data-state="closed"
+                    class="[&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 inline-flex h-8 w-8 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-input bg-background text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-menu"
+                    >
+                      <line
+                        x1="4"
+                        x2="20"
+                        y1="12"
+                        y2="12"
+                      ></line>
+                      <line
+                        x1="4"
+                        x2="20"
+                        y1="6"
+                        y2="6"
+                      ></line>
+                      <line
+                        x1="4"
+                        x2="20"
+                        y1="18"
+                        y2="18"
+                      ></line>
+                    </svg>
+                  </button>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 256 256"
+                  style="width: 24px; height: 24px; color: rgb(168, 85, 247)"
+                >
+                  <title>Shadcn Icon</title>
+                  <rect
+                    width="256"
+                    height="256"
+                    fill="none"
+                  ></rect>
+                  <line
+                    x1="208"
+                    y1="128"
+                    x2="128"
+                    y2="208"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="32"
+                  ></line>
+                  <line
+                    x1="192"
+                    y1="40"
+                    x2="40"
+                    y2="192"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="32"
+                  ></line></svg
+                ><a
+                  href="/"
+                  data-route-active="true"
+                  class="flex items-center gap-2"
+                  ><span class="inline-block text-nowrap text-sm font-bold text-primary md:text-base"
+                    >shadcn-<span class="text-purple-500">preact</span></span
+                  ></a
+                >
+              </div>
+              <div
+                class="ml-4 hidden h-full flex-1 flex-row items-center justify-start gap-6 text-sm text-muted-foreground md:flex"
+              >
+                <a
+                  href="/docs"
+                  data-route-active="false"
+                  class="flex items-center data-[route-active=true]:text-primary"
+                  >Docs</a
+                ><a
+                  href="/component/alert"
+                  data-route-active="false"
+                  class="flex items-center data-[route-active=true]:text-primary"
+                  >Components</a
+                ><a
+                  href="/examples"
+                  data-route-active="false"
+                  class="flex items-center data-[route-active=true]:text-primary"
+                >
+                  Examples
+                </a>
+              </div>
             </div>
-            <div
-              class="ml-4 hidden h-full flex-1 flex-row items-center justify-start gap-6 text-muted-foreground text-sm md:flex">
-              <a href="/docs" data-route-active="false"
-                class="flex items-center data-[route-active=true]:text-primary">Docs</a><a href="/component/alert"
-                data-route-active="false"
-                class="flex items-center data-[route-active=true]:text-primary">Components</a><a href="/examples"
-                data-route-active="false" class="flex items-center data-[route-active=true]:text-primary">
-                Examples
-              </a>
+            <div class="flex h-full flex-1 flex-row items-center justify-center">
+              <div class="flex flex-1 flex-row items-center justify-end gap-2 px-2">
+                <a
+                  href="https://github.com/LiasCode/shadcn-preact"
+                  target="_blank"
+                  rel="noreferrer"
+                  ><button
+                    class="[&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 inline-flex h-8 w-8 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium text-foreground ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+                  >
+                    <svg
+                      role="img"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <title>GitHub</title>
+                      <path
+                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                      ></path>
+                    </svg></button></a
+                ><button
+                  class="[&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 inline-flex h-8 w-8 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="h-4 w-4 text-primary"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="4"
+                    ></circle>
+                    <path d="M12 2v2"></path>
+                    <path d="M12 20v2"></path>
+                    <path d="m4.93 4.93 1.41 1.41"></path>
+                    <path d="m17.66 17.66 1.41 1.41"></path>
+                    <path d="M2 12h2"></path>
+                    <path d="M20 12h2"></path>
+                    <path d="m6.34 17.66-1.41 1.41"></path>
+                    <path d="m19.07 4.93-1.41 1.41"></path>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
-          <div class="flex h-full flex-1 flex-row items-center justify-center">
-            <div class="flex flex-1 flex-row items-center justify-end gap-2 px-2"><a
-                href="https://github.com/LiasCode/shadcn-preact" target="_blank" rel="noreferrer"><button
-                  class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 gap-2 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-8 w-8 text-foreground"><svg
-                    role="img" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <title>GitHub</title>
-                    <path
-                      d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12">
-                    </path>
-                  </svg></button></a><button
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 gap-2 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-8 w-8"><svg
-                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="h-4 w-4 text-primary">
-                  <circle cx="12" cy="12" r="4"></circle>
-                  <path d="M12 2v2"></path>
-                  <path d="M12 20v2"></path>
-                  <path d="m4.93 4.93 1.41 1.41"></path>
-                  <path d="m17.66 17.66 1.41 1.41"></path>
-                  <path d="M2 12h2"></path>
-                  <path d="M20 12h2"></path>
-                  <path d="m6.34 17.66-1.41 1.41"></path>
-                  <path d="m19.07 4.93-1.41 1.41"></path>
-                </svg></button></div>
+        </header>
+
+        <div
+          class="relative flex w-full flex-1 flex-col items-center justify-start border-b border-dashed border-accent"
+        >
+          <div
+            class="flex min-h-[calc(100vh-4rem)] w-full max-w-screen-2xl flex-col gap-4 border-dashed border-accent px-1 py-4 *:max-w-[100vw] *:overflow-auto 2xl:border-x 2xl:px-4"
+          >
+            <div class="flex flex-col items-center justify-center gap-1 px-7 py-4 md:p-2">
+              <h1 class="w-full text-center leading-tight tracking-tighter">Loading...</h1>
+            </div>
           </div>
         </div>
-      </header>
-
-      <div class="relative flex w-full flex-1 flex-col items-center justify-start border-accent border-b border-dashed">
-        <div
-          class="flex min-h-[calc(100vh-4rem)] w-full max-w-screen-2xl flex-col gap-4 border-accent border-dashed px-1 py-4 *:max-w-[100vw] *:overflow-auto 2xl:border-x 2xl:px-4">
-          <div class=" flex flex-col items-center justify-center gap-1 px-7 py-4 md:p-2">
-            <h1 class="w-full text-center leading-tight tracking-tighter">
-              Loading...
-            </h1>
+        <footer class="relative flex w-full items-center justify-center bg-background py-6 md:px-8 md:py-0">
+          <div
+            class="container flex w-full flex-col items-center justify-between gap-4 px-4 md:h-24 md:max-w-screen-md md:flex-row md:px-8"
+          >
+            <div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+              <p class="text-center text-sm leading-loose text-muted-foreground md:text-left">
+                Built &amp; designed by
+                <a
+                  href="https://twitter.com/shadcn"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="font-medium underline underline-offset-4"
+                  >shadcn</a
+                >. Ported to Preact by
+                <a
+                  href="https://github.com/LiasCode"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="font-medium underline underline-offset-4"
+                  >LiasCode</a
+                >. The source code is available on
+                <a
+                  href="https://github.com/LiasCode/shadcn-preact"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="font-medium underline underline-offset-4"
+                  >GitHub.</a
+                >
+              </p>
+            </div>
           </div>
-        </div>
+        </footer>
       </div>
-      <footer class="relative flex w-full items-center justify-center bg-background py-6 md:px-8 md:py-0">
-        <div
-          class="container flex w-full flex-col items-center justify-between gap-4 px-4 md:h-24 md:max-w-screen-md md:flex-row md:px-8">
-          <div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
-            <p class="text-center text-muted-foreground text-sm leading-loose md:text-left">Built &amp; designed by <a
-                href="https://twitter.com/shadcn" target="_blank" rel="noreferrer"
-                class="font-medium underline underline-offset-4">shadcn</a>. Ported to Preact by <a
-                href="https://github.com/LiasCode" target="_blank" rel="noreferrer"
-                class="font-medium underline underline-offset-4">LiasCode</a>. The source code is available on <a
-                href="https://github.com/LiasCode/shadcn-preact" target="_blank" rel="noreferrer"
-                class="font-medium underline underline-offset-4">GitHub.</a></p>
-          </div>
-        </div>
-      </footer>
     </div>
-  </div>
 
-  <script type="module" src="/src/index.tsx"></script>
-</body>
-
+    <script
+      type="module"
+      src="/src/index.tsx"
+    ></script>
+  </body>
 </html>

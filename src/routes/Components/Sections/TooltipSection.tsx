@@ -38,7 +38,7 @@ export function TooltipSection() {
 `}
         previewElement={
           <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
-            <TooltipProvider>
+            <TooltipProvider side="bottom">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button variant="outline">Hover</Button>
