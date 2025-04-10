@@ -68,7 +68,7 @@ export type SelectProps = PropsWithChildren & {
 
   value?: string;
 
-  /* TODO: Fix bug for initial default value render no children node correctly */
+  /* TODO: Fix bug for initial default value no render children node correctly */
   defaultValue?: string;
 
   onValueChange?(value: string): void;
@@ -184,7 +184,7 @@ export function Select({
     >
       {children}
 
-      {/* TODO: TEST the usage with a external form work correctly */}
+      {/* TODO: TEST if the usage of this with a external form work correctly */}
       <select
         name={props.name}
         form={props.form}
