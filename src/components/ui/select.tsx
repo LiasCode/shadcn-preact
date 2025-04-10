@@ -144,10 +144,6 @@ export function Select({
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    console.log({
-      value,
-      controlledValue,
-    });
     if (props.onValueChange && value !== controlledValue) {
       props.onValueChange(value);
     }
@@ -321,7 +317,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       }
     }, [isOpen, ref.floating.current]);
 
-    // This is for fix initial render defaultValue to capture the correctly `nodeForTheSelectedValue`
+    // This is for fix initial render value to capture the correctly `nodeForTheSelectedValue`
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       const search_value = value;
@@ -553,7 +549,8 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
     );
   }
 );
-// If this name changes, the `findNodeOptionByValue` function will not work and will break the entire app. Must be always "SelectItem"
+// If this name changes, the `findNodeOptionByValue` function will not work and will break the select
+// or maybe the entire app. Must be always "SelectItem"
 SelectItem.displayName = "SelectItem";
 
 function findNodeOptionByValue(root: VNode<any>, value: string): VNode<any> | null {
