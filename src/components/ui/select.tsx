@@ -301,15 +301,18 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
     const { open: isOpen, ref, floatingStyles, closeSelect, id, nodeForTheSelectedValueChange, value } = useSelect();
 
     const triggerWidth = useMemo(() => {
-      return ref.reference.current?.getBoundingClientRect().width;
+      return ref.reference.current?.getBoundingClientRect().width || 0;
     }, [ref.reference.current]);
 
     const maxHeight = useMemo(() => {
+      if (isOpen === false) return 0;
+
       const fromTopToScreenOffset = window.innerHeight - (ref.reference.current?.getBoundingClientRect().top || 0);
       const fromBottomToScreenOffset =
         window.innerHeight - (ref.reference.current?.getBoundingClientRect().bottom || 0);
-      return Math.min(fromTopToScreenOffset, fromBottomToScreenOffset);
-    }, [ref.reference.current]);
+      const triggerHeight = ref.reference.current?.getBoundingClientRect().height || 0;
+      return Math.max(fromTopToScreenOffset, fromBottomToScreenOffset) - triggerHeight - 8;
+    }, [ref.reference.current, isOpen]);
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
