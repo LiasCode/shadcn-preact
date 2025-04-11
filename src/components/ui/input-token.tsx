@@ -89,7 +89,6 @@ export const InputToken = forwardRef<HTMLInputElement, TokenInputProps>(
         ))}
         <input
           className="-top-[9999999px] -z-50 fixed select-none"
-          // className="block text-primary-foreground w-full select-none"
           ref={ref}
           onFocus={() => {
             setIsFocus(true);
