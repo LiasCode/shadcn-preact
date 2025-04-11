@@ -3,7 +3,10 @@ export function getScrollBarWidth(element: HTMLElement): number {
     throw new Error("A valid DOM element must be provided.");
   }
 
-  const scrollBarWidth = window.innerWidth - element.offsetWidth ;
-
-  return scrollBarWidth;
+  if(element.tagName === 'BODY' || !element.parentElement) {
+    return window.innerWidth - element.offsetWidth
+  }
+  
+  const scrollBarWidth = element.parentElement.offsetWidth - element.offsetWidth
+  return scrollBarWidth; 
 }
