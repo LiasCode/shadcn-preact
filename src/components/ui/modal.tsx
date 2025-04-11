@@ -32,8 +32,8 @@ type ModalContentProps = PropsWithChildren<
 const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
   ({ className, class: classNative, ...props }, ref) => {
     useEffect(() => {
-      document.body.classList.add("overflow-hidden");
       const scrollbarWidth = getScrollBarWidth(document.body);
+      document.body.classList.add("overflow-hidden");
       document.body.style.marginRight = `${scrollbarWidth}px`;
 
       return () => {
