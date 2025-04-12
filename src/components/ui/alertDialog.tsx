@@ -65,11 +65,14 @@ AlertDialogTrigger.displayName = "AlertDialogTrigger";
 export type AlertDialogContentProps = PropsWithChildren;
 
 export function AlertDialogContent({ children }: AlertDialogContentProps) {
-  const { open, closeDialog } = useAlertDialog();
+  const { open } = useAlertDialog();
 
   return (
     <Show when={open}>
-      <Modal onClose={closeDialog} show={true}>
+      <Modal
+        onClose={() => {}}
+        show={true}
+      >
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div
             onClick={(e) => e.stopPropagation()}
