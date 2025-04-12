@@ -73,7 +73,7 @@ const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
 );
 TableHead.displayName = "TableHead";
 
-export type TableCellProps = ThHTMLAttributes<HTMLTableCellElement>;
+export type TableCellProps = TdHTMLAttributes<HTMLTableCellElement>;
 
 const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
   ({ className, class: classNative, ...props }, ref) => (
