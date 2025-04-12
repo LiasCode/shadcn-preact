@@ -2,7 +2,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import { type ButtonHTMLAttributes, forwardRef, useEffect, useState } from "preact/compat";
 import { cn } from "./share/cn";
 
-const toggleVariants = cva(
+export const toggleVariants = cva(
   "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors md:hover:bg-muted md:hover:text-muted-foreground md:focus-visible:outline-none md:focus-visible:ring-1 md:focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
@@ -23,14 +23,14 @@ const toggleVariants = cva(
   }
 );
 
-type ToggleProps = ButtonHTMLAttributes &
+export type ToggleProps = ButtonHTMLAttributes &
   VariantProps<typeof toggleVariants> & {
     pressed?: boolean;
     defaultPressed?: boolean;
     onPressedChange?(pressed: boolean): void;
   };
 
-const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
+export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
   ({ className, class: classNative, variant, size, ...props }, ref) => {
     const [isOn, setIsOn] = useState(props.pressed ? props.pressed : props.defaultPressed || false);
 
@@ -59,5 +59,3 @@ const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
   }
 );
 Toggle.displayName = "Toggle";
-
-export { Toggle, toggleVariants };

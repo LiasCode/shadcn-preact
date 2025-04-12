@@ -5,15 +5,15 @@ import { Button } from "./button";
 import { Modal } from "./modal";
 import { cn } from "./share/cn";
 
-type SelectProps = PropsWithChildren & {
+export type SelectProps = PropsWithChildren & {
   onChange?: (value: string) => void;
   value?: string;
   data: { value: string; title: string }[];
   title?: string;
   alignment?: "start" | "end";
-};
+} & HTMLAttributes<HTMLButtonElement>;
 
-export const SimpleSelect = forwardRef<HTMLButtonElement, HTMLAttributes<HTMLButtonElement> & SelectProps>(
+export const SimpleSelect = forwardRef<HTMLButtonElement, SelectProps>(
   ({ className, class: classNative, ...props }) => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(props.value || "");
@@ -84,9 +84,14 @@ export const SimpleSelect = forwardRef<HTMLButtonElement, HTMLAttributes<HTMLBut
   }
 );
 
-type SelectItemProps = { value: string; title: string; selected: boolean; onSelect: () => void };
+export type SelectItemProps = {
+  value: string;
+  title: string;
+  selected: boolean;
+  onSelect: () => void;
+} & HTMLAttributes<HTMLButtonElement>;
 
-const SelectItem = forwardRef<HTMLButtonElement, HTMLAttributes<HTMLButtonElement> & SelectItemProps>(
+export const SelectItem = forwardRef<HTMLButtonElement, SelectItemProps>(
   ({ class: classNative, className, ...props }, ref) => {
     if (props.selected) return null;
 

@@ -3,7 +3,9 @@ import { Minus } from "lucide-preact";
 import { type ComponentPropsWithoutRef, type ElementRef, forwardRef, useContext } from "preact/compat";
 import { cn } from "./share/cn";
 
-const InputOTP = forwardRef<ElementRef<typeof OTPInput>, ComponentPropsWithoutRef<typeof OTPInput>>(
+export type InputOTPProps = ComponentPropsWithoutRef<typeof OTPInput>;
+
+export const InputOTP = forwardRef<ElementRef<typeof OTPInput>, InputOTPProps>(
   ({ className, class: classNative, containerClassName, render, ...props }, ref) => (
     // @ts-expect-error
     <OTPInput
@@ -16,14 +18,18 @@ const InputOTP = forwardRef<ElementRef<typeof OTPInput>, ComponentPropsWithoutRe
 );
 InputOTP.displayName = "InputOTP";
 
-const InputOTPGroup = forwardRef<ElementRef<"div">, ComponentPropsWithoutRef<"div">>(
+export type InputOTPGroupProps = ComponentPropsWithoutRef<"div">;
+
+export const InputOTPGroup = forwardRef<ElementRef<"div">, InputOTPGroupProps>(
   ({ className, class: classNative, ...props }, ref) => (
     <div ref={ref} className={cn("flex items-center", className, classNative)} {...props} />
   )
 );
 InputOTPGroup.displayName = "InputOTPGroup";
 
-const InputOTPSlot = forwardRef<ElementRef<"div">, ComponentPropsWithoutRef<"div"> & { index: number }>(
+export type InputOTPSlotProps = ComponentPropsWithoutRef<"div"> & { index: number };
+
+export const InputOTPSlot = forwardRef<ElementRef<"div">, InputOTPSlotProps>(
   ({ index, className, class: classNative, ...props }, ref) => {
     const inputOTPContext = useContext(OTPInputContext);
 
@@ -56,7 +62,9 @@ const InputOTPSlot = forwardRef<ElementRef<"div">, ComponentPropsWithoutRef<"div
 );
 InputOTPSlot.displayName = "InputOTPSlot";
 
-const InputOTPSeparator = forwardRef<ElementRef<"div">, ComponentPropsWithoutRef<"div">>(({ ...props }, ref) => (
+export type InputOTPSeparatorProps = ComponentPropsWithoutRef<"div">;
+
+export const InputOTPSeparator = forwardRef<ElementRef<"div">, InputOTPSeparatorProps>(({ ...props }, ref) => (
   // biome-ignore lint/a11y/useSemanticElements: <explanation>
   // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
   <div ref={ref} role="separator" {...props}>
@@ -64,5 +72,3 @@ const InputOTPSeparator = forwardRef<ElementRef<"div">, ComponentPropsWithoutRef
   </div>
 ));
 InputOTPSeparator.displayName = "InputOTPSeparator";
-
-export { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot };

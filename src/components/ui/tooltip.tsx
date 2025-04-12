@@ -22,7 +22,7 @@ type TooltipContextT = {
 
 const TooltipContext = createContext<TooltipContextT | null>(null);
 
-type TooltipProviderProps = PropsWithChildren & {
+export type TooltipProviderProps = PropsWithChildren & {
   delay?: number;
   side?: "top" | "right" | "bottom" | "left";
   alignment?: "start" | "end";
@@ -62,18 +62,20 @@ export function TooltipProvider({ children, ...props }: TooltipProviderProps) {
 }
 
 export function useTooltip() {
-  const context = useContext(TooltipContext);
-  if (!context) {
-    throw new Error("useTooltip should be used within TooltipProvider");
-  }
-  return context;
+  const c = useContext(TooltipContext);
+  if (!c) throw new Error("useTooltip should be used within TooltipProvider");
+  return c;
 }
 
-export function Tooltip({ children }: PropsWithChildren) {
+export type TooltipProps = PropsWithChildren;
+
+export function Tooltip({ children }: TooltipProps) {
   return children;
 }
 
-export function TooltipTrigger({ children }: PropsWithChildren & { asChild?: boolean }) {
+export type TooltipTriggerProps = PropsWithChildren & { asChild?: boolean };
+
+export function TooltipTrigger({ children }: TooltipTriggerProps) {
   const { open, close, ref, delay } = useTooltip();
 
   const openDebounced = debounce(open, delay || 300);
@@ -95,7 +97,9 @@ export function TooltipTrigger({ children }: PropsWithChildren & { asChild?: boo
   );
 }
 
-export function TooltipContent({ children }: PropsWithChildren) {
+export type TooltipContentProps = PropsWithChildren;
+
+export function TooltipContent({ children }: TooltipContentProps) {
   const { isOpen, id, ref, floatingStyles } = useTooltip();
 
   return (

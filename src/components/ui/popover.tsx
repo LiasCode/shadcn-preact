@@ -30,7 +30,7 @@ type PopoverContextT = {
 
 const PopoverContext = createContext<PopoverContextT | null>(null);
 
-type PopoverProviderProps = PropsWithChildren & {
+export type PopoverProps = PropsWithChildren & {
   delay?: number;
   side?: "top" | "right" | "bottom" | "left";
   alignOffset?: number;
@@ -39,7 +39,7 @@ type PopoverProviderProps = PropsWithChildren & {
   alignment?: "start" | "end";
 };
 
-export function Popover({ children, open: controlledOpen, onOpenChange, ...props }: PopoverProviderProps) {
+export function Popover({ children, open: controlledOpen, onOpenChange, ...props }: PopoverProps) {
   const [isOpen, setIsOpen] = useState(controlledOpen !== undefined ? controlledOpen : false);
   const [popover_id] = useState(Math.random().toString());
 
@@ -88,14 +88,14 @@ export function Popover({ children, open: controlledOpen, onOpenChange, ...props
 }
 
 export function usePopover() {
-  const context = useContext(PopoverContext);
-  if (!context) {
-    throw new Error("usePopover should be used within PopoverProvider");
-  }
-  return context;
+  const c = useContext(PopoverContext);
+  if (!c) throw new Error("usePopover should be used within PopoverProvider");
+  return c;
 }
 
-export function PopoverTrigger({ children }: PropsWithChildren & { asChild?: boolean }) {
+export type PopoverTriggerProps = PropsWithChildren & { asChild?: boolean };
+
+export function PopoverTrigger({ children }: PopoverTriggerProps) {
   const { open, isOpen, ref, delay } = usePopover();
 
   const openDebounced = debounce(open, delay || 50);
@@ -114,7 +114,9 @@ export function PopoverTrigger({ children }: PropsWithChildren & { asChild?: boo
   );
 }
 
-export const PopoverContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+export type PopoverContentProps = HTMLAttributes<HTMLDivElement>;
+
+export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
   ({ children, className, class: classNative, ...props }) => {
     const { isOpen, ref, floatingStyles, side, close, id } = usePopover();
 

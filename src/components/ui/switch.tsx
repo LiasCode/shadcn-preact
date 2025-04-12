@@ -1,13 +1,13 @@
 import { type ButtonHTMLAttributes, forwardRef, useEffect, useState } from "preact/compat";
 import { cn } from "./share/cn";
 
-type SwitchProps = ButtonHTMLAttributes & {
+export type SwitchProps = ButtonHTMLAttributes & {
   onCheckedChange?: (checked: boolean) => void;
   checked?: boolean;
   defaultChecked?: boolean;
 };
 
-const Switch = forwardRef<HTMLButtonElement, SwitchProps>(({ className, class: classNative, ...props }, ref) => {
+export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(({ className, class: classNative, ...props }, ref) => {
   const [checked, setChecked] = useState(props.checked !== undefined ? props.checked : props.defaultChecked || false);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -49,5 +49,3 @@ const Switch = forwardRef<HTMLButtonElement, SwitchProps>(({ className, class: c
   );
 });
 Switch.displayName = "Switch";
-
-export { Switch };

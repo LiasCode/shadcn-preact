@@ -3,7 +3,7 @@ import { Badge, type BadgeProps } from "./badge";
 import { cn } from "./share/cn";
 import { Show } from "./show";
 
-type TokenInputProps = Omit<InputHTMLAttributes, "value"> & {
+export type TokenInputProps = Omit<InputHTMLAttributes, "value"> & {
   onTokensChange?: (tokens: string[]) => void;
   value?: string[];
   variant?: BadgeProps["variant"] | "intercalate";

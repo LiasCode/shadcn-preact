@@ -10,7 +10,7 @@ import {
 import { cn } from "./share/cn";
 import { Show } from "./show";
 
-type TabsProps = PropsWithChildren & {
+export type TabsProps = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & {
   /** The value for the selected tab, if controlled */
   value?: string;
   /** The value of the tab to select by default, if uncontrolled */
@@ -37,7 +37,7 @@ const TabContext = createContext<{
   activationMode?: "automatic" | "manual";
 } | null>(null);
 
-const Tabs = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement> & TabsProps>(
+export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
   (
     {
       value: controlledValue,
@@ -79,15 +79,15 @@ const Tabs = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement> & TabsPro
   }
 );
 
-function useTabs() {
-  const context = useContext(TabContext);
-  if (!context) {
-    throw new Error("useTabs should be used within Tabs");
-  }
-  return context;
+export function useTabs() {
+  const c = useContext(TabContext);
+  if (!c) throw new Error("useTabs should be used within Tabs");
+  return c;
 }
 
-const TabsList = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+export type TabsListProps = HTMLAttributes<HTMLDivElement>;
+
+export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
   ({ className, class: classNative, ...props }, ref) => {
     const { orientation } = useTabs();
 
@@ -107,7 +107,9 @@ const TabsList = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 );
 TabsList.displayName = "TabsList";
 
-const TabsTrigger = forwardRef<HTMLButtonElement, HTMLAttributes<HTMLButtonElement> & { value?: string }>(
+export type TabsTriggerProps = HTMLAttributes<HTMLButtonElement> & { value?: string };
+
+export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
   ({ className, class: classNative, ...props }, ref) => {
     const { value, onValueChange, orientation } = useTabs();
     return (
@@ -129,7 +131,9 @@ const TabsTrigger = forwardRef<HTMLButtonElement, HTMLAttributes<HTMLButtonEleme
 );
 TabsTrigger.displayName = "TabsTrigger";
 
-const TabsContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement> & { value?: string }>(
+export type TabsContentProps = HTMLAttributes<HTMLDivElement> & { value?: string };
+
+export const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(
   ({ className, class: classNative, ...props }, ref) => {
     const { value, orientation } = useTabs();
 
@@ -151,5 +155,3 @@ const TabsContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement> & 
   }
 );
 TabsContent.displayName = "TabsContent";
-
-export { Tabs, TabsList, TabsTrigger, TabsContent };

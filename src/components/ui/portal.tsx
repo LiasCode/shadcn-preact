@@ -1,7 +1,7 @@
 import { type PropsWithChildren, createPortal } from "preact/compat";
 import { Show } from "./show";
 
-type PortalProps = PropsWithChildren & {
+export type PortalProps = PropsWithChildren & {
   show: boolean;
 };
 

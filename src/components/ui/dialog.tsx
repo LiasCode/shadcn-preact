@@ -35,14 +35,14 @@ export function Dialog({ open: controlledIsOpen = false, children, onChange }: D
 }
 
 export function useDialog() {
-  const context = useContext(DialogContext);
-  if (!context) {
-    throw new Error("useDialog should be used within DialogProvider");
-  }
-  return context;
+  const c = useContext(DialogContext);
+  if (!c) throw new Error("useDialog should be used within DialogProvider");
+  return c;
 }
 
-export function DialogTrigger({ children }: PropsWithChildren & { asChild?: boolean }) {
+export type DialogTriggerProps = PropsWithChildren & { asChild?: boolean };
+
+export function DialogTrigger({ children }: DialogTriggerProps) {
   const { openDialog } = useDialog();
 
   return (
@@ -52,7 +52,9 @@ export function DialogTrigger({ children }: PropsWithChildren & { asChild?: bool
   );
 }
 
-export const DialogContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement> & { autoSelect?: boolean }>(
+export type DialogContentProps = HTMLAttributes<HTMLDivElement> & { autoSelect?: boolean };
+
+export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
   ({ className, class: classNative, children, ...props }) => {
     const { open, closeDialog } = useDialog();
     const contentRef = createRef<HTMLDivElement>();
@@ -99,7 +101,9 @@ export const DialogContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEl
 );
 DialogContent.displayName = "DialogContent";
 
-export const DialogHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+export type DialogHeaderProps = HTMLAttributes<HTMLDivElement>;
+
+export const DialogHeader = forwardRef<HTMLDivElement, DialogHeaderProps>(
   ({ className, class: classNative, ...props }, ref) => (
     <div
       ref={ref}
@@ -110,7 +114,9 @@ export const DialogHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEle
 );
 DialogHeader.displayName = "DialogHeader";
 
-export const DialogFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+export type DialogFooterProps = HTMLAttributes<HTMLDivElement>;
+
+export const DialogFooter = forwardRef<HTMLDivElement, DialogFooterProps>(
   ({ className, class: classNative, ...props }, ref) => (
     <div
       ref={ref}
@@ -121,7 +127,9 @@ export const DialogFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEle
 );
 DialogFooter.displayName = "DialogFooter";
 
-export const DialogTitle = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+export type DialogTitleProps = HTMLAttributes<HTMLDivElement>;
+
+export const DialogTitle = forwardRef<HTMLDivElement, DialogTitleProps>(
   ({ className, class: classNative, ...props }, ref) => (
     <div
       ref={ref}
@@ -132,17 +140,18 @@ export const DialogTitle = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElem
 );
 DialogTitle.displayName = "DialogTitle";
 
-export const DialogDescription = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+export type DialogDescriptionProps = HTMLAttributes<HTMLDivElement>;
+
+export const DialogDescription = forwardRef<HTMLDivElement, DialogDescriptionProps>(
   ({ className, class: classNative, ...props }, ref) => (
     <div ref={ref} className={cn("text-muted-foreground text-sm", className, classNative)} {...props} />
   )
 );
 DialogDescription.displayName = "DialogDescription";
 
-export const DialogClose = ({
-  children,
-  onCancel,
-}: PropsWithChildren<{ onCancel?: () => void; asChild?: boolean }>) => {
+export type DialogCloseProps = PropsWithChildren<{ onCancel?: () => void; asChild?: boolean }>;
+
+export const DialogClose = ({ children, onCancel }: DialogCloseProps) => {
   const { closeDialog } = useDialog();
 
   return (

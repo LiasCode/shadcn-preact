@@ -11,7 +11,9 @@ const ThemeContext = createContext<{
   theme: "light",
 });
 
-export const ThemeProvider = (props: PropsWithChildren) => {
+export type ThemeProviderProps = PropsWithChildren;
+
+export const ThemeProvider = (props: ThemeProviderProps) => {
   const [theme, setTheme] = useState<ThemeOption>(getThemeFromLocalStorage());
 
   useEffect(() => {
@@ -29,20 +31,17 @@ export const ThemeProvider = (props: PropsWithChildren) => {
 
 export const useTheme = () => {
   const c = useContext(ThemeContext);
-  if (!c) {
-    throw new Error("useTheme should be inside of ThemeProvider");
-  }
-
+  if (!c) throw new Error("useTheme should be inside of ThemeProvider");
   return c;
 };
 
-function getThemeFromLocalStorage(): ThemeOption {
+export function getThemeFromLocalStorage(): ThemeOption {
   if (typeof window !== "undefined") {
     return (localStorage.getItem("--theme--") || "light") as ThemeOption;
   }
   return "light";
 }
 
-function setThemeFromLocalStorage(t: ThemeOption) {
+export function setThemeFromLocalStorage(t: ThemeOption) {
   return localStorage.setItem("--theme--", t);
 }

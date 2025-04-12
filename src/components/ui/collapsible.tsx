@@ -67,12 +67,10 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
 );
 Collapsible.displayName = "Collapsible";
 
-function useCollapsible() {
-  const context = useContext(CollapsibleContext);
-  if (!context) {
-    throw new Error("useCollapsible should be used within CollapsibleProvider");
-  }
-  return context;
+export function useCollapsible() {
+  const c = useContext(CollapsibleContext);
+  if (!c) throw new Error("useCollapsible should be used within CollapsibleProvider");
+  return c;
 }
 
 export type CollapsibleTriggerProps = PropsWithChildren & { asChild?: boolean };

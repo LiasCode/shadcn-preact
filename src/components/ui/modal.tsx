@@ -3,14 +3,14 @@ import { cn } from "./share/cn";
 import { getScrollBarWidth } from "./share/getScrollBarWidth";
 import { Show } from "./show";
 
-type ModalProps = PropsWithChildren<
+export type ModalProps = PropsWithChildren<
   HTMLAttributes<HTMLDivElement> & {
     onClose: () => void;
     show: boolean;
   }
 >;
 
-const Modal = forwardRef<HTMLDivElement, ModalProps>(({ show, ...props }, ref) => {
+export const Modal = forwardRef<HTMLDivElement, ModalProps>(({ show, ...props }, ref) => {
   if (typeof window !== "undefined") {
     return createPortal(
       <Show when={show}>
@@ -23,7 +23,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(({ show, ...props }, ref) =
 });
 Modal.displayName = "Modal";
 
-type ModalContentProps = PropsWithChildren<
+export type ModalContentProps = PropsWithChildren<
   HTMLAttributes<HTMLDivElement> & {
     onClose: () => void;
   }
@@ -55,5 +55,3 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
     );
   }
 );
-
-export { Modal };

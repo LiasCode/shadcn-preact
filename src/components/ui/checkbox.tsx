@@ -4,7 +4,7 @@ import { cn } from "./share/cn";
 
 type CheckedState = boolean;
 
-type CheckboxProps = HTMLAttributes<HTMLButtonElement> & {
+export type CheckboxProps = HTMLAttributes<HTMLButtonElement> & {
   checked?: CheckedState;
   defaultChecked?: CheckedState;
   required?: boolean;
@@ -12,7 +12,7 @@ type CheckboxProps = HTMLAttributes<HTMLButtonElement> & {
   disabled?: boolean;
 };
 
-const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
+export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
   (
     { className, class: classNative, checked: controlledChecked, defaultChecked, required, onCheckedChange, ...props },
     ref
@@ -50,7 +50,10 @@ const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
           // biome-ignore lint/a11y/useSemanticElements: <explanation>
           role={"checkbox"}
           value={internalIsChecked ? "on" : "off"}
-          onClick={() => setIsChecked((prev) => !prev)}
+          onClick={() => {
+            if (props.disabled === true) return;
+            setIsChecked((prev) => !prev);
+          }}
           {...props}
         >
           {internalIsChecked ? <Check className="h-4 w-4" /> : null}
@@ -68,7 +71,4 @@ const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
     );
   }
 );
-
 Checkbox.displayName = "Checkbox";
-
-export { Checkbox };

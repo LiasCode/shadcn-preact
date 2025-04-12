@@ -1,7 +1,9 @@
 import { type TextareaHTMLAttributes, forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 
-const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes>(
+export type TextareaProps = TextareaHTMLAttributes;
+
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, class: classNative, ...props }, ref) => {
     return (
       <textarea
@@ -17,5 +19,3 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes>(
   }
 );
 Textarea.displayName = "Textarea";
-
-export { Textarea };
