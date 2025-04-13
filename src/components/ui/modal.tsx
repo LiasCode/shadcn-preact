@@ -29,16 +29,23 @@ export type ModalContentProps = PropsWithChildren<
   }
 >;
 
+let modal_counter = 0;
+
 const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
   ({ className, class: classNative, ...props }, ref) => {
     useEffect(() => {
+      modal_counter += 1;
+
       const scrollbarWidth = getScrollBarWidth(document.body);
       document.body.classList.add("overflow-hidden");
       document.body.style.marginRight = `${scrollbarWidth}px`;
 
       return () => {
-        document.body.classList.remove("overflow-hidden");
-        document.body.style.marginRight = `${0}px`;
+        modal_counter -= 1;
+        if (modal_counter === 0) {
+          document.body.classList.remove("overflow-hidden");
+          document.body.style.marginRight = `${0}px`;
+        }
       };
     }, []);
 
