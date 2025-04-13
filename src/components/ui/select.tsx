@@ -319,14 +319,12 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       if (!isOpen) return;
+
+      // Autofocus the SelectItem with the current value or the first one
       if (!value) {
-        (ref.floating.current?.querySelector("[role=option]") as HTMLOptionElement | undefined)?.focus();
+        ref.floating.current?.querySelector<HTMLOptionElement>("[role=option]")?.focus();
       } else {
-        (
-          ref.floating.current?.querySelector(`[role=option][data-option-value=${value}`) as
-            | HTMLOptionElement
-            | undefined
-        )?.focus();
+        ref.floating.current?.querySelector<HTMLOptionElement>(`[role=option][data-option-value="${value}"]`)?.focus();
       }
     }, [isOpen, ref.floating.current]);
 
