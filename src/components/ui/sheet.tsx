@@ -70,7 +70,7 @@ const SheetContent = forwardRef<ElementRef<typeof DialogContent>, SheetContentPr
         <Modal onClose={closeDialog} show={true}>
           <div
             ref={contentRef}
-            onClick={(e) => {
+            onMouseDown={(e) => {
               e.stopPropagation();
             }}
             {...props}

@@ -374,7 +374,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
           data-select-id={id}
           // @ts-expect-error
           ref={ref.setFloating}
-          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
           style={{
             ...floatingStyles,
             minWidth: `${triggerWidth}px`,
