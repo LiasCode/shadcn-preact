@@ -132,7 +132,7 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
           data-popover-id={id}
           // @ts-expect-error
           ref={ref.setFloating}
-          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
           style={floatingStyles}
           data-state={isOpen ? "open" : "closed"}
           data-side={side || "bottom"}

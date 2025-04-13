@@ -76,7 +76,7 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div
               ref={contentRef}
-              onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
               className={cn(
                 "relative grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg",
                 className,
