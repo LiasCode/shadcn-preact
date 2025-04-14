@@ -1,7 +1,6 @@
 import { type VariantProps, cva } from "class-variance-authority";
 import { type ButtonHTMLAttributes, forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
-import { composeRefs } from "./share/compose_ref";
 import { Slot } from "./share/slot";
 
 export const buttonVariants = cva(
