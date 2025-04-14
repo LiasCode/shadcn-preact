@@ -8,7 +8,6 @@ import { Label } from "@ui/label";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function TabsSection() {
   return (
@@ -126,20 +125,20 @@ export function TabsSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.TABLE}>
+            <a href={AppRoutes.COMPONENTS.TABLE}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Table
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.TEXTAREA}>
+            <a href={AppRoutes.COMPONENTS.TEXTAREA}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Textarea
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

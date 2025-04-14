@@ -15,7 +15,6 @@ import {
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function AlertDialogSection() {
   return (
@@ -127,20 +126,20 @@ export function AlertDialogSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.ALERT}>
+            <a href={AppRoutes.COMPONENTS.ALERT}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Alert
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.AVATAR}>
+            <a href={AppRoutes.COMPONENTS.AVATAR}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Avatar
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

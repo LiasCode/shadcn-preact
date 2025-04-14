@@ -3,9 +3,8 @@ import { Button } from "@ui/button";
 import { ThemeProvider } from "@ui/theme";
 import { Toaster } from "@ui/toast";
 import { ExternalLink } from "lucide-preact";
-import { A, ErrorRoute, Route, Router, RouterErrorBoundary } from "preact-hashish-router";
+import { LocationProvider, Route, Router } from "preact-iso";
 import { AppRoutes } from "./routes/AppRoutes";
-
 import AlertPage from "./routes/Components/Alert";
 import AlertDialogPage from "./routes/Components/AlertDialog";
 import AvatarPage from "./routes/Components/Avatar";
@@ -23,7 +22,6 @@ import DialogPage from "./routes/Components/Dialog";
 import DrawerPage from "./routes/Components/Drawer";
 import InputPage from "./routes/Components/Input";
 import InputOtpPage from "./routes/Components/InputOtp";
-import InputTokenPage from "./routes/Components/InputToken";
 import LabelPage from "./routes/Components/Label";
 import PopoverPage from "./routes/Components/Popover";
 import SelectPage from "./routes/Components/Select";
@@ -42,185 +40,109 @@ import InstallationAstroPage from "./routes/Docs/InstallationAstro";
 import InstallationVitePage from "./routes/Docs/InstallationVite";
 import IntroductionPage from "./routes/Docs/Introduction";
 import ThemingPage from "./routes/Docs/Theming";
-// Pages
 import ExamplePage from "./routes/Example";
 import HomePage from "./routes/Home";
 
 export function App() {
   return (
-    <Router type="browser">
-      <RouterErrorBoundary>
-        <ThemeProvider>
-          <Toaster position="bottom-right" />
+    <LocationProvider>
+      <ThemeProvider>
+        <Toaster position="bottom-right" />
 
-          <Route path={AppRoutes.HOME}>
-            <HomePage />
-          </Route>
+        <Router>
+          <Route component={HomePage} path={AppRoutes.HOME} />
 
-          <Route path={AppRoutes.EXAMPLES}>
-            <ExamplePage />
-          </Route>
+          <Route component={ExamplePage} path={AppRoutes.EXAMPLES} />
 
-          <Route path={AppRoutes.DOCS.INTRO}>
-            <IntroductionPage />
-          </Route>
+          <Route component={IntroductionPage} path={AppRoutes.DOCS.INTRO} />
 
-          <Route path={AppRoutes.DOCS.INSTALLATION}>
-            <InstallationPage />
-          </Route>
+          <Route component={InstallationPage} path={AppRoutes.DOCS.INSTALLATION} />
 
-          <Route path={AppRoutes.DOCS.INSTALLATION_VITE}>
-            <InstallationVitePage />
-          </Route>
+          <Route component={InstallationVitePage} path={AppRoutes.DOCS.INSTALLATION_VITE} />
 
-          <Route path={AppRoutes.DOCS.INSTALLATION_ASTRO}>
-            <InstallationAstroPage />
-          </Route>
+          <Route component={InstallationAstroPage} path={AppRoutes.DOCS.INSTALLATION_ASTRO} />
 
-          <Route path={AppRoutes.COMPONENTS.SEPARATOR}>
-            <SeparatorPage />
-          </Route>
+          <Route component={SeparatorPage} path={AppRoutes.COMPONENTS.SEPARATOR} />
 
-          <Route path={AppRoutes.DOCS.THEMING}>
-            <ThemingPage />
-          </Route>
+          <Route component={ThemingPage} path={AppRoutes.DOCS.THEMING} />
 
-          <Route path={AppRoutes.COMPONENTS.BUTTON}>
-            <ButtonPage />
-          </Route>
+          <Route component={ButtonPage} path={AppRoutes.COMPONENTS.BUTTON} />
 
-          <Route path={AppRoutes.COMPONENTS.SELECT}>
-            <SelectPage />
-          </Route>
+          <Route component={SelectPage} path={AppRoutes.COMPONENTS.SELECT} />
 
-          <Route path={AppRoutes.COMPONENTS.TOGGLE}>
-            <TogglePage />
-          </Route>
+          <Route component={TogglePage} path={AppRoutes.COMPONENTS.TOGGLE} />
 
-          <Route path={AppRoutes.COMPONENTS.TABS}>
-            <TabsPage />
-          </Route>
+          <Route component={TabsPage} path={AppRoutes.COMPONENTS.TABS} />
 
-          <Route path={AppRoutes.COMPONENTS.TOOLTIP}>
-            <TooltipPage />
-          </Route>
+          <Route component={TooltipPage} path={AppRoutes.COMPONENTS.TOOLTIP} />
 
-          <Route path={AppRoutes.COMPONENTS.POPOVER}>
-            <PopoverPage />
-          </Route>
+          <Route component={PopoverPage} path={AppRoutes.COMPONENTS.POPOVER} />
 
-          <Route path={AppRoutes.COMPONENTS.TEXTAREA}>
-            <TextareaPage />
-          </Route>
+          <Route component={TextareaPage} path={AppRoutes.COMPONENTS.TEXTAREA} />
 
-          <Route path={AppRoutes.COMPONENTS.TOAST}>
-            <ToastPage />
-          </Route>
+          <Route component={ToastPage} path={AppRoutes.COMPONENTS.TOAST} />
 
-          <Route path={AppRoutes.COMPONENTS.CAROUSEL}>
-            <CarouselPage />
-          </Route>
+          <Route component={CarouselPage} path={AppRoutes.COMPONENTS.CAROUSEL} />
 
-          <Route path={AppRoutes.COMPONENTS.TABLE}>
-            <TablePage />
-          </Route>
+          <Route component={TablePage} path={AppRoutes.COMPONENTS.TABLE} />
 
-          <Route path={AppRoutes.COMPONENTS.COMMAND}>
-            <CommandPage />
-          </Route>
+          <Route component={CommandPage} path={AppRoutes.COMPONENTS.COMMAND} />
 
-          <Route path={AppRoutes.COMPONENTS.CARD}>
-            <CardPage />
-          </Route>
+          <Route component={CardPage} path={AppRoutes.COMPONENTS.CARD} />
 
-          <Route path={AppRoutes.COMPONENTS.DIALOG}>
-            <DialogPage />
-          </Route>
+          <Route component={DialogPage} path={AppRoutes.COMPONENTS.DIALOG} />
 
-          <Route path={AppRoutes.COMPONENTS.SHEET}>
-            <SheetPage />
-          </Route>
+          <Route component={SheetPage} path={AppRoutes.COMPONENTS.SHEET} />
 
-          <Route path={AppRoutes.COMPONENTS.SKELETON}>
-            <SkeletonPage />
-          </Route>
+          <Route component={SkeletonPage} path={AppRoutes.COMPONENTS.SKELETON} />
 
-          <Route path={AppRoutes.COMPONENTS.AVATAR}>
-            <AvatarPage />
-          </Route>
+          <Route component={AvatarPage} path={AppRoutes.COMPONENTS.AVATAR} />
 
-          <Route path={AppRoutes.COMPONENTS.DRAWER}>
-            <DrawerPage />
-          </Route>
+          <Route component={DrawerPage} path={AppRoutes.COMPONENTS.DRAWER} />
 
-          <Route path={AppRoutes.COMPONENTS.CHECKBOX}>
-            <CheckboxPage />
-          </Route>
+          <Route component={CheckboxPage} path={AppRoutes.COMPONENTS.CHECKBOX} />
 
-          <Route path={AppRoutes.COMPONENTS.BREADCRUMB}>
-            <BreadcrumbsPage />
-          </Route>
+          <Route component={BreadcrumbsPage} path={AppRoutes.COMPONENTS.BREADCRUMB} />
 
-          <Route path={AppRoutes.COMPONENTS.INPUT}>
-            <InputPage />
-          </Route>
+          <Route component={InputPage} path={AppRoutes.COMPONENTS.INPUT} />
 
-          <Route path={AppRoutes.COMPONENTS.INPUT_TOKEN}>
-            <InputTokenPage />
-          </Route>
+          <Route component={InputOtpPage} path={AppRoutes.COMPONENTS.INPUT_OTP} />
 
-          <Route path={AppRoutes.COMPONENTS.INPUT_OTP}>
-            <InputOtpPage />
-          </Route>
+          <Route component={LabelPage} path={AppRoutes.COMPONENTS.LABEL} />
 
-          <Route path={AppRoutes.COMPONENTS.LABEL}>
-            <LabelPage />
-          </Route>
+          <Route component={SwitchPage} path={AppRoutes.COMPONENTS.SWITCH} />
 
-          <Route path={AppRoutes.COMPONENTS.SWITCH}>
-            <SwitchPage />
-          </Route>
+          <Route component={ChartPage} path={AppRoutes.COMPONENTS.CHART} />
 
-          <Route path={AppRoutes.COMPONENTS.CHART}>
-            <ChartPage />
-          </Route>
+          <Route component={BadgePage} path={AppRoutes.COMPONENTS.BADGE} />
 
-          <Route path={AppRoutes.COMPONENTS.BADGE}>
-            <BadgePage />
-          </Route>
+          <Route component={AlertDialogPage} path={AppRoutes.COMPONENTS.ALERT_DIALOG} />
 
-          <Route path={AppRoutes.COMPONENTS.ALERT_DIALOG}>
-            <AlertDialogPage />
-          </Route>
+          <Route component={AlertPage} path={AppRoutes.COMPONENTS.ALERT} />
 
-          <Route path={AppRoutes.COMPONENTS.ALERT}>
-            <AlertPage />
-          </Route>
+          <Route component={CalendarPage} path={AppRoutes.COMPONENTS.CALENDAR} />
 
-          <Route path={AppRoutes.COMPONENTS.CALENDAR}>
-            <CalendarPage />
-          </Route>
+          <Route component={CollapsiblePage} path={AppRoutes.COMPONENTS.COLLAPSIBLE} />
 
-          <Route path={AppRoutes.COMPONENTS.COLLAPSIBLE}>
-            <CollapsiblePage />
-          </Route>
+          <Route
+            default
+            component={() => (
+              <div className="flex h-screen w-screen flex-col items-center justify-center gap-6 bg-background">
+                <Alert variant="destructive" className="max-w-[500px] border-red-500">
+                  <AlertTitle className="font-bold text-red-500">404 error, Not found</AlertTitle>
+                  <AlertDescription className="text-red-400">This resource doesn't exists</AlertDescription>
+                </Alert>
 
-          <ErrorRoute>
-            <div className="flex h-screen w-screen flex-col items-center justify-center gap-6 bg-background">
-              <Alert variant="destructive" className="max-w-[500px] border-red-500">
-                <AlertTitle className="font-bold text-red-500">404 error, Not found</AlertTitle>
-                <AlertDescription className="text-red-400">This resource doesn't exists</AlertDescription>
-              </Alert>
-
-              <A href={AppRoutes.HOME}>
-                <Button variant="secondary">
-                  Go home <ExternalLink />
-                </Button>
-              </A>
-            </div>
-          </ErrorRoute>
-        </ThemeProvider>
-      </RouterErrorBoundary>
-    </Router>
+                <a href={AppRoutes.HOME}>
+                  <Button variant="secondary">
+                    Go home <ExternalLink />
+                  </Button>
+                </a>
+              </div>
+            )}
+          />
+        </Router>
+      </ThemeProvider>
+    </LocationProvider>
   );
 }

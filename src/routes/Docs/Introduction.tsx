@@ -2,7 +2,6 @@ import { DocsLayout } from "@/components/Layout/DocsLayout";
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 import { AppRoutes } from "../AppRoutes";
 
 export default function IntroductionPage() {
@@ -68,12 +67,12 @@ export default function IntroductionPage() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem />
           <PaginationItem>
-            <A href={AppRoutes.DOCS.INSTALLATION}>
+            <a href={AppRoutes.DOCS.INSTALLATION}>
               <Button className="gap-1 pr-1" variant="outline">
                 Intallation
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

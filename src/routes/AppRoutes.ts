@@ -24,7 +24,7 @@ export const AppRoutes = {
     SHEET: "/component/sheet",
     SEPARATOR: "/component/separator",
     INPUT: "/component/input",
-    INPUT_TOKEN: "/component/input_token",
+    // INPUT_TOKEN: "/component/input_token",
     INPUT_OTP: "/component/input_otp",
     LABEL: "/component/label",
     SWITCH: "/component/switch",

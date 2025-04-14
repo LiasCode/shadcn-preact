@@ -1,13 +1,17 @@
-import { render } from "preact";
+import { hydrate, prerender as ssr } from "preact-iso";
 import { App } from "./App";
 import "./index.css";
 
-const $root = document.querySelector("#app");
+if (typeof window !== "undefined") {
+  const $root = document.querySelector("#app");
 
-if ($root === null) {
-  throw new Error("Root element not found");
+  if (!$root) {
+    throw new Error("#app dom element must exists");
+  }
+
+  hydrate(<App />, $root);
 }
 
-$root.innerHTML = "";
-
-render(<App />, $root);
+export async function prerender(data: any) {
+  return await ssr(<App {...data} />);
+}

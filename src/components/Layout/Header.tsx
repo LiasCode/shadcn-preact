@@ -3,7 +3,6 @@ import { AppRoutes } from "@/routes/AppRoutes";
 import { Button } from "@ui/button";
 import { useTheme } from "@ui/theme";
 import { Moon, Sun } from "lucide-preact";
-import { A } from "preact-hashish-router";
 import { Suspense, lazy } from "preact/compat";
 import CommandSearchDialog from "./CommandSearchDialog";
 import { ShadcnIcon } from "./ShadcnIcon";
@@ -41,28 +40,28 @@ function HeaderLeftSide() {
 
         <ShadcnIcon />
 
-        <A className="flex items-center gap-2" href={AppRoutes.HOME}>
+        <a className="flex items-center gap-2" href={AppRoutes.HOME}>
           <span className="inline-block text-nowrap font-bold text-primary text-sm md:text-base">
             shadcn-<span className="text-purple-500">preact</span>
           </span>
-        </A>
+        </a>
       </div>
 
       <div className="ml-4 hidden h-full flex-1 flex-row items-center justify-start gap-6 text-muted-foreground text-sm md:flex">
-        <A className="flex items-center data-[route-active=true]:text-primary" href={AppRoutes.DOCS.INTRO}>
+        <a className="flex items-center data-[route-active=true]:text-primary" href={AppRoutes.DOCS.INTRO}>
           Docs
-        </A>
+        </a>
 
-        <A
+        <a
           className="flex items-center data-[route-active=true]:text-primary"
           href={AppRoutes.COMPONENTS[firstAlphaComponentKey]}
         >
           Components
-        </A>
+        </a>
 
-        <A className="flex items-center data-[route-active=true]:text-primary" href={AppRoutes.EXAMPLES}>
+        <a className="flex items-center data-[route-active=true]:text-primary" href={AppRoutes.EXAMPLES}>
           Examples
-        </A>
+        </a>
       </div>
     </div>
   );

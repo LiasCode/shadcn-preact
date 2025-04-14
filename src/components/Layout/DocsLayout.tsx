@@ -4,7 +4,6 @@ import { AppRoutes } from "@/routes/AppRoutes";
 import { BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@ui/breadCrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/card";
 import { type VNode, createRef } from "preact";
-import { A } from "preact-hashish-router";
 import { type PropsWithChildren, useEffect } from "preact/compat";
 import NavRoutesLinks from "../NavRoutesLinks";
 
@@ -26,7 +25,7 @@ export function DocsLayout(props: DocsLayoutProps) {
                   <BreadcrumbList>
                     <BreadcrumbItem>
                       <BreadcrumbLink asChild>
-                        <A href={AppRoutes.DOCS.INTRO}>Docs</A>
+                        <a href={AppRoutes.DOCS.INTRO}>Docs</a>
                       </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />

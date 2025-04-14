@@ -15,7 +15,6 @@ import {
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
 import { Minus, Plus } from "lucide-preact";
-import { A } from "preact-hashish-router";
 import type { CSSProperties } from "preact/compat";
 import { useState } from "preact/hooks";
 import { Bar, BarChart, ResponsiveContainer } from "recharts";
@@ -217,20 +216,20 @@ export default function DrawerSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.DIALOG}>
+            <a href={AppRoutes.COMPONENTS.DIALOG}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Dialog
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.INPUT}>
+            <a href={AppRoutes.COMPONENTS.INPUT}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Input
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

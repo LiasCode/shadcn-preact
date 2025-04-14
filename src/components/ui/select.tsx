@@ -309,11 +309,17 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
     const maxHeight = useMemo(() => {
       if (isOpen === false) return 0;
 
-      const fromTopToScreenOffset = window.innerHeight - (ref.reference.current?.getBoundingClientRect().top || 0);
-      const fromBottomToScreenOffset =
-        window.innerHeight - (ref.reference.current?.getBoundingClientRect().bottom || 0);
-      const triggerHeight = ref.reference.current?.getBoundingClientRect().height || 0;
-      return Math.max(fromTopToScreenOffset, fromBottomToScreenOffset) - triggerHeight - 8;
+      const window_height = window.innerHeight;
+
+      const trigger_height = ref.reference.current?.getBoundingClientRect().height || 24;
+
+      const top = ref.reference.current?.getBoundingClientRect().top || 0;
+
+      const bottom = window_height - top + trigger_height - 16;
+
+      const result = top > bottom ? top - 8 : bottom - trigger_height - 32;
+
+      return result;
     }, [ref.reference.current, isOpen]);
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

@@ -16,7 +16,6 @@ import {
   SheetTrigger,
 } from "@ui/sheet";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function SheetSection() {
   return (
@@ -234,20 +233,20 @@ export function SheetSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.SELECT}>
+            <a href={AppRoutes.COMPONENTS.SELECT}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Select
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.SKELETON}>
+            <a href={AppRoutes.COMPONENTS.SKELETON}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Skeleton
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

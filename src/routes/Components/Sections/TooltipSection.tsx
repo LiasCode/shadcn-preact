@@ -5,7 +5,6 @@ import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@ui/tooltip";
 import { ChevronLeft } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function TooltipSection() {
   return (
@@ -85,12 +84,12 @@ export function TooltipSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.TOGGLE}>
+            <a href={AppRoutes.COMPONENTS.TOGGLE}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Toggle
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

@@ -7,7 +7,6 @@ import { Label } from "@ui/label";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { toast } from "@ui/toast";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 import { useState } from "preact/hooks";
 
 export function InputsSection() {
@@ -214,20 +213,20 @@ export function InputsSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.DRAWER}>
+            <a href={AppRoutes.COMPONENTS.DRAWER}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Drawer
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.INPUT_OTP}>
+            <a href={AppRoutes.COMPONENTS.INPUT_OTP}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Input Otp
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>
