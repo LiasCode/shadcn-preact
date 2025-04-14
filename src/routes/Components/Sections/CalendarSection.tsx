@@ -10,7 +10,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { cn } from "@ui/share/cn";
 import { format } from "date-fns";
 import { AlertCircle, CalendarIcon, ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 import { useState } from "preact/hooks";
 
 export default function CalendarSection() {
@@ -161,20 +160,20 @@ export default function CalendarSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.BUTTON}>
+            <a href={AppRoutes.COMPONENTS.BUTTON}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Button
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.CARD}>
+            <a href={AppRoutes.COMPONENTS.CARD}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Card
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

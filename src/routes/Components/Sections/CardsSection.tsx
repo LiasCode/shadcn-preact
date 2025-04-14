@@ -9,7 +9,6 @@ import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { SimpleSelect } from "@ui/simple_select";
 import { Switch } from "@ui/switch";
 import { BellRing, Check, ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function CardsSection() {
   return (
@@ -237,20 +236,20 @@ export function CardsSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.CALENDAR}>
+            <a href={AppRoutes.COMPONENTS.CALENDAR}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Calendar
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.CAROUSEL}>
+            <a href={AppRoutes.COMPONENTS.CAROUSEL}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Carousel
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

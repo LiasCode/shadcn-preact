@@ -5,7 +5,6 @@ import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@ui/select";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function SelectSection() {
   return (
@@ -164,20 +163,20 @@ export function SelectSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.POPOVER}>
+            <a href={AppRoutes.COMPONENTS.POPOVER}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Popover
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.SHEET}>
+            <a href={AppRoutes.COMPONENTS.SHEET}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Sheet
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

@@ -1,6 +1,5 @@
 import { Footer } from "@/components/Layout/Footer";
 import { Button } from "@ui/button";
-import { A } from "preact-hashish-router";
 import Header from "../components/Layout/Header";
 import { AppRoutes } from "./AppRoutes";
 
@@ -23,9 +22,9 @@ export default function HomePage() {
               This is a direct port of shadcn components api and ui/ux to <strong>preact</strong>.
             </p>
             <div className="flex w-full items-center justify-start gap-2 pt-2">
-              <A href={AppRoutes.DOCS.INTRO}>
+              <a href={AppRoutes.DOCS.INTRO}>
                 <Button size="sm">Get Started</Button>
-              </A>
+              </a>
               <a href="https://github.com/LiasCode/shadcn-preact" target="_blank" rel="noreferrer">
                 <Button variant="ghost" size="sm">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

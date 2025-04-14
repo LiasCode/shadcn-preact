@@ -1,6 +1,5 @@
 import { AppRoutes } from "@/routes/AppRoutes";
 import { Button } from "@ui/button";
-import { A } from "preact-hashish-router";
 
 export default function NavRoutesLinks() {
   return (
@@ -9,7 +8,7 @@ export default function NavRoutesLinks() {
         <span className="flex h-9 w-full flex-row items-center justify-start p-1 font-semibold text-sm">
           Getting Started
         </span>
-        <A href={AppRoutes.DOCS.INTRO} className="group w-full">
+        <a href={AppRoutes.DOCS.INTRO} className="group w-full">
           <Button
             variant="link"
             size="sm"
@@ -17,9 +16,9 @@ export default function NavRoutesLinks() {
           >
             Introduction
           </Button>
-        </A>
+        </a>
 
-        <A href={AppRoutes.DOCS.INSTALLATION} className="group w-full">
+        <a href={AppRoutes.DOCS.INSTALLATION} className="group w-full">
           <Button
             variant="link"
             size="sm"
@@ -27,9 +26,9 @@ export default function NavRoutesLinks() {
           >
             Installation
           </Button>
-        </A>
+        </a>
 
-        <A href={AppRoutes.DOCS.THEMING} className="group w-full">
+        <a href={AppRoutes.DOCS.THEMING} className="group w-full">
           <Button
             variant="link"
             size="sm"
@@ -37,9 +36,9 @@ export default function NavRoutesLinks() {
           >
             Theming
           </Button>
-        </A>
+        </a>
 
-        <A href={AppRoutes.EXAMPLES} className="group w-full">
+        <a href={AppRoutes.EXAMPLES} className="group w-full">
           <Button
             variant="link"
             size="sm"
@@ -47,7 +46,7 @@ export default function NavRoutesLinks() {
           >
             Examples
           </Button>
-        </A>
+        </a>
       </div>
 
       <div className="flex w-full flex-col gap-[2px]">
@@ -55,7 +54,7 @@ export default function NavRoutesLinks() {
           Installation
         </span>
 
-        <A href={AppRoutes.DOCS.INSTALLATION_VITE} className="group w-full">
+        <a href={AppRoutes.DOCS.INSTALLATION_VITE} className="group w-full">
           <Button
             variant="link"
             size="sm"
@@ -63,9 +62,9 @@ export default function NavRoutesLinks() {
           >
             Vite
           </Button>
-        </A>
+        </a>
 
-        <A href={AppRoutes.DOCS.INSTALLATION_ASTRO} className="group w-full">
+        <a href={AppRoutes.DOCS.INSTALLATION_ASTRO} className="group w-full">
           <Button
             variant="link"
             size="sm"
@@ -73,7 +72,7 @@ export default function NavRoutesLinks() {
           >
             Astro
           </Button>
-        </A>
+        </a>
       </div>
 
       <div className="flex w-full flex-col gap-[2px] pb-4">
@@ -85,7 +84,7 @@ export default function NavRoutesLinks() {
           .sort()
           .map(([name, route]) => {
             return (
-              <A href={route} className="group w-full" key={name}>
+              <a href={route} className="group w-full" key={name}>
                 <Button
                   variant="link"
                   size="sm"
@@ -93,7 +92,7 @@ export default function NavRoutesLinks() {
                 >
                   {name.split("_").join(" ").toLocaleLowerCase()}
                 </Button>
-              </A>
+              </a>
             );
           })}
       </div>

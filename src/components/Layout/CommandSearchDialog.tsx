@@ -2,12 +2,12 @@ import { AppRoutes } from "@/routes/AppRoutes";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@ui/command";
 import { CommandSeparator } from "cmdk";
 import { Circle, StickyNote } from "lucide-preact";
-import { useRouter } from "preact-hashish-router";
+import { useLocation } from "preact-iso";
 import { useEffect, useState } from "preact/compat";
 
 export default function CommandSearchDialog() {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
+  const { route } = useLocation();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -49,7 +49,7 @@ export default function CommandSearchDialog() {
 
           <CommandGroup heading="Docs">
             {Object.entries(AppRoutes.DOCS).map(([k, v]) => (
-              <CommandItem key={k} onSelect={() => router.go(v)}>
+              <CommandItem key={k} onSelect={() => route(v)}>
                 <StickyNote />
                 <span className="capitalize">{k.toLowerCase().split("_").join(" ")}</span>
               </CommandItem>
@@ -62,7 +62,7 @@ export default function CommandSearchDialog() {
             {Object.entries(AppRoutes.COMPONENTS)
               .sort()
               .map(([k, v]) => (
-                <CommandItem key={k} onSelect={() => router.go(v)}>
+                <CommandItem key={k} onSelect={() => route(v)}>
                   <Circle />
                   <span className="capitalize">{k.toLowerCase().split("_").join(" ")}</span>
                 </CommandItem>

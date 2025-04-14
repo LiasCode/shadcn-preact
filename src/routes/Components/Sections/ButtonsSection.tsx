@@ -4,7 +4,6 @@ import { AppRoutes } from "@/routes/AppRoutes";
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight, Loader2, MailOpen } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function ButtonsSection() {
   return (
@@ -225,20 +224,20 @@ export function ButtonsSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.BREADCRUMB}>
+            <a href={AppRoutes.COMPONENTS.BREADCRUMB}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Breadcrumb
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.CALENDAR}>
+            <a href={AppRoutes.COMPONENTS.CALENDAR}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Calendar
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

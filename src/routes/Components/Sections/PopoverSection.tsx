@@ -7,7 +7,6 @@ import { Label } from "@ui/label";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function PopoverSection() {
   return (
@@ -91,20 +90,20 @@ export function PopoverSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.LABEL}>
+            <a href={AppRoutes.COMPONENTS.LABEL}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Label
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.SELECT}>
+            <a href={AppRoutes.COMPONENTS.SELECT}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Select
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

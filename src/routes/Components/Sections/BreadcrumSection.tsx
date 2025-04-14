@@ -15,7 +15,6 @@ import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { cn } from "@ui/share/cn";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function BreadcrumbSection() {
   return (
@@ -95,7 +94,7 @@ export function BreadcrumbSection() {
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <A href={AppRoutes.HOME}>Home</A>
+                  <a href={AppRoutes.HOME}>Home</a>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
@@ -110,14 +109,14 @@ export function BreadcrumbSection() {
                       asChild
                       className={cn(buttonVariants({ variant: "ghost" }), "cursor-pointer justify-start")}
                     >
-                      <A href={AppRoutes.DOCS.INTRO}>Documentation</A>
+                      <a href={AppRoutes.DOCS.INTRO}>Documentation</a>
                     </BreadcrumbLink>
 
                     <BreadcrumbLink
                       asChild
                       className={cn(buttonVariants({ variant: "ghost" }), "cursor-pointer justify-start")}
                     >
-                      <A href={AppRoutes.DOCS.THEMING}>Themes</A>
+                      <a href={AppRoutes.DOCS.THEMING}>Themes</a>
                     </BreadcrumbLink>
 
                     <BreadcrumbLink
@@ -132,7 +131,7 @@ export function BreadcrumbSection() {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <A href={AppRoutes.COMPONENTS.ALERT}>Components</A>
+                  <a href={AppRoutes.COMPONENTS.ALERT}>Components</a>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
@@ -186,20 +185,20 @@ export function BreadcrumbSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.BADGE}>
+            <a href={AppRoutes.COMPONENTS.BADGE}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Badge
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.BUTTON}>
+            <a href={AppRoutes.COMPONENTS.BUTTON}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Button
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

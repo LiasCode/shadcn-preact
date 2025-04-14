@@ -3,7 +3,6 @@ import { Alert, AlertDescription, AlertTitle } from "@ui/alert";
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { AlertCircle, ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 import { AppRoutes } from "../AppRoutes";
 
 export default function ThemingPage() {
@@ -20,20 +19,20 @@ export default function ThemingPage() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.DOCS.INSTALLATION}>
+            <a href={AppRoutes.DOCS.INSTALLATION}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Installation
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS[firstAlphaComponentKey]}>
+            <a href={AppRoutes.COMPONENTS[firstAlphaComponentKey]}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 {firstAlphaComponentKey.toLocaleLowerCase()}
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

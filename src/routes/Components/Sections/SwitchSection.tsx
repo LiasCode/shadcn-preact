@@ -7,7 +7,6 @@ import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { Switch } from "@ui/switch";
 import { toast } from "@ui/toast";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 import { useState } from "preact/hooks";
 
 export function SwitchSection() {
@@ -128,20 +127,20 @@ export function SwitchSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.SKELETON}>
+            <a href={AppRoutes.COMPONENTS.SKELETON}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Skeleton
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.TABLE}>
+            <a href={AppRoutes.COMPONENTS.TABLE}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Table
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>
