@@ -27,6 +27,7 @@ import InputTokenPage from "./routes/Components/InputToken";
 import LabelPage from "./routes/Components/Label";
 import PopoverPage from "./routes/Components/Popover";
 import SelectPage from "./routes/Components/Select";
+import SeparatorPage from "./routes/Components/Separator";
 import SheetPage from "./routes/Components/Sheet";
 import SkeletonPage from "./routes/Components/Skeleton";
 import SwitchPage from "./routes/Components/Switch";
@@ -74,6 +75,10 @@ export function App() {
 
           <Route path={AppRoutes.DOCS.INSTALLATION_ASTRO}>
             <InstallationAstroPage />
+          </Route>
+
+          <Route path={AppRoutes.COMPONENTS.SEPARATOR}>
+            <SeparatorPage />
           </Route>
 
           <Route path={AppRoutes.DOCS.THEMING}>

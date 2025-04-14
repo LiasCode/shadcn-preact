@@ -22,6 +22,7 @@ export const AppRoutes = {
     CHART: "/component/chart",
     DIALOG: "/component/dialog",
     SHEET: "/component/sheet",
+    SEPARATOR: "/component/separator",
     INPUT: "/component/input",
     INPUT_TOKEN: "/component/input_token",
     INPUT_OTP: "/component/input_otp",
