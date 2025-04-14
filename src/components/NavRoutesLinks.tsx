@@ -1,14 +1,19 @@
 import { AppRoutes } from "@/routes/AppRoutes";
 import { Button } from "@ui/button";
+import { useLocation } from "preact-iso";
 
 export default function NavRoutesLinks() {
+  const { path } = useLocation();
+
+  const isActive = (route: string) => path === route;
+
   return (
     <>
       <div className="flex w-full flex-col gap-[2px]">
         <span className="flex h-9 w-full flex-row items-center justify-start p-1 font-semibold text-sm">
           Getting Started
         </span>
-        <a href={AppRoutes.DOCS.INTRO} className="group w-full">
+        <a href={AppRoutes.DOCS.INTRO} className="group w-full" data-route-active={isActive(AppRoutes.DOCS.INTRO)}>
           <Button
             variant="link"
             size="sm"
@@ -18,7 +23,11 @@ export default function NavRoutesLinks() {
           </Button>
         </a>
 
-        <a href={AppRoutes.DOCS.INSTALLATION} className="group w-full">
+        <a
+          href={AppRoutes.DOCS.INSTALLATION}
+          className="group w-full"
+          data-route-active={isActive(AppRoutes.DOCS.INSTALLATION)}
+        >
           <Button
             variant="link"
             size="sm"
@@ -28,7 +37,7 @@ export default function NavRoutesLinks() {
           </Button>
         </a>
 
-        <a href={AppRoutes.DOCS.THEMING} className="group w-full">
+        <a href={AppRoutes.DOCS.THEMING} className="group w-full" data-route-active={isActive(AppRoutes.DOCS.THEMING)}>
           <Button
             variant="link"
             size="sm"
@@ -38,7 +47,7 @@ export default function NavRoutesLinks() {
           </Button>
         </a>
 
-        <a href={AppRoutes.EXAMPLES} className="group w-full">
+        <a href={AppRoutes.EXAMPLES} className="group w-full" data-route-active={isActive(AppRoutes.EXAMPLES)}>
           <Button
             variant="link"
             size="sm"
@@ -54,7 +63,11 @@ export default function NavRoutesLinks() {
           Installation
         </span>
 
-        <a href={AppRoutes.DOCS.INSTALLATION_VITE} className="group w-full">
+        <a
+          href={AppRoutes.DOCS.INSTALLATION_VITE}
+          className="group w-full"
+          data-route-active={isActive(AppRoutes.DOCS.INSTALLATION_VITE)}
+        >
           <Button
             variant="link"
             size="sm"
@@ -64,7 +77,11 @@ export default function NavRoutesLinks() {
           </Button>
         </a>
 
-        <a href={AppRoutes.DOCS.INSTALLATION_ASTRO} className="group w-full">
+        <a
+          href={AppRoutes.DOCS.INSTALLATION_ASTRO}
+          className="group w-full"
+          data-route-active={isActive(AppRoutes.DOCS.INSTALLATION_ASTRO)}
+        >
           <Button
             variant="link"
             size="sm"
@@ -84,7 +101,7 @@ export default function NavRoutesLinks() {
           .sort()
           .map(([name, route]) => {
             return (
-              <a href={route} className="group w-full" key={name}>
+              <a href={route} className="group w-full" key={name} data-route-active={isActive(route)}>
                 <Button
                   variant="link"
                   size="sm"

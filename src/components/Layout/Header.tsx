@@ -3,6 +3,7 @@ import { AppRoutes } from "@/routes/AppRoutes";
 import { Button } from "@ui/button";
 import { useTheme } from "@ui/theme";
 import { Moon, Sun } from "lucide-preact";
+import { useLocation } from "preact-iso";
 import { Suspense, lazy } from "preact/compat";
 import CommandSearchDialog from "./CommandSearchDialog";
 import { ShadcnIcon } from "./ShadcnIcon";
@@ -21,7 +22,11 @@ export default function Header() {
 }
 
 function HeaderLeftSide() {
+  const { path } = useLocation();
+
   const firstAlphaComponentKey = Object.keys(AppRoutes.COMPONENTS).sort()[0] as keyof typeof AppRoutes.COMPONENTS;
+
+  const isActive = (route: string) => path === route;
 
   return (
     <div className="flex h-full flex-2 flex-row items-center justify-start max-md:border-none md:flex-1">
@@ -48,18 +53,27 @@ function HeaderLeftSide() {
       </div>
 
       <div className="ml-4 hidden h-full flex-1 flex-row items-center justify-start gap-6 text-muted-foreground text-sm md:flex">
-        <a className="flex items-center data-[route-active=true]:text-primary" href={AppRoutes.DOCS.INTRO}>
+        <a
+          className="flex items-center data-[route-active=true]:text-primary"
+          href={AppRoutes.DOCS.INTRO}
+          data-route-active={isActive(AppRoutes.DOCS.INTRO)}
+        >
           Docs
         </a>
 
         <a
           className="flex items-center data-[route-active=true]:text-primary"
           href={AppRoutes.COMPONENTS[firstAlphaComponentKey]}
+          data-route-active={isActive(AppRoutes.COMPONENTS[firstAlphaComponentKey])}
         >
           Components
         </a>
 
-        <a className="flex items-center data-[route-active=true]:text-primary" href={AppRoutes.EXAMPLES}>
+        <a
+          className="flex items-center data-[route-active=true]:text-primary"
+          href={AppRoutes.EXAMPLES}
+          data-route-active={isActive(AppRoutes.EXAMPLES)}
+        >
           Examples
         </a>
       </div>
@@ -68,7 +82,7 @@ function HeaderLeftSide() {
 }
 
 function HeaderRightSide() {
-  const { setTheme, theme } = useTheme();
+  const { setTheme, theme = "light" } = useTheme();
 
   return (
     <div className="flex h-full flex-1 flex-row items-center justify-center">
@@ -84,9 +98,8 @@ function HeaderRightSide() {
           </Button>
         </a>
 
-        <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-          {theme === "light" && <Sun className="h-4 w-4 text-primary" />}
-          {theme === "dark" && <Moon className="h-4 w-4 text-primary" />}
+        <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+          {theme === "light" ? <Sun className="h-4 w-4 text-primary" /> : <Moon className="h-4 w-4 text-primary" />}
         </Button>
       </div>
     </div>
