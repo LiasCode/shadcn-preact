@@ -11,7 +11,6 @@ import {
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 import { Suspense, lazy } from "preact/compat";
 import { AppRoutes } from "../AppRoutes";
 
@@ -25,7 +24,7 @@ export default function InstallationVitePage() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <A href={AppRoutes.DOCS.INTRO}>Docs</A>
+                <a href={AppRoutes.DOCS.INTRO}>Docs</a>
               </BreadcrumbLink>
             </BreadcrumbItem>
 
@@ -33,7 +32,7 @@ export default function InstallationVitePage() {
 
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <A href={AppRoutes.DOCS.INSTALLATION}>Installation</A>
+                <a href={AppRoutes.DOCS.INSTALLATION}>Installation</a>
               </BreadcrumbLink>
             </BreadcrumbItem>
 
@@ -61,20 +60,20 @@ export default function InstallationVitePage() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.DOCS.INSTALLATION}>
+            <a href={AppRoutes.DOCS.INSTALLATION}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Installation
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.DOCS.THEMING}>
+            <a href={AppRoutes.DOCS.THEMING}>
               <Button className="gap-1 pr-1" variant="outline">
                 Theming
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

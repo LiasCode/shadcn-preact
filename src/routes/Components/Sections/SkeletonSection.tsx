@@ -5,7 +5,6 @@ import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { Skeleton } from "@ui/skeleton";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function SkeletonSection() {
   return (
@@ -95,20 +94,20 @@ export function SkeletonSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.SHEET}>
+            <a href={AppRoutes.COMPONENTS.SHEET}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Sheet
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.SWITCH}>
+            <a href={AppRoutes.COMPONENTS.SWITCH}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Switch
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

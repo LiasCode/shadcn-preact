@@ -6,7 +6,6 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@ui/collaps
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
 import { ChevronsUpDown } from "lucide-preact";
-import { A } from "preact-hashish-router";
 import { useState } from "preact/hooks";
 
 export default function CollapsibleSection() {
@@ -81,20 +80,20 @@ export default function CollapsibleSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.CHECKBOX}>
+            <a href={AppRoutes.COMPONENTS.CHECKBOX}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Checkbox
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.COMMAND}>
+            <a href={AppRoutes.COMPONENTS.COMMAND}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Command
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

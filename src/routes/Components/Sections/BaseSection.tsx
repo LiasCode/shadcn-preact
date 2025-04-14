@@ -4,7 +4,6 @@ import { AppRoutes } from "@/routes/AppRoutes";
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function BaseSection() {
   return (
@@ -50,20 +49,20 @@ export function BaseSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.SWITCH}>
+            <a href={AppRoutes.COMPONENTS.SWITCH}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Switch
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.TABS}>
+            <a href={AppRoutes.COMPONENTS.TABS}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Tabs
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

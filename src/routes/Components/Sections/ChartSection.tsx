@@ -2,7 +2,6 @@ import { AppRoutes } from "@/routes/AppRoutes";
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { A } from "preact-hashish-router";
 import { AreaChartDemo1 } from "./Charts/AreaChartDemo1";
 import { BarChartDemo1 } from "./Charts/BarChartDemo1";
 import { PieChartDemo1 } from "./Charts/PieChartDemo1";
@@ -17,20 +16,20 @@ export default function ChartSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.CAROUSEL}>
+            <a href={AppRoutes.COMPONENTS.CAROUSEL}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Carousel
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.CHECKBOX}>
+            <a href={AppRoutes.COMPONENTS.CHECKBOX}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Checkbox
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

@@ -16,7 +16,6 @@ import { Input } from "@ui/input";
 import { Label } from "@ui/label";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight, Copy } from "lucide-preact";
-import { A } from "preact-hashish-router";
 
 export function DialogSection() {
   return (
@@ -182,20 +181,20 @@ export function DialogSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.COMMAND}>
+            <a href={AppRoutes.COMPONENTS.COMMAND}>
               <Button className="gap-1 pl-1" variant="outline">
                 <ChevronLeft />
                 Command
               </Button>
-            </A>
+            </a>
           </PaginationItem>
           <PaginationItem>
-            <A href={AppRoutes.COMPONENTS.DRAWER}>
+            <a href={AppRoutes.COMPONENTS.DRAWER}>
               <Button className="gap-1 pr-1 capitalize" variant="outline">
                 Drawer
                 <ChevronRight />
               </Button>
-            </A>
+            </a>
           </PaginationItem>
         </PaginationContent>
       </Pagination>
