@@ -370,7 +370,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       if (!target) return;
 
       nodeForTheSelectedValueChange(target?.props?.children);
-    }, []);
+    }, [value]);
 
     return (
       <Modal onClose={closeSelect} show={isOpen} className="bg-transparent">
@@ -438,7 +438,7 @@ export type SelectItemProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
   ({ value: itemValue, className, class: classNative, children, ...props }, ref) => {
-    const { value, onValueChange, closeSelect, ref: refs, nodeForTheSelectedValueChange } = useSelect();
+    const { value, onValueChange, closeSelect, ref: refs } = useSelect();
     const [isFocused, setIsFocused] = useState(false);
 
     const isSelected = useMemo(() => value === itemValue, [value, itemValue]);
@@ -447,8 +447,6 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
     const selectItemHandler = useCallback(() => {
       if (props.disabled) return;
       onValueChange(itemValue);
-      // @ts-expect-error
-      nodeForTheSelectedValueChange(children);
       closeSelect();
     }, [props.disabled]);
 
