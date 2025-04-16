@@ -63,7 +63,7 @@ const SheetContent = forwardRef<ElementRef<typeof DialogContent>, SheetContentPr
           contentRef.current?.parentElement?.querySelectorAll("input")[0]?.focus();
         }
       }
-    }, [open, props.autoSelect, contentRef]);
+    }, [open, props.autoSelect, contentRef.current]);
 
     return (
       <Show when={open}>

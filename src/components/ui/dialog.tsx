@@ -68,7 +68,7 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
           contentRef.current?.parentElement?.querySelectorAll("input")[0]?.focus();
         }
       }
-    }, [open]);
+    }, [open, contentRef.current]);
 
     return (
       <Show when={open}>
