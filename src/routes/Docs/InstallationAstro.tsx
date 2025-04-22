@@ -45,7 +45,10 @@ export default function InstallationAstroPage() {
       description="How to install dependencies and structure your app with Astro."
     >
       <Alert className="border-yellow-400">
-        <AlertCircle className="h-4 w-4" color="#facc15" />
+        <AlertCircle
+          className="h-4 w-4"
+          color="#facc15"
+        />
         <AlertTitle>Page under construction</AlertTitle>
         <AlertDescription>Astro guide page is on work in progress.</AlertDescription>
       </Alert>
@@ -54,7 +57,10 @@ export default function InstallationAstroPage() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.DOCS.INSTALLATION}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Installation
               </Button>
@@ -62,7 +68,10 @@ export default function InstallationAstroPage() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.DOCS.THEMING}>
-              <Button className="gap-1 pr-1" variant="outline">
+              <Button
+                className="gap-1 pr-1"
+                variant="outline"
+              >
                 Theming
                 <ChevronRight />
               </Button>

@@ -87,16 +87,30 @@ export function SheetSection() {
                 </SheetHeader>
                 <div className="grid gap-4 py-4">
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
+                    <Label
+                      htmlFor="name"
+                      className="text-right"
+                    >
                       Name
                     </Label>
-                    <Input id="name" value="Pedro Duarte" className="col-span-3" />
+                    <Input
+                      id="name"
+                      value="Pedro Duarte"
+                      className="col-span-3"
+                    />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="username" className="text-right">
+                    <Label
+                      htmlFor="username"
+                      className="text-right"
+                    >
                       Username
                     </Label>
-                    <Input id="username" value="@peduarte" className="col-span-3" />
+                    <Input
+                      id="username"
+                      value="@peduarte"
+                      className="col-span-3"
+                    />
                   </div>
                 </div>
                 <SheetFooter>
@@ -234,7 +248,10 @@ export function SheetSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.SELECT}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Select
               </Button>
@@ -242,7 +259,10 @@ export function SheetSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.SKELETON}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Skeleton
                 <ChevronRight />
               </Button>
@@ -273,16 +293,30 @@ export function SheetSide() {
             </SheetHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
+                <Label
+                  htmlFor="name"
+                  className="text-right"
+                >
                   Name
                 </Label>
-                <Input id="name" value="Pedro Duarte" className="col-span-3" />
+                <Input
+                  id="name"
+                  value="Pedro Duarte"
+                  className="col-span-3"
+                />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="username" className="text-right">
+                <Label
+                  htmlFor="username"
+                  className="text-right"
+                >
                   Username
                 </Label>
-                <Input id="username" value="@peduarte" className="col-span-3" />
+                <Input
+                  id="username"
+                  value="@peduarte"
+                  className="col-span-3"
+                />
               </div>
             </div>
             <SheetFooter>

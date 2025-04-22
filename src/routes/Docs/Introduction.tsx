@@ -68,7 +68,10 @@ export default function IntroductionPage() {
           <PaginationItem />
           <PaginationItem>
             <a href={AppRoutes.DOCS.INSTALLATION}>
-              <Button className="gap-1 pr-1" variant="outline">
+              <Button
+                className="gap-1 pr-1"
+                variant="outline"
+              >
                 Intallation
                 <ChevronRight />
               </Button>

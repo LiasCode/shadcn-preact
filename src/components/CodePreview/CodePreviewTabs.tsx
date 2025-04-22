@@ -8,7 +8,10 @@ const HighlightCodeInternal = lazy(() => import("./HighlightCodeInternal"));
 
 export function CodePreviewTabs(props: { codeString: string; previewElement: VNode<any> }) {
   return (
-    <Tabs defaultValue="preview" className="w-full self-start">
+    <Tabs
+      defaultValue="preview"
+      className="w-full self-start"
+    >
       <TabsList className="grid max-w-fit grid-cols-2 bg-transparent">
         <TabsTrigger
           value="preview"
@@ -42,7 +45,10 @@ export function CodePreviewTabs(props: { codeString: string; previewElement: VNo
             </Skeleton>
           }
         >
-          <HighlightCodeInternal lang="tsx" codeString={props.codeString} />
+          <HighlightCodeInternal
+            lang="tsx"
+            codeString={props.codeString}
+          />
         </Suspense>
       </TabsContent>
     </Tabs>

@@ -129,7 +129,10 @@ export function CheckboxSection() {
 `}
         previewElement={
           <div className="flex items-center space-x-2">
-            <Checkbox id="terms2" disabled />
+            <Checkbox
+              id="terms2"
+              disabled
+            />
             <label
               htmlFor="terms2"
               className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -225,7 +228,10 @@ export function CheckboxSection() {
 
               <CardContent className="flex flex-col gap-2">
                 <div className="flex items-center space-x-2">
-                  <Checkbox id="recents" defaultChecked />
+                  <Checkbox
+                    id="recents"
+                    defaultChecked
+                  />
                   <label
                     htmlFor="recents"
                     className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -235,7 +241,10 @@ export function CheckboxSection() {
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <Checkbox id="home" defaultChecked />
+                  <Checkbox
+                    id="home"
+                    defaultChecked
+                  />
                   <label
                     htmlFor="home"
                     className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -287,7 +296,10 @@ export function CheckboxSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.CHART}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Chart
               </Button>
@@ -295,7 +307,10 @@ export function CheckboxSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.COLLAPSIBLE}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Collapsible
                 <ChevronRight />
               </Button>

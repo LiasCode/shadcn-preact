@@ -95,7 +95,10 @@ export function ToggleSection() {
 `}
         previewElement={
           <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
-            <Toggle variant="outline" aria-label="Toggle italic">
+            <Toggle
+              variant="outline"
+              aria-label="Toggle italic"
+            >
               <Italic />
             </Toggle>
           </div>
@@ -147,7 +150,10 @@ export function ToggleSection() {
 `}
         previewElement={
           <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
-            <Toggle size="sm" aria-label="Toggle italic">
+            <Toggle
+              size="sm"
+              aria-label="Toggle italic"
+            >
               <Italic />
             </Toggle>
           </div>
@@ -172,7 +178,10 @@ export function ToggleSection() {
 `}
         previewElement={
           <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
-            <Toggle size="lg" aria-label="Toggle italic">
+            <Toggle
+              size="lg"
+              aria-label="Toggle italic"
+            >
               <Italic />
             </Toggle>
           </div>
@@ -197,7 +206,10 @@ export function ToggleSection() {
 `}
         previewElement={
           <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
-            <Toggle aria-label="Toggle italic" disabled>
+            <Toggle
+              aria-label="Toggle italic"
+              disabled
+            >
               <Underline className="h-4 w-4" />
             </Toggle>
           </div>
@@ -208,7 +220,10 @@ export function ToggleSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.TOAST}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Toast
               </Button>
@@ -216,7 +231,10 @@ export function ToggleSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.TOOLTIP}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Tooltip
                 <ChevronRight />
               </Button>

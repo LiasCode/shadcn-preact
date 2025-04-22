@@ -21,7 +21,12 @@ export type AlertProps = HTMLAttributes<HTMLDivElement> & VariantProps<typeof al
 
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
   ({ className, class: classNative, variant, ...props }, ref) => (
-    <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className, classNative)} {...props} />
+    <div
+      ref={ref}
+      role="alert"
+      className={cn(alertVariants({ variant }), className, classNative)}
+      {...props}
+    />
   )
 );
 Alert.displayName = "Alert";
@@ -30,7 +35,11 @@ export type AlertTitleProps = HTMLAttributes<HTMLHeadingElement>;
 
 export const AlertTitle = forwardRef<HTMLParagraphElement, AlertTitleProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <h5 ref={ref} className={cn("mb-1 font-medium leading-none tracking-tight", className, classNative)} {...props} />
+    <h5
+      ref={ref}
+      className={cn("mb-1 font-medium leading-none tracking-tight", className, classNative)}
+      {...props}
+    />
   )
 );
 AlertTitle.displayName = "AlertTitle";
@@ -39,7 +48,11 @@ export type AlertDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 
 export const AlertDescription = forwardRef<HTMLParagraphElement, AlertDescriptionProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} className={cn("text-sm [&_p]:leading-relaxed", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      className={cn("text-sm [&_p]:leading-relaxed", className, classNative)}
+      {...props}
+    />
   )
 );
 AlertDescription.displayName = "AlertDescription";

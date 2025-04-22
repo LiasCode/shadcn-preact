@@ -9,7 +9,10 @@ import { Drawer as DrawerPrimitive } from "vaul";
 import { cn } from "./share/cn";
 
 const Drawer = ({ shouldScaleBackground = true, ...props }: ComponentProps<typeof DrawerPrimitive.Root>) => (
-  <DrawerPrimitive.Root shouldScaleBackground={shouldScaleBackground} {...props} />
+  <DrawerPrimitive.Root
+    shouldScaleBackground={shouldScaleBackground}
+    {...props}
+  />
 );
 Drawer.displayName = "Drawer";
 
@@ -54,12 +57,18 @@ const DrawerContent = forwardRef<
 DrawerContent.displayName = "DrawerContent";
 
 const DrawerHeader = ({ className, class: classNative, ...props }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("grid gap-1.5 p-4 text-center sm:text-left", className, classNative)} {...props} />
+  <div
+    className={cn("grid gap-1.5 p-4 text-center sm:text-left", className, classNative)}
+    {...props}
+  />
 );
 DrawerHeader.displayName = "DrawerHeader";
 
 const DrawerFooter = ({ className, class: classNative, ...props }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("mt-auto flex flex-col gap-2 p-4", className, classNative)} {...props} />
+  <div
+    className={cn("mt-auto flex flex-col gap-2 p-4", className, classNative)}
+    {...props}
+  />
 );
 DrawerFooter.displayName = "DrawerFooter";
 

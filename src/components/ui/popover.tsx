@@ -127,7 +127,11 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
     }, [isOpen, ref.floating]);
 
     return (
-      <Modal onClose={close} show={isOpen} className="bg-transparent">
+      <Modal
+        onClose={close}
+        show={isOpen}
+        className="bg-transparent"
+      >
         <div
           data-popover-id={id}
           // @ts-expect-error

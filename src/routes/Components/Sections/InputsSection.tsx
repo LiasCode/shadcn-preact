@@ -23,7 +23,10 @@ export function InputsSection() {
 `}
         previewElement={
           <div className="flex w-full max-w-[320px] items-center space-x-2">
-            <Input type="email" placeholder="Email" />
+            <Input
+              type="email"
+              placeholder="Email"
+            />
           </div>
         }
       />
@@ -61,7 +64,10 @@ export function InputsSection() {
 `}
         previewElement={
           <div className="flex w-full max-w-[320px] items-center space-x-2">
-            <Input type="email" placeholder="Email" />
+            <Input
+              type="email"
+              placeholder="Email"
+            />
           </div>
         }
       />
@@ -87,7 +93,10 @@ export function InputsSection() {
           <div className="flex w-full max-w-[320px] items-center space-x-2">
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="picture">Picture</Label>
-              <Input id="picture" type="file" />
+              <Input
+                id="picture"
+                type="file"
+              />
             </div>
           </div>
         }
@@ -106,7 +115,11 @@ export function InputsSection() {
 `}
         previewElement={
           <div className="flex w-full max-w-[320px] items-center space-x-2">
-            <Input disabled type="email" placeholder="Email" />
+            <Input
+              disabled
+              type="email"
+              placeholder="Email"
+            />
           </div>
         }
       />
@@ -132,7 +145,11 @@ export function InputsSection() {
           <div className="flex w-full max-w-[320px] items-center space-x-2">
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input type="email" id="email" placeholder="Email" />
+              <Input
+                type="email"
+                id="email"
+                placeholder="Email"
+              />
             </div>
           </div>
         }
@@ -158,7 +175,10 @@ export function InputsSection() {
         previewElement={
           <div className="flex w-full max-w-[320px] items-center space-x-2">
             <div className="flex w-full max-w-sm items-center space-x-2">
-              <Input type="email" placeholder="Email" />
+              <Input
+                type="email"
+                placeholder="Email"
+              />
               <Button type="submit">Subscribe</Button>
             </div>
           </div>
@@ -214,7 +234,10 @@ export function InputsSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.DRAWER}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Drawer
               </Button>
@@ -222,7 +245,10 @@ export function InputsSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.INPUT_OTP}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Input Otp
                 <ChevronRight />
               </Button>
@@ -245,7 +271,10 @@ export function InputForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="w-full space-y-6">
+    <form
+      onSubmit={onSubmit}
+      className="w-full space-y-6"
+    >
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label className="font-semibold">Username</Label>
         <Input

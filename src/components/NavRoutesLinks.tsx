@@ -13,7 +13,11 @@ export default function NavRoutesLinks() {
         <span className="flex h-9 w-full flex-row items-center justify-start p-1 font-semibold text-sm">
           Getting Started
         </span>
-        <a href={AppRoutes.DOCS.INTRO} className="group w-full" data-route-active={isActive(AppRoutes.DOCS.INTRO)}>
+        <a
+          href={AppRoutes.DOCS.INTRO}
+          className="group w-full"
+          data-route-active={isActive(AppRoutes.DOCS.INTRO)}
+        >
           <Button
             variant="link"
             size="sm"
@@ -37,7 +41,11 @@ export default function NavRoutesLinks() {
           </Button>
         </a>
 
-        <a href={AppRoutes.DOCS.THEMING} className="group w-full" data-route-active={isActive(AppRoutes.DOCS.THEMING)}>
+        <a
+          href={AppRoutes.DOCS.THEMING}
+          className="group w-full"
+          data-route-active={isActive(AppRoutes.DOCS.THEMING)}
+        >
           <Button
             variant="link"
             size="sm"
@@ -47,7 +55,11 @@ export default function NavRoutesLinks() {
           </Button>
         </a>
 
-        <a href={AppRoutes.EXAMPLES} className="group w-full" data-route-active={isActive(AppRoutes.EXAMPLES)}>
+        <a
+          href={AppRoutes.EXAMPLES}
+          className="group w-full"
+          data-route-active={isActive(AppRoutes.EXAMPLES)}
+        >
           <Button
             variant="link"
             size="sm"
@@ -101,7 +113,12 @@ export default function NavRoutesLinks() {
           .sort()
           .map(([name, route]) => {
             return (
-              <a href={route} className="group w-full" key={name} data-route-active={isActive(route)}>
+              <a
+                href={route}
+                className="group w-full"
+                key={name}
+                data-route-active={isActive(route)}
+              >
                 <Button
                   variant="link"
                   size="sm"

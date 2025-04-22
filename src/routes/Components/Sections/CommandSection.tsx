@@ -97,11 +97,17 @@ export default function CommandSection() {
       <p class="leading-[1.65rem] [&amp;:not(:first-child)]:mt-6">
         The <code class="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">&lt;Command /&gt;</code>{" "}
         component uses the{" "}
-        <a class="font-medium underline underline-offset-4" href="https://cmdk.paco.me">
+        <a
+          class="font-medium underline underline-offset-4"
+          href="https://cmdk.paco.me"
+        >
           <code class="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">cmdk</code>
         </a>{" "}
         component by{" "}
-        <a class="font-medium underline underline-offset-4" href="https://twitter.com/pacocoursey">
+        <a
+          class="font-medium underline underline-offset-4"
+          href="https://twitter.com/pacocoursey"
+        >
           pacocoursey
         </a>
         .
@@ -261,7 +267,10 @@ export default function CommandSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.COLLAPSIBLE}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Collapsible
               </Button>
@@ -269,7 +278,10 @@ export default function CommandSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.DIALOG}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Dialog
                 <ChevronRight />
               </Button>
@@ -351,7 +363,10 @@ export function CommandDialogDemo() {
           <span className="text-xs">⌘</span>J
         </kbd>
       </p>
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog
+        open={open}
+        onOpenChange={setOpen}
+      >
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>

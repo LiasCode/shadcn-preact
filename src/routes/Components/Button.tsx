@@ -3,7 +3,10 @@ import { ButtonsSection } from "./Sections/ButtonsSection";
 
 export default function ButtonPage() {
   return (
-    <DocsLayout title="Button" description="Displays a button or a component that looks like a button.">
+    <DocsLayout
+      title="Button"
+      description="Displays a button or a component that looks like a button."
+    >
       <ButtonsSection />
     </DocsLayout>
   );

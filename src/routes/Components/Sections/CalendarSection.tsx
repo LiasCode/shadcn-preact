@@ -38,7 +38,12 @@ export default function CalendarSection() {
 `}
         previewElement={
           <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
-            <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border shadow" />
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              className="rounded-md border shadow"
+            />
           </div>
         }
       />
@@ -47,7 +52,12 @@ export default function CalendarSection() {
 
       <p>
         The Calendar component is built on top of
-        <a className="ml-2 underline" href="https://daypicker.dev/" target="_blank" rel="noreferrer">
+        <a
+          className="ml-2 underline"
+          href="https://daypicker.dev/"
+          target="_blank"
+          rel="noreferrer"
+        >
           React DayPicker
         </a>
         .
@@ -64,7 +74,12 @@ export default function CalendarSection() {
 
       <h2>
         All credit of this components goes to{" "}
-        <a className="underline" href="https://github.com/flixlix/shadcn-date-picker" target="_blank" rel="noreferrer">
+        <a
+          className="underline"
+          href="https://github.com/flixlix/shadcn-date-picker"
+          target="_blank"
+          rel="noreferrer"
+        >
           flixlix
         </a>
         .
@@ -99,7 +114,10 @@ export default function CalendarSection() {
 
       <p class="">
         See the{" "}
-        <a class="font-medium underline underline-offset-4" href="https://daypicker.dev/">
+        <a
+          class="font-medium underline underline-offset-4"
+          href="https://daypicker.dev/"
+        >
           React DayPicker
         </a>{" "}
         documentation for more information.
@@ -161,7 +179,10 @@ export default function CalendarSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.BUTTON}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Button
               </Button>
@@ -169,7 +190,10 @@ export default function CalendarSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.CARD}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Card
                 <ChevronRight />
               </Button>
@@ -186,10 +210,17 @@ const CalendarExample = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="space-y-8"
+    >
       <div className="flex flex-col gap-2">
         <Label>Date of birth</Label>
-        <Popover alignment="start" open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+        <Popover
+          alignment="start"
+          open={isPopoverOpen}
+          onOpenChange={setIsPopoverOpen}
+        >
           <PopoverTrigger asChild>
             <Button
               variant={"outline"}

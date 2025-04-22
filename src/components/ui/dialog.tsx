@@ -46,7 +46,10 @@ export function DialogTrigger({ children }: DialogTriggerProps) {
   const { openDialog } = useDialog();
 
   return (
-    <div onClick={openDialog} className="m-0 w-fit bg-transparent p-0">
+    <div
+      onClick={openDialog}
+      className="m-0 w-fit bg-transparent p-0"
+    >
       {children}
     </div>
   );
@@ -72,7 +75,10 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
 
     return (
       <Show when={open}>
-        <Modal onClose={closeDialog} show={true}>
+        <Modal
+          onClose={closeDialog}
+          show={true}
+        >
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div
               ref={contentRef}
@@ -144,7 +150,11 @@ export type DialogDescriptionProps = HTMLAttributes<HTMLDivElement>;
 
 export const DialogDescription = forwardRef<HTMLDivElement, DialogDescriptionProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} className={cn("text-muted-foreground text-sm", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      className={cn("text-muted-foreground text-sm", className, classNative)}
+      {...props}
+    />
   )
 );
 DialogDescription.displayName = "DialogDescription";

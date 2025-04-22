@@ -67,7 +67,10 @@ const SheetContent = forwardRef<ElementRef<typeof DialogContent>, SheetContentPr
 
     return (
       <Show when={open}>
-        <Modal onClose={closeDialog} show={true}>
+        <Modal
+          onClose={closeDialog}
+          show={true}
+        >
           <div
             ref={contentRef}
             onMouseDown={(e) => {
@@ -99,7 +102,10 @@ const SheetContent = forwardRef<ElementRef<typeof DialogContent>, SheetContentPr
 SheetContent.displayName = "SheetContent";
 
 const SheetHeader = ({ className, class: classNative, ...props }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col space-y-2 text-center sm:text-left", className, classNative)} {...props} />
+  <div
+    className={cn("flex flex-col space-y-2 text-center sm:text-left", className, classNative)}
+    {...props}
+  />
 );
 SheetHeader.displayName = "SheetHeader";
 
@@ -113,7 +119,11 @@ SheetFooter.displayName = "SheetFooter";
 
 const SheetTitle = forwardRef<ElementRef<typeof DialogTitle>, ComponentPropsWithoutRef<typeof DialogTitle>>(
   ({ className, class: classNative, ...props }, ref) => (
-    <DialogTitle ref={ref} className={cn("font-semibold text-foreground text-lg", className, classNative)} {...props} />
+    <DialogTitle
+      ref={ref}
+      className={cn("font-semibold text-foreground text-lg", className, classNative)}
+      {...props}
+    />
   )
 );
 SheetTitle.displayName = DialogTitle.displayName;
@@ -122,7 +132,11 @@ const SheetDescription = forwardRef<
   ElementRef<typeof DialogDescription>,
   ComponentPropsWithoutRef<typeof DialogDescription>
 >(({ className, class: classNative, ...props }, ref) => (
-  <DialogDescription ref={ref} className={cn("text-muted-foreground text-sm", className, classNative)} {...props} />
+  <DialogDescription
+    ref={ref}
+    className={cn("text-muted-foreground text-sm", className, classNative)}
+    {...props}
+  />
 ));
 SheetDescription.displayName = DialogDescription.displayName;
 

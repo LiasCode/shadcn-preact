@@ -286,7 +286,11 @@ export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(
     const { value, nodeForTheSelectedValue } = useSelect();
 
     return (
-      <span ref={ref} className={cn(className, classNative)} {...props}>
+      <span
+        ref={ref}
+        className={cn(className, classNative)}
+        {...props}
+      >
         {value && nodeForTheSelectedValue ? nodeForTheSelectedValue : props.placeholder}
       </span>
     );
@@ -373,7 +377,11 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
     }, [value]);
 
     return (
-      <Modal onClose={closeSelect} show={isOpen} className="bg-transparent">
+      <Modal
+        onClose={closeSelect}
+        show={isOpen}
+        className="bg-transparent"
+      >
         <div
           data-select-id={id}
           // @ts-expect-error
@@ -406,7 +414,12 @@ export type SelectGroupProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} role="group" className={cn("mb-1", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      role="group"
+      className={cn("mb-1", className, classNative)}
+      {...props}
+    />
   )
 );
 SelectGroup.displayName = "SelectGroup";
@@ -603,7 +616,12 @@ export type SelectSeparatorProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SelectSeparator = forwardRef<HTMLDivElement, SelectSeparatorProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} tabindex={-1} className={cn("-mx-1 my-1 h-px bg-muted", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      tabindex={-1}
+      className={cn("-mx-1 my-1 h-px bg-muted", className, classNative)}
+      {...props}
+    />
   )
 );
 SelectSeparator.displayName = "SelectSeparator";

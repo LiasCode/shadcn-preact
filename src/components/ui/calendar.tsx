@@ -362,7 +362,10 @@ function MonthGrid({
     );
   }
   return (
-    <table className={className} {...props}>
+    <table
+      className={className}
+      {...props}
+    >
       {children}
     </table>
   );
@@ -387,7 +390,10 @@ function YearGrid({
   const { goToMonth, selected } = useDayPicker();
 
   return (
-    <div className={cn("grid grid-cols-4 gap-y-2", className)} {...props}>
+    <div
+      className={cn("grid grid-cols-4 gap-y-2", className)}
+      {...props}
+    >
       {Array.from({ length: displayYears.to - displayYears.from + 1 }, (_, i) => {
         const isBefore = differenceInCalendarDays(new Date(displayYears.from + i, 11, 31), startMonth!) < 0;
 

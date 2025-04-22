@@ -4,8 +4,7 @@ import { AppRoutes } from "@/routes/AppRoutes";
 import { Alert, AlertDescription, AlertTitle } from "@ui/alert";
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
-import { AlertCircle, Terminal } from "lucide-preact";
-import { ChevronLeft, ChevronRight } from "lucide-preact";
+import { AlertCircle, ChevronLeft, ChevronRight, Terminal } from "lucide-preact";
 
 export function AlertSection() {
   return (
@@ -104,7 +103,10 @@ export function AlertSection() {
 
 `}
         previewElement={
-          <Alert variant="destructive" className="max-w-[500px]">
+          <Alert
+            variant="destructive"
+            className="max-w-[500px]"
+          >
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
@@ -116,7 +118,10 @@ export function AlertSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.DOCS.THEMING}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Theming
               </Button>
@@ -124,7 +129,10 @@ export function AlertSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.ALERT_DIALOG}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Alert Dialog
                 <ChevronRight />
               </Button>

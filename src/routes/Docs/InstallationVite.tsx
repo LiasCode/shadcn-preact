@@ -61,7 +61,10 @@ export default function InstallationVitePage() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.DOCS.INSTALLATION}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Installation
               </Button>
@@ -69,7 +72,10 @@ export default function InstallationVitePage() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.DOCS.THEMING}>
-              <Button className="gap-1 pr-1" variant="outline">
+              <Button
+                className="gap-1 pr-1"
+                variant="outline"
+              >
                 Theming
                 <ChevronRight />
               </Button>

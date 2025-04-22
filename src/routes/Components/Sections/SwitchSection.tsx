@@ -128,7 +128,10 @@ export function SwitchSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.SKELETON}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Skeleton
               </Button>
@@ -136,7 +139,10 @@ export function SwitchSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.TABLE}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Table
                 <ChevronRight />
               </Button>
@@ -164,7 +170,10 @@ export function SwitchForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="w-full max-w-[520px] space-y-6 px-4">
+    <form
+      onSubmit={onSubmit}
+      className="w-full max-w-[520px] space-y-6 px-4"
+    >
       <h3 className="mb-4 font-medium text-lg">Email Notifications</h3>
       <div className="space-y-4">
         <div className="flex flex-row items-center justify-between gap-4 rounded-lg border p-3 shadow-sm">

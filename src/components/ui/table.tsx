@@ -5,7 +5,11 @@ export type TableProps = HTMLAttributes<HTMLTableElement>;
 
 const Table = forwardRef<HTMLTableElement, TableProps>(({ className, class: classNative, ...props }, ref) => (
   <div className="relative w-full overflow-auto">
-    <table ref={ref} className={cn("w-full caption-bottom text-sm", className, classNative)} {...props} />
+    <table
+      ref={ref}
+      className={cn("w-full caption-bottom text-sm", className, classNative)}
+      {...props}
+    />
   </div>
 ));
 Table.displayName = "Table";
@@ -14,7 +18,11 @@ export type TableHeaderProps = HTMLAttributes<HTMLTableSectionElement>;
 
 const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <thead ref={ref} className={cn("[&_tr]:border-b", className, classNative)} {...props} />
+    <thead
+      ref={ref}
+      className={cn("[&_tr]:border-b", className, classNative)}
+      {...props}
+    />
   )
 );
 TableHeader.displayName = "TableHeader";
@@ -23,7 +31,11 @@ export type TableBodyProps = HTMLAttributes<HTMLTableSectionElement>;
 
 const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className, classNative)} {...props} />
+    <tbody
+      ref={ref}
+      className={cn("[&_tr:last-child]:border-0", className, classNative)}
+      {...props}
+    />
   )
 );
 TableBody.displayName = "TableBody";
@@ -94,7 +106,11 @@ export type TableCaptionProps = HTMLAttributes<HTMLTableCaptionElement>;
 
 const TableCaption = forwardRef<HTMLTableCaptionElement, TableCaptionProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <caption ref={ref} className={cn("mt-4 text-muted-foreground text-sm", className, classNative)} {...props} />
+    <caption
+      ref={ref}
+      className={cn("mt-4 text-muted-foreground text-sm", className, classNative)}
+      {...props}
+    />
   )
 );
 TableCaption.displayName = "TableCaption";

@@ -69,7 +69,10 @@ export function AlertDialogContent({ children }: AlertDialogContentProps) {
 
   return (
     <Show when={open}>
-      <Modal onClose={() => {}} show={true}>
+      <Modal
+        onClose={() => {}}
+        show={true}
+      >
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div
             onMouseDown={(e) => e.stopPropagation()}

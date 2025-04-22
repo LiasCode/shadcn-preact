@@ -55,7 +55,11 @@ export const SimpleSelect = forwardRef<HTMLButtonElement, SelectProps>(
           <ChevronDown className="h-4 w-4 text-foreground" />
         </Button>
 
-        <Modal show={open} onClose={() => setOpen(false)} className="bg-transparent">
+        <Modal
+          show={open}
+          onClose={() => setOpen(false)}
+          className="bg-transparent"
+        >
           <div
             ref={refs.setFloating}
             style={floatingStyles}

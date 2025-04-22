@@ -20,7 +20,13 @@ export const Steps = forwardRef<HTMLDivElement, StepsProps>(({ class: classNativ
 export type StepProps = HTMLAttributes<HTMLElement> & PropsWithChildren;
 
 export const Step = forwardRef<HTMLElement, StepProps>(({ class: classNative, className, ...props }, ref) => {
-  return <section ref={ref} className={cn("flex w-full flex-col gap-2", className, classNative)} {...props} />;
+  return (
+    <section
+      ref={ref}
+      className={cn("flex w-full flex-col gap-2", className, classNative)}
+      {...props}
+    />
+  );
 });
 
 export type StepTitleProps = PropsWithChildren & {
@@ -60,6 +66,12 @@ export type StepContentProps = HTMLAttributes<HTMLDivElement> & PropsWithChildre
 
 export const StepContent = forwardRef<HTMLDivElement, StepContentProps>(
   ({ class: classNative, className, ...props }, ref) => {
-    return <div ref={ref} className={cn("flex w-full flex-col gap-2", className, classNative)} {...props} />;
+    return (
+      <div
+        ref={ref}
+        className={cn("flex w-full flex-col gap-2", className, classNative)}
+        {...props}
+      />
+    );
   }
 );

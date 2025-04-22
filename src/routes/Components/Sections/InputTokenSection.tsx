@@ -82,7 +82,10 @@ export function InputTokenSection() {
 `}
         previewElement={
           <div className="flex w-full max-w-[320px] items-center space-x-2">
-            <InputToken variant="outline" value={["out1", "out2"]} />
+            <InputToken
+              variant="outline"
+              value={["out1", "out2"]}
+            />
           </div>
         }
       />
@@ -100,7 +103,10 @@ export function InputTokenSection() {
 `}
         previewElement={
           <div className="flex w-full max-w-[320px] items-center space-x-2">
-            <InputToken variant="intercalate" value={["tag1", "out2", "tag3", "out4"]} />
+            <InputToken
+              variant="intercalate"
+              value={["tag1", "out2", "tag3", "out4"]}
+            />
           </div>
         }
       />
@@ -118,7 +124,10 @@ export function InputTokenSection() {
 `}
         previewElement={
           <div className="flex w-full max-w-[320px] items-center space-x-2">
-            <InputToken variant="destructive" value={["fix", "bug", "p1"]} />
+            <InputToken
+              variant="destructive"
+              value={["fix", "bug", "p1"]}
+            />
           </div>
         }
       />
@@ -172,7 +181,10 @@ export function InputTokenSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.INPUT_OTP}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Input Otp
               </Button>
@@ -180,7 +192,10 @@ export function InputTokenSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.LABEL}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Label
                 <ChevronRight />
               </Button>

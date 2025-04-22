@@ -14,7 +14,10 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(({ show, ...props },
   if (typeof window !== "undefined") {
     return createPortal(
       <Show when={show}>
-        <ModalContent {...props} ref={ref} />
+        <ModalContent
+          {...props}
+          ref={ref}
+        />
       </Show>,
       document.body
     );

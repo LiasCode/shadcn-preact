@@ -4,8 +4,7 @@ import { AppRoutes } from "@/routes/AppRoutes";
 import { Button } from "@ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@ui/collapsible";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
-import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { ChevronsUpDown } from "lucide-preact";
+import { ChevronLeft, ChevronRight, ChevronsUpDown } from "lucide-preact";
 import { useState } from "preact/hooks";
 
 export default function CollapsibleSection() {
@@ -81,7 +80,10 @@ export default function CollapsibleSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.CHECKBOX}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Checkbox
               </Button>
@@ -89,7 +91,10 @@ export default function CollapsibleSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.COMMAND}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Command
                 <ChevronRight />
               </Button>
@@ -105,11 +110,18 @@ export function CollapsibleDemo() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full max-w-[350px] space-y-2">
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      className="w-full max-w-[350px] space-y-2"
+    >
       <div className="flex items-center justify-between space-x-4 px-4">
         <h4 className="font-semibold text-sm">@peduarte starred 3 repositories</h4>
         <CollapsibleTrigger asChild>
-          <Button variant="ghost" size="sm">
+          <Button
+            variant="ghost"
+            size="sm"
+          >
             <ChevronsUpDown className="h-4 w-4" />
             <span className="sr-only">Toggle</span>
           </Button>

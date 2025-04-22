@@ -3,7 +3,10 @@ import { TableSection } from "./Sections/TableSection";
 
 export default function TablePage() {
   return (
-    <DocsLayout title="Table" description="A responsive table component.">
+    <DocsLayout
+      title="Table"
+      description="A responsive table component."
+    >
       <TableSection />
     </DocsLayout>
   );
