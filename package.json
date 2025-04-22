@@ -7,13 +7,14 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "postinstall": "simple-git-hooks",
     "preview": "vite preview",
     "lint": "biome lint . --fix --unsafe",
     "format": "prettier --write --cache \"**/*.[tj]s?(x)\""
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.2",
-    "@preact/signals": "^2.0.3",
+    "@preact/signals": "^2.0.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -24,9 +25,9 @@
     "lucide-preact": "^0.474.0",
     "preact": "^10.26.5",
     "preact-iso": "^2.9.1",
-    "react-day-picker": "^9.6.6",
+    "react-day-picker": "^9.6.7",
     "react-hot-toast": "^2.5.2",
-    "recharts": "^2.15.2",
+    "recharts": "^2.15.3",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2"
@@ -46,10 +47,14 @@
     "prettier": "^3.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "sass-embedded": "^1.86.3",
-    "shiki": "^3.2.2",
+    "sass-embedded": "^1.87.0",
+    "shiki": "^3.3.0",
+    "simple-git-hooks": "^2.12.1",
     "tailwindcss": "3.4.17",
     "typescript": "^5.8.3",
-    "vite": "^6.2.6"
+    "vite": "^6.3.2"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npm run format"
   }
 }
