@@ -13,7 +13,7 @@ type TooltipContextT = {
   ref: {
     reference: MutableRefObject<HTMLDivElement | null>;
     floating: React.MutableRefObject<HTMLElement | null>;
-    setReference: (node: HTMLDivElement) => void;
+    setReference: (node: HTMLDivElement | null) => void;
     setFloating: (node: HTMLElement | null) => void;
   };
   floatingStyles: CSSProperties;
@@ -83,7 +83,6 @@ export function TooltipTrigger({ children }: TooltipTriggerProps) {
 
   return (
     <div
-      // @ts-expect-error
       ref={ref.setReference}
       onMouseEnter={openDebounced}
       onFocus={openDebounced}

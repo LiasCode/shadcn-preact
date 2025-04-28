@@ -32,8 +32,8 @@ export type SelectContextT = {
   ref: {
     reference: MutableRefObject<HTMLDivElement | null>;
     floating: MutableRefObject<HTMLElement | null>;
-    setReference: (node: HTMLDivElement) => void;
-    setFloating: (node: HTMLElement) => void;
+    setReference: (node: HTMLDivElement | null) => void;
+    setFloating: (node: HTMLElement | null) => void;
   };
 
   floatingStyles: CSSProperties;
@@ -250,7 +250,7 @@ export const SelectTrigger = forwardRef<HTMLDivElement, SelectContentProps>(
     return (
       // TODO: FIX focus does not work with Label
       <div
-        ref={(v) => ref.setReference(v!)}
+        ref={ref.setReference}
         onClick={openDebounced}
         onFocus={() => setIsFocused(true)}
         onFocusOut={() => setIsFocused(false)}
@@ -384,7 +384,6 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       >
         <div
           data-select-id={id}
-          // @ts-expect-error
           ref={ref.setFloating}
           onMouseDown={(e) => e.stopPropagation()}
           style={{

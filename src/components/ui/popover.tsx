@@ -20,8 +20,8 @@ type PopoverContextT = {
   ref: {
     reference: MutableRefObject<HTMLDivElement | null>;
     floating: MutableRefObject<HTMLElement | null>;
-    setReference: (node: HTMLDivElement) => void;
-    setFloating: (node: HTMLElement) => void;
+    setReference: (node: HTMLDivElement | null) => void;
+    setFloating: (node: HTMLElement | null) => void;
   };
   floatingStyles: CSSProperties;
   delay?: number;
@@ -102,7 +102,6 @@ export function PopoverTrigger({ children }: PopoverTriggerProps) {
 
   return (
     <div
-      // @ts-expect-error
       ref={ref.setReference}
       onClick={openDebounced}
       onFocus={openDebounced}
@@ -134,7 +133,6 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
       >
         <div
           data-popover-id={id}
-          // @ts-expect-error
           ref={ref.setFloating}
           onMouseDown={(e) => e.stopPropagation()}
           style={floatingStyles}
