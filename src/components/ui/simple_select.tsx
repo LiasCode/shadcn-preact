@@ -104,7 +104,10 @@ export const SelectItem = forwardRef<HTMLButtonElement, SelectItemProps>(
         ref={ref}
         size="sm"
         variant="ghost"
-        onClick={props.onSelect}
+        onClick={(e) => {
+          e.stopPropagation();
+          props.onSelect();
+        }}
         className={cn("min-h-9 items-center justify-start", className, classNative)}
       >
         {props.title}

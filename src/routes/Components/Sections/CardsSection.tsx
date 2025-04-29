@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@ui/input";
 import { Label } from "@ui/label";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
-import { SimpleSelect } from "@ui/simple_select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@ui/select";
 import { Switch } from "@ui/switch";
 import { BellRing, Check, ChevronLeft, ChevronRight } from "lucide-preact";
 
@@ -37,28 +37,17 @@ export function CardsSection() {
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="framework">Framework</Label>
-                <SimpleSelect
-                  title="Select"
-                  data={[
-                    {
-                      value: "next",
-                      title: "Next.js",
-                    },
-                    {
-                      value: "sveltekit",
-                      title: "SvelteKit",
-                    },
-                    {
-                      value: "astro",
-                      title: "Astro",
-                    },
-                    {
-                      value: "nuxt",
-                      title: "Nuxt.js",
-                    },
-                  ]}
-                  onChange={() => {}}
-                />
+                <Select side="bottom">
+                  <SelectTrigger id="framework">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="next">Next.js</SelectItem>
+                    <SelectItem value="sveltekit">SvelteKit</SelectItem>
+                    <SelectItem value="astro">Astro</SelectItem>
+                    <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
@@ -90,28 +79,17 @@ export function CardsSection() {
                   </div>
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="framework">Framework</Label>
-                    <SimpleSelect
-                      title="Select"
-                      data={[
-                        {
-                          value: "next",
-                          title: "Next.js",
-                        },
-                        {
-                          value: "sveltekit",
-                          title: "SvelteKit",
-                        },
-                        {
-                          value: "astro",
-                          title: "Astro",
-                        },
-                        {
-                          value: "nuxt",
-                          title: "Nuxt.js",
-                        },
-                      ]}
-                      onChange={() => {}}
-                    />
+                    <Select side="bottom">
+                      <SelectTrigger id="framework">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="next">Next.js</SelectItem>
+                        <SelectItem value="sveltekit">SvelteKit</SelectItem>
+                        <SelectItem value="astro">Astro</SelectItem>
+                        <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </div>
