@@ -8,9 +8,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@ui/breadCrumb";
-import { Button } from "@ui/button";
+import { Button, buttonVariants } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
-import { AlertCircle, ChevronLeft, ChevronRight } from "lucide-preact";
+import { cn } from "@ui/share/cn";
+import { AlertCircle, ChevronLeft, ChevronRight, ExternalLink } from "lucide-preact";
 import { AppRoutes } from "../AppRoutes";
 
 export default function InstallationAstroPage() {
@@ -52,6 +53,18 @@ export default function InstallationAstroPage() {
         <AlertTitle>Page under construction</AlertTitle>
         <AlertDescription>Astro guide page is on work in progress.</AlertDescription>
       </Alert>
+
+      <div className="my-4 flex w-full flex-col">
+        <a
+          className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "w-fit font-normal")}
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/LiasCode/shadcn-preact/blob/main/docs/astro-installation.md"
+        >
+          See this guide
+          <ExternalLink />
+        </a>
+      </div>
 
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
