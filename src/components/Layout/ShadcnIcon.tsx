@@ -6,7 +6,11 @@ export function ShadcnIcon() {
       style={{ width: "24px", height: "24px", color: "#a855f7" }}
     >
       <title>Shadcn Icon</title>
-      <rect width="256" height="256" fill="none" />
+      <rect
+        width="256"
+        height="256"
+        fill="none"
+      />
       <line
         x1="208"
         y1="128"

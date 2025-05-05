@@ -14,7 +14,10 @@ export default function InstallationForVite() {
 
             <Alert className="border-yellow-400">
               <AlertTitle className="flex flex-row items-center gap-2">
-                <AlertCircle className="h-4 w-4" color="#facc15" />
+                <AlertCircle
+                  className="h-4 w-4"
+                  color="#facc15"
+                />
                 This guide uses bun as the package manager, but you can also use npm.
               </AlertTitle>
             </Alert>
@@ -33,7 +36,10 @@ export default function InstallationForVite() {
           <StepTitle label="2">Add Tailwind and its configuration</StepTitle>
           <StepContent>
             <Alert className="border-yellow-400">
-              <AlertCircle className="h-4 w-4" color="#facc15" />
+              <AlertCircle
+                className="h-4 w-4"
+                color="#facc15"
+              />
               <AlertTitle>TailwindCSS version</AlertTitle>
               <AlertDescription>
                 For now only supports TailwindCSS 3. In the future will support TailwindCSS 4.

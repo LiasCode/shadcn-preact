@@ -126,7 +126,10 @@ export function TabsSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.TABLE}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Table
               </Button>
@@ -134,7 +137,10 @@ export function TabsSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.TEXTAREA}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Textarea
                 <ChevronRight />
               </Button>
@@ -148,7 +154,10 @@ export function TabsSection() {
 
 export function TabsDemo() {
   return (
-    <Tabs defaultValue="account" className="w-full px-4">
+    <Tabs
+      defaultValue="account"
+      className="w-full px-4"
+    >
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="account">Account</TabsTrigger>
         <TabsTrigger value="password">Password</TabsTrigger>
@@ -162,11 +171,17 @@ export function TabsDemo() {
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" defaultValue="Pedro Duarte" />
+              <Input
+                id="name"
+                defaultValue="Pedro Duarte"
+              />
             </div>
             <div className="space-y-1">
               <Label htmlFor="username">Username</Label>
-              <Input id="username" defaultValue="@peduarte" />
+              <Input
+                id="username"
+                defaultValue="@peduarte"
+              />
             </div>
           </CardContent>
           <CardFooter>
@@ -183,11 +198,17 @@ export function TabsDemo() {
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="current">Current password</Label>
-              <Input id="current" type="password" />
+              <Input
+                id="current"
+                type="password"
+              />
             </div>
             <div className="space-y-1">
               <Label htmlFor="new">New password</Label>
-              <Input id="new" type="password" />
+              <Input
+                id="new"
+                type="password"
+              />
             </div>
           </CardContent>
           <CardFooter>

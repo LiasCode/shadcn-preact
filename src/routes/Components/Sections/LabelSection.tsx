@@ -57,7 +57,10 @@ export function LabelSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.INPUT_OTP}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Input Otp
               </Button>
@@ -65,7 +68,10 @@ export function LabelSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.POPOVER}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Popover
                 <ChevronRight />
               </Button>

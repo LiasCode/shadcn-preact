@@ -18,7 +18,11 @@ export default function HighlightCode(props: { codeString: string; lang: Bundled
         </div>
       }
     >
-      <HighlightCodeInternal lang={props.lang} theme={props.theme} codeString={props.codeString} />
+      <HighlightCodeInternal
+        lang={props.lang}
+        theme={props.theme}
+        codeString={props.codeString}
+      />
     </Suspense>
   );
 }

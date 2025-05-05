@@ -16,7 +16,11 @@ export type CardHeaderProps = HTMLAttributes<HTMLDivElement>;
 
 export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} className={cn("flex flex-col space-y-1.5 p-6", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      className={cn("flex flex-col space-y-1.5 p-6", className, classNative)}
+      {...props}
+    />
   )
 );
 CardHeader.displayName = "CardHeader";
@@ -25,7 +29,11 @@ export type CardTitleProps = HTMLAttributes<HTMLDivElement>;
 
 export const CardTitle = forwardRef<HTMLDivElement, CardTitleProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} className={cn("font-semibold leading-none tracking-tight", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      className={cn("font-semibold leading-none tracking-tight", className, classNative)}
+      {...props}
+    />
   )
 );
 CardTitle.displayName = "CardTitle";
@@ -34,7 +42,11 @@ export type CardDescriptionProps = HTMLAttributes<HTMLDivElement>;
 
 export const CardDescription = forwardRef<HTMLDivElement, CardDescriptionProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} className={cn("text-muted-foreground text-sm", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      className={cn("text-muted-foreground text-sm", className, classNative)}
+      {...props}
+    />
   )
 );
 CardDescription.displayName = "CardDescription";
@@ -43,7 +55,11 @@ export type CardContentProps = HTMLAttributes<HTMLDivElement>;
 
 export const CardContent = forwardRef<HTMLDivElement, CardContentProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6 pt-0", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      className={cn("p-6 pt-0", className, classNative)}
+      {...props}
+    />
   )
 );
 CardContent.displayName = "CardContent";
@@ -52,7 +68,11 @@ export type CardFooterProps = HTMLAttributes<HTMLDivElement>;
 
 export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} className={cn("flex items-center p-6 pt-0", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      className={cn("flex items-center p-6 pt-0", className, classNative)}
+      {...props}
+    />
   )
 );
 CardFooter.displayName = "CardFooter";

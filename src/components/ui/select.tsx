@@ -32,8 +32,8 @@ export type SelectContextT = {
   ref: {
     reference: MutableRefObject<HTMLDivElement | null>;
     floating: MutableRefObject<HTMLElement | null>;
-    setReference: (node: HTMLDivElement) => void;
-    setFloating: (node: HTMLElement) => void;
+    setReference: (node: HTMLDivElement | null) => void;
+    setFloating: (node: HTMLElement | null) => void;
   };
 
   floatingStyles: CSSProperties;
@@ -250,7 +250,7 @@ export const SelectTrigger = forwardRef<HTMLDivElement, SelectContentProps>(
     return (
       // TODO: FIX focus does not work with Label
       <div
-        ref={(v) => ref.setReference(v!)}
+        ref={ref.setReference}
         onClick={openDebounced}
         onFocus={() => setIsFocused(true)}
         onFocusOut={() => setIsFocused(false)}
@@ -286,7 +286,11 @@ export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(
     const { value, nodeForTheSelectedValue } = useSelect();
 
     return (
-      <span ref={ref} className={cn(className, classNative)} {...props}>
+      <span
+        ref={ref}
+        className={cn(className, classNative)}
+        {...props}
+      >
         {value && nodeForTheSelectedValue ? nodeForTheSelectedValue : props.placeholder}
       </span>
     );
@@ -370,13 +374,16 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       if (!target) return;
 
       nodeForTheSelectedValueChange(target?.props?.children);
-    }, []);
+    }, [value]);
 
     return (
-      <Modal onClose={closeSelect} show={isOpen} className="bg-transparent">
+      <Modal
+        onClose={closeSelect}
+        show={isOpen}
+        className="bg-transparent"
+      >
         <div
           data-select-id={id}
-          // @ts-expect-error
           ref={ref.setFloating}
           onMouseDown={(e) => e.stopPropagation()}
           style={{
@@ -406,7 +413,12 @@ export type SelectGroupProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} role="group" className={cn("mb-1", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      role="group"
+      className={cn("mb-1", className, classNative)}
+      {...props}
+    />
   )
 );
 SelectGroup.displayName = "SelectGroup";
@@ -438,7 +450,7 @@ export type SelectItemProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
   ({ value: itemValue, className, class: classNative, children, ...props }, ref) => {
-    const { value, onValueChange, closeSelect, ref: refs, nodeForTheSelectedValueChange } = useSelect();
+    const { value, onValueChange, closeSelect, ref: refs } = useSelect();
     const [isFocused, setIsFocused] = useState(false);
 
     const isSelected = useMemo(() => value === itemValue, [value, itemValue]);
@@ -447,8 +459,6 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
     const selectItemHandler = useCallback(() => {
       if (props.disabled) return;
       onValueChange(itemValue);
-      // @ts-expect-error
-      nodeForTheSelectedValueChange(children);
       closeSelect();
     }, [props.disabled]);
 
@@ -605,7 +615,12 @@ export type SelectSeparatorProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SelectSeparator = forwardRef<HTMLDivElement, SelectSeparatorProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} tabindex={-1} className={cn("-mx-1 my-1 h-px bg-muted", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      tabindex={-1}
+      className={cn("-mx-1 my-1 h-px bg-muted", className, classNative)}
+      {...props}
+    />
   )
 );
 SelectSeparator.displayName = "SelectSeparator";

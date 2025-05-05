@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@ui/input";
 import { Label } from "@ui/label";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
-import { SimpleSelect } from "@ui/simple_select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@ui/select";
 import { Switch } from "@ui/switch";
 import { BellRing, Check, ChevronLeft, ChevronRight } from "lucide-preact";
 
@@ -37,28 +37,17 @@ export function CardsSection() {
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="framework">Framework</Label>
-                <SimpleSelect
-                  title="Select"
-                  data={[
-                    {
-                      value: "next",
-                      title: "Next.js",
-                    },
-                    {
-                      value: "sveltekit",
-                      title: "SvelteKit",
-                    },
-                    {
-                      value: "astro",
-                      title: "Astro",
-                    },
-                    {
-                      value: "nuxt",
-                      title: "Nuxt.js",
-                    },
-                  ]}
-                  onChange={() => {}}
-                />
+                <Select side="bottom">
+                  <SelectTrigger id="framework">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="next">Next.js</SelectItem>
+                    <SelectItem value="sveltekit">SvelteKit</SelectItem>
+                    <SelectItem value="astro">Astro</SelectItem>
+                    <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
@@ -83,32 +72,24 @@ export function CardsSection() {
                 <div className="grid w-full items-center gap-4">
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="name">Name</Label>
-                    <Input id="name" placeholder="Name of your project" />
+                    <Input
+                      id="name"
+                      placeholder="Name of your project"
+                    />
                   </div>
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="framework">Framework</Label>
-                    <SimpleSelect
-                      title="Select"
-                      data={[
-                        {
-                          value: "next",
-                          title: "Next.js",
-                        },
-                        {
-                          value: "sveltekit",
-                          title: "SvelteKit",
-                        },
-                        {
-                          value: "astro",
-                          title: "Astro",
-                        },
-                        {
-                          value: "nuxt",
-                          title: "Nuxt.js",
-                        },
-                      ]}
-                      onChange={() => {}}
-                    />
+                    <Select side="bottom">
+                      <SelectTrigger id="framework">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="next">Next.js</SelectItem>
+                        <SelectItem value="sveltekit">SvelteKit</SelectItem>
+                        <SelectItem value="astro">Astro</SelectItem>
+                        <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </div>
@@ -237,7 +218,10 @@ export function CardsSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.CALENDAR}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Calendar
               </Button>
@@ -245,7 +229,10 @@ export function CardsSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.CAROUSEL}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Carousel
                 <ChevronRight />
               </Button>

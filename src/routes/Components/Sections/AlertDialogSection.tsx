@@ -127,7 +127,10 @@ export function AlertDialogSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.ALERT}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Alert
               </Button>
@@ -135,7 +138,10 @@ export function AlertDialogSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.AVATAR}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Avatar
                 <ChevronRight />
               </Button>

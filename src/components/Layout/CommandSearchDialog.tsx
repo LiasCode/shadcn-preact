@@ -41,7 +41,10 @@ export default function CommandSearchDialog() {
         </button>
       </div>
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog
+        open={open}
+        onOpenChange={setOpen}
+      >
         <CommandInput placeholder="Type a command or search..." />
 
         <CommandList>
@@ -49,7 +52,10 @@ export default function CommandSearchDialog() {
 
           <CommandGroup heading="Docs">
             {Object.entries(AppRoutes.DOCS).map(([k, v]) => (
-              <CommandItem key={k} onSelect={() => route(v)}>
+              <CommandItem
+                key={k}
+                onSelect={() => route(v)}
+              >
                 <StickyNote />
                 <span className="capitalize">{k.toLowerCase().split("_").join(" ")}</span>
               </CommandItem>
@@ -62,7 +68,10 @@ export default function CommandSearchDialog() {
             {Object.entries(AppRoutes.COMPONENTS)
               .sort()
               .map(([k, v]) => (
-                <CommandItem key={k} onSelect={() => route(v)}>
+                <CommandItem
+                  key={k}
+                  onSelect={() => route(v)}
+                >
                   <Circle />
                   <span className="capitalize">{k.toLowerCase().split("_").join(" ")}</span>
                 </CommandItem>

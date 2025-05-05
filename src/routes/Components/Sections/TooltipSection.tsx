@@ -85,7 +85,10 @@ export function TooltipSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.TOGGLE}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Toggle
               </Button>

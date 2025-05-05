@@ -25,9 +25,19 @@ export default function HomePage() {
               <a href={AppRoutes.DOCS.INTRO}>
                 <Button size="sm">Get Started</Button>
               </a>
-              <a href="https://github.com/LiasCode/shadcn-preact" target="_blank" rel="noreferrer">
-                <Button variant="ghost" size="sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <a
+                href="https://github.com/LiasCode/shadcn-preact"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Button
+                  variant="ghost"
+                  size="sm"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
                     <title>Github</title>
                     <path
                       fill="none"

@@ -6,7 +6,10 @@ import { cn } from "@ui/share/cn";
 
 export function Login01({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div
+      className={cn("flex flex-col gap-6", className)}
+      {...props}
+    >
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -17,27 +20,48 @@ export function Login01({ className, ...props }: React.ComponentPropsWithoutRef<
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email-login01">Email</Label>
-                <Input id="email-login01" type="email" placeholder="m@example.com" required />
+                <Input
+                  id="email-login01"
+                  type="email"
+                  placeholder="m@example.com"
+                  required
+                />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password-login01">Password</Label>
-                  <a href="/#" className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                  <a
+                    href="/#"
+                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                  >
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password-login01" type="password" required />
+                <Input
+                  id="password-login01"
+                  type="password"
+                  required
+                />
               </div>
-              <Button type="submit" className="w-full">
+              <Button
+                type="submit"
+                className="w-full"
+              >
                 Login
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+              >
                 Login with Google
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <a href="/#" className="underline underline-offset-4">
+              <a
+                href="/#"
+                className="underline underline-offset-4"
+              >
                 Sign up
               </a>
             </div>

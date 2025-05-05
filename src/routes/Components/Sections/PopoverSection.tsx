@@ -91,7 +91,10 @@ export function PopoverSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.LABEL}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Label
               </Button>
@@ -99,7 +102,10 @@ export function PopoverSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.SELECT}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Select
                 <ChevronRight />
               </Button>
@@ -127,19 +133,35 @@ export function PopoverDemo() {
           <div className="grid gap-2">
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="width">Width</Label>
-              <Input id="width" defaultValue="100%" className="col-span-2 h-8" />
+              <Input
+                id="width"
+                defaultValue="100%"
+                className="col-span-2 h-8"
+              />
             </div>
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="maxWidth">Max. width</Label>
-              <Input id="maxWidth" defaultValue="300px" className="col-span-2 h-8" />
+              <Input
+                id="maxWidth"
+                defaultValue="300px"
+                className="col-span-2 h-8"
+              />
             </div>
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="height">Height</Label>
-              <Input id="height" defaultValue="25px" className="col-span-2 h-8" />
+              <Input
+                id="height"
+                defaultValue="25px"
+                className="col-span-2 h-8"
+              />
             </div>
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="maxHeight">Max. height</Label>
-              <Input id="maxHeight" defaultValue="none" className="col-span-2 h-8" />
+              <Input
+                id="maxHeight"
+                defaultValue="none"
+                className="col-span-2 h-8"
+              />
             </div>
           </div>
         </div>

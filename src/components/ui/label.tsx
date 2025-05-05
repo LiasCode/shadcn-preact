@@ -10,6 +10,10 @@ export type LabelProps = LabelHTMLAttributes & VariantProps<typeof labelVariants
 
 export const Label = forwardRef<HTMLLabelElement, LabelProps>(({ className, class: classNative, ...props }, ref) => (
   // biome-ignore lint/a11y/noLabelWithoutControl: <explanation>
-  <label ref={ref} className={cn(labelVariants(), className, classNative)} {...props} />
+  <label
+    ref={ref}
+    className={cn(labelVariants(), className, classNative)}
+    {...props}
+  />
 ));
 Label.displayName = "Label";

@@ -1,5 +1,5 @@
-import { resolve } from "node:path";
 import preact from "@preact/preset-vite";
+import { resolve } from "node:path";
 import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/

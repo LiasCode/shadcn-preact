@@ -71,7 +71,11 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
       <TabContext.Provider
         value={{ onValueChange: setValue, value, orientation: orientation || "horizontal", activationMode }}
       >
-        <div ref={ref} className={cn("", className, classNative)} {...props}>
+        <div
+          ref={ref}
+          className={cn("", className, classNative)}
+          {...props}
+        >
           {children}
         </div>
       </TabContext.Provider>

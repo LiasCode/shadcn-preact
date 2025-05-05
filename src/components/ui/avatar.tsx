@@ -54,7 +54,11 @@ export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
     return (
       <Show when={status === "loaded"}>
         {/* biome-ignore lint/a11y/useAltText: <explanation> */}
-        <img ref={ref} className={cn("aspect-square h-full w-full", className, classNative)} {...props} />
+        <img
+          ref={ref}
+          className={cn("aspect-square h-full w-full", className, classNative)}
+          {...props}
+        />
       </Show>
     );
   }

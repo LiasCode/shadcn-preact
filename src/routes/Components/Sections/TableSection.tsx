@@ -24,8 +24,7 @@ import {
 } from "@ui/pagination";
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@ui/tooltip";
-import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { Trash } from "lucide-preact";
+import { ChevronLeft, ChevronRight, Trash } from "lucide-preact";
 
 export function TableSection() {
   return (
@@ -373,7 +372,10 @@ export function TableSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.SWITCH}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Switch
               </Button>
@@ -381,7 +383,10 @@ export function TableSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.TABS}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Tabs
                 <ChevronRight />
               </Button>
@@ -562,7 +567,10 @@ export function TableWithActions() {
                     <TooltipProvider side="left">
                       <Tooltip>
                         <TooltipTrigger>
-                          <Button size="icon" variant="destructive">
+                          <Button
+                            size="icon"
+                            variant="destructive"
+                          >
                             <Trash className="h-4 w-4" />
                           </Button>
                         </TooltipTrigger>
@@ -606,7 +614,10 @@ export function TableWithActions() {
           </PaginationItem>
 
           <PaginationItem>
-            <PaginationLink isActive onClick={(e) => e.preventDefault()}>
+            <PaginationLink
+              isActive
+              onClick={(e) => e.preventDefault()}
+            >
               2
             </PaginationLink>
           </PaginationItem>

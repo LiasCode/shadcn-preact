@@ -6,7 +6,10 @@ const ChartSection = lazy(() => import("./Sections/ChartSection"));
 
 export default function ChartPage() {
   return (
-    <DocsLayout title="Charts" description="Beautiful charts. Built using Recharts. Copy and paste into your apps.">
+    <DocsLayout
+      title="Charts"
+      description="Beautiful charts. Built using Recharts. Copy and paste into your apps."
+    >
       <Suspense
         fallback={
           <div className="flex flex-row items-center justify-center">

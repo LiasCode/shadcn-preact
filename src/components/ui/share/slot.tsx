@@ -43,14 +43,20 @@ export function createSlot(ownerName: string) {
       });
 
       return (
-        <SlotClone {...slotProps} ref={forwardedRef}>
+        <SlotClone
+          {...slotProps}
+          ref={forwardedRef}
+        >
           {isValidElement(newElement) ? cloneElement(newElement, undefined, newChildren) : null}
         </SlotClone>
       );
     }
 
     return (
-      <SlotClone {...slotProps} ref={forwardedRef}>
+      <SlotClone
+        {...slotProps}
+        ref={forwardedRef}
+      >
         {children}
       </SlotClone>
     );
@@ -189,9 +195,9 @@ function getElementRef(element: React.ReactElement) {
 }
 
 export {
-  Slot,
-  Slottable,
   //
   Slot as Root,
+  Slot,
+  Slottable,
 };
 export type { SlotProps };

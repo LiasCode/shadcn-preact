@@ -14,7 +14,11 @@ export type BreadcrumbProps = ComponentPropsWithoutRef<"nav"> & {
 };
 
 export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(({ ...props }, ref) => (
-  <nav ref={ref} aria-label="breadcrumb" {...props} />
+  <nav
+    ref={ref}
+    aria-label="breadcrumb"
+    {...props}
+  />
 ));
 Breadcrumb.displayName = "Breadcrumb";
 
@@ -39,7 +43,11 @@ export type BreadcrumbItemProps = ComponentPropsWithoutRef<"li">;
 
 export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <li ref={ref} className={cn("inline-flex items-center gap-1.5", className, classNative)} {...props} />
+    <li
+      ref={ref}
+      className={cn("inline-flex items-center gap-1.5", className, classNative)}
+      {...props}
+    />
   )
 );
 BreadcrumbItem.displayName = "BreadcrumbItem";
@@ -53,7 +61,11 @@ export const BreadcrumbLink = forwardRef<HTMLDivElement, BreadcrumbLinkProps>(
   ({ asChild, children, className, class: classNative, ...props }, ref) => {
     if (asChild) {
       return (
-        <div ref={ref} className={cn("transition-colors hover:text-foreground", className, classNative)} {...props}>
+        <div
+          ref={ref}
+          className={cn("transition-colors hover:text-foreground", className, classNative)}
+          {...props}
+        >
           {children}
         </div>
       );

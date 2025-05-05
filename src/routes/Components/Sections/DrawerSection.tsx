@@ -13,8 +13,7 @@ import {
   DrawerTrigger,
 } from "@ui/drawer";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
-import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { Minus, Plus } from "lucide-preact";
+import { ChevronLeft, ChevronRight, Minus, Plus } from "lucide-preact";
 import type { CSSProperties } from "preact/compat";
 import { useState } from "preact/hooks";
 import { Bar, BarChart, ResponsiveContainer } from "recharts";
@@ -167,11 +166,17 @@ export default function DrawerSection() {
 
       <p class="leading-[1.65rem]">
         Drawer is built on top of{" "}
-        <a class="font-medium underline underline-offset-4" href="https://github.com/emilkowalski/vaul">
+        <a
+          class="font-medium underline underline-offset-4"
+          href="https://github.com/emilkowalski/vaul"
+        >
           Vaul
         </a>{" "}
         by{" "}
-        <a class="font-medium underline underline-offset-4" href="https://twitter.com/emilkowalski_">
+        <a
+          class="font-medium underline underline-offset-4"
+          href="https://twitter.com/emilkowalski_"
+        >
           emilkowalski_
         </a>
         .
@@ -217,7 +222,10 @@ export default function DrawerSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.DIALOG}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Dialog
               </Button>
@@ -225,7 +233,10 @@ export default function DrawerSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.INPUT}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Input
                 <ChevronRight />
               </Button>
@@ -325,7 +336,10 @@ export function DrawerDemo() {
               </Button>
             </div>
             <div className="mt-3 h-[120px]">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer
+                width="100%"
+                height="100%"
+              >
                 <BarChart data={data}>
                   <Bar
                     dataKey="goal"

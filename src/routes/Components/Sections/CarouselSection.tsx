@@ -70,7 +70,10 @@ export function CarouselSection() {
 
       <p class="leading-[1.65rem] [&amp;:not(:first-child)]:mt-6">
         The carousel component is built using the{" "}
-        <a class="font-medium underline underline-offset-4" href="https://www.embla-carousel.com/">
+        <a
+          class="font-medium underline underline-offset-4"
+          href="https://www.embla-carousel.com/"
+        >
           Embla Carousel
         </a>{" "}
         library.
@@ -165,8 +168,11 @@ export function CarouselSection() {
           >
             <CarouselContent className="-mt-1 h-[200px]">
               {Array.from({ length: 5 }).map((_, index) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                <CarouselItem key={index} className="pt-1 md:basis-1/2">
+                <CarouselItem
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  key={index}
+                  className="pt-1 md:basis-1/2"
+                >
                   <div className="p-1">
                     <Card>
                       <CardContent className="flex items-center justify-center p-6">
@@ -214,7 +220,10 @@ export function CarouselSection() {
 
       <p class="leading-[1.65rem] [&amp;:not(:first-child)]:mt-6">
         See the{" "}
-        <a class="font-medium underline underline-offset-4" href="https://www.embla-carousel.com/api/plugins/">
+        <a
+          class="font-medium underline underline-offset-4"
+          href="https://www.embla-carousel.com/api/plugins/"
+        >
           Embla Carousel docs
         </a>{" "}
         for more information on using plugins.
@@ -224,7 +233,10 @@ export function CarouselSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.CARD}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Card
               </Button>
@@ -232,7 +244,10 @@ export function CarouselSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.CHART}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Charts
                 <ChevronRight />
               </Button>

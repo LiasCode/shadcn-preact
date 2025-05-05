@@ -28,7 +28,7 @@ export const Separator = forwardRef<HTMLDivElement, SeparatorProps>(
     // `aria-orientation` defaults to `horizontal` so we only need it if `orientation` is vertical
     const ariaOrientation = orientation === "vertical" ? orientation : undefined;
 
-    const semanticProps = decorative ? { role: "none" } : { "aria-orientation": ariaOrientation, role: "separator" };
+    const semanticProps = decorative ? { role: "none" } : { "aria-orientation": ariaOrientation, "role": "separator" };
 
     return (
       // @ts-expect-error

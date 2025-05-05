@@ -99,7 +99,10 @@ export function BreadcrumbSection() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <Popover alignment="start" side="bottom">
+                <Popover
+                  alignment="start"
+                  side="bottom"
+                >
                   <PopoverTrigger>
                     <BreadcrumbEllipsis className="h-4 w-4" />
                     <span className="sr-only">Toggle menu</span>
@@ -186,7 +189,10 @@ export function BreadcrumbSection() {
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.BADGE}>
-              <Button className="gap-1 pl-1" variant="outline">
+              <Button
+                className="gap-1 pl-1"
+                variant="outline"
+              >
                 <ChevronLeft />
                 Badge
               </Button>
@@ -194,7 +200,10 @@ export function BreadcrumbSection() {
           </PaginationItem>
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.BUTTON}>
-              <Button className="gap-1 pr-1 capitalize" variant="outline">
+              <Button
+                className="gap-1 pr-1 capitalize"
+                variant="outline"
+              >
                 Button
                 <ChevronRight />
               </Button>

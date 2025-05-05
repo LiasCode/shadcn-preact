@@ -22,7 +22,11 @@ export type InputOTPGroupProps = ComponentPropsWithoutRef<"div">;
 
 export const InputOTPGroup = forwardRef<ElementRef<"div">, InputOTPGroupProps>(
   ({ className, class: classNative, ...props }, ref) => (
-    <div ref={ref} className={cn("flex items-center", className, classNative)} {...props} />
+    <div
+      ref={ref}
+      className={cn("flex items-center", className, classNative)}
+      {...props}
+    />
   )
 );
 InputOTPGroup.displayName = "InputOTPGroup";
@@ -65,9 +69,13 @@ InputOTPSlot.displayName = "InputOTPSlot";
 export type InputOTPSeparatorProps = ComponentPropsWithoutRef<"div">;
 
 export const InputOTPSeparator = forwardRef<ElementRef<"div">, InputOTPSeparatorProps>(({ ...props }, ref) => (
-  // biome-ignore lint/a11y/useSemanticElements: <explanation>
   // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
-  <div ref={ref} role="separator" {...props}>
+  <div
+    ref={ref}
+    // biome-ignore lint/a11y/useSemanticElements: <explanation>
+    role="separator"
+    {...props}
+  >
     <Minus />
   </div>
 ));
