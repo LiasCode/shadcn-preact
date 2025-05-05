@@ -40,7 +40,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }), classNative)}
-        ref={ref as any}
+        ref={ref}
         {...props}
       />
     );

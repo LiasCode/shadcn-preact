@@ -15,6 +15,7 @@ import { useCallback, useContext, useMemo } from "preact/hooks";
 import { Modal } from "./modal";
 import { cn } from "./share/cn";
 import { debounce } from "./share/debounce";
+import { Slot } from "./share/slot";
 import { Show } from "./show";
 
 export type Direction = "ltr" | "rtl";
@@ -30,9 +31,9 @@ export type SelectContextT = {
   id: string;
 
   ref: {
-    reference: MutableRefObject<HTMLDivElement | null>;
-    floating: MutableRefObject<HTMLElement | null>;
-    setReference: (node: HTMLDivElement | null) => void;
+    reference: MutableRefObject<HTMLButtonElement | null>;
+    floating: React.MutableRefObject<HTMLElement | null>;
+    setReference: (node: HTMLButtonElement | null) => void;
     setFloating: (node: HTMLElement | null) => void;
   };
 
@@ -110,7 +111,7 @@ export function Select({
   const [select_id] = useState(Math.random().toString());
   const [nodeForTheSelectedValue, setNodeForTheSelectedValue] = useState<SelectContextT["nodeForTheSelectedValue"]>("");
 
-  const { refs, floatingStyles } = useFloating<HTMLDivElement>({
+  const { refs, floatingStyles } = useFloating<HTMLButtonElement>({
     open: isSelectOpen,
     strategy: "fixed",
     middleware: [
@@ -207,9 +208,9 @@ export function useSelect() {
 }
 
 // Select Trigger
-export type SelectTriggerProps = HTMLAttributes<HTMLDivElement> & { asChild?: boolean };
+export type SelectTriggerProps = HTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
 
-export const SelectTrigger = forwardRef<HTMLDivElement, SelectContentProps>(
+export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
   ({ children, className, class: classNative, ...props }) => {
     const { ref, openSelect, open, disabled, value } = useSelect();
     const [isFocused, setIsFocused] = useState(false);
@@ -247,17 +248,16 @@ export const SelectTrigger = forwardRef<HTMLDivElement, SelectContentProps>(
       };
     }, [isFocused]);
 
+    const Comp = props.asChild ? Slot : "button";
+
     return (
       // TODO: FIX focus does not work with Label
-      <div
+      <Comp
         ref={ref.setReference}
         onClick={openDebounced}
         onFocus={() => setIsFocused(true)}
         onFocusOut={() => setIsFocused(false)}
         onBlur={() => setIsFocused(false)}
-        // biome-ignore lint/a11y/useSemanticElements: <explanation>
-        role="button"
-        tabIndex={0}
         data-state={open ? "open" : "closed"}
         data-disabled={disabled}
         data-placeholder={showPlaceholder}
@@ -270,7 +270,7 @@ export const SelectTrigger = forwardRef<HTMLDivElement, SelectContentProps>(
       >
         {children}
         <ChevronDown className="h-4 w-4 opacity-50" />
-      </div>
+      </Comp>
     );
   }
 );
@@ -284,15 +284,16 @@ export type SelectValueProps = HTMLAttributes<HTMLSpanElement> & {
 export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(
   ({ className, class: classNative, ...props }: SelectValueProps, ref) => {
     const { value, nodeForTheSelectedValue } = useSelect();
+    const Comp = props.asChild ? Slot : "span";
 
     return (
-      <span
+      <Comp
         ref={ref}
         className={cn(className, classNative)}
         {...props}
       >
         {value && nodeForTheSelectedValue ? nodeForTheSelectedValue : props.placeholder}
-      </span>
+      </Comp>
     );
   }
 );

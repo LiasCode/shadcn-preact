@@ -63,6 +63,7 @@ export function AlertDialogSection() {
             <AlertDialogTrigger asChild>
               <Button variant="outline">Show Dialog</Button>
             </AlertDialogTrigger>
+
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

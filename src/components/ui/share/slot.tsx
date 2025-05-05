@@ -21,7 +21,7 @@ interface SlotProps extends React.HTMLAttributes<HTMLElement> {
 export function createSlot(ownerName: string) {
   const SlotClone = createSlotClone(ownerName);
 
-  const Slot = forwardRef<HTMLElement, SlotProps>((props, forwardedRef) => {
+  const Slot = forwardRef<any, SlotProps>((props, forwardedRef) => {
     const { children, ...slotProps } = props;
 
     const childrenArray = Children.toArray(children);
@@ -162,7 +162,7 @@ function mergeProps(slotProps: AnyProps, childProps: AnyProps) {
     // if it's `style`, we merge them
     else if (propName === "style") {
       overrideProps[propName] = { ...slotPropValue, ...childPropValue };
-    } else if (propName === "className") {
+    } else if (propName === "className" || propName === "class") {
       overrideProps[propName] = [slotPropValue, childPropValue].filter(Boolean).join(" ");
     }
   }

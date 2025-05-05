@@ -1,6 +1,7 @@
 import { type HTMLAttributes, type PropsWithChildren, createContext, forwardRef } from "preact/compat";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { cn } from "./share/cn";
+import { Slot } from "./share/slot";
 import { Show } from "./show";
 
 export type CollapsibleContextT = {
@@ -51,16 +52,18 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
     const open = () => setIsOpen(true);
     const close = () => setIsOpen(false);
 
+    const Comp = props.asChild ? Slot : "div";
+
     return (
       <CollapsibleContext.Provider value={{ isOpen, open, close, disabled: Boolean(disabled) }}>
-        <div
+        <Comp
           data-state={isOpen ? "open" : "closed"}
           data-disabled={disabled}
           className={cn(className, classNative)}
           {...props}
         >
           {children}
-        </div>
+        </Comp>
       </CollapsibleContext.Provider>
     );
   }
@@ -75,18 +78,18 @@ export function useCollapsible() {
 
 export type CollapsibleTriggerProps = PropsWithChildren & { asChild?: boolean };
 
-export function CollapsibleTrigger({ children }: CollapsibleTriggerProps) {
+export function CollapsibleTrigger({ children, asChild }: CollapsibleTriggerProps) {
   const { open, close, isOpen, disabled } = useCollapsible();
+  const Comp = asChild ? Slot : "button";
 
   return (
-    <div
+    <Comp
       onClick={() => (isOpen ? close() : open())}
       data-state={isOpen ? "open" : "closed"}
       data-disabled={disabled}
-      className="group relative m-0 w-fit border-0 border-none bg-transparent p-0 outline-none"
     >
       {children}
-    </div>
+    </Comp>
   );
 }
 CollapsibleTrigger.displayName = "CollapsibleTrigger";
