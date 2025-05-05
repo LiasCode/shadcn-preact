@@ -8,6 +8,7 @@ import {
   forwardRef,
 } from "preact/compat";
 import { cn } from "./share/cn";
+import { Slot } from "./share/slot";
 
 export type BreadcrumbProps = ComponentPropsWithoutRef<"nav"> & {
   separator?: ReactNode;
@@ -52,32 +53,23 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
 );
 BreadcrumbItem.displayName = "BreadcrumbItem";
 
-export type BreadcrumbLinkProps = HTMLAttributes<HTMLDivElement> & {
+export type BreadcrumbLinkProps = HTMLAttributes<HTMLAnchorElement> & {
   asChild?: boolean;
   href?: AnchorHTMLAttributes["href"];
 };
 
-export const BreadcrumbLink = forwardRef<HTMLDivElement, BreadcrumbLinkProps>(
+export const BreadcrumbLink = forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(
   ({ asChild, children, className, class: classNative, ...props }, ref) => {
-    if (asChild) {
-      return (
-        <div
-          ref={ref}
-          className={cn("transition-colors hover:text-foreground", className, classNative)}
-          {...props}
-        >
-          {children}
-        </div>
-      );
-    }
+    const Comp = asChild ? Slot : "a";
+
     return (
-      <div
+      <Comp
         ref={ref}
-        className={cn("transition-colors *:h-full *:w-full hover:text-foreground", className, classNative)}
+        className={cn("transition-colors hover:text-foreground", className, classNative)}
         {...props}
       >
-        <a href={props.href}>{children}</a>
-      </div>
+        {children}
+      </Comp>
     );
   }
 );

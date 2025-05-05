@@ -2,6 +2,7 @@ import { type PropsWithChildren, createContext } from "preact/compat";
 import { useCallback, useContext, useEffect, useMemo, useState } from "preact/hooks";
 import { Button } from "./button";
 import { Modal } from "./modal";
+import { Slot } from "./share/slot";
 import { Show } from "./show";
 
 export const AlertContext = createContext<{
@@ -48,17 +49,11 @@ export function useAlertDialog() {
 
 export type AlertDialogTriggerProps = PropsWithChildren & { asChild?: boolean };
 
-export function AlertDialogTrigger({ children }: AlertDialogTriggerProps) {
+export function AlertDialogTrigger({ children, asChild }: AlertDialogTriggerProps) {
   const { openDialog } = useAlertDialog();
+  const Comp = asChild ? Slot : "button";
 
-  return (
-    <div
-      onClick={openDialog}
-      className="m-0 h-fit max-h-fit w-fit max-w-fit border-none bg-transparent p-0 outline-none"
-    >
-      {children}
-    </div>
-  );
+  return <Comp onClick={openDialog}>{children}</Comp>;
 }
 AlertDialogTrigger.displayName = "AlertDialogTrigger";
 

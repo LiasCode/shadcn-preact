@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "preact/hooks";
 import { X } from "lucide-preact";
 import { Modal } from "./modal";
 import { cn } from "./share/cn";
+import { Slot } from "./share/slot";
 import { Show } from "./show";
 
 const DialogContext = createContext<{
@@ -42,17 +43,11 @@ export function useDialog() {
 
 export type DialogTriggerProps = PropsWithChildren & { asChild?: boolean };
 
-export function DialogTrigger({ children }: DialogTriggerProps) {
+export function DialogTrigger({ children, asChild }: DialogTriggerProps) {
   const { openDialog } = useDialog();
+  const Comp = asChild ? Slot : "button";
 
-  return (
-    <div
-      onClick={openDialog}
-      className="m-0 w-fit bg-transparent p-0"
-    >
-      {children}
-    </div>
-  );
+  return <Comp onClick={openDialog}>{children}</Comp>;
 }
 
 export type DialogContentProps = HTMLAttributes<HTMLDivElement> & { autoSelect?: boolean };
@@ -161,19 +156,19 @@ DialogDescription.displayName = "DialogDescription";
 
 export type DialogCloseProps = PropsWithChildren<{ onCancel?: () => void; asChild?: boolean }>;
 
-export const DialogClose = ({ children, onCancel }: DialogCloseProps) => {
+export const DialogClose = ({ children, onCancel, asChild }: DialogCloseProps) => {
   const { closeDialog } = useDialog();
+  const Comp = asChild ? Slot : "button";
 
   return (
-    <div
-      className="*:w-full"
+    <Comp
       onClick={() => {
         closeDialog();
         if (onCancel) onCancel();
       }}
     >
       {children}
-    </div>
+    </Comp>
   );
 };
 DialogClose.displayName = "DialogClose";

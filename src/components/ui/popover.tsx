@@ -11,6 +11,7 @@ import { useContext, useEffect, useState } from "preact/hooks";
 import { Modal } from "./modal";
 import { cn } from "./share/cn";
 import { debounce } from "./share/debounce";
+import { Slot } from "./share/slot";
 
 type PopoverContextT = {
   isOpen: boolean;
@@ -18,9 +19,9 @@ type PopoverContextT = {
   close: () => void;
   id: string;
   ref: {
-    reference: MutableRefObject<HTMLDivElement | null>;
-    floating: MutableRefObject<HTMLElement | null>;
-    setReference: (node: HTMLDivElement | null) => void;
+    reference: MutableRefObject<HTMLButtonElement | null>;
+    floating: React.MutableRefObject<HTMLElement | null>;
+    setReference: (node: HTMLButtonElement | null) => void;
     setFloating: (node: HTMLElement | null) => void;
   };
   floatingStyles: CSSProperties;
@@ -43,7 +44,7 @@ export function Popover({ children, open: controlledOpen, onOpenChange, ...props
   const [isOpen, setIsOpen] = useState(controlledOpen !== undefined ? controlledOpen : false);
   const [popover_id] = useState(Math.random().toString());
 
-  const { refs, floatingStyles } = useFloating<HTMLDivElement>({
+  const { refs, floatingStyles } = useFloating<HTMLButtonElement>({
     open: isOpen,
     strategy: "fixed",
     middleware: [
@@ -95,21 +96,22 @@ export function usePopover() {
 
 export type PopoverTriggerProps = PropsWithChildren & { asChild?: boolean };
 
-export function PopoverTrigger({ children }: PopoverTriggerProps) {
+export function PopoverTrigger({ children, asChild }: PopoverTriggerProps) {
   const { open, isOpen, ref, delay } = usePopover();
 
   const openDebounced = debounce(open, delay || 50);
 
+  const Comp = asChild ? Slot : "button";
+
   return (
-    <div
+    <Comp
       ref={ref.setReference}
       onClick={openDebounced}
       onFocus={openDebounced}
       data-state={isOpen ? "open" : "closed"}
-      className="relative m-0 w-fit border-0 border-none bg-transparent p-0 outline-none"
     >
       {children}
-    </div>
+    </Comp>
   );
 }
 

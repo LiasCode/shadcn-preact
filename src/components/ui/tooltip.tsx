@@ -3,6 +3,7 @@ import { type CSSProperties, type MutableRefObject, type PropsWithChildren, crea
 import { useContext, useState } from "preact/hooks";
 import { cn } from "./share/cn";
 import { debounce } from "./share/debounce";
+import { Slot } from "./share/slot";
 import { Show } from "./show";
 
 type TooltipContextT = {
@@ -11,9 +12,9 @@ type TooltipContextT = {
   close: () => void;
   id: string;
   ref: {
-    reference: MutableRefObject<HTMLDivElement | null>;
+    reference: MutableRefObject<HTMLButtonElement | null>;
     floating: React.MutableRefObject<HTMLElement | null>;
-    setReference: (node: HTMLDivElement | null) => void;
+    setReference: (node: HTMLButtonElement | null) => void;
     setFloating: (node: HTMLElement | null) => void;
   };
   floatingStyles: CSSProperties;
@@ -33,7 +34,7 @@ export function TooltipProvider({ children, ...props }: TooltipProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [tooltip_id] = useState(Math.random().toString());
 
-  const { refs, floatingStyles } = useFloating<HTMLDivElement>({
+  const { refs, floatingStyles } = useFloating<HTMLButtonElement>({
     open: isOpen,
     strategy: "fixed",
     placement: props.side,
@@ -75,24 +76,25 @@ export function Tooltip({ children }: TooltipProps) {
 
 export type TooltipTriggerProps = PropsWithChildren & { asChild?: boolean };
 
-export function TooltipTrigger({ children }: TooltipTriggerProps) {
+export function TooltipTrigger({ children, asChild }: TooltipTriggerProps) {
   const { open, close, ref, delay } = useTooltip();
 
   const openDebounced = debounce(open, delay || 300);
   const closeDebounced = debounce(close, 300);
 
+  const Comp = asChild ? Slot : "button";
+
   return (
-    <div
+    <Comp
       ref={ref.setReference}
       onMouseEnter={openDebounced}
       onFocus={openDebounced}
       onMouseLeave={closeDebounced}
       onFocusOut={closeDebounced}
       onBlur={closeDebounced}
-      className="relative m-0 w-fit border-0 border-none bg-transparent p-0 outline-none"
     >
       {children}
-    </div>
+    </Comp>
   );
 }
 
