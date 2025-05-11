@@ -76,22 +76,26 @@ export function useCollapsible() {
   return c;
 }
 
-export type CollapsibleTriggerProps = PropsWithChildren & { asChild?: boolean };
+export type CollapsibleTriggerProps = HTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
 
-export function CollapsibleTrigger({ children, asChild }: CollapsibleTriggerProps) {
-  const { open, close, isOpen, disabled } = useCollapsible();
-  const Comp = asChild ? Slot : "button";
+export const CollapsibleTrigger = forwardRef<HTMLButtonElement, CollapsibleTriggerProps>(
+  ({ children, asChild, ...props }, forwardedRef) => {
+    const { open, close, isOpen, disabled } = useCollapsible();
+    const Comp = asChild ? Slot : "button";
 
-  return (
-    <Comp
-      onClick={() => (isOpen ? close() : open())}
-      data-state={isOpen ? "open" : "closed"}
-      data-disabled={disabled}
-    >
-      {children}
-    </Comp>
-  );
-}
+    return (
+      <Comp
+        onClick={() => (isOpen ? close() : open())}
+        data-state={isOpen ? "open" : "closed"}
+        data-disabled={disabled}
+        ref={forwardedRef}
+        {...props}
+      >
+        {children}
+      </Comp>
+    );
+  }
+);
 CollapsibleTrigger.displayName = "CollapsibleTrigger";
 
 export type CollapsibleContentProps = HTMLAttributes<HTMLDivElement>;
