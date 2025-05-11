@@ -5,6 +5,7 @@ import { Toaster } from "@ui/toast";
 import { ExternalLink } from "lucide-preact";
 import { LocationProvider, Route, Router } from "preact-iso";
 import { AppRoutes } from "./routes/AppRoutes";
+import AccordionPage from "./routes/Components/Accordion";
 import AlertPage from "./routes/Components/Alert";
 import AlertDialogPage from "./routes/Components/AlertDialog";
 import AvatarPage from "./routes/Components/Avatar";
@@ -83,6 +84,11 @@ export function App() {
           <Route
             component={SeparatorPage}
             path={AppRoutes.COMPONENTS.SEPARATOR}
+          />
+
+          <Route
+            component={AccordionPage}
+            path={AppRoutes.COMPONENTS.ACCORDION}
           />
 
           <Route

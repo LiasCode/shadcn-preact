@@ -9,6 +9,7 @@ export const AppRoutes = {
     THEMING: "/docs/theming",
   },
   COMPONENTS: {
+    ACCORDION: "/component/accordion",
     ALERT: "/component/alert",
     AVATAR: "/component/avatar",
     ALERT_DIALOG: "/component/alert-dialog",

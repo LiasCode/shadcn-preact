@@ -117,16 +117,17 @@ export function AlertSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <a href={AppRoutes.DOCS.THEMING}>
+            <a href={AppRoutes.COMPONENTS.ACCORDION}>
               <Button
                 className="gap-1 pl-1"
                 variant="outline"
               >
                 <ChevronLeft />
-                Theming
+                Accordion
               </Button>
             </a>
           </PaginationItem>
+
           <PaginationItem>
             <a href={AppRoutes.COMPONENTS.ALERT_DIALOG}>
               <Button
