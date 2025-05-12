@@ -1,4 +1,10 @@
-import { type HTMLAttributes, type PropsWithChildren, createContext, forwardRef } from "preact/compat";
+import {
+  type ButtonHTMLAttributes,
+  type HTMLAttributes,
+  type PropsWithChildren,
+  createContext,
+  forwardRef,
+} from "preact/compat";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
@@ -76,7 +82,7 @@ export function useCollapsible() {
   return c;
 }
 
-export type CollapsibleTriggerProps = HTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
+export type CollapsibleTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
 
 export const CollapsibleTrigger = forwardRef<HTMLButtonElement, CollapsibleTriggerProps>(
   ({ children, asChild, ...props }, forwardedRef) => {

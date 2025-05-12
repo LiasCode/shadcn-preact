@@ -1,6 +1,13 @@
 import { autoPlacement, autoUpdate, offset, shift, useFloating } from "@floating-ui/react-dom";
 import { ChevronDown } from "lucide-preact";
-import { type HTMLAttributes, type PropsWithChildren, forwardRef, useEffect, useMemo, useState } from "preact/compat";
+import {
+  type ButtonHTMLAttributes,
+  type PropsWithChildren,
+  forwardRef,
+  useEffect,
+  useMemo,
+  useState,
+} from "preact/compat";
 import { Button } from "./button";
 import { Modal } from "./modal";
 import { cn } from "./share/cn";
@@ -11,7 +18,7 @@ export type SelectProps = PropsWithChildren & {
   data: { value: string; title: string }[];
   title?: string;
   alignment?: "start" | "end";
-} & HTMLAttributes<HTMLButtonElement>;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const SimpleSelect = forwardRef<HTMLButtonElement, SelectProps>(
   ({ className, class: classNative, ...props }) => {
@@ -93,7 +100,7 @@ export type SelectItemProps = {
   title: string;
   selected: boolean;
   onSelect: () => void;
-} & HTMLAttributes<HTMLButtonElement>;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const SelectItem = forwardRef<HTMLButtonElement, SelectItemProps>(
   ({ class: classNative, className, ...props }, ref) => {

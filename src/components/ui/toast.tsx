@@ -1,7 +1,7 @@
 import { type VariantProps, cva } from "class-variance-authority";
 import { X } from "lucide-preact";
 import type { VNode } from "preact";
-import { type HTMLAttributes, forwardRef } from "preact/compat";
+import { type ButtonHTMLAttributes, type HTMLAttributes, forwardRef } from "preact/compat";
 import * as ReactHotToast from "react-hot-toast";
 import { cn } from "./share/cn";
 
@@ -44,7 +44,7 @@ export const ToastCard = forwardRef<
 });
 ToastCard.displayName = "ToastCard";
 
-export const ToastAction = forwardRef<HTMLButtonElement, HTMLAttributes<HTMLButtonElement> & { altText: string }>(
+export const ToastAction = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { altText: string }>(
   ({ className, class: classNative, ...props }, ref) => (
     <button
       ref={ref}
@@ -59,7 +59,7 @@ export const ToastAction = forwardRef<HTMLButtonElement, HTMLAttributes<HTMLButt
 );
 ToastAction.displayName = "ToastAction";
 
-export const ToastClose = forwardRef<HTMLButtonElement, HTMLAttributes<HTMLButtonElement>>(
+export const ToastClose = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>(
   ({ className, class: classNative, ...props }, ref) => (
     <button
       ref={ref}

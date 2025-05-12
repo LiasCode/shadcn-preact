@@ -1,5 +1,6 @@
 import { createContext } from "preact";
 import {
+  type ButtonHTMLAttributes,
   type HTMLAttributes,
   type PropsWithChildren,
   forwardRef,
@@ -111,7 +112,7 @@ export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
 );
 TabsList.displayName = "TabsList";
 
-export type TabsTriggerProps = HTMLAttributes<HTMLButtonElement> & { value?: string };
+export type TabsTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & { value?: string };
 
 export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
   ({ className, class: classNative, ...props }, ref) => {

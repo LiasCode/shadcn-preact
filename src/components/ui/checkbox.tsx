@@ -1,10 +1,10 @@
 import { Check } from "lucide-preact";
-import { type HTMLAttributes, forwardRef, useLayoutEffect, useState } from "preact/compat";
+import { type ButtonHTMLAttributes, forwardRef, useLayoutEffect, useState } from "preact/compat";
 import { cn } from "./share/cn";
 
 type CheckedState = boolean;
 
-export type CheckboxProps = HTMLAttributes<HTMLButtonElement> & {
+export type CheckboxProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   checked?: CheckedState;
   defaultChecked?: CheckedState;
   required?: boolean;

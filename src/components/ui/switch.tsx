@@ -1,7 +1,7 @@
 import { type ButtonHTMLAttributes, forwardRef, useEffect, useState } from "preact/compat";
 import { cn } from "./share/cn";
 
-export type SwitchProps = ButtonHTMLAttributes & {
+export type SwitchProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   onCheckedChange?: (checked: boolean) => void;
   checked?: boolean;
   defaultChecked?: boolean;

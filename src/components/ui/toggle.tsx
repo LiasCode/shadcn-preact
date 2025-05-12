@@ -23,7 +23,7 @@ export const toggleVariants = cva(
   }
 );
 
-export type ToggleProps = ButtonHTMLAttributes &
+export type ToggleProps = ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof toggleVariants> & {
     pressed?: boolean;
     defaultPressed?: boolean;

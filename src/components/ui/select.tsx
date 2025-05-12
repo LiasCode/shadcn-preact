@@ -2,6 +2,7 @@ import { autoPlacement, autoUpdate, offset, shift, useFloating } from "@floating
 import { Check, ChevronDown } from "lucide-preact";
 import { type VNode, toChildArray } from "preact";
 import {
+  type ButtonHTMLAttributes,
   type CSSProperties,
   type HTMLAttributes,
   type MutableRefObject,
@@ -208,7 +209,7 @@ export function useSelect() {
 }
 
 // Select Trigger
-export type SelectTriggerProps = HTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
+export type SelectTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
 
 export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
   ({ children, className, class: classNative, ...props }) => {
