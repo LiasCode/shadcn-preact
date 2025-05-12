@@ -281,48 +281,53 @@ export function TableSection() {
             </TableRow>
           </TableHeader>
 
-          <TableBody>
-            {data.map((b) => (
-              <TableRow key={b.title}>
-                <TableCell>{b.title}</TableCell>
-                <TableCell>{b.author}</TableCell>
-                <TableCell className="text-end">{b.pages}</TableCell>
-                <TableCell className="text-end">{b.price}</TableCell>
-                <TableCell className="flex flex-row items-center justify-center text-center">
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <TooltipProvider side="left">
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Button size="icon" variant="destructive">
+        <TableBody>
+          {data.map((b) => (
+            <TableRow key={b.title}>
+              <TableCell>{b.title}</TableCell>
+              <TableCell>{b.author}</TableCell>
+              <TableCell className="text-end">{b.pages}</TableCell>
+              <TableCell className="text-end">{b.price}</TableCell>
+              <TableCell className="flex flex-row items-center justify-center text-center">
+                <AlertDialog>
+                  <TooltipProvider side="left">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="h-fit w-fit">
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              size="icon"
+                              variant="destructive"
+                            >
                               <Trash className="h-4 w-4" />
                             </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="text-sm">Remove</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </AlertDialogTrigger>
+                          </AlertDialogTrigger>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="text-sm">Remove</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
 
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently delete the book from your library.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the book from your library.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
 
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction>Continue</AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
 
           <TableFooter />
         </Table>
@@ -563,23 +568,25 @@ export function TableWithActions() {
               <TableCell className="text-end">{b.price}</TableCell>
               <TableCell className="flex flex-row items-center justify-center text-center">
                 <AlertDialog>
-                  <AlertDialogTrigger>
-                    <TooltipProvider side="left">
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Button
-                            size="icon"
-                            variant="destructive"
-                          >
-                            <Trash className="h-4 w-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-sm">Remove</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </AlertDialogTrigger>
+                  <TooltipProvider side="left">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="h-fit w-fit">
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              size="icon"
+                              variant="destructive"
+                            >
+                              <Trash className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="text-sm">Remove</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
 
                   <AlertDialogContent>
                     <AlertDialogHeader>
