@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@ui/alertDialog";
+} from "@ui/alert-dialog";
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-preact";

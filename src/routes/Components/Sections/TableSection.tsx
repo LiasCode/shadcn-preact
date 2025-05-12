@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@ui/alertDialog";
+} from "@ui/alert-dialog";
 import { Button } from "@ui/button";
 import {
   Pagination,
@@ -187,7 +187,7 @@ export function TableSection() {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-  } from "@ui/alertDialog";
+  } from "@ui/alert-dialog";
   import { Button } from "@ui/button";
   import {
     Pagination,

@@ -5,7 +5,7 @@ import { Show } from "./show";
 
 export type ModalProps = PropsWithChildren<
   HTMLAttributes<HTMLDivElement> & {
-    onClose: () => void;
+    onClose?: () => void;
     show: boolean;
   }
 >;
@@ -28,7 +28,7 @@ Modal.displayName = "Modal";
 
 export type ModalContentProps = PropsWithChildren<
   HTMLAttributes<HTMLDivElement> & {
-    onClose: () => void;
+    onClose?: () => void;
   }
 >;
 

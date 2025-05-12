@@ -6,6 +6,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  type ButtonHTMLAttributes,
   type HTMLAttributes,
 } from "preact/compat";
 import { Collapsible, CollapsibleTrigger } from "./collapsible";
@@ -211,7 +212,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
 );
 AccordionItem.displayName = "AccordionItem";
 
-export type AccordionTriggerProps = HTMLAttributes<HTMLButtonElement> & {
+export type AccordionTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   asChild?: boolean;
 };
 
@@ -232,7 +233,6 @@ export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerPr
           data-disabled={disabled}
           data-orientation={orientation}
           asChild={props.asChild}
-          // @ts-expect-error
           disabled={disabled}
           {...props}
         >
