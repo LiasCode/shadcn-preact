@@ -9,7 +9,6 @@ import {
   useState,
 } from "preact/compat";
 import { cn } from "./share/cn";
-import { Show } from "./show";
 
 export type ImageLoadingStatus = "idle" | "loading" | "loaded" | "error";
 
@@ -51,16 +50,14 @@ export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
       changeStatus(loadingStatus);
     }, [loadingStatus, changeStatus]);
 
-    return (
-      <Show when={status === "loaded"}>
-        {/* biome-ignore lint/a11y/useAltText: <explanation> */}
-        <img
-          ref={ref}
-          className={cn("aspect-square h-full w-full", className, classNative)}
-          {...props}
-        />
-      </Show>
-    );
+    return status === "loaded" ? (
+      <img
+        ref={ref}
+        className={cn("aspect-square h-full w-full", className, classNative)}
+        {...props}
+        alt={props.alt}
+      />
+    ) : null;
   }
 );
 AvatarImage.displayName = "AvatarImage";
@@ -82,15 +79,13 @@ export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
 );
 AvatarFallback.displayName = "AvatarFallback";
 
+type useImageLoadingStatusOptions = {
+  referrerPolicy: string;
+  crossOrigin: ImgHTMLAttributes<HTMLImageElement>["crossOrigin"];
+};
 export function useImageLoadingStatus(
   src: string | undefined,
-  {
-    referrerPolicy,
-    crossOrigin,
-  }: {
-    referrerPolicy: string;
-    crossOrigin: ImgHTMLAttributes<HTMLImageElement>["crossOrigin"];
-  }
+  { referrerPolicy, crossOrigin }: useImageLoadingStatusOptions
 ) {
   const [loadingStatus, setLoadingStatus] = useState<ImageLoadingStatus>("idle");
 
@@ -101,7 +96,7 @@ export function useImageLoadingStatus(
     }
 
     let isMounted = true;
-    const image = new window.Image();
+    const image = new Image();
 
     const updateStatus = (status: ImageLoadingStatus) => () => {
       if (!isMounted) return;
@@ -109,15 +104,20 @@ export function useImageLoadingStatus(
     };
 
     setLoadingStatus("loading");
+
     image.onload = updateStatus("loaded");
     image.onerror = updateStatus("error");
+
     if (referrerPolicy) {
       image.referrerPolicy = referrerPolicy;
     }
+
     if (typeof crossOrigin === "string") {
       image.crossOrigin = crossOrigin;
     }
+
     image.src = src;
+
     return () => {
       isMounted = false;
     };
