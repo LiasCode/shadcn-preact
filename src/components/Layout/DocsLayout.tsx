@@ -1,7 +1,7 @@
 import { Footer } from "@/components/Layout/Footer";
 import Header from "@/components/Layout/Header";
 import { AppRoutes } from "@/routes/AppRoutes";
-import { BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@ui/breadCrumb";
+import { BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@ui/breadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/card";
 import { type VNode, createRef } from "preact";
 import { type PropsWithChildren, useEffect } from "preact/compat";

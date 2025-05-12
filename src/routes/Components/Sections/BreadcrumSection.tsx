@@ -9,7 +9,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@ui/breadCrumb";
+} from "@ui/breadcrumb";
 import { Button, buttonVariants } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
@@ -29,7 +29,7 @@ export function BreadcrumbSection() {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-  } from "@ui/breadCrumb";
+  } from "@ui/breadcrumb";
   import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
   import { buttonVariants } from "@ui/button";
 

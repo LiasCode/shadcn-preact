@@ -7,7 +7,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@ui/breadCrumb";
+} from "@ui/breadcrumb";
 import { Button, buttonVariants } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { cn } from "@ui/share/cn";
