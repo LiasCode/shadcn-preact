@@ -36,10 +36,12 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(({ className, clas
 });
 Avatar.displayName = "Avatar";
 
-export type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement>;
+export type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement> & {
+  onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
+};
 
 export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
-  ({ className, class: classNative, ...props }, ref) => {
+  ({ onLoadingStatusChange, className, class: classNative, ...props }, ref) => {
     const { status, changeStatus } = useAvatar();
     const loadingStatus = useImageLoadingStatus(props.src as string, {
       crossOrigin: props.crossOrigin,
@@ -48,7 +50,8 @@ export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
 
     useEffect(() => {
       changeStatus(loadingStatus);
-    }, [loadingStatus, changeStatus]);
+      onLoadingStatusChange?.(loadingStatus);
+    }, [loadingStatus, changeStatus, onLoadingStatusChange]);
 
     return status === "loaded" ? (
       <img
@@ -62,13 +65,23 @@ export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
 );
 AvatarImage.displayName = "AvatarImage";
 
-export type AvatarFallbackProps = HTMLAttributes<HTMLSpanElement>;
+export type AvatarFallbackProps = HTMLAttributes<HTMLSpanElement> & {
+  delayMs?: number;
+};
 
 export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
-  ({ className, class: classNative, ...props }, ref) => {
+  ({ delayMs, className, class: classNative, ...props }, ref) => {
     const { status } = useAvatar();
+    const [canRender, setCanRender] = useState(delayMs === undefined);
 
-    return status !== "loaded" ? (
+    useEffect(() => {
+      if (delayMs === undefined) return;
+
+      const timerId = setTimeout(() => setCanRender(true), delayMs);
+      return () => clearTimeout(timerId);
+    }, [delayMs]);
+
+    return canRender && status !== "loaded" ? (
       <span
         ref={ref}
         className={cn("flex h-full w-full items-center justify-center rounded-full bg-muted", className, classNative)}
