@@ -14,58 +14,74 @@ export type CheckboxProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
   (
-    { className, class: classNative, checked: controlledChecked, defaultChecked, required, onCheckedChange, ...props },
-    ref
+    {
+      disabled,
+      className,
+      class: classNative,
+      checked: controlledChecked,
+      defaultChecked,
+      required,
+      onCheckedChange,
+      ...props
+    },
+    forwardedRef
   ) => {
-    const [internalIsChecked, setIsChecked] = useState<CheckedState>(
-      controlledChecked !== undefined ? controlledChecked : defaultChecked || false
+    const [checked, setChecked] = useState<CheckedState>(
+      defaultChecked !== undefined ? defaultChecked : controlledChecked || false
     );
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    // biome-ignore lint/correctness/useExhaustiveDependencies:
     useLayoutEffect(() => {
-      if (onCheckedChange && controlledChecked !== internalIsChecked) {
-        onCheckedChange(internalIsChecked);
+      if (onCheckedChange && controlledChecked !== checked) {
+        onCheckedChange(checked);
       }
-    }, [internalIsChecked]);
+    }, [checked]);
 
     useLayoutEffect(() => {
       if (controlledChecked !== undefined) {
-        setIsChecked(controlledChecked);
+        setChecked(controlledChecked);
       }
     }, [controlledChecked]);
 
     return (
       <>
         <button
-          disabled={props.disabled || false}
+          ref={forwardedRef}
+          disabled={disabled}
           className={cn(
-            "flex h-4 w-4 flex-row items-center justify-center rounded-sm border border-primary shadow disabled:cursor-not-allowed",
-            `${internalIsChecked ? "bg-primary text-primary-foreground" : ""}`,
+            "peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
             className,
             classNative
           )}
           type="button"
-          ref={ref}
-          aria-checked={internalIsChecked}
-          // biome-ignore lint/a11y/useSemanticElements: <explanation>
+          aria-checked={checked}
+          data-state={checked ? "checked" : "unchecked"}
+          data-disabled={disabled}
+          // biome-ignore lint/a11y/useSemanticElements:
           role={"checkbox"}
-          value={internalIsChecked ? "on" : "off"}
+          value={checked ? "on" : "off"}
           onClick={() => {
-            if (props.disabled === true) return;
-            setIsChecked((prev) => !prev);
+            if (disabled === true) return;
+            setChecked((prev) => !prev);
           }}
           {...props}
         >
-          {internalIsChecked ? <Check className="h-4 w-4" /> : null}
+          <div className="flex items-center justify-center text-current">
+            {checked ? <Check className="h-4 w-4" /> : null}
+          </div>
         </button>
 
         <input
+          name={props.name}
+          form={props.form}
           type="checkbox"
           aria-hidden="true"
+          data-state={checked ? "checked" : "unchecked"}
+          data-disabled={disabled}
           style="transform: translateX(-100%); position: absolute; pointer-events: none; opacity: 0; margin: 0px; width: 25px; height: 25px;"
           tabIndex={-1}
-          value={internalIsChecked ? "on" : "off"}
-          checked={internalIsChecked}
+          value={checked ? "on" : "off"}
+          checked={checked}
         />
       </>
     );
