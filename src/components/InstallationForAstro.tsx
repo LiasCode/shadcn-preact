@@ -292,11 +292,15 @@ export default function InstallationForVite() {
 
           <p>
             Create a CSS file {"("}e.g.,
-            <code className="mx-2 rounded-sm bg-accent">styles.css</code>
-            {")"}and add the following base styles:
+            <code className="ml-1 rounded-sm bg-accent">styles.css</code>
+            {")"} and add the following base styles:
           </p>
           <HighlightCode
             codeString={`
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  
   @layer base {
     :root {
       --background: 0 0% 100%;
