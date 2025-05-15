@@ -1,5 +1,4 @@
 import { DocsLayout } from "@/components/Layout/DocsLayout";
-import { Alert, AlertDescription, AlertTitle } from "@ui/alert";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,11 +7,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@ui/breadcrumb";
-import { Button, buttonVariants } from "@ui/button";
+import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
-import { cn } from "@ui/share/cn";
-import { AlertCircle, ChevronLeft, ChevronRight, ExternalLink } from "lucide-preact";
+
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { ChevronLeft, ChevronRight } from "lucide-preact";
+import { lazy, Suspense } from "preact/compat";
 import { AppRoutes } from "../AppRoutes";
+
+const InstallationGuideAstro = lazy(() => import("../../components/InstallationForAstro"));
 
 export default function InstallationAstroPage() {
   return (
@@ -43,28 +46,17 @@ export default function InstallationAstroPage() {
         </Breadcrumb>
       }
       title="Astro Installation"
-      description="How to install dependencies and structure your app with Astro."
+      description="How to install dependencies and structure your app with astro."
     >
-      <Alert className="border-yellow-400">
-        <AlertCircle
-          className="h-4 w-4"
-          color="#facc15"
-        />
-        <AlertTitle>Page under construction</AlertTitle>
-        <AlertDescription>Astro guide page is on work in progress.</AlertDescription>
-      </Alert>
-
-      <div className="my-4 flex w-full flex-col">
-        <a
-          className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "w-fit font-normal")}
-          target="_blank"
-          rel="noreferrer"
-          href="https://github.com/LiasCode/shadcn-preact/blob/main/docs/astro-installation.md"
-        >
-          See this guide
-          <ExternalLink />
-        </a>
-      </div>
+      <Suspense
+        fallback={
+          <div className="flex w-full flex-col items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        }
+      >
+        <InstallationGuideAstro />
+      </Suspense>
 
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
