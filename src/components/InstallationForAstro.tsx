@@ -1,89 +1,81 @@
-
 import { Step, StepContent, Steps, StepTitle } from "@ui/steps";
 
 import HighlightCode from "./CodePreview/HighlightCode";
 
-
 export default function InstallationForVite() {
+  return (
+    <Steps>
+      <Step>
+        <StepTitle label="1">Create project</StepTitle>
+        <StepContent>
+          <p>Run the following command to create a new Astro project:</p>
 
-    return (
-        <Steps>
-        <Step>
-          <StepTitle label="1">Create project</StepTitle>
-          <StepContent>
-            <p>Run the following command to create a new Astro project:</p>
-
-            <HighlightCode
-              codeString={`
+          <HighlightCode
+            codeString={`
   bun create astro@latest
               `}
-              lang="bash"
-            />
+            lang="bash"
+          />
 
-            <p>Select your preferred starter template when prompted.</p>
+          <p>Select your preferred starter template when prompted.</p>
+        </StepContent>
+      </Step>
+      <Step>
+        <StepTitle label="2">Add the Preact Integration</StepTitle>
+        <StepContent>
+          <p>To add Preact to your Astro project, execute:</p>
 
-          </StepContent>
-        </Step>
-        <Step>
-          <StepTitle label="2">Add the Preact Integration</StepTitle>
-          <StepContent>
-            <p>To add Preact to your Astro project, execute:</p>
-
-            <HighlightCode
-              codeString={
-                `
+          <HighlightCode
+            codeString={`
   bun run astro add preact
-                `
-              }
-              lang="bash"
-            />
+                `}
+            lang="bash"
+          />
 
-            <p>Type <code className="mx-2 rounded-sm bg-accent px-2">y</code> for all questions to confirm the installation.</p>
+          <p>
+            Type <code className="mx-2 rounded-sm bg-accent px-2">y</code> for all questions to confirm the
+            installation.
+          </p>
+        </StepContent>
+      </Step>
 
-          </StepContent>
-        </Step>
+      <Step>
+        <StepTitle label="3">Add Tailwind CSS 3</StepTitle>
+        <StepContent>
+          <p>
+            Follow the instructions in the{" "}
+            <a
+              class="font-medium underline"
+              href="https://docs.astro.build/en/guides/styling/#legacy-tailwind-3-support"
+            >
+              Astro Tailwind CSS Guide
+            </a>{" "}
+            to add Tailwind CSS.
+          </p>
 
-        <Step>
-          <StepTitle label="3">Add Tailwind CSS 3</StepTitle>
-          <StepContent>
-            {/* <Alert className="border-yellow-400">
-              <AlertCircle
-                className="h-4 w-4"
-                color="#facc15"
-              />
-              <AlertTitle>TailwindCSS version</AlertTitle>
-              <AlertDescription>
-                For now only supports TailwindCSS 3. In the future will support TailwindCSS 4.
-              </AlertDescription>
-            </Alert> */}
+          <p>Run the following command</p>
 
-            <p>
-              Follow the instructions in the{" "}
-              <a class='font-medium underline' href="https://astro.build/blog/tailwind-css">Astro Tailwind CSS Guide</a>
-              {" "}to add Tailwind CSS.
-            </p>
-
-            <p>Run the following command</p>
-
-            <HighlightCode
-              codeString={`
+          <HighlightCode
+            codeString={`
   bun add tailwindcss@3 @astrojs/tailwind
               `}
-              lang="bash"
-            />
+            lang="bash"
+          />
 
-            <h2 class='pt-4 font-semibold' >Update <code class='mx-2 rounded-sm bg-accent px-2'>astro.config.mjs</code></h2>
+          <h2 class="pt-4 font-semibold">
+            Update <code class="mx-2 rounded-sm bg-accent px-2">astro.config.mjs</code>
+          </h2>
 
-            <p>
-              Import the Tailwind integration in your 
-              <code className="mx-2 rounded-sm bg-accent px-2">astro.config.mjs</code>
-              file and add it to the
-              <code className="mx-2 rounded-sm bg-accent px-2">integrations</code>
-                array:
-              </p>
+          <p>
+            Import the Tailwind integration in your
+            <code className="mx-2 rounded-sm bg-accent px-2">astro.config.mjs</code>
+            file and add it to the
+            <code className="mx-2 rounded-sm bg-accent px-2">integrations</code>
+            array:
+          </p>
 
-            <HighlightCode
-              codeString={`
+          <HighlightCode
+            codeString={`
     // @ts-check
   import { defineConfig } from "astro/config";
   import preact from "@astrojs/preact";
@@ -94,16 +86,17 @@ export default function InstallationForVite() {
     integrations: [preact(), tailwind()],
   });
               `}
-              lang="ts"
-            />
+            lang="ts"
+          />
 
-            <h2 class='pt-4 font-semibold' >Configure Tailwind CSS</h2>
-            <p>
-              Add the following basic configuration to your<code className="mx-2 rounded-sm bg-accent px-2">tailwind.config.js</code>file:
-            </p>
+          <h2 class="pt-4 font-semibold">Configure Tailwind CSS</h2>
+          <p>
+            Add the following basic configuration to your
+            <code className="mx-2 rounded-sm bg-accent px-2">tailwind.config.js</code>file:
+          </p>
 
-            <HighlightCode
-              codeString={`
+          <HighlightCode
+            codeString={`
   /** @type {import('tailwindcss').Config} */
   export default {
     content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
@@ -113,19 +106,20 @@ export default function InstallationForVite() {
     plugins: [],
   };
               `}
-              lang="js"
-            />
-          </StepContent>
-        </Step>
+            lang="js"
+          />
+        </StepContent>
+      </Step>
 
-        <Step>
-          <StepTitle label="4">Update TypeScript Configuration</StepTitle>
-          <StepContent>
-            <p>
-             Modify your<code className="mx-2 rounded-sm bg-accent">tsconfig.json</code>to include the following settings:
-            </p>
-            <HighlightCode
-              codeString={`
+      <Step>
+        <StepTitle label="4">Update TypeScript Configuration</StepTitle>
+        <StepContent>
+          <p>
+            Modify your<code className="mx-2 rounded-sm bg-accent">tsconfig.json</code>to include the following
+            settings:
+          </p>
+          <HighlightCode
+            codeString={`
   {
     "compilerOptions": {
       "baseUrl": "./",
@@ -136,25 +130,26 @@ export default function InstallationForVite() {
     }
   }
                 `}
-              lang="json"
-            />
-            <p>Install the Node.js types as a development dependency:</p>
-            <HighlightCode
-              codeString={`
+            lang="json"
+          />
+          <p>Install the Node.js types as a development dependency:</p>
+          <HighlightCode
+            codeString={`
   bun add -D @types/node
               `}
-              lang='bash'
-            />
+            lang="bash"
+          />
 
-            <h2 class='pt-4 font-semibold' >Update <code class='mx-2 rounded-sm bg-accent px-2'>astro.config.mjs</code></h2>
-            
-            <p>
-              Make the following changes to your
-              <code className="mx-2 rounded-sm bg-accent">astro.config.mjs</code>
-              :
-            </p>
-            <HighlightCode
-                codeString={`
+          <h2 class="pt-4 font-semibold">
+            Update <code class="mx-2 rounded-sm bg-accent px-2">astro.config.mjs</code>
+          </h2>
+
+          <p>
+            Make the following changes to your
+            <code className="mx-2 rounded-sm bg-accent">astro.config.mjs</code>:
+          </p>
+          <HighlightCode
+            codeString={`
   // @ts-check
   import { defineConfig } from "astro/config";
   import preact from "@astrojs/preact";
@@ -176,18 +171,19 @@ export default function InstallationForVite() {
     },
   });
                 `}
-                lang='bash'
-              />
-              
-              <h2 class='pt-4 font-semibold' >Update <code class='mx-2 rounded-sm bg-accent px-2'>astro.config.mjs</code></h2>
-            
-            <p>
-              Add the following overrides to your
-              <code className="mx-2 rounded-sm bg-accent">package.json</code>
-              :
-            </p>
-            <HighlightCode
-                codeString={`
+            lang="ts"
+          />
+
+          <h2 class="pt-4 font-semibold">
+            Update <code class="mx-2 rounded-sm bg-accent px-2">astro.config.mjs</code>
+          </h2>
+
+          <p>
+            Add the following overrides to your
+            <code className="mx-2 rounded-sm bg-accent">package.json</code>:
+          </p>
+          <HighlightCode
+            codeString={`
   {
     "overrides": {
       "react": "npm:@preact/compat@latest",
@@ -195,32 +191,35 @@ export default function InstallationForVite() {
     }
   }
                   `}
-                  lang="json"
-              />
-          </StepContent>
-        </Step>
+            lang="json"
+          />
+        </StepContent>
+      </Step>
 
-        <Step>
-          <StepTitle label="5">Install Additional Packages</StepTitle>
-          <StepContent>
-            <p>Run the following command to install additional dependencies:</p>
+      <Step>
+        <StepTitle label="5">Install Additional Packages</StepTitle>
+        <StepContent>
+          <p>Run the following command to install additional dependencies:</p>
 
-            <HighlightCode
-              codeString={`
+          <HighlightCode
+            codeString={`
   bun add class-variance-authority clsx cmdk date-fns dayjs embla-carousel-react input-otp lucide-preact react-day-picker react-hot-toast recharts tailwind-merge tailwindcss-animate vaul @floating-ui/react-dom
               `}
-              lang="bash"
-            />
-            </StepContent>
-        </Step>
+            lang="bash"
+          />
+        </StepContent>
+      </Step>
 
-        <Step>
-          <StepTitle label="6">Update Tailwind CSS Configuration</StepTitle>
-          <StepContent>
-            <p>Modify your<code className="mx-2 rounded-sm bg-accent">tailwind.config.js</code>to include dark mode and extend the theme:</p>
+      <Step>
+        <StepTitle label="6">Update Tailwind CSS Configuration</StepTitle>
+        <StepContent>
+          <p>
+            Modify your<code className="mx-2 rounded-sm bg-accent">tailwind.config.js</code>to include dark mode and
+            extend the theme:
+          </p>
 
-            <HighlightCode
-              codeString={`
+          <HighlightCode
+            codeString={`
   /** @type {import('tailwindcss').Config} */
   export default {
     content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
@@ -290,18 +289,18 @@ export default function InstallationForVite() {
     plugins: [require("tailwindcss-animate")],
   };
                 `}
-              lang="bash"
-            />
+            lang="js"
+          />
 
-            <h2 class='pt-4 font-semibold' >Add Base Styles</h2>
-            
-            <p>
-              Create a CSS file {"("}e.g.,
-              <code className="mx-2 rounded-sm bg-accent">styles.css</code>
-              {")"}and add the following base styles:
-            </p>
-            <HighlightCode
-                codeString={`
+          <h2 class="pt-4 font-semibold">Add Base Styles</h2>
+
+          <p>
+            Create a CSS file {"("}e.g.,
+            <code className="mx-2 rounded-sm bg-accent">styles.css</code>
+            {")"}and add the following base styles:
+          </p>
+          <HighlightCode
+            codeString={`
   @layer base {
     :root {
       --background: 0 0% 100%;
@@ -367,24 +366,23 @@ export default function InstallationForVite() {
     @apply bg-background text-foreground;
   }
                 `}
-                lang='css'
-            />
-            </StepContent>
-        </Step>
-        <Step>
-          <StepTitle label="7">Copy UI Components</StepTitle>
-          <StepContent>
-            <p>To copy the UI components, run the following command:</p>
+            lang="css"
+          />
+        </StepContent>
+      </Step>
+      <Step>
+        <StepTitle label="7">Copy UI Components</StepTitle>
+        <StepContent>
+          <p>To copy the UI components, run the following command:</p>
 
-            <HighlightCode
-              codeString={`
+          <HighlightCode
+            codeString={`
   bunx degit https://github.com/LiasCode/shadcn-preact/src/components/ui ./src/components/ui
               `}
-              lang="bash"
-            />
-            </StepContent>
-        </Step>
-      </Steps>
-    )
+            lang="bash"
+          />
+        </StepContent>
+      </Step>
+    </Steps>
+  );
 }
-

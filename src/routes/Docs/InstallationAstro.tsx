@@ -10,10 +10,10 @@ import {
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 
-import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { AppRoutes } from "../AppRoutes";
-import { lazy, Suspense } from "preact/compat";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { ChevronLeft, ChevronRight } from "lucide-preact";
+import { lazy, Suspense } from "preact/compat";
+import { AppRoutes } from "../AppRoutes";
 
 const InstallationGuideAstro = lazy(() => import("../../components/InstallationForAstro"));
 
@@ -45,8 +45,8 @@ export default function InstallationAstroPage() {
           </BreadcrumbList>
         </Breadcrumb>
       }
-      title="Setting Up an Astro Project with Preact and Tailwind CSS"
-      description="This guide will walk you through creating an Astro project with Preact integration and Tailwind CSS for styling."
+      title="Astro Installation"
+      description="How to install dependencies and structure your app with astro."
     >
       <Suspense
         fallback={
@@ -57,7 +57,7 @@ export default function InstallationAstroPage() {
       >
         <InstallationGuideAstro />
       </Suspense>
-      
+
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
