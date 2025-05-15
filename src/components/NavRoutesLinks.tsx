@@ -20,7 +20,7 @@ export default function NavRoutesLinks() {
         >
           <Button
             variant="link"
-            size="sm"
+            size="default"
             className="w-full justify-start px-2 py-1 font-normal text-muted-foreground capitalize group-data-[route-active=true]:text-foreground"
           >
             Introduction
@@ -34,7 +34,7 @@ export default function NavRoutesLinks() {
         >
           <Button
             variant="link"
-            size="sm"
+            size="default"
             className="w-full justify-start px-2 py-1 font-normal text-muted-foreground capitalize group-data-[route-active=true]:text-foreground"
           >
             Installation
@@ -48,7 +48,7 @@ export default function NavRoutesLinks() {
         >
           <Button
             variant="link"
-            size="sm"
+            size="default"
             className="w-full justify-start px-2 py-1 font-normal text-muted-foreground capitalize group-data-[route-active=true]:text-foreground"
           >
             Theming
@@ -62,7 +62,7 @@ export default function NavRoutesLinks() {
         >
           <Button
             variant="link"
-            size="sm"
+            size="default"
             className="w-full justify-start px-2 py-1 font-normal text-muted-foreground capitalize group-data-[route-active=true]:text-foreground"
           >
             Examples
@@ -82,7 +82,7 @@ export default function NavRoutesLinks() {
         >
           <Button
             variant="link"
-            size="sm"
+            size="default"
             className="w-full justify-start px-2 py-1 font-normal text-muted-foreground capitalize group-data-[route-active=true]:text-foreground"
           >
             Vite
@@ -96,7 +96,7 @@ export default function NavRoutesLinks() {
         >
           <Button
             variant="link"
-            size="sm"
+            size="default"
             className="w-full justify-start px-2 py-1 font-normal text-muted-foreground capitalize group-data-[route-active=true]:text-foreground"
           >
             Astro
@@ -121,7 +121,7 @@ export default function NavRoutesLinks() {
               >
                 <Button
                   variant="link"
-                  size="sm"
+                  size="default"
                   className="w-full justify-start px-2 py-1 font-normal text-muted-foreground capitalize group-data-[route-active=true]:text-foreground"
                 >
                   {name.split("_").join(" ").toLocaleLowerCase()}
