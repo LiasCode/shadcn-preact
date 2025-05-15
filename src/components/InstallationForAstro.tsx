@@ -174,10 +174,6 @@ export default function InstallationForVite() {
             lang="ts"
           />
 
-          <h2 class="pt-4 font-semibold">
-            Update <code class="mx-2 rounded-sm bg-accent px-2">astro.config.mjs</code>
-          </h2>
-
           <p>
             Add the following overrides to your
             <code className="mx-2 rounded-sm bg-accent">package.json</code>:
