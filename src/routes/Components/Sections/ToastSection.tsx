@@ -54,6 +54,29 @@ export function ToastSection() {
 
       <h2 className="w-full border-b-2 pb-1 font-semibold text-2xl">Usage</h2>
 
+      <p>
+        Add the global <code className="bg-accent px-1">{"<Toaster />"}</code> in the root of your app
+      </p>
+
+      <HighlightCode
+        lang="tsx"
+        codeString={`
+  import { Toaster } from "@ui/toast";
+
+  export function App() {
+    return (
+      <div>
+        <Toaster position="bottom-right" />
+      </div>
+    );
+  }
+
+`}
+      />
+      <p>
+        Now you can start to use the <code className="bg-accent px-1">{"toast()"}</code> method
+      </p>
+
       <HighlightCode
         lang="tsx"
         codeString={`
