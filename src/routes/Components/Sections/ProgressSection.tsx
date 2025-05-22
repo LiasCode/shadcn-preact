@@ -86,7 +86,7 @@ function ProgressDemo() {
   const [progress, setProgress] = useState(13);
 
   useEffect(() => {
-    const timer = setTimeout(() => setProgress(80), 1000);
+    const timer = setTimeout(() => setProgress(66), 500);
     return () => clearTimeout(timer);
   }, []);
 

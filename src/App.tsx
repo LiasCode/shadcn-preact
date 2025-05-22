@@ -48,7 +48,7 @@ import HomePage from "./routes/Home";
 export function App() {
   return (
     <LocationProvider>
-      <ThemeProvider>
+      <ThemeProvider default_theme="dark">
         <Toaster position="bottom-right" />
 
         <Router>

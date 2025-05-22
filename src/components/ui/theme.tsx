@@ -11,10 +11,12 @@ const ThemeContext = createContext<{
   theme: "light",
 });
 
-export type ThemeProviderProps = PropsWithChildren;
+export type ThemeProviderProps = PropsWithChildren & {
+  default_theme?: ThemeOption;
+};
 
 export const ThemeProvider = (props: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<ThemeOption>(getThemeFromLocalStorage());
+  const [theme, setTheme] = useState<ThemeOption>(() => getThemeFromLocalStorage(props.default_theme));
 
   useEffect(() => {
     if (theme === "light") {
@@ -35,11 +37,11 @@ export const useTheme = () => {
   return c;
 };
 
-export function getThemeFromLocalStorage(): ThemeOption {
+export function getThemeFromLocalStorage(default_theme?: ThemeOption): ThemeOption {
   if (typeof window !== "undefined") {
-    return (localStorage.getItem("--theme--") || "light") as ThemeOption;
+    return (localStorage.getItem("--theme--") || default_theme || "light") as ThemeOption;
   }
-  return "light";
+  return default_theme || "light";
 }
 
 export function setThemeFromLocalStorage(t: ThemeOption) {
