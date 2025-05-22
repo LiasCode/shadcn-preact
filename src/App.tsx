@@ -25,6 +25,7 @@ import InputPage from "./routes/Components/Input";
 import InputOtpPage from "./routes/Components/InputOtp";
 import LabelPage from "./routes/Components/Label";
 import PopoverPage from "./routes/Components/Popover";
+import ProgressPage from "./routes/Components/Progress";
 import SelectPage from "./routes/Components/Select";
 import SeparatorPage from "./routes/Components/Separator";
 import SheetPage from "./routes/Components/Sheet";
@@ -229,6 +230,11 @@ export function App() {
           <Route
             component={AlertPage}
             path={AppRoutes.COMPONENTS.ALERT}
+          />
+
+          <Route
+            component={ProgressPage}
+            path={AppRoutes.COMPONENTS.PROGRESS}
           />
 
           <Route
