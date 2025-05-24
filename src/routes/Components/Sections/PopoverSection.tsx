@@ -101,12 +101,12 @@ export function PopoverSection() {
             </a>
           </PaginationItem>
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.SELECT}>
+            <a href={AppRoutes.COMPONENTS.PROGRESS}>
               <Button
                 className="gap-1 pr-1 capitalize"
                 variant="outline"
               >
-                Select
+                Progress
                 <ChevronRight />
               </Button>
             </a>

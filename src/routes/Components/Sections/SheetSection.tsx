@@ -247,13 +247,13 @@ export function SheetSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.SELECT}>
+            <a href={AppRoutes.COMPONENTS.SEPARATOR}>
               <Button
                 className="gap-1 pl-1"
                 variant="outline"
               >
                 <ChevronLeft />
-                Select
+                Separator
               </Button>
             </a>
           </PaginationItem>

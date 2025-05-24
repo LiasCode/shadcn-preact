@@ -163,23 +163,23 @@ export function SelectSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.POPOVER}>
+            <a href={AppRoutes.COMPONENTS.PROGRESS}>
               <Button
                 className="gap-1 pl-1"
                 variant="outline"
               >
                 <ChevronLeft />
-                Popover
+                Progress
               </Button>
             </a>
           </PaginationItem>
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.SHEET}>
+            <a href={AppRoutes.COMPONENTS.SEPARATOR}>
               <Button
                 className="gap-1 pr-1 capitalize"
                 variant="outline"
               >
-                Sheet
+                Separator
                 <ChevronRight />
               </Button>
             </a>

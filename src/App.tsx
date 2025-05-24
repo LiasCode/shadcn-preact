@@ -8,6 +8,7 @@ import { AppRoutes } from "./routes/AppRoutes";
 import AccordionPage from "./routes/Components/Accordion";
 import AlertPage from "./routes/Components/Alert";
 import AlertDialogPage from "./routes/Components/AlertDialog";
+import AspectRatioPage from "./routes/Components/AspectRatio";
 import AvatarPage from "./routes/Components/Avatar";
 import BadgePage from "./routes/Components/Badge";
 import BreadcrumbsPage from "./routes/Components/Breadcrumb";
@@ -200,6 +201,11 @@ export function App() {
           <Route
             component={InputOtpPage}
             path={AppRoutes.COMPONENTS.INPUT_OTP}
+          />
+
+          <Route
+            component={AspectRatioPage}
+            path={AppRoutes.COMPONENTS.ASPECT_RATIO}
           />
 
           <Route

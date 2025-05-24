@@ -61,23 +61,23 @@ export function SeparatorSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.SHEET}>
+            <a href={AppRoutes.COMPONENTS.SELECT}>
               <Button
                 className="gap-1 pl-1"
                 variant="outline"
               >
                 <ChevronLeft />
-                Sheet
+                Select
               </Button>
             </a>
           </PaginationItem>
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.SWITCH}>
+            <a href={AppRoutes.COMPONENTS.SHEET}>
               <Button
                 className="gap-1 pr-1 capitalize"
                 variant="outline"
               >
-                Switch
+                Sheet
                 <ChevronRight />
               </Button>
             </a>

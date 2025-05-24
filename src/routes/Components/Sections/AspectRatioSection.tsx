@@ -1,35 +1,34 @@
 import { CodePreviewTabs } from "@/components/CodePreview/CodePreviewTabs";
 import HighlightCode from "@/components/CodePreview/HighlightCode";
-import { Progress } from "@/components/ui/progress";
 import { AppRoutes } from "@/routes/AppRoutes";
+import { AspectRatio } from "@ui/aspect-ratio";
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
-import { useEffect, useState } from "preact/hooks";
 
-export function ProgressSection() {
+export function AspectRatioSection() {
   return (
     <div className="flex w-full flex-col gap-6">
       <CodePreviewTabs
         codeString={`
-  import { Progress } from "@/components/ui/progress";
-  import { useEffect, useState } from "preact/hooks";
+  import { AspectRatio } from "@ui/aspect-ratio";
 
-  export function ProgressDemo() {
-    const [progress, setProgress] = useState(13);
-
-    useEffect(() => {
-      const timer = setTimeout(() => setProgress(66), 500);
-      return () => clearTimeout(timer);
-    }, []);
-
-    return <Progress value={progress} className="w-[60%]" />;
+  export function AspectRatioDemo() {
+    return (
+      <AspectRatio ratio={16 / 9} className="bg-muted">
+        <img
+          src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+          alt="Photo by Drew Beamer"
+          className="h-full w-full rounded-md object-cover"
+        />
+      </AspectRatio>
+    );
   }
 
 `}
         previewElement={
           <div className="flex w-full items-center justify-center space-x-2">
-            <ProgressDemo />
+            <AspectRatioDemo />
           </div>
         }
       />
@@ -39,7 +38,7 @@ export function ProgressSection() {
       <HighlightCode
         lang="tsx"
         codeString={`
-  import { Progress } from "@/components/ui/progress";
+  import { AspectRatio } from "@ui/aspect-ratio"
 
 `}
       />
@@ -47,7 +46,11 @@ export function ProgressSection() {
       <HighlightCode
         lang="tsx"
         codeString={`
-  <Progress value={33} />
+  <div className="w-[450px]">
+    <AspectRatio ratio={16 / 9}>
+      <img src="..." alt="Image" className="rounded-md object-cover" />
+    </AspectRatio>
+  </div>
 
 `}
       />
@@ -55,23 +58,23 @@ export function ProgressSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.POPOVER}>
+            <a href={AppRoutes.COMPONENTS.ALERT_DIALOG}>
               <Button
                 className="gap-1 pl-1"
                 variant="outline"
               >
                 <ChevronLeft />
-                Popover
+                Alert Dialog
               </Button>
             </a>
           </PaginationItem>
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.SELECT}>
+            <a href={AppRoutes.COMPONENTS.AVATAR}>
               <Button
                 className="gap-1 pr-1 capitalize"
                 variant="outline"
               >
-                Select
+                Avatar
                 <ChevronRight />
               </Button>
             </a>
@@ -82,18 +85,20 @@ export function ProgressSection() {
   );
 }
 
-function ProgressDemo() {
-  const [progress, setProgress] = useState(13);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setProgress(66), 500);
-    return () => clearTimeout(timer);
-  }, []);
-
+export function AspectRatioDemo() {
   return (
-    <Progress
-      value={progress}
-      className="w-[60%]"
-    />
+    <div className="w-[450px]">
+      <AspectRatio
+        ratio={16 / 9}
+        className="bg-muted"
+      >
+        <img
+          src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+          // biome-ignore lint/a11y/noRedundantAlt: <explanation>
+          alt="Photo by Drew Beamer"
+          className="h-full w-full rounded-md object-cover"
+        />
+      </AspectRatio>
+    </div>
   );
 }

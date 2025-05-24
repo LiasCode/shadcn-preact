@@ -12,6 +12,7 @@ export const AppRoutes = {
     ACCORDION: "/component/accordion",
     ALERT: "/component/alert",
     AVATAR: "/component/avatar",
+    ASPECT_RATIO: "/component/aspect-ratio",
     ALERT_DIALOG: "/component/alert-dialog",
     TABS: "/component/tabs",
     BADGE: "/component/badge",

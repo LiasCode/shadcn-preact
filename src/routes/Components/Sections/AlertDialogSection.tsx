@@ -138,12 +138,12 @@ export function AlertDialogSection() {
             </a>
           </PaginationItem>
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.AVATAR}>
+            <a href={AppRoutes.COMPONENTS.ASPECT_RATIO}>
               <Button
                 className="gap-1 pr-1 capitalize"
                 variant="outline"
               >
-                Avatar
+                Aspect Ratio
                 <ChevronRight />
               </Button>
             </a>

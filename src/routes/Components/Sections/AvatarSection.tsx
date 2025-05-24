@@ -62,13 +62,13 @@ export function AvatarSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.ALERT_DIALOG}>
+            <a href={AppRoutes.COMPONENTS.ASPECT_RATIO}>
               <Button
                 className="gap-1 pl-1"
                 variant="outline"
               >
                 <ChevronLeft />
-                Alert Dialog
+                Aspect Ratio
               </Button>
             </a>
           </PaginationItem>
