@@ -67,10 +67,7 @@ const SheetContent = forwardRef<ElementRef<typeof DialogContent>, SheetContentPr
 
     return (
       <Show when={open}>
-        <Modal
-          onClose={closeDialog}
-          show={true}
-        >
+        <Modal onClose={closeDialog}>
           <div
             ref={contentRef}
             onMouseDown={(e) => {

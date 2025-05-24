@@ -70,10 +70,7 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
 
     return (
       <Show when={open}>
-        <Modal
-          onClose={closeDialog}
-          show={true}
-        >
+        <Modal onClose={closeDialog}>
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div
               ref={contentRef}

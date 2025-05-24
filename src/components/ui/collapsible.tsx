@@ -28,16 +28,19 @@ export type CollapsibleProps = PropsWithChildren<HTMLAttributes<HTMLDivElement>>
 };
 
 export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
-  ({
-    children,
-    open: controlledOpen,
-    onOpenChange,
-    defaultOpen,
-    class: classNative,
-    className,
-    disabled,
-    ...props
-  }: CollapsibleProps) => {
+  (
+    {
+      children,
+      open: controlledOpen,
+      onOpenChange,
+      defaultOpen,
+      class: classNative,
+      className,
+      disabled,
+      ...props
+    }: CollapsibleProps,
+    forwardedRef
+  ) => {
     const [isOpen, setIsOpen] = useState(
       defaultOpen !== undefined ? defaultOpen : controlledOpen !== undefined ? controlledOpen : false
     );
@@ -63,6 +66,7 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
     return (
       <CollapsibleContext.Provider value={{ isOpen, open, close, disabled: Boolean(disabled) }}>
         <Comp
+          ref={forwardedRef}
           data-state={isOpen ? "open" : "closed"}
           data-disabled={disabled}
           className={cn(className, classNative)}
@@ -107,12 +111,13 @@ CollapsibleTrigger.displayName = "CollapsibleTrigger";
 export type CollapsibleContentProps = HTMLAttributes<HTMLDivElement>;
 
 export const CollapsibleContent = forwardRef<HTMLDivElement, CollapsibleContentProps>(
-  ({ children, className, class: classNative, ...props }) => {
+  ({ children, className, class: classNative, ...props }, forwardedRef) => {
     const { isOpen, disabled } = useCollapsible();
 
     return (
       <Show when={isOpen}>
         <div
+          ref={forwardedRef}
           data-state={isOpen ? "open" : "closed"}
           data-disabled={disabled}
           className={cn(className, classNative)}

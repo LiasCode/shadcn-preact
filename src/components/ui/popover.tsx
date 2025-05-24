@@ -12,6 +12,7 @@ import { Modal } from "./modal";
 import { cn } from "./share/cn";
 import { debounce } from "./share/debounce";
 import { Slot } from "./share/slot";
+import { Show } from "./show";
 
 type PopoverContextT = {
   isOpen: boolean;
@@ -128,28 +129,29 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
     }, [isOpen, ref.floating]);
 
     return (
-      <Modal
-        onClose={close}
-        show={isOpen}
-        className="bg-transparent"
-      >
-        <div
-          data-popover-id={id}
-          ref={ref.setFloating}
-          onMouseDown={(e) => e.stopPropagation()}
-          style={floatingStyles}
-          data-state={isOpen ? "open" : "closed"}
-          data-side={side || "bottom"}
-          className={cn(
-            "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=closed]:animate-out data-[state=open]:animate-in",
-            className,
-            classNative
-          )}
-          {...props}
+      <Show when={isOpen}>
+        <Modal
+          onClose={close}
+          className="bg-transparent"
         >
-          {children}
-        </div>
-      </Modal>
+          <div
+            data-popover-id={id}
+            ref={ref.setFloating}
+            onMouseDown={(e) => e.stopPropagation()}
+            style={floatingStyles}
+            data-state={isOpen ? "open" : "closed"}
+            data-side={side || "bottom"}
+            className={cn(
+              "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=closed]:animate-out data-[state=open]:animate-in",
+              className,
+              classNative
+            )}
+            {...props}
+          >
+            {children}
+          </div>
+        </Modal>
+      </Show>
     );
   }
 );

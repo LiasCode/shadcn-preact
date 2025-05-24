@@ -30,9 +30,6 @@ export function AlertDialog({ open: controlledOpen, defaultOpen, children, onOpe
     defaultOpen !== undefined ? defaultOpen : controlledOpen !== undefined ? controlledOpen : false
   );
 
-  const openDialog = () => setOpen(true);
-  const closeDialog = () => setOpen(false);
-
   // biome-ignore lint/correctness/useExhaustiveDependencies:
   useEffect(() => {
     if (onOpenChange && open !== controlledOpen) {
@@ -50,8 +47,8 @@ export function AlertDialog({ open: controlledOpen, defaultOpen, children, onOpe
       value={{
         open,
         defaultOpen,
-        openDialog,
-        closeDialog,
+        openDialog: () => setOpen(true),
+        closeDialog: () => setOpen(false),
       }}
     >
       {children}
@@ -99,7 +96,7 @@ export const AlertDialogContent = forwardRef<HTMLDivElement, AlertDialogContentP
 
     return (
       <Show when={open}>
-        <Modal show={true}>
+        <Modal>
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div
               ref={forwardedRef}

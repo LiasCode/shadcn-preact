@@ -1,28 +1,23 @@
-import { type HTMLAttributes, type PropsWithChildren, createPortal, forwardRef, useEffect } from "preact/compat";
+import { type HTMLAttributes, type PropsWithChildren, forwardRef, useEffect } from "preact/compat";
+import { Portal } from "./portal";
 import { cn } from "./share/cn";
 import { getScrollBarWidth } from "./share/getScrollBarWidth";
-import { Show } from "./show";
 
 export type ModalProps = PropsWithChildren<
   HTMLAttributes<HTMLDivElement> & {
     onClose?: () => void;
-    show: boolean;
   }
 >;
 
-export const Modal = forwardRef<HTMLDivElement, ModalProps>(({ show, ...props }, ref) => {
-  if (typeof window !== "undefined") {
-    return createPortal(
-      <Show when={show}>
-        <ModalContent
-          {...props}
-          ref={ref}
-        />
-      </Show>,
-      document.body
-    );
-  }
-  return null;
+export const Modal = forwardRef<HTMLDivElement, ModalProps>(({ ...props }, ref) => {
+  return (
+    <Portal>
+      <ModalContent
+        {...props}
+        ref={ref}
+      />
+    </Portal>
+  );
 });
 Modal.displayName = "Modal";
 
@@ -40,6 +35,8 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
       modal_counter += 1;
 
       const scrollbarWidth = getScrollBarWidth(document.body);
+      // TODO: future use for remember previous body margin
+      // const marginRigthComputed = document.body.computedStyleMap().get("margin-right")
       document.body.classList.add("overflow-hidden");
       document.body.style.marginRight = `${scrollbarWidth}px`;
 

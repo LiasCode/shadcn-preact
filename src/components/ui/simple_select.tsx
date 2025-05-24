@@ -11,6 +11,7 @@ import {
 import { Button } from "./button";
 import { Modal } from "./modal";
 import { cn } from "./share/cn";
+import { Show } from "./show";
 
 export type SelectProps = PropsWithChildren & {
   onChange?: (value: string) => void;
@@ -62,34 +63,35 @@ export const SimpleSelect = forwardRef<HTMLButtonElement, SelectProps>(
           <ChevronDown className="h-4 w-4 text-foreground" />
         </Button>
 
-        <Modal
-          show={open}
-          onClose={() => setOpen(false)}
-          className="bg-transparent"
-        >
-          <div
-            ref={refs.setFloating}
-            style={floatingStyles}
-            className="flex max-h-[96vh] w-fit min-w-[200px] flex-col overflow-auto rounded-md border border-border bg-background p-1 shadow"
+        <Show when={open}>
+          <Modal
+            onClose={() => setOpen(false)}
+            className="bg-transparent"
           >
-            {props.data.map((item) => (
-              <SelectItem
-                key={item.value}
-                value={item.value}
-                title={item.title}
-                className={cn(className, classNative)}
-                selected={item.value === value}
-                onSelect={() => {
-                  setValue(item.value);
-                  setOpen(false);
-                  if (props.onChange !== undefined) {
-                    props.onChange(item.value);
-                  }
-                }}
-              />
-            ))}
-          </div>
-        </Modal>
+            <div
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className="flex max-h-[96vh] w-fit min-w-[200px] flex-col overflow-auto rounded-md border border-border bg-background p-1 shadow"
+            >
+              {props.data.map((item) => (
+                <SelectItem
+                  key={item.value}
+                  value={item.value}
+                  title={item.title}
+                  className={cn(className, classNative)}
+                  selected={item.value === value}
+                  onSelect={() => {
+                    setValue(item.value);
+                    setOpen(false);
+                    if (props.onChange !== undefined) {
+                      props.onChange(item.value);
+                    }
+                  }}
+                />
+              ))}
+            </div>
+          </Modal>
+        </Show>
       </>
     );
   }

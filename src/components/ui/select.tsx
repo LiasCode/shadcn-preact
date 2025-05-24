@@ -379,31 +379,32 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
     }, [value]);
 
     return (
-      <Modal
-        onClose={closeSelect}
-        show={isOpen}
-        className="bg-transparent"
-      >
-        <div
-          data-select-id={id}
-          ref={ref.setFloating}
-          onMouseDown={(e) => e.stopPropagation()}
-          style={{
-            ...floatingStyles,
-            minWidth: `${triggerWidth}px`,
-            maxHeight: `${maxHeight}px`,
-          }}
-          data-state={isOpen ? "open" : "closed"}
-          className={cn(
-            "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 flex h-fit flex-col overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
-            className,
-            classNative
-          )}
-          {...props}
+      <Show when={isOpen}>
+        <Modal
+          onClose={closeSelect}
+          className="bg-transparent"
         >
-          {children}
-        </div>
-      </Modal>
+          <div
+            data-select-id={id}
+            ref={ref.setFloating}
+            onMouseDown={(e) => e.stopPropagation()}
+            style={{
+              ...floatingStyles,
+              minWidth: `${triggerWidth}px`,
+              maxHeight: `${maxHeight}px`,
+            }}
+            data-state={isOpen ? "open" : "closed"}
+            className={cn(
+              "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 flex h-fit flex-col overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
+              className,
+              classNative
+            )}
+            {...props}
+          >
+            {children}
+          </div>
+        </Modal>
+      </Show>
     );
   }
 );
