@@ -23,7 +23,7 @@ import {
   PaginationPrevious,
 } from "@ui/pagination";
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@ui/table";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@ui/tooltip";
 import { ChevronLeft, ChevronRight, Trash } from "lucide-preact";
 
 export function TableSection() {
@@ -199,7 +199,7 @@ export function TableSection() {
     PaginationPrevious,
   } from "@ui/pagination";
   import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@ui/table";
-  import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@ui/tooltip";
+  import { Tooltip, TooltipContent, TooltipTrigger } from "@ui/tooltip";
   import { Trash } from "lucide-preact";
 
   const data: { title: string; pages: number; author: string; price: string }[] = [
@@ -290,25 +290,23 @@ export function TableSection() {
               <TableCell className="text-end">{b.price}</TableCell>
               <TableCell className="flex flex-row items-center justify-center text-center">
                 <AlertDialog>
-                  <TooltipProvider side="left">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="h-fit w-fit">
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              size="icon"
-                              variant="destructive"
-                            >
-                              <Trash className="h-4 w-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="text-sm">Remove</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Tooltip side="left">
+                    <TooltipTrigger asChild>
+                      <div className="h-fit w-fit">
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            size="icon"
+                            variant="destructive"
+                          >
+                            <Trash className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-sm">Remove</p>
+                    </TooltipContent>
+                  </Tooltip>
 
                   <AlertDialogContent>
                     <AlertDialogHeader>
@@ -568,25 +566,23 @@ export function TableWithActions() {
               <TableCell className="text-end">{b.price}</TableCell>
               <TableCell className="flex flex-row items-center justify-center text-center">
                 <AlertDialog>
-                  <TooltipProvider side="left">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="h-fit w-fit">
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              size="icon"
-                              variant="destructive"
-                            >
-                              <Trash className="h-4 w-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="text-sm">Remove</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Tooltip side="left">
+                    <TooltipTrigger asChild>
+                      <div className="h-fit w-fit">
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            size="icon"
+                            variant="destructive"
+                          >
+                            <Trash className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-sm">Remove</p>
+                    </TooltipContent>
+                  </Tooltip>
 
                   <AlertDialogContent>
                     <AlertDialogHeader>

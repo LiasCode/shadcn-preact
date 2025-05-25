@@ -3,7 +3,7 @@ import HighlightCode from "@/components/CodePreview/HighlightCode";
 import { AppRoutes } from "@/routes/AppRoutes";
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@ui/tooltip";
 import { ChevronLeft } from "lucide-preact";
 
 export function TooltipSection() {
@@ -15,38 +15,33 @@ export function TooltipSection() {
   import {
     Tooltip,
     TooltipContent,
-    TooltipProvider,
     TooltipTrigger,
   } from "@ui/tooltip"
 
   export function TooltipDemo() {
     return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="outline">Hover</Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Add to library</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="outline">Hover</Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Add to library</p>
+        </TooltipContent>
+      </Tooltip>
     )
   }
 
 `}
         previewElement={
           <div className="flex w-full flex-col items-center justify-center space-x-2 *:max-w-screen-md">
-            <TooltipProvider side="bottom">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="outline">Hover</Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Add to library</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Tooltip side="bottom">
+              <TooltipTrigger asChild>
+                <Button variant="outline">Hover</Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Add to library</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         }
       />
@@ -59,7 +54,6 @@ export function TooltipSection() {
   import {
     Tooltip,
     TooltipContent,
-    TooltipProvider,
     TooltipTrigger,
   } from "@ui/tooltip"
 
@@ -69,14 +63,12 @@ export function TooltipSection() {
       <HighlightCode
         lang="tsx"
         codeString={`
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger>Hover</TooltipTrigger>
-      <TooltipContent>
-        <p>Add to library</p>
-      </TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger>Hover</TooltipTrigger>
+    <TooltipContent>
+      <p>Add to library</p>
+    </TooltipContent>
+  </Tooltip>
 
 `}
       />
