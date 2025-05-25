@@ -5,15 +5,16 @@ import {
   createContext,
   forwardRef,
 } from "preact/compat";
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useContext } from "preact/hooks";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
+import { useControlledState } from "./share/useControlledState";
 import { Show } from "./show";
 
 export type CollapsibleContextT = {
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
+  open: boolean;
+  openCollapsible: () => void;
+  closeCollapsible: () => void;
   disabled: boolean;
 };
 
@@ -41,33 +42,26 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
     }: CollapsibleProps,
     forwardedRef
   ) => {
-    const [isOpen, setIsOpen] = useState(
-      defaultOpen !== undefined ? defaultOpen : controlledOpen !== undefined ? controlledOpen : false
-    );
-
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
-      if (onOpenChange && isOpen !== controlledOpen) {
-        onOpenChange(isOpen);
-      }
-    }, [isOpen]);
-
-    useEffect(() => {
-      if (controlledOpen !== undefined) {
-        setIsOpen(controlledOpen);
-      }
-    }, [controlledOpen]);
-
-    const open = () => setIsOpen(true);
-    const close = () => setIsOpen(false);
+    const [open, setOpen] = useControlledState({
+      defaultValue: Boolean(defaultOpen),
+      controlledValue: controlledOpen,
+      onChange: onOpenChange,
+    });
 
     const Comp = props.asChild ? Slot : "div";
 
     return (
-      <CollapsibleContext.Provider value={{ isOpen, open, close, disabled: Boolean(disabled) }}>
+      <CollapsibleContext.Provider
+        value={{
+          open,
+          openCollapsible: () => setOpen(true),
+          closeCollapsible: () => setOpen(false),
+          disabled: Boolean(disabled),
+        }}
+      >
         <Comp
           ref={forwardedRef}
-          data-state={isOpen ? "open" : "closed"}
+          data-state={open ? "open" : "closed"}
           data-disabled={disabled}
           className={cn(className, classNative)}
           {...props}
@@ -90,13 +84,13 @@ export type CollapsibleTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & 
 
 export const CollapsibleTrigger = forwardRef<HTMLButtonElement, CollapsibleTriggerProps>(
   ({ children, asChild, ...props }, forwardedRef) => {
-    const { open, close, isOpen, disabled } = useCollapsible();
+    const { openCollapsible, closeCollapsible, open, disabled } = useCollapsible();
     const Comp = asChild ? Slot : "button";
 
     return (
       <Comp
-        onClick={() => (isOpen ? close() : open())}
-        data-state={isOpen ? "open" : "closed"}
+        onClick={() => (open ? closeCollapsible() : openCollapsible())}
+        data-state={open ? "open" : "closed"}
         data-disabled={disabled}
         ref={forwardedRef}
         {...props}
@@ -112,13 +106,13 @@ export type CollapsibleContentProps = HTMLAttributes<HTMLDivElement>;
 
 export const CollapsibleContent = forwardRef<HTMLDivElement, CollapsibleContentProps>(
   ({ children, className, class: classNative, ...props }, forwardedRef) => {
-    const { isOpen, disabled } = useCollapsible();
+    const { open, disabled } = useCollapsible();
 
     return (
-      <Show when={isOpen}>
+      <Show when={open}>
         <div
           ref={forwardedRef}
-          data-state={isOpen ? "open" : "closed"}
+          data-state={open ? "open" : "closed"}
           data-disabled={disabled}
           className={cn(className, classNative)}
           {...props}

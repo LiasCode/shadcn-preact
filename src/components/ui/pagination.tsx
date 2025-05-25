@@ -14,9 +14,9 @@ const Pagination = ({ className, class: classNative, ...props }: ComponentProps<
 Pagination.displayName = "Pagination";
 
 const PaginationContent = forwardRef<HTMLUListElement, ComponentProps<"ul">>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <ul
-      ref={ref}
+      ref={forwardedRef}
       className={cn("flex flex-row items-center gap-1", className, classNative)}
       {...props}
     />
@@ -25,9 +25,9 @@ const PaginationContent = forwardRef<HTMLUListElement, ComponentProps<"ul">>(
 PaginationContent.displayName = "PaginationContent";
 
 const PaginationItem = forwardRef<HTMLLIElement, ComponentProps<"li">>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <li
-      ref={ref}
+      ref={forwardedRef}
       className={cn("", className, classNative)}
       {...props}
     />

@@ -1,6 +1,7 @@
 import { type VariantProps, cva } from "class-variance-authority";
-import { type ButtonHTMLAttributes, forwardRef, useEffect, useState } from "preact/compat";
+import { type ButtonHTMLAttributes, forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
+import { useControlledState } from "./share/useControlledState";
 
 export const toggleVariants = cva(
   "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors md:hover:bg-muted md:hover:text-muted-foreground md:focus-visible:outline-none md:focus-visible:ring-1 md:focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -32,20 +33,11 @@ export type ToggleProps = ButtonHTMLAttributes<HTMLButtonElement> &
 
 export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
   ({ className, class: classNative, variant, size, ...props }, ref) => {
-    const [isOn, setIsOn] = useState(props.pressed ? props.pressed : props.defaultPressed || false);
-
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
-      if (props.onPressedChange) {
-        props.onPressedChange(isOn);
-      }
-    }, [isOn]);
-
-    useEffect(() => {
-      if (props.pressed) {
-        setIsOn(props.pressed);
-      }
-    }, [props.pressed]);
+    const [isOn, setIsOn] = useControlledState({
+      defaultValue: Boolean(props.defaultPressed),
+      controlledValue: props.pressed,
+      onChange: props.onPressedChange,
+    });
 
     return (
       <button

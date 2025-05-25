@@ -1,6 +1,7 @@
 import { Check } from "lucide-preact";
-import { type ButtonHTMLAttributes, forwardRef, useLayoutEffect, useState } from "preact/compat";
+import { type ButtonHTMLAttributes, forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
+import { useControlledState } from "./share/useControlledState";
 
 type CheckedState = boolean;
 
@@ -26,22 +27,11 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
     },
     forwardedRef
   ) => {
-    const [checked, setChecked] = useState<CheckedState>(
-      defaultChecked !== undefined ? defaultChecked : controlledChecked || false
-    );
-
-    // biome-ignore lint/correctness/useExhaustiveDependencies:
-    useLayoutEffect(() => {
-      if (onCheckedChange && controlledChecked !== checked) {
-        onCheckedChange(checked);
-      }
-    }, [checked]);
-
-    useLayoutEffect(() => {
-      if (controlledChecked !== undefined) {
-        setChecked(controlledChecked);
-      }
-    }, [controlledChecked]);
+    const [checked, setChecked] = useControlledState({
+      defaultValue: Boolean(defaultChecked),
+      controlledValue: controlledChecked,
+      onChange: onCheckedChange,
+    });
 
     return (
       <>

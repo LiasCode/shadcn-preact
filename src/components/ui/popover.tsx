@@ -7,18 +7,19 @@ import {
   createContext,
   forwardRef,
 } from "preact/compat";
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useContext, useEffect } from "preact/hooks";
 import { Modal } from "./modal";
 import { cn } from "./share/cn";
 import { debounce } from "./share/debounce";
 import { Slot } from "./share/slot";
+import { useControlledState } from "./share/useControlledState";
 import { Show } from "./show";
 
 type PopoverContextT = {
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
-  id: string;
+  open: boolean;
+  defaultOpen?: boolean;
+  openPopover: () => void;
+  closePopover: () => void;
   ref: {
     reference: MutableRefObject<HTMLButtonElement | null>;
     floating: React.MutableRefObject<HTMLElement | null>;
@@ -38,15 +39,19 @@ export type PopoverProps = PropsWithChildren & {
   alignOffset?: number;
   onOpenChange?: (o: boolean) => void;
   open?: boolean;
+  defaultOpen?: boolean;
   alignment?: "start" | "end";
 };
 
-export function Popover({ children, open: controlledOpen, onOpenChange, ...props }: PopoverProps) {
-  const [isOpen, setIsOpen] = useState(controlledOpen !== undefined ? controlledOpen : false);
-  const [popover_id] = useState(Math.random().toString());
+export function Popover({ children, open: controlledOpen, defaultOpen, onOpenChange, ...props }: PopoverProps) {
+  const [open, setOpen] = useControlledState({
+    defaultValue: Boolean(defaultOpen),
+    controlledValue: controlledOpen,
+    onChange: onOpenChange,
+  });
 
   const { refs, floatingStyles } = useFloating<HTMLButtonElement>({
-    open: isOpen,
+    open: open,
     strategy: "fixed",
     middleware: [
       autoPlacement({
@@ -64,25 +69,21 @@ export function Popover({ children, open: controlledOpen, onOpenChange, ...props
     transform: false,
   });
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (onOpenChange && isOpen !== controlledOpen) {
-      onOpenChange(isOpen);
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (controlledOpen !== undefined) {
-      setIsOpen(controlledOpen);
-    }
-  }, [controlledOpen]);
-
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const openPopover = () => setOpen(true);
+  const closePopover = () => setOpen(false);
 
   return (
     <PopoverContext.Provider
-      value={{ isOpen, open, close, id: popover_id, ref: refs, floatingStyles, delay: props.delay, side: props.side }}
+      value={{
+        closePopover,
+        openPopover,
+        open,
+        defaultOpen: defaultOpen,
+        ref: refs,
+        floatingStyles,
+        delay: props.delay,
+        side: props.side,
+      }}
     >
       {children}
     </PopoverContext.Provider>
@@ -98,9 +99,9 @@ export function usePopover() {
 export type PopoverTriggerProps = PropsWithChildren & { asChild?: boolean };
 
 export function PopoverTrigger({ children, asChild }: PopoverTriggerProps) {
-  const { open, isOpen, ref, delay } = usePopover();
+  const { openPopover, open, ref, delay } = usePopover();
 
-  const openDebounced = debounce(open, delay || 50);
+  const openDebounced = debounce(openPopover, delay || 50);
 
   const Comp = asChild ? Slot : "button";
 
@@ -109,7 +110,7 @@ export function PopoverTrigger({ children, asChild }: PopoverTriggerProps) {
       ref={ref.setReference}
       onClick={openDebounced}
       onFocus={openDebounced}
-      data-state={isOpen ? "open" : "closed"}
+      data-state={open ? "open" : "closed"}
     >
       {children}
     </Comp>
@@ -120,26 +121,25 @@ export type PopoverContentProps = HTMLAttributes<HTMLDivElement>;
 
 export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
   ({ children, className, class: classNative, ...props }) => {
-    const { isOpen, ref, floatingStyles, side, close, id } = usePopover();
+    const { open, ref, floatingStyles, side, closePopover } = usePopover();
 
     useEffect(() => {
-      if (isOpen) {
+      if (open) {
         ref.floating?.current?.querySelectorAll("input")[0]?.select();
       }
-    }, [isOpen, ref.floating]);
+    }, [open, ref.floating]);
 
     return (
-      <Show when={isOpen}>
+      <Show when={open}>
         <Modal
-          onClose={close}
+          onClose={closePopover}
           className="bg-transparent"
         >
           <div
-            data-popover-id={id}
             ref={ref.setFloating}
             onMouseDown={(e) => e.stopPropagation()}
             style={floatingStyles}
-            data-state={isOpen ? "open" : "closed"}
+            data-state={open ? "open" : "closed"}
             data-side={side || "bottom"}
             className={cn(
               "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=closed]:animate-out data-[state=open]:animate-in",

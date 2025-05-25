@@ -5,10 +5,9 @@ import {
   type PropsWithChildren,
   forwardRef,
   useContext,
-  useEffect,
-  useState,
 } from "preact/compat";
 import { cn } from "./share/cn";
+import { useControlledState } from "./share/useControlledState";
 import { Show } from "./show";
 
 export type TabsProps = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & {
@@ -51,29 +50,20 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
       class: classNative,
       ...props
     },
-    ref
+    forwardedRef
   ) => {
-    const [value, setValue] = useState(controlledValue !== undefined ? controlledValue : defaultValue || "");
-
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
-      if (onValueChange) {
-        onValueChange(value);
-      }
-    }, [value]);
-
-    useEffect(() => {
-      if (controlledValue) {
-        setValue(controlledValue);
-      }
-    }, [controlledValue]);
+    const [value, setValue] = useControlledState({
+      defaultValue: defaultValue ?? "",
+      controlledValue,
+      onChange: onValueChange,
+    });
 
     return (
       <TabContext.Provider
         value={{ onValueChange: setValue, value, orientation: orientation || "horizontal", activationMode }}
       >
         <div
-          ref={ref}
+          ref={forwardedRef}
           className={cn("", className, classNative)}
           {...props}
         >
@@ -93,12 +83,12 @@ export function useTabs() {
 export type TabsListProps = HTMLAttributes<HTMLDivElement>;
 
 export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
-  ({ className, class: classNative, ...props }, ref) => {
+  ({ className, class: classNative, ...props }, forwardedRef) => {
     const { orientation } = useTabs();
 
     return (
       <div
-        ref={ref}
+        ref={forwardedRef}
         data-orientation={orientation}
         className={cn(
           "inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
@@ -115,11 +105,11 @@ TabsList.displayName = "TabsList";
 export type TabsTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & { value?: string };
 
 export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
-  ({ className, class: classNative, ...props }, ref) => {
+  ({ className, class: classNative, ...props }, forwardedRef) => {
     const { value, onValueChange, orientation } = useTabs();
     return (
       <button
-        ref={ref}
+        ref={forwardedRef}
         data-state={value === props.value ? "active" : "inactive"}
         data-orientation={orientation}
         onClick={() => onValueChange(props.value || "")}
@@ -139,13 +129,13 @@ TabsTrigger.displayName = "TabsTrigger";
 export type TabsContentProps = HTMLAttributes<HTMLDivElement> & { value?: string };
 
 export const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(
-  ({ className, class: classNative, ...props }, ref) => {
+  ({ className, class: classNative, ...props }, forwardedRef) => {
     const { value, orientation } = useTabs();
 
     return (
       <Show when={value === props.value}>
         <div
-          ref={ref}
+          ref={forwardedRef}
           data-orientation={orientation}
           data-state="active"
           className={cn(

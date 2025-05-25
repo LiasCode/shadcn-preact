@@ -5,11 +5,12 @@ import {
   createContext,
   forwardRef,
 } from "preact/compat";
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useContext } from "preact/hooks";
 import { Button } from "./button";
 import { Modal } from "./modal";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
+import { useControlledState } from "./share/useControlledState";
 import { Show } from "./show";
 
 export const AlertContext = createContext<{
@@ -26,21 +27,11 @@ export type AlertDialogProviderProps = PropsWithChildren & {
 };
 
 export function AlertDialog({ open: controlledOpen, defaultOpen, children, onOpenChange }: AlertDialogProviderProps) {
-  const [open, setOpen] = useState(
-    defaultOpen !== undefined ? defaultOpen : controlledOpen !== undefined ? controlledOpen : false
-  );
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies:
-  useEffect(() => {
-    if (onOpenChange && open !== controlledOpen) {
-      onOpenChange(open);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (controlledOpen === undefined) return;
-    setOpen(controlledOpen);
-  }, [controlledOpen]);
+  const [open, setOpen] = useControlledState({
+    defaultValue: Boolean(defaultOpen),
+    controlledValue: controlledOpen,
+    onChange: onOpenChange,
+  });
 
   return (
     <AlertContext.Provider
@@ -59,9 +50,7 @@ AlertDialog.displayName = "AlertDialog";
 
 export function useAlertDialog() {
   const c = useContext(AlertContext);
-
   if (!c) throw new Error("useAlertDialog should be used inside of an AlertDialogProvider");
-
   return c;
 }
 

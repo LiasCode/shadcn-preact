@@ -51,7 +51,7 @@ interface SheetContentProps
     VariantProps<typeof sheetVariants> {}
 
 const SheetContent = forwardRef<ElementRef<typeof DialogContent>, SheetContentProps>(
-  ({ side = "right", className, class: classNative, children, ...props }, ref) => {
+  ({ side = "right", className, class: classNative, children, ...props }, forwardedRef) => {
     const { open, closeDialog } = useDialog();
     const contentRef = createRef<HTMLDivElement>();
 
@@ -78,7 +78,7 @@ const SheetContent = forwardRef<ElementRef<typeof DialogContent>, SheetContentPr
             <div
               data-state={open ? "open" : "closed"}
               className={cn("rounded-sm", sheetVariants({ side }), className, classNative)}
-              ref={ref}
+              ref={forwardedRef}
             >
               <button
                 onClick={() => closeDialog()}
@@ -115,9 +115,9 @@ const SheetFooter = ({ className, class: classNative, ...props }: HTMLAttributes
 SheetFooter.displayName = "SheetFooter";
 
 const SheetTitle = forwardRef<ElementRef<typeof DialogTitle>, ComponentPropsWithoutRef<typeof DialogTitle>>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <DialogTitle
-      ref={ref}
+      ref={forwardedRef}
       className={cn("font-semibold text-foreground text-lg", className, classNative)}
       {...props}
     />
@@ -128,9 +128,9 @@ SheetTitle.displayName = DialogTitle.displayName;
 const SheetDescription = forwardRef<
   ElementRef<typeof DialogDescription>,
   ComponentPropsWithoutRef<typeof DialogDescription>
->(({ className, class: classNative, ...props }, ref) => (
+>(({ className, class: classNative, ...props }, forwardedRef) => (
   <DialogDescription
-    ref={ref}
+    ref={forwardedRef}
     className={cn("text-muted-foreground text-sm", className, classNative)}
     {...props}
   />

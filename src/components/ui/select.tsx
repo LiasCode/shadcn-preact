@@ -17,6 +17,7 @@ import { Modal } from "./modal";
 import { cn } from "./share/cn";
 import { debounce } from "./share/debounce";
 import { Slot } from "./share/slot";
+import { useControlledState } from "./share/useControlledState";
 import { Show } from "./show";
 
 export type Direction = "ltr" | "rtl";
@@ -28,8 +29,6 @@ export type SelectContextT = {
   openSelect: () => void;
 
   closeSelect: () => void;
-
-  id: string;
 
   ref: {
     reference: MutableRefObject<HTMLButtonElement | null>;
@@ -105,11 +104,16 @@ export function Select({
   onOpenChange,
   ...props
 }: SelectProps) {
-  const [isSelectOpen, setIsSelectOpen] = useState(controlledOpen !== undefined ? controlledOpen : false);
-  const [value, setValue] = useState<string>(
-    controlledValue !== undefined ? controlledValue : defaultValue !== undefined ? defaultValue : ""
-  );
-  const [select_id] = useState(Math.random().toString());
+  const [isSelectOpen, setIsSelectOpen] = useControlledState({
+    defaultValue: Boolean(props.defaultOpen),
+    controlledValue: controlledOpen,
+    onChange: onOpenChange,
+  });
+  const [value, setValue] = useControlledState({
+    defaultValue: defaultValue ?? "",
+    controlledValue: controlledValue,
+    onChange: props.onValueChange,
+  });
   const [nodeForTheSelectedValue, setNodeForTheSelectedValue] = useState<SelectContextT["nodeForTheSelectedValue"]>("");
 
   const { refs, floatingStyles } = useFloating<HTMLButtonElement>({
@@ -132,42 +136,20 @@ export function Select({
   });
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (onOpenChange && isSelectOpen !== controlledOpen) {
-      onOpenChange(isSelectOpen);
-    }
-  }, [isSelectOpen]);
-
-  useEffect(() => {
-    if (controlledOpen !== undefined) {
-      setIsSelectOpen(controlledOpen);
-    }
-  }, [controlledOpen]);
+  const openSelect = useCallback(() => setIsSelectOpen(true), []);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (props.onValueChange && value !== controlledValue) {
-      props.onValueChange(value);
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (controlledValue !== undefined) {
-      setValue(controlledValue);
-    }
-  }, [controlledValue]);
-
-  const openSelect = useCallback(() => setIsSelectOpen(true), []);
   const closeSelect = useCallback(() => {
     setIsSelectOpen(false);
-    refs.reference.current?.focus();
+    setTimeout(() => {
+      refs.reference.current?.focus();
+    }, 50);
   }, [refs.reference.current]);
 
   return (
     <SelectContext.Provider
       value={{
         open: isSelectOpen,
-        id: select_id,
         ref: refs,
         floatingStyles,
         defaultValue: defaultValue,
@@ -306,7 +288,7 @@ export type SelectContentProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
   ({ children, className, class: classNative, ...props }) => {
-    const { open: isOpen, ref, floatingStyles, closeSelect, id, nodeForTheSelectedValueChange, value } = useSelect();
+    const { open: isOpen, ref, floatingStyles, closeSelect, nodeForTheSelectedValueChange, value } = useSelect();
 
     const triggerWidth = useMemo(() => {
       return ref.reference.current?.getBoundingClientRect().width || 0;
@@ -385,7 +367,6 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
           className="bg-transparent"
         >
           <div
-            data-select-id={id}
             ref={ref.setFloating}
             onMouseDown={(e) => e.stopPropagation()}
             style={{
@@ -466,6 +447,9 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
     }, [props.disabled]);
 
     const focusKeydownHandle = (e: KeyboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
       if (SELECTION_KEYS.includes(e.key)) {
         selectItemHandler();
         return;

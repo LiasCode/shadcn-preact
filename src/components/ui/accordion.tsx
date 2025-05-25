@@ -3,14 +3,13 @@ import {
   createContext,
   forwardRef,
   useContext,
-  useEffect,
   useMemo,
-  useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
 } from "preact/compat";
 import { Collapsible, CollapsibleTrigger } from "./collapsible";
 import { cn } from "./share/cn";
+import { useControlledState } from "./share/useControlledState";
 
 export const AccordionContext = createContext<{
   value?: string | string[];
@@ -68,29 +67,13 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     },
     forwardedRef
   ) => {
-    const [value, setValue] = useState(
-      defaultValue !== undefined
-        ? defaultValue
-        : controlledValue !== undefined
-          ? controlledValue
-          : // Default Value
-            type === "single"
-            ? ""
-            : []
-    );
+    const default_value = Boolean(defaultValue) === true ? defaultValue : type === "single" ? "" : [];
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
-      if (onValueChange && value !== controlledValue) {
-        onValueChange(value);
-      }
-    }, [value]);
-
-    useEffect(() => {
-      if (controlledValue !== undefined) {
-        setValue(controlledValue);
-      }
-    }, [controlledValue]);
+    const [value, setValue] = useControlledState({
+      defaultValue: default_value,
+      controlledValue,
+      onChange: onValueChange,
+    });
 
     return (
       <AccordionContext.Provider
@@ -101,8 +84,8 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
           dir,
           type,
           collapsible,
-          defaultValue,
-          onValueChange(value) {
+          defaultValue: default_value,
+          onValueChange: (value) => {
             if (!disabled) {
               setValue(value);
             }
@@ -150,7 +133,7 @@ export function useAccordionItem() {
 }
 
 export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
-  ({ className, class: classNative, children, ...props }, ref) => {
+  ({ className, class: classNative, children, ...props }, forwardedRef) => {
     const { orientation, value, onValueChange, type } = useAccordion();
 
     const state: "open" | "closed" = useMemo(() => {
@@ -177,7 +160,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
         }}
       >
         <Collapsible
-          ref={ref}
+          ref={forwardedRef}
           className={cn("border-b", className, classNative)}
           data-state={state}
           data-disabled={props.disabled}
@@ -217,13 +200,13 @@ export type AccordionTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
-  ({ className, class: classNative, children, ...props }, ref) => {
+  ({ className, class: classNative, children, ...props }, forwardedRef) => {
     const { state, orientation, disabled } = useAccordionItem();
 
     return (
       <h3 className="flex">
         <CollapsibleTrigger
-          ref={ref}
+          ref={forwardedRef}
           className={cn(
             "flex flex-1 items-center justify-between py-4 text-left font-medium text-sm transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
             className,
@@ -250,17 +233,16 @@ export type AccordionContentProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
-  ({ className, class: classNative, children, ...props }, ref) => {
+  ({ className, class: classNative, children, ...props }, forwardedRef) => {
     const { state, orientation, disabled } = useAccordionItem();
 
     return (
       <div
-        ref={ref}
+        ref={forwardedRef}
         className={cn("overflow-hidden text-sm", state === "closed" ? "h-0" : "h-fit")}
         data-state={state}
         data-disabled={disabled}
         data-orientation={orientation}
-        asChild={props.asChild}
         {...props}
       >
         <div className={cn("pt-0 pb-4", className, classNative)}>{children}</div>
