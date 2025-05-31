@@ -12,7 +12,7 @@ export function ProgressSection() {
     <div className="flex w-full flex-col gap-6">
       <CodePreviewTabs
         codeString={`
-  import { Progress } from "@/components/ui/progress";
+  import { Progress } from "@ui/progress";
   import { useEffect, useState } from "preact/hooks";
 
   export function ProgressDemo() {
@@ -39,7 +39,7 @@ export function ProgressSection() {
       <HighlightCode
         lang="tsx"
         codeString={`
-  import { Progress } from "@/components/ui/progress";
+  import { Progress } from "@ui/progress";
 
 `}
       />
@@ -66,12 +66,12 @@ export function ProgressSection() {
             </a>
           </PaginationItem>
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.SELECT}>
+            <a href={AppRoutes.COMPONENTS.RESIZABLE}>
               <Button
                 className="gap-1 pr-1 capitalize"
                 variant="outline"
               >
-                Select
+                Resizable
                 <ChevronRight />
               </Button>
             </a>

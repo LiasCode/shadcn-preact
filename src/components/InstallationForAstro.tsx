@@ -199,7 +199,7 @@ export default function InstallationForVite() {
 
           <HighlightCode
             codeString={`
-  bun add class-variance-authority clsx cmdk date-fns dayjs embla-carousel-react input-otp lucide-preact react-day-picker react-hot-toast recharts tailwind-merge tailwindcss-animate vaul @floating-ui/react-dom
+  bun add class-variance-authority clsx cmdk date-fns dayjs embla-carousel-react input-otp lucide-preact react-day-picker react-hot-toast recharts tailwind-merge tailwindcss-animate vaul @floating-ui/react-dom react-resizable-panels
               `}
             lang="bash"
           />

@@ -163,13 +163,13 @@ export function SelectSection() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <a href={AppRoutes.COMPONENTS.PROGRESS}>
+            <a href={AppRoutes.COMPONENTS.RESIZABLE}>
               <Button
                 className="gap-1 pl-1"
                 variant="outline"
               >
                 <ChevronLeft />
-                Progress
+                Resizable
               </Button>
             </a>
           </PaginationItem>

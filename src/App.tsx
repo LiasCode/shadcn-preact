@@ -27,6 +27,7 @@ import InputOtpPage from "./routes/Components/InputOtp";
 import LabelPage from "./routes/Components/Label";
 import PopoverPage from "./routes/Components/Popover";
 import ProgressPage from "./routes/Components/Progress";
+import ResizablePage from "./routes/Components/Resizable";
 import SelectPage from "./routes/Components/Select";
 import SeparatorPage from "./routes/Components/Separator";
 import SheetPage from "./routes/Components/Sheet";
@@ -246,6 +247,11 @@ export function App() {
           <Route
             component={CalendarPage}
             path={AppRoutes.COMPONENTS.CALENDAR}
+          />
+
+          <Route
+            component={ResizablePage}
+            path={AppRoutes.COMPONENTS.RESIZABLE}
           />
 
           <Route

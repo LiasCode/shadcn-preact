@@ -27,6 +27,7 @@
     "preact-iso": "^2.9.1",
     "react-day-picker": "^9.7.0",
     "react-hot-toast": "^2.5.2",
+    "react-resizable-panels": "^3.0.2",
     "recharts": "^2.15.3",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
