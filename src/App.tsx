@@ -50,7 +50,7 @@ import HomePage from "./routes/Home";
 export function App() {
   return (
     <LocationProvider>
-      <ThemeProvider default_theme="dark">
+      <ThemeProvider>
         <Toaster position="bottom-right" />
 
         <Router>

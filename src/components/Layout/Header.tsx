@@ -88,7 +88,7 @@ function HeaderLeftSide() {
 }
 
 function HeaderRightSide() {
-  const { setTheme, theme = "light" } = useTheme();
+  const { setTheme } = useTheme();
 
   return (
     <div className="flex h-full flex-1 flex-row items-center justify-center">
@@ -120,9 +120,19 @@ function HeaderRightSide() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          className="flex dark:hidden"
+          onClick={() => setTheme("dark")}
         >
-          {theme === "light" ? <Sun className="h-4 w-4 text-primary" /> : <Moon className="h-4 w-4 text-primary" />}
+          <Moon className="h-4 w-4 text-primary" />
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="hidden dark:flex"
+          onClick={() => setTheme("light")}
+        >
+          <Sun className="h-4 w-4 text-primary" />
         </Button>
       </div>
     </div>
