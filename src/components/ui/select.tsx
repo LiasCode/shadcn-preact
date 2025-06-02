@@ -143,7 +143,9 @@ export function Select({
     setIsSelectOpen(false);
     setTimeout(() => {
       refs.reference.current?.focus();
-    }, 50);
+      // 35ms is based on a 30hz refresh rate, which is the minimum rate for
+      // a smooth user experience.
+    }, 35);
   }, [refs.reference.current]);
 
   return (
