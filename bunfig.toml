@@ -1,6 +1,0 @@
-[install]
-peer = true
-registry = "https://registry.npmjs.org/"
-
-[install.cache]
-disable = true
