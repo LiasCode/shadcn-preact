@@ -13,7 +13,8 @@ export default function InstallationForVite() {
           <HighlightCode
             codeString={`
   bun create astro@latest
-              `}
+
+`}
             lang="bash"
           />
 
@@ -28,7 +29,8 @@ export default function InstallationForVite() {
           <HighlightCode
             codeString={`
   bun run astro add preact
-                `}
+
+`}
             lang="bash"
           />
 
@@ -58,7 +60,8 @@ export default function InstallationForVite() {
           <HighlightCode
             codeString={`
   bun add tailwindcss@3 @astrojs/tailwind
-              `}
+
+`}
             lang="bash"
           />
 
@@ -85,7 +88,8 @@ export default function InstallationForVite() {
   export default defineConfig({
     integrations: [preact(), tailwind()],
   });
-              `}
+
+`}
             lang="ts"
           />
 
@@ -105,7 +109,8 @@ export default function InstallationForVite() {
     },
     plugins: [],
   };
-              `}
+
+`}
             lang="js"
           />
         </StepContent>
@@ -129,14 +134,16 @@ export default function InstallationForVite() {
       }
     }
   }
-                `}
+ 
+`}
             lang="json"
           />
           <p>Install the Node.js types as a development dependency:</p>
           <HighlightCode
             codeString={`
   bun add -D @types/node
-              `}
+
+`}
             lang="bash"
           />
 
@@ -170,7 +177,8 @@ export default function InstallationForVite() {
       },
     },
   });
-                `}
+
+`}
             lang="ts"
           />
 
@@ -186,7 +194,8 @@ export default function InstallationForVite() {
       "react-dom": "npm:@preact/compat@latest"
     }
   }
-                  `}
+
+`}
             lang="json"
           />
         </StepContent>
@@ -200,7 +209,8 @@ export default function InstallationForVite() {
           <HighlightCode
             codeString={`
   bun add class-variance-authority clsx cmdk date-fns dayjs embla-carousel-react input-otp lucide-preact react-day-picker react-hot-toast recharts tailwind-merge tailwindcss-animate vaul @floating-ui/react-dom react-resizable-panels
-              `}
+
+`}
             lang="bash"
           />
         </StepContent>
@@ -284,7 +294,8 @@ export default function InstallationForVite() {
     },
     plugins: [require("tailwindcss-animate")],
   };
-                `}
+
+`}
             lang="js"
           />
 
@@ -365,7 +376,8 @@ export default function InstallationForVite() {
   body {
     @apply bg-background text-foreground;
   }
-                `}
+                
+`}
             lang="css"
           />
         </StepContent>
@@ -377,8 +389,9 @@ export default function InstallationForVite() {
 
           <HighlightCode
             codeString={`
-  bunx degit https://github.com/LiasCode/shadcn-preact/src/components/ui ./src/components/ui
-              `}
+  bunx degit https://github.com/LiasCode/shadcn-preact/apps/v3/src/components/ui ./src/components/ui  
+              
+`}
             lang="bash"
           />
         </StepContent>

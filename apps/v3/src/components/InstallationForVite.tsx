@@ -18,7 +18,8 @@ export default function InstallationForVite() {
                   className="h-4 w-4"
                   color="#facc15"
                 />
-                This guide uses bun as the package manager, but you can also use npm.
+                This guide uses bun as the package manager, but you can also use{" "}
+                <code className="rounded-sm bg-accent px-1">npm/pnpm/yarn</code>.
               </AlertTitle>
             </Alert>
 
@@ -200,7 +201,7 @@ export default function InstallationForVite() {
 
             <HighlightCode
               codeString={`
-  bunx degit https://github.com/LiasCode/shadcn-preact/src/components/ui ./src/components/ui  
+  bunx degit https://github.com/LiasCode/shadcn-preact/apps/v3/src/components/ui ./src/components/ui  
 
 `}
               lang="bash"
