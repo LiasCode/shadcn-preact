@@ -23,7 +23,7 @@
     "url": "https://lias-code.pages.dev"
   },
   "devDependencies": {
-    "@types/node": "^22.15.21",
+    "@types/node": "^22.15.31",
     "simple-git-hooks": "^2.13.0",
     "turbo": "^2.5.4"
   },
