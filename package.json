@@ -11,7 +11,7 @@
     "lint": "turbo lint",
     "postinstall": "simple-git-hooks"
   },
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.12.3",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -23,7 +23,7 @@
     "url": "https://lias-code.pages.dev"
   },
   "devDependencies": {
-    "@types/node": "^22.15.21",
+    "@types/node": "^22.15.33",
     "simple-git-hooks": "^2.13.0",
     "turbo": "^2.5.4"
   },
