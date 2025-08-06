@@ -14,18 +14,13 @@
     "@preact/signals": "^2.2.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
-   
-   
     "lucide-preact": "^0.474.0",
     "preact": "^10.27.0",
     "preact-iso": "^2.9.2",
-   
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7"
-
   },
   "target": "es2020",
   "author": {
@@ -36,15 +31,16 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@preact/preset-vite": "^2.10.2",
+    "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^22.17.0",
-    "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.2.0",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "sass-embedded": "^1.90.0",
     "shiki": "^3.9.2",
-    "tailwindcss": "3.4.17",
+    "tailwindcss": "4.1.11",
+    "tw-animate-css": "^1.3.6",
     "typescript": "^5.9.2",
     "vite": "^6.3.5"
   }
