@@ -30,6 +30,7 @@ function setRef<T>(ref: PossibleRef<T>, value: T) {
  * Accepts callback refs and RefObject(s)
  */
 function composeRefs<T>(...refs: PossibleRef<T>[]): RefCallback<T> {
+  // @ts-expect-error
   return (node) => {
     let hasCleanup = false;
 
