@@ -28,7 +28,8 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(({ className, clas
     <AvatarContext.Provider value={{ status: imgStatus, changeStatus: changeImgStatus }}>
       <div
         ref={ref}
-        className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className, classNative)}
+        data-slot="avatar"
+        className={cn("relative flex size-8 shrink-0 overflow-hidden rounded-full", className, classNative)}
         {...props}
       />
     </AvatarContext.Provider>
@@ -56,7 +57,8 @@ export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
     return status === "loaded" ? (
       <img
         ref={ref}
-        className={cn("aspect-square h-full w-full", className, classNative)}
+        data-slot="avatar-image"
+        className={cn("aspect-square size-full", className, classNative)}
         {...props}
         alt={props.alt}
       />
@@ -84,7 +86,8 @@ export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
     return canRender && status !== "loaded" ? (
       <span
         ref={ref}
-        className={cn("flex h-full w-full items-center justify-center rounded-full bg-muted", className, classNative)}
+        data-slot="avatar-fallback"
+        className={cn("flex size-full items-center justify-center rounded-full bg-muted", className, classNative)}
         {...props}
       />
     ) : null;

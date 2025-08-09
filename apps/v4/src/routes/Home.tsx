@@ -1,3 +1,4 @@
+import { AvatarDemo } from "@/components/AvatarDemo";
 import { Button } from "@ui/button";
 import { Loader2Icon } from "lucide-preact";
 
@@ -59,6 +60,11 @@ export default function HomePage() {
               <Loader2Icon className="animate-spin" />
               Please wait
             </Button>
+          </div>
+
+          <div className={"flex h-auto w-full flex-col gap-4 border p-2"}>
+            <h1>Avatars</h1>
+            <AvatarDemo />
           </div>
         </div>
       </div>
