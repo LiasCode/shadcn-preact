@@ -1,3 +1,4 @@
+import { AlertDemo } from "@/components/AlertDemo";
 import { AvatarDemo } from "@/components/AvatarDemo";
 import { Button } from "@ui/button";
 import { Loader2Icon } from "lucide-preact";
@@ -65,6 +66,11 @@ export default function HomePage() {
           <div className={"flex h-auto w-full flex-col gap-4 border p-2"}>
             <h1>Avatars</h1>
             <AvatarDemo />
+          </div>
+
+          <div className={"flex h-auto w-full flex-col gap-4 border p-2"}>
+            <h1>Alert</h1>
+            <AlertDemo />
           </div>
         </div>
       </div>
