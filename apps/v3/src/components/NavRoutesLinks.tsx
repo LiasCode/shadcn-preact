@@ -68,6 +68,20 @@ export default function NavRoutesLinks() {
             Examples
           </Button>
         </a>
+
+        <a
+          rel="noreferrer"
+          target="_blank"
+          href="https://v4-shadcn-preact.onrender.com/"
+        >
+          <Button
+            variant="link"
+            size="default"
+            className="w-full justify-start px-2 py-1 font-normal text-muted-foreground group-data-[route-active=true]:text-foreground"
+          >
+            Tailwind v4
+          </Button>
+        </a>
       </div>
 
       <div className="flex w-full flex-col gap-[2px]">

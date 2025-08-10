@@ -2,17 +2,40 @@ import { Footer } from "@/components/Layout/Footer";
 import Header from "@/components/Layout/Header";
 import { AppRoutes } from "@/routes/AppRoutes";
 import { BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@ui/breadcrumb";
+import { Button } from "@ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/card";
+import { ExternalLink } from "lucide-preact";
 import { type VNode, createRef } from "preact";
 import { type PropsWithChildren, useEffect } from "preact/compat";
 import NavRoutesLinks from "../NavRoutesLinks";
 
-export type DocsLayoutProps = PropsWithChildren & { breadcrumbs?: VNode<any>; title: string; description: string };
+export type DocsLayoutProps = PropsWithChildren & {
+  breadcrumbs?: VNode<any>;
+  title: string;
+  description: string;
+};
 
 export function DocsLayout(props: DocsLayoutProps) {
   return (
     <div className="flex h-auto min-h-screen w-full flex-1 flex-col items-center justify-start bg-background">
       <Header />
+
+      <div className="fixed right-2 bottom-2 z-50 h-fit w-fit">
+        <Button
+          asChild
+          className={"border border-purple-500"}
+          variant={"link"}
+        >
+          <a
+            rel="noreferrer noreferer"
+            target="_blank"
+            href="https://v4-shadcn-preact.onrender.com/"
+          >
+            Version 4 preview here
+            <ExternalLink />
+          </a>
+        </Button>
+      </div>
 
       <div className="mt-0 mb-1 flex w-full flex-1 flex-col items-center justify-start border-accent border-b border-dashed p-0">
         <div className="flex w-full max-w-screen-2xl flex-col gap-4 border-accent border-dashed *:max-w-[100vw] md:border-x md:px-1 md:pt-2">
