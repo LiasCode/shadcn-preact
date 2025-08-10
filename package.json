@@ -23,6 +23,7 @@
     "url": "https://lias-code.pages.dev"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.1.4",
     "@types/node": "^22.17.0",
     "simple-git-hooks": "^2.13.1",
     "turbo": "^2.5.5"
