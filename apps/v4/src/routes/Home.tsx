@@ -1,5 +1,6 @@
 import { AlertDemo } from "@/components/AlertDemo";
 import { AvatarDemo } from "@/components/AvatarDemo";
+import { BadgeDemo } from "@/components/BadgeDemo";
 import { CardDemo } from "@/components/CardDemo";
 import { InputDemo } from "@/components/InputDemo";
 import { Button } from "@ui/button";
@@ -66,6 +67,11 @@ export default function HomePage() {
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Input</h1>
             <InputDemo />
+          </div>
+
+          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
+            <h1>Badges</h1>
+            <BadgeDemo />
           </div>
         </div>
       </div>
