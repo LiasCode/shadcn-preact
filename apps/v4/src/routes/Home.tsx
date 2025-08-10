@@ -1,8 +1,10 @@
 import { AlertDemo } from "@/components/AlertDemo";
 import { AvatarDemo } from "@/components/AvatarDemo";
 import { CardDemo } from "@/components/CardDemo";
+import { InputDemo } from "@/components/InputDemo";
 import { Button } from "@ui/button";
 import { Loader2Icon } from "lucide-preact";
+import { GitBranchIcon } from "../components/GitBranchIcon";
 
 export default function HomePage() {
   return (
@@ -33,33 +35,7 @@ export default function HomePage() {
               variant="outline"
               size="sm"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                title="Git Branch"
-                aria-label="Git Branch"
-                role="img"
-                class="icon icon-tabler icons-tabler-outline icon-tabler-git-branch"
-              >
-                <path
-                  stroke="none"
-                  d="M0 0h24v24H0z"
-                  fill="none"
-                />
-                <path d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                <path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                <path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                <path d="M7 8l0 8" />
-                <path d="M9 18h6a2 2 0 0 0 2 -2v-5" />
-                <path d="M14 14l3 -3l3 3" />
-              </svg>{" "}
+              <GitBranchIcon />
               New Branch
             </Button>
 
@@ -85,6 +61,11 @@ export default function HomePage() {
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Card</h1>
             <CardDemo />
+          </div>
+
+          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
+            <h1>Input</h1>
+            <InputDemo />
           </div>
         </div>
       </div>
