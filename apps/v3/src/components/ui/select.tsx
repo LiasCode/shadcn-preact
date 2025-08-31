@@ -267,13 +267,13 @@ export type SelectValueProps = HTMLAttributes<HTMLSpanElement> & {
 };
 
 export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(
-  ({ className, class: classNative, ...props }: SelectValueProps, ref) => {
+  ({ className, class: classNative, ...props }: SelectValueProps, forwardedRef) => {
     const { value, nodeForTheSelectedValue } = useSelect();
     const Comp = props.asChild ? Slot : "span";
 
     return (
       <Comp
-        ref={ref}
+        ref={forwardedRef}
         className={cn(className, classNative)}
         {...props}
       >
@@ -398,9 +398,9 @@ export type SelectGroupProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <div
-      ref={ref}
+      ref={forwardedRef}
       role="group"
       className={cn("mb-1", className, classNative)}
       {...props}
@@ -415,9 +415,9 @@ export type SelectLabelProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const SelectLabel = forwardRef<HTMLDivElement, SelectLabelProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <div
-      ref={ref}
+      ref={forwardedRef}
       tabindex={-1}
       className={cn("px-2 py-1.5 font-semibold text-sm", className, classNative)}
       {...props}
@@ -435,7 +435,7 @@ export type SelectItemProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
-  ({ value: itemValue, className, class: classNative, children, ...props }, ref) => {
+  ({ value: itemValue, className, class: classNative, children, ...props }, forwardedRef) => {
     const { value, onValueChange, closeSelect, ref: refs } = useSelect();
     const [isFocused, setIsFocused] = useState(false);
 
@@ -529,7 +529,7 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
 
     return (
       <div
-        ref={ref}
+        ref={forwardedRef}
         // biome-ignore lint/a11y/useSemanticElements: <explanation>
         role="option"
         onClick={() => {
@@ -603,9 +603,9 @@ export type SelectSeparatorProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const SelectSeparator = forwardRef<HTMLDivElement, SelectSeparatorProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <div
-      ref={ref}
+      ref={forwardedRef}
       tabindex={-1}
       className={cn("-mx-1 my-1 h-px bg-muted", className, classNative)}
       {...props}

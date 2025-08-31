@@ -32,10 +32,10 @@ export const toastVariants = cva(
 export const ToastCard = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & VariantProps<typeof toastVariants>
->(({ className, class: classNative, variant, ...props }, ref) => {
+>(({ className, class: classNative, variant, ...props }, forwardedRef) => {
   return (
     <div
-      ref={ref}
+      ref={forwardedRef}
       data-state="open"
       className={cn(toastVariants({ variant }), className, classNative)}
       {...props}
@@ -45,9 +45,9 @@ export const ToastCard = forwardRef<
 ToastCard.displayName = "ToastCard";
 
 export const ToastAction = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { altText: string }>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <button
-      ref={ref}
+      ref={forwardedRef}
       className={cn(
         "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 font-medium text-sm transition-colors hover:bg-secondary focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:focus:ring-destructive group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground",
         className,
@@ -60,9 +60,9 @@ export const ToastAction = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HT
 ToastAction.displayName = "ToastAction";
 
 export const ToastClose = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <button
-      ref={ref}
+      ref={forwardedRef}
       className={cn(
         "absolute top-1 right-1 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600 group-[.destructive]:hover:text-red-50",
         className,
@@ -78,9 +78,9 @@ export const ToastClose = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTM
 ToastClose.displayName = "ToastClose";
 
 export const ToastTitle = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <span
-      ref={ref}
+      ref={forwardedRef}
       className={cn("font-semibold text-sm [&+div]:text-xs", className, classNative)}
       {...props}
     />
@@ -89,9 +89,9 @@ export const ToastTitle = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanEle
 ToastTitle.displayName = "ToastTitle";
 
 export const ToastDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <p
-      ref={ref}
+      ref={forwardedRef}
       className={cn("text-sm opacity-90", className, classNative)}
       {...props}
     />

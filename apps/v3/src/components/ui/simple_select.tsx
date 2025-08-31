@@ -105,12 +105,12 @@ export type SelectItemProps = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const SelectItem = forwardRef<HTMLButtonElement, SelectItemProps>(
-  ({ class: classNative, className, ...props }, ref) => {
+  ({ class: classNative, className, ...props }, forwardedRef) => {
     if (props.selected) return null;
 
     return (
       <Button
-        ref={ref}
+        ref={forwardedRef}
         size="sm"
         variant="ghost"
         onClick={(e) => {

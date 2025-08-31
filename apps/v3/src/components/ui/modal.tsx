@@ -9,12 +9,12 @@ export type ModalProps = PropsWithChildren<
   }
 >;
 
-export const Modal = forwardRef<HTMLDivElement, ModalProps>(({ ...props }, ref) => {
+export const Modal = forwardRef<HTMLDivElement, ModalProps>(({ ...props }, forwardedRef) => {
   return (
     <Portal>
       <ModalContent
         {...props}
-        ref={ref}
+        ref={forwardedRef}
       />
     </Portal>
   );
@@ -30,7 +30,7 @@ export type ModalContentProps = PropsWithChildren<
 let modal_counter = 0;
 
 const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
-  ({ className, class: classNative, ...props }, ref) => {
+  ({ className, class: classNative, ...props }, forwardedRef) => {
     useEffect(() => {
       modal_counter += 1;
 
@@ -51,7 +51,7 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
 
     return (
       <div
-        ref={ref}
+        ref={forwardedRef}
         onMouseDown={props.onClose}
         data-state="open"
         className={cn("fade-in-0 fixed inset-0 z-50 animate-in bg-black/80", className, classNative)}

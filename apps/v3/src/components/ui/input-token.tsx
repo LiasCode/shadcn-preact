@@ -12,7 +12,7 @@ export type TokenInputProps = Omit<InputHTMLAttributes, "value"> & {
 const SPLITTER_CHARACTER = " ";
 
 export const InputToken = forwardRef<HTMLInputElement, TokenInputProps>(
-  ({ className, class: classNative, onInput, onFocus, onFocusOut, value, ...props }, ref) => {
+  ({ className, class: classNative, onInput, onFocus, onFocusOut, value, ...props }, forwardedRef) => {
     const [raw, setRaw] = useState(value ? value.join(SPLITTER_CHARACTER) : "");
     const [tokens, setTokens] = useState<string[]>([]);
     const [isFocus, setIsFocus] = useState(false);
@@ -89,7 +89,7 @@ export const InputToken = forwardRef<HTMLInputElement, TokenInputProps>(
         ))}
         <input
           className="-top-[9999999px] -z-50 fixed select-none"
-          ref={ref}
+          ref={forwardedRef}
           onFocus={() => {
             setIsFocus(true);
             // This is for fix bug when label focus the input, select all input text and erase the previous input value when user write.

@@ -7,9 +7,9 @@ import { cn } from "./share/cn";
 export type CommandProps = ComponentPropsWithoutRef<typeof CommandPrimitive>;
 
 export const Command = forwardRef<ElementRef<typeof CommandPrimitive>, CommandProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <CommandPrimitive
-      ref={ref}
+      ref={forwardedRef}
       className={cn(
         "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
         className,
@@ -41,14 +41,14 @@ export const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 export type CommandInputProps = ComponentPropsWithoutRef<typeof CommandPrimitive.Input>;
 
 export const CommandInput = forwardRef<ElementRef<typeof CommandPrimitive.Input>, CommandInputProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <div
       className="flex items-center border-b px-3"
       cmdk-input-wrapper=""
     >
       <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
       <CommandPrimitive.Input
-        ref={ref}
+        ref={forwardedRef}
         className={cn(
           "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
           className,
@@ -64,9 +64,9 @@ CommandInput.displayName = CommandPrimitive.Input.displayName;
 export type CommandListProps = ComponentPropsWithoutRef<typeof CommandPrimitive.List>;
 
 export const CommandList = forwardRef<ElementRef<typeof CommandPrimitive.List>, CommandListProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <CommandPrimitive.List
-      ref={ref}
+      ref={forwardedRef}
       className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className, classNative)}
       {...props}
     />
@@ -76,21 +76,23 @@ CommandList.displayName = CommandPrimitive.List.displayName;
 
 export type CommandEmptyProps = ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>;
 
-export const CommandEmpty = forwardRef<ElementRef<typeof CommandPrimitive.Empty>, CommandEmptyProps>((props, ref) => (
-  <CommandPrimitive.Empty
-    ref={ref}
-    className="py-6 text-center text-sm"
-    {...props}
-  />
-));
+export const CommandEmpty = forwardRef<ElementRef<typeof CommandPrimitive.Empty>, CommandEmptyProps>(
+  (props, forwardedRef) => (
+    <CommandPrimitive.Empty
+      ref={forwardedRef}
+      className="py-6 text-center text-sm"
+      {...props}
+    />
+  )
+);
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName;
 
 export type CommandGroupProps = ComponentPropsWithoutRef<typeof CommandPrimitive.Group>;
 
 export const CommandGroup = forwardRef<ElementRef<typeof CommandPrimitive.Group>, CommandGroupProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <CommandPrimitive.Group
-      ref={ref}
+      ref={forwardedRef}
       className={cn(
         "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:text-xs",
         className,
@@ -105,9 +107,9 @@ CommandGroup.displayName = CommandPrimitive.Group.displayName;
 export type CommandSeparatorProps = ComponentPropsWithoutRef<typeof CommandPrimitive.Separator>;
 
 export const CommandSeparator = forwardRef<ElementRef<typeof CommandPrimitive.Separator>, CommandSeparatorProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <CommandPrimitive.Separator
-      ref={ref}
+      ref={forwardedRef}
       className={cn("-mx-1 h-px bg-border", className, classNative)}
       {...props}
     />
@@ -118,9 +120,9 @@ CommandSeparator.displayName = CommandPrimitive.Separator.displayName;
 export type CommandItemProps = ComponentPropsWithoutRef<typeof CommandPrimitive.Item>;
 
 export const CommandItem = forwardRef<ElementRef<typeof CommandPrimitive.Item>, CommandItemProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <CommandPrimitive.Item
-      ref={ref}
+      ref={forwardedRef}
       className={cn(
         "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
         className,

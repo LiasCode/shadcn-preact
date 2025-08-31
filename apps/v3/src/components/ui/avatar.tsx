@@ -19,21 +19,23 @@ export const AvatarContext = createContext<{
 
 export type AvatarProps = HTMLAttributes<HTMLDivElement>;
 
-export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(({ className, class: classNative, ...props }, ref) => {
-  const [imgStatus, setImgStatus] = useState<ImageLoadingStatus>("idle");
+export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
+  ({ className, class: classNative, ...props }, forwardedRef) => {
+    const [imgStatus, setImgStatus] = useState<ImageLoadingStatus>("idle");
 
-  const changeImgStatus = (s: ImageLoadingStatus) => setImgStatus(s);
+    const changeImgStatus = (s: ImageLoadingStatus) => setImgStatus(s);
 
-  return (
-    <AvatarContext.Provider value={{ status: imgStatus, changeStatus: changeImgStatus }}>
-      <div
-        ref={ref}
-        className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className, classNative)}
-        {...props}
-      />
-    </AvatarContext.Provider>
-  );
-});
+    return (
+      <AvatarContext.Provider value={{ status: imgStatus, changeStatus: changeImgStatus }}>
+        <div
+          ref={forwardedRef}
+          className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className, classNative)}
+          {...props}
+        />
+      </AvatarContext.Provider>
+    );
+  }
+);
 Avatar.displayName = "Avatar";
 
 export type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement> & {
@@ -41,7 +43,7 @@ export type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement> & {
 };
 
 export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
-  ({ onLoadingStatusChange, className, class: classNative, ...props }, ref) => {
+  ({ onLoadingStatusChange, className, class: classNative, ...props }, forwardedRef) => {
     const { status, changeStatus } = useAvatar();
     const loadingStatus = useImageLoadingStatus(props.src as string, {
       crossOrigin: props.crossOrigin,
@@ -55,7 +57,7 @@ export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
 
     return status === "loaded" ? (
       <img
-        ref={ref}
+        ref={forwardedRef}
         className={cn("aspect-square h-full w-full", className, classNative)}
         {...props}
         alt={props.alt}
@@ -70,7 +72,7 @@ export type AvatarFallbackProps = HTMLAttributes<HTMLSpanElement> & {
 };
 
 export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
-  ({ delayMs, className, class: classNative, ...props }, ref) => {
+  ({ delayMs, className, class: classNative, ...props }, forwardedRef) => {
     const { status } = useAvatar();
     const [canRender, setCanRender] = useState(delayMs === undefined);
 
@@ -83,7 +85,7 @@ export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
 
     return canRender && status !== "loaded" ? (
       <span
-        ref={ref}
+        ref={forwardedRef}
         className={cn("flex h-full w-full items-center justify-center rounded-full bg-muted", className, classNative)}
         {...props}
       />

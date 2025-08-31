@@ -3,26 +3,28 @@ import { type HTMLAttributes, type PropsWithChildren, forwardRef } from "preact/
 
 export type StepsProps = HTMLAttributes<HTMLDivElement> & PropsWithChildren;
 
-export const Steps = forwardRef<HTMLDivElement, StepsProps>(({ class: classNative, className, ...props }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "flex h-auto w-full flex-col gap-10 md:border-l md:border-l-border md:pl-8",
-        className,
-        classNative
-      )}
-      {...props}
-    />
-  );
-});
+export const Steps = forwardRef<HTMLDivElement, StepsProps>(
+  ({ class: classNative, className, ...props }, forwardedRef) => {
+    return (
+      <div
+        ref={forwardedRef}
+        className={cn(
+          "flex h-auto w-full flex-col gap-10 md:border-l md:border-l-border md:pl-8",
+          className,
+          classNative
+        )}
+        {...props}
+      />
+    );
+  }
+);
 
 export type StepProps = HTMLAttributes<HTMLElement> & PropsWithChildren;
 
-export const Step = forwardRef<HTMLElement, StepProps>(({ class: classNative, className, ...props }, ref) => {
+export const Step = forwardRef<HTMLElement, StepProps>(({ class: classNative, className, ...props }, forwardedRef) => {
   return (
     <section
-      ref={ref}
+      ref={forwardedRef}
       className={cn("flex w-full flex-col gap-2", className, classNative)}
       {...props}
     />
@@ -38,10 +40,10 @@ export type StepTitleProps = PropsWithChildren & {
 } & HTMLAttributes<HTMLHeadingElement>;
 
 export const StepTitle = forwardRef<HTMLHeadingElement, StepTitleProps>(
-  ({ className, class: classNative, children, label, ...props }, ref) => {
+  ({ className, class: classNative, children, label, ...props }, forwardedRef) => {
     return (
       <h2
-        ref={ref}
+        ref={forwardedRef}
         className={cn(
           "relative flex w-full flex-row items-center gap-2 text-start font-semibold text-lg",
           className,
@@ -65,10 +67,10 @@ export const StepTitle = forwardRef<HTMLHeadingElement, StepTitleProps>(
 export type StepContentProps = HTMLAttributes<HTMLDivElement> & PropsWithChildren;
 
 export const StepContent = forwardRef<HTMLDivElement, StepContentProps>(
-  ({ class: classNative, className, ...props }, ref) => {
+  ({ class: classNative, className, ...props }, forwardedRef) => {
     return (
       <div
-        ref={ref}
+        ref={forwardedRef}
         className={cn("flex w-full flex-col gap-2", className, classNative)}
         {...props}
       />

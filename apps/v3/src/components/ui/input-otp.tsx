@@ -6,10 +6,10 @@ import { cn } from "./share/cn";
 export type InputOTPProps = ComponentPropsWithoutRef<typeof OTPInput>;
 
 export const InputOTP = forwardRef<ElementRef<typeof OTPInput>, InputOTPProps>(
-  ({ className, class: classNative, containerClassName, render, ...props }, ref) => (
+  ({ className, class: classNative, containerClassName, render, ...props }, forwardedRef) => (
     // @ts-expect-error
     <OTPInput
-      ref={ref}
+      ref={forwardedRef}
       containerClassName={cn("flex items-center gap-2 has-[:disabled]:opacity-50", containerClassName)}
       className={cn("disabled:cursor-not-allowed", className, classNative)}
       {...props}
@@ -21,9 +21,9 @@ InputOTP.displayName = "InputOTP";
 export type InputOTPGroupProps = ComponentPropsWithoutRef<"div">;
 
 export const InputOTPGroup = forwardRef<ElementRef<"div">, InputOTPGroupProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <div
-      ref={ref}
+      ref={forwardedRef}
       className={cn("flex items-center", className, classNative)}
       {...props}
     />
@@ -34,7 +34,7 @@ InputOTPGroup.displayName = "InputOTPGroup";
 export type InputOTPSlotProps = ComponentPropsWithoutRef<"div"> & { index: number };
 
 export const InputOTPSlot = forwardRef<ElementRef<"div">, InputOTPSlotProps>(
-  ({ index, className, class: classNative, ...props }, ref) => {
+  ({ index, className, class: classNative, ...props }, forwardedRef) => {
     const inputOTPContext = useContext(OTPInputContext);
 
     if (!inputOTPContext.slots[index]) {
@@ -45,7 +45,7 @@ export const InputOTPSlot = forwardRef<ElementRef<"div">, InputOTPSlotProps>(
 
     return (
       <div
-        ref={ref}
+        ref={forwardedRef}
         className={cn(
           "relative flex h-9 w-9 items-center justify-center border-input border-y border-r text-sm shadow-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
           isActive && "z-10 ring-1 ring-ring",
@@ -68,10 +68,10 @@ InputOTPSlot.displayName = "InputOTPSlot";
 
 export type InputOTPSeparatorProps = ComponentPropsWithoutRef<"div">;
 
-export const InputOTPSeparator = forwardRef<ElementRef<"div">, InputOTPSeparatorProps>(({ ...props }, ref) => (
+export const InputOTPSeparator = forwardRef<ElementRef<"div">, InputOTPSeparatorProps>(({ ...props }, forwardedRef) => (
   // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
   <div
-    ref={ref}
+    ref={forwardedRef}
     // biome-ignore lint/a11y/useSemanticElements: <explanation>
     role="separator"
     {...props}

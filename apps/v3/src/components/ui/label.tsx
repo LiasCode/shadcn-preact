@@ -8,13 +8,15 @@ export const labelVariants = cva(
 
 export type LabelProps = LabelHTMLAttributes & VariantProps<typeof labelVariants>;
 
-export const Label = forwardRef<HTMLLabelElement, LabelProps>(({ className, class: classNative, ...props }, ref) => (
-  <label
-    ref={ref}
-    className={cn(labelVariants(), className, classNative)}
-    {...props}
-    htmlFor={props.htmlFor}
-    aria-labelledby={props["aria-labelledby"]}
-  />
-));
+export const Label = forwardRef<HTMLLabelElement, LabelProps>(
+  ({ className, class: classNative, ...props }, forwardedRef) => (
+    <label
+      ref={forwardedRef}
+      className={cn(labelVariants(), className, classNative)}
+      {...props}
+      htmlFor={props.htmlFor}
+      aria-labelledby={props["aria-labelledby"]}
+    />
+  )
+);
 Label.displayName = "Label";

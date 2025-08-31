@@ -41,7 +41,10 @@ export type CarouselProps = {
 } & HTMLAttributes<HTMLDivElement>;
 
 const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
-  ({ orientation = "horizontal", opts, setApi, plugins, className, class: classNative, children, ...props }, ref) => {
+  (
+    { orientation = "horizontal", opts, setApi, plugins, className, class: classNative, children, ...props },
+    forwardedRef
+  ) => {
     const [carouselRef, api] = useEmblaCarousel(
       {
         ...opts,
@@ -119,7 +122,7 @@ const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
       >
         <section
           // @ts-expect-error ForwardedRef<HTMLDivElement> !=  Ref<HTMLElement>
-          ref={ref}
+          ref={forwardedRef}
           onKeyDownCapture={handleKeyDown}
           className={cn("relative", className, classNative)}
           aria-roledescription="carousel"
@@ -136,7 +139,7 @@ Carousel.displayName = "Carousel";
 export type CarouselContentProps = HTMLAttributes<HTMLDivElement>;
 
 const CarouselContent = forwardRef<HTMLDivElement, CarouselContentProps>(
-  ({ className, class: classNative, ...props }, ref) => {
+  ({ className, class: classNative, ...props }, forwardedRef) => {
     const { carouselRef, orientation } = useCarousel();
 
     return (
@@ -145,7 +148,7 @@ const CarouselContent = forwardRef<HTMLDivElement, CarouselContentProps>(
         className="overflow-hidden"
       >
         <div
-          ref={ref}
+          ref={forwardedRef}
           className={cn("flex", orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col", className, classNative)}
           {...props}
         />
@@ -158,12 +161,12 @@ CarouselContent.displayName = "CarouselContent";
 export type CarouselItemProps = HTMLAttributes<HTMLDivElement>;
 
 const CarouselItem = forwardRef<HTMLDivElement, CarouselItemProps>(
-  ({ className, class: classNative, ...props }, ref) => {
+  ({ className, class: classNative, ...props }, forwardedRef) => {
     const { orientation } = useCarousel();
 
     return (
       <div
-        ref={ref}
+        ref={forwardedRef}
         role="group"
         aria-roledescription="slide"
         className={cn(
@@ -182,12 +185,12 @@ CarouselItem.displayName = "CarouselItem";
 export type CarouselPreviousProps = ComponentProps<typeof Button>;
 
 const CarouselPrevious = forwardRef<HTMLButtonElement, CarouselPreviousProps>(
-  ({ className, class: classNative, variant = "outline", size = "icon", ...props }, ref) => {
+  ({ className, class: classNative, variant = "outline", size = "icon", ...props }, forwardedRef) => {
     const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
     return (
       <Button
-        ref={ref}
+        ref={forwardedRef}
         variant={variant}
         size={size}
         className={cn(
@@ -213,12 +216,12 @@ CarouselPrevious.displayName = "CarouselPrevious";
 export type CarouselNextProps = ComponentProps<typeof Button>;
 
 const CarouselNext = forwardRef<HTMLButtonElement, CarouselNextProps>(
-  ({ className, class: classNative, variant = "outline", size = "icon", ...props }, ref) => {
+  ({ className, class: classNative, variant = "outline", size = "icon", ...props }, forwardedRef) => {
     const { orientation, scrollNext, canScrollNext } = useCarousel();
 
     return (
       <Button
-        ref={ref}
+        ref={forwardedRef}
         variant={variant}
         size={size}
         className={cn(

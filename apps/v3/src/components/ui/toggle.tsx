@@ -32,7 +32,7 @@ export type ToggleProps = ButtonHTMLAttributes<HTMLButtonElement> &
   };
 
 export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
-  ({ className, class: classNative, variant, size, ...props }, ref) => {
+  ({ className, class: classNative, variant, size, ...props }, forwardedRef) => {
     const [isOn, setIsOn] = useControlledState({
       defaultValue: Boolean(props.defaultPressed),
       controlledValue: props.pressed,
@@ -41,7 +41,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
 
     return (
       <button
-        ref={ref}
+        ref={forwardedRef}
         data-state={isOn ? "on" : "off"}
         className={cn(toggleVariants({ variant, size, className }), classNative)}
         {...props}

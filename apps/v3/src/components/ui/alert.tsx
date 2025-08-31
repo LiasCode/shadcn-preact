@@ -20,9 +20,9 @@ export const alertVariants = cva(
 export type AlertProps = HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>;
 
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, class: classNative, variant, ...props }, ref) => (
+  ({ className, class: classNative, variant, ...props }, forwardedRef) => (
     <div
-      ref={ref}
+      ref={forwardedRef}
       role="alert"
       className={cn(alertVariants({ variant }), className, classNative)}
       {...props}
@@ -34,9 +34,9 @@ Alert.displayName = "Alert";
 export type AlertTitleProps = HTMLAttributes<HTMLHeadingElement>;
 
 export const AlertTitle = forwardRef<HTMLParagraphElement, AlertTitleProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <h5
-      ref={ref}
+      ref={forwardedRef}
       className={cn("mb-1 font-medium leading-none tracking-tight", className, classNative)}
       {...props}
     />
@@ -47,9 +47,9 @@ AlertTitle.displayName = "AlertTitle";
 export type AlertDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 
 export const AlertDescription = forwardRef<HTMLParagraphElement, AlertDescriptionProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+  ({ className, class: classNative, ...props }, forwardedRef) => (
     <div
-      ref={ref}
+      ref={forwardedRef}
       className={cn("text-sm [&_p]:leading-relaxed", className, classNative)}
       {...props}
     />

@@ -25,9 +25,9 @@ const DrawerClose = DrawerPrimitive.Close;
 const DrawerOverlay = forwardRef<
   ElementRef<typeof DrawerPrimitive.Overlay>,
   ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
->(({ className, class: classNative, ...props }, ref) => (
+>(({ className, class: classNative, ...props }, forwardedRef) => (
   <DrawerPrimitive.Overlay
-    ref={ref}
+    ref={forwardedRef}
     className={cn("fixed inset-0 z-50 bg-black/80", className, classNative)}
     {...props}
   />
@@ -37,11 +37,11 @@ DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 const DrawerContent = forwardRef<
   ElementRef<typeof DrawerPrimitive.Content>,
   ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, class: classNative, children, ...props }, ref) => (
+>(({ className, class: classNative, children, ...props }, forwardedRef) => (
   <DrawerPortal>
     <DrawerOverlay />
     <DrawerPrimitive.Content
-      ref={ref}
+      ref={forwardedRef}
       className={cn(
         "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background",
         className,
@@ -75,9 +75,9 @@ DrawerFooter.displayName = "DrawerFooter";
 const DrawerTitle = forwardRef<
   ElementRef<typeof DrawerPrimitive.Title>,
   ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
->(({ className, class: classNative, ...props }, ref) => (
+>(({ className, class: classNative, ...props }, forwardedRef) => (
   <DrawerPrimitive.Title
-    ref={ref}
+    ref={forwardedRef}
     className={cn("font-semibold text-lg leading-none tracking-tight", className, classNative)}
     {...props}
   />
@@ -87,9 +87,9 @@ DrawerTitle.displayName = DrawerPrimitive.Title.displayName;
 const DrawerDescription = forwardRef<
   ElementRef<typeof DrawerPrimitive.Description>,
   ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
->(({ className, class: classNative, ...props }, ref) => (
+>(({ className, class: classNative, ...props }, forwardedRef) => (
   <DrawerPrimitive.Description
-    ref={ref}
+    ref={forwardedRef}
     className={cn("text-muted-foreground text-sm", className, classNative)}
     {...props}
   />
