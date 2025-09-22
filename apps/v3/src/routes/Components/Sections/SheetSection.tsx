@@ -276,7 +276,7 @@ export function SheetSection() {
 
 const SHEET_SIDES = ["top", "right", "bottom", "left"] as const;
 
-type SheetSide = (typeof SHEET_SIDES)[number];
+export type SheetSide = (typeof SHEET_SIDES)[number];
 
 export function SheetSide() {
   return (

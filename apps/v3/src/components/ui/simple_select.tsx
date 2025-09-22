@@ -1,13 +1,7 @@
 import { autoPlacement, autoUpdate, offset, shift, useFloating } from "@floating-ui/react-dom";
 import { ChevronDown } from "lucide-preact";
-import {
-  type ButtonHTMLAttributes,
-  type PropsWithChildren,
-  forwardRef,
-  useEffect,
-  useMemo,
-  useState,
-} from "preact/compat";
+import type { ButtonHTMLAttributes } from "preact";
+import { type PropsWithChildren, forwardRef, useEffect, useMemo, useState } from "preact/compat";
 import { Button } from "./button";
 import { Modal } from "./modal";
 import { cn } from "./share/cn";

@@ -1,5 +1,6 @@
 import { type VariantProps, cva } from "class-variance-authority";
-import { type ButtonHTMLAttributes, forwardRef } from "preact/compat";
+import type { ButtonHTMLAttributes } from "preact";
+import { forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 import { useControlledState } from "./share/useControlledState";
 

@@ -1,6 +1,6 @@
 import { ChevronRight, MoreHorizontal } from "lucide-preact";
-import type { ComponentProps } from "preact";
-import { type AnchorHTMLAttributes, type ComponentPropsWithoutRef, type ReactNode, forwardRef } from "preact/compat";
+import type { AnchorHTMLAttributes, ComponentProps } from "preact";
+import { type ComponentPropsWithoutRef, type ReactNode, forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
 

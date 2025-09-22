@@ -1,5 +1,6 @@
 import { Check } from "lucide-preact";
-import { type ButtonHTMLAttributes, forwardRef } from "preact/compat";
+import type { ButtonHTMLAttributes } from "preact";
+import { forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 import { useControlledState } from "./share/useControlledState";
 
@@ -35,6 +36,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
 
     return (
       <>
+        {/** biome-ignore lint/a11y/useSemanticElements: <> */}
         <button
           ref={forwardedRef}
           disabled={disabled}
@@ -47,7 +49,6 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
           aria-checked={checked}
           data-state={checked ? "checked" : "unchecked"}
           data-disabled={disabled}
-          // biome-ignore lint/a11y/useSemanticElements:
           role={"checkbox"}
           value={checked ? "on" : "off"}
           onClick={() => {

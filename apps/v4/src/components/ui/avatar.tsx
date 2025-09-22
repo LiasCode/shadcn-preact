@@ -1,6 +1,6 @@
+import type { ImgHTMLAttributes } from "preact";
 import {
   type HTMLAttributes,
-  type ImgHTMLAttributes,
   createContext,
   forwardRef,
   useContext,

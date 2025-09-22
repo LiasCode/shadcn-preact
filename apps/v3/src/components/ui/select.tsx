@@ -1,9 +1,7 @@
 import { autoPlacement, autoUpdate, offset, shift, useFloating } from "@floating-ui/react-dom";
 import { Check, ChevronDown } from "lucide-preact";
-import { type VNode, toChildArray } from "preact";
+import { type ButtonHTMLAttributes, type CSSProperties, type VNode, toChildArray } from "preact";
 import {
-  type ButtonHTMLAttributes,
-  type CSSProperties,
   type HTMLAttributes,
   type MutableRefObject,
   type PropsWithChildren,
@@ -135,10 +133,8 @@ export function Select({
     transform: false,
   });
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const openSelect = useCallback(() => setIsSelectOpen(true), []);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const closeSelect = useCallback(() => {
     setIsSelectOpen(false);
     setTimeout(() => {
@@ -217,7 +213,6 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
       }
     };
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       switch (isFocused) {
         case true:
@@ -312,7 +307,6 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       return result;
     }, [ref.reference.current, isOpen]);
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       if (!isOpen) return;
 
@@ -325,7 +319,6 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
     }, [isOpen, ref.floating.current]);
 
     // This is for fix initial render value to capture the correctly `nodeForTheSelectedValue`
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       const search_value = value;
 
@@ -441,7 +434,6 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
 
     const isSelected = useMemo(() => value === itemValue, [value, itemValue]);
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     const selectItemHandler = useCallback(() => {
       if (props.disabled) return;
       onValueChange(itemValue);
@@ -511,7 +503,6 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
       }
     };
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       switch (isFocused) {
         case true:
@@ -528,9 +519,9 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
     }, [isFocused]);
 
     return (
+      // biome-ignore lint/a11y/useSemanticElements: <>
       <div
         ref={forwardedRef}
-        // biome-ignore lint/a11y/useSemanticElements: <explanation>
         role="option"
         onClick={() => {
           selectItemHandler();

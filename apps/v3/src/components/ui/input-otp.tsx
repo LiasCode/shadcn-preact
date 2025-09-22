@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/a11y/useSemanticElements: <> */
+/** biome-ignore-all lint/a11y/useAriaPropsForRole: <> */
 import { OTPInput, OTPInputContext } from "input-otp";
 import { Minus } from "lucide-preact";
 import { type ComponentPropsWithoutRef, type ElementRef, forwardRef, useContext } from "preact/compat";
@@ -69,11 +71,10 @@ InputOTPSlot.displayName = "InputOTPSlot";
 export type InputOTPSeparatorProps = ComponentPropsWithoutRef<"div">;
 
 export const InputOTPSeparator = forwardRef<ElementRef<"div">, InputOTPSeparatorProps>(({ ...props }, forwardedRef) => (
-  // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
   <div
     ref={forwardedRef}
-    // biome-ignore lint/a11y/useSemanticElements: <explanation>
     role="separator"
+    tabIndex={-1}
     {...props}
   >
     <Minus />

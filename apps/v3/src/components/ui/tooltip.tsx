@@ -1,7 +1,6 @@
 import { autoPlacement, autoUpdate, offset, shift, useFloating } from "@floating-ui/react-dom";
+import type { ButtonHTMLAttributes, CSSProperties } from "preact";
 import {
-  type ButtonHTMLAttributes,
-  type CSSProperties,
   type HTMLAttributes,
   type MutableRefObject,
   type PropsWithChildren,

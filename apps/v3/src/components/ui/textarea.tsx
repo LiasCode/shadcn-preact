@@ -1,4 +1,5 @@
-import { type TextareaHTMLAttributes, forwardRef } from "preact/compat";
+import type { TextareaHTMLAttributes } from "preact";
+import { forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 
 export type TextareaProps = TextareaHTMLAttributes;

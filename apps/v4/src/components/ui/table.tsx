@@ -1,4 +1,5 @@
-import { type HTMLAttributes, type TdHTMLAttributes, type ThHTMLAttributes, forwardRef } from "preact/compat";
+import type { TdHTMLAttributes, ThHTMLAttributes } from "preact";
+import { type HTMLAttributes, forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 
 export type TableProps = HTMLAttributes<HTMLTableElement>;

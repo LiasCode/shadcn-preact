@@ -1,6 +1,6 @@
 import { autoPlacement, autoUpdate, offset, shift, useFloating } from "@floating-ui/react-dom";
+import type { CSSProperties } from "preact";
 import {
-  type CSSProperties,
   type HTMLAttributes,
   type MutableRefObject,
   type PropsWithChildren,

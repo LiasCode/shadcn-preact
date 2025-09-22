@@ -1,12 +1,6 @@
 import { X } from "lucide-preact";
-import {
-  type ButtonHTMLAttributes,
-  type HTMLAttributes,
-  type PropsWithChildren,
-  createContext,
-  createRef,
-  forwardRef,
-} from "preact/compat";
+import type { ButtonHTMLAttributes } from "preact";
+import { type HTMLAttributes, type PropsWithChildren, createContext, createRef, forwardRef } from "preact/compat";
 import { useContext, useEffect } from "preact/hooks";
 import { Modal } from "./modal";
 import { cn } from "./share/cn";
@@ -87,7 +81,6 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
 
     const compose_refs = useComposedRefs(contentRef, forwardedRef);
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       if (open) {
         if (props.autoSelect) {

@@ -1,7 +1,7 @@
 import { type VariantProps, cva } from "class-variance-authority";
 import { X } from "lucide-preact";
-import type { VNode } from "preact";
-import { type ButtonHTMLAttributes, type HTMLAttributes, forwardRef } from "preact/compat";
+import type { ButtonHTMLAttributes, VNode } from "preact";
+import { type HTMLAttributes, forwardRef } from "preact/compat";
 import * as ReactHotToast from "react-hot-toast";
 import { cn } from "./share/cn";
 

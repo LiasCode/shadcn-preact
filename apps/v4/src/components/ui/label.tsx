@@ -1,4 +1,5 @@
-import { type LabelHTMLAttributes, forwardRef } from "preact/compat";
+import type { LabelHTMLAttributes } from "preact";
+import { forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 
 export type LabelProps = LabelHTMLAttributes;

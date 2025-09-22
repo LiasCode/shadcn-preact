@@ -1,10 +1,5 @@
-import {
-  type ButtonHTMLAttributes,
-  type HTMLAttributes,
-  type PropsWithChildren,
-  createContext,
-  forwardRef,
-} from "preact/compat";
+import type { ButtonHTMLAttributes } from "preact";
+import { type HTMLAttributes, type PropsWithChildren, createContext, forwardRef } from "preact/compat";
 import { useContext } from "preact/hooks";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";

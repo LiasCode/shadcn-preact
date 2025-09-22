@@ -8,7 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "biome lint . --fix --unsafe",
-    "format": "prettier --write --cache \"**/*.[tj]s?(x)\""
+    "format": "prettier --write --cache 'src'"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.6",
@@ -38,7 +38,7 @@
     "url": "https://lias-code.pages.dev"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.0.6",
     "@preact/preset-vite": "^2.10.2",
     "@types/node": "^22.17.2",
     "autoprefixer": "^10.4.21",

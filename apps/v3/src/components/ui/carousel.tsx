@@ -1,8 +1,8 @@
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-preact";
 
-import { type ComponentProps, createContext } from "preact";
-import { type HTMLAttributes, type KeyboardEvent, forwardRef } from "preact/compat";
+import { type ComponentProps, createContext, type TargetedKeyboardEvent } from "preact";
+import { forwardRef, type HTMLAttributes } from "preact/compat";
 import { useCallback, useContext, useEffect, useState } from "preact/hooks";
 import { Button } from "./button";
 import { cn } from "./share/cn";
@@ -73,7 +73,7 @@ const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
     }, [api]);
 
     const handleKeyDown = useCallback(
-      (event: KeyboardEvent<HTMLDivElement>) => {
+      (event: TargetedKeyboardEvent<HTMLDivElement>) => {
         if (event.key === "ArrowLeft") {
           event.preventDefault();
           scrollPrev();
@@ -120,6 +120,7 @@ const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
           canScrollNext,
         }}
       >
+        {/** biome-ignore lint/a11y/useAriaPropsSupportedByRole: <> */}
         <section
           // @ts-expect-error ForwardedRef<HTMLDivElement> !=  Ref<HTMLElement>
           ref={forwardedRef}

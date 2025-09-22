@@ -29,7 +29,6 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
     const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined;
 
     return (
-      // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
       <div
         ref={forwardedRef}
         className={cn("relative h-2 w-full overflow-hidden rounded-full bg-primary/20", className, classNative)}

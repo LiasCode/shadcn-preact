@@ -1,12 +1,6 @@
 import { ChevronDown } from "lucide-preact";
-import {
-  createContext,
-  forwardRef,
-  useContext,
-  useMemo,
-  type ButtonHTMLAttributes,
-  type HTMLAttributes,
-} from "preact/compat";
+import type { ButtonHTMLAttributes } from "preact";
+import { createContext, forwardRef, useContext, useMemo, type HTMLAttributes } from "preact/compat";
 import { Collapsible, CollapsibleTrigger } from "./collapsible";
 import { cn } from "./share/cn";
 import { useControlledState } from "./share/useControlledState";

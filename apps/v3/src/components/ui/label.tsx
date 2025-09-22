@@ -1,5 +1,6 @@
 import { type VariantProps, cva } from "class-variance-authority";
-import { type LabelHTMLAttributes, forwardRef } from "preact/compat";
+import type { LabelHTMLAttributes } from "preact";
+import { forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 
 export const labelVariants = cva(

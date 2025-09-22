@@ -402,7 +402,7 @@ function YearGrid({
         const isDisabled = isBefore || isAfter;
         return (
           <Button
-            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+            // biome-ignore lint/suspicious/noArrayIndexKey: <>
             key={i}
             className={cn(
               "h-7 w-full font-normal text-foreground text-sm",

@@ -1,4 +1,5 @@
-import { type InputHTMLAttributes, createRef, forwardRef, useEffect, useState } from "preact/compat";
+import type { InputHTMLAttributes } from "preact";
+import { createRef, forwardRef, useEffect, useState } from "preact/compat";
 import { Badge, type BadgeProps } from "./badge";
 import { cn } from "./share/cn";
 import { Show } from "./show";
@@ -34,7 +35,6 @@ export const InputToken = forwardRef<HTMLInputElement, TokenInputProps>(
       }
     }, [raw, isFocus]);
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       if (props.onTokensChange) {
         props.onTokensChange(tokens);

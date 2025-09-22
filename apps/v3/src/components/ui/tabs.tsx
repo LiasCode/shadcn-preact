@@ -1,11 +1,5 @@
-import { createContext } from "preact";
-import {
-  type ButtonHTMLAttributes,
-  type HTMLAttributes,
-  type PropsWithChildren,
-  forwardRef,
-  useContext,
-} from "preact/compat";
+import { type ButtonHTMLAttributes, createContext } from "preact";
+import { type HTMLAttributes, type PropsWithChildren, forwardRef, useContext } from "preact/compat";
 import { cn } from "./share/cn";
 import { useControlledState } from "./share/useControlledState";
 import { Show } from "./show";

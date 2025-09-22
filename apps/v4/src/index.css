@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noDuplicateProperties: <> */
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -225,15 +226,15 @@
       @apply !mt-0;
     }
 
-    &:first-child>h3:first-child {
+    &:first-child > h3:first-child {
       @apply !mt-0;
     }
 
-    >h3 {
+    > h3 {
       @apply !mt-16;
     }
 
-    >h3+p {
+    > h3 + p {
       @apply !mt-2;
     }
   }
@@ -326,9 +327,7 @@
       width: 2px;
       height: 100%;
       content: "";
-      background-color: color-mix(in oklab,
-          var(--muted-foreground) 50%,
-          transparent);
+      background-color: color-mix(in oklab, var(--muted-foreground) 50%, transparent);
     }
   }
 
