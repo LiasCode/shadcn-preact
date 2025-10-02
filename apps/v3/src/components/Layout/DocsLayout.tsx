@@ -20,14 +20,14 @@ export function DocsLayout(props: DocsLayoutProps) {
     <div className="flex h-auto min-h-screen w-full flex-1 flex-col items-center justify-start bg-background">
       <Header />
 
-      <div className="fixed right-2 bottom-2 z-50 h-fit w-fit">
+      <div className="fixed right-2 bottom-2 z-50 h-fit w-fit rounded-lg bg-background shadow-md">
         <Button
           asChild
           className={"border border-purple-500"}
           variant={"link"}
         >
           <a
-            rel="noreferrer noreferer"
+            rel="noopener"
             target="_blank"
             href="https://v4-shadcn-preact.onrender.com/"
           >
