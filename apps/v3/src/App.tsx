@@ -39,6 +39,7 @@ import TextareaPage from "./routes/Components/Textarea";
 import ToastPage from "./routes/Components/Toast";
 import TogglePage from "./routes/Components/Toggle";
 import TooltipPage from "./routes/Components/Tooltip";
+import DarkModePage from "./routes/Docs/DarkMode";
 import InstallationPage from "./routes/Docs/Installation";
 import InstallationAstroPage from "./routes/Docs/InstallationAstro";
 import InstallationVitePage from "./routes/Docs/InstallationVite";
@@ -97,6 +98,11 @@ export function App() {
           <Route
             component={ThemingPage}
             path={AppRoutes.DOCS.THEMING}
+          />
+
+          <Route
+            component={DarkModePage}
+            path={AppRoutes.DOCS.DARK_MODE}
           />
 
           <Route

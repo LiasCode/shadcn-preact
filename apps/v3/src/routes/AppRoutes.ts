@@ -7,6 +7,7 @@ export const AppRoutes = {
     INSTALLATION_VITE: "/docs/installation/vite",
     INSTALLATION_ASTRO: "/docs/installation/astro",
     THEMING: "/docs/theming",
+    DARK_MODE: "/docs/dark",
   },
   COMPONENTS: {
     ACCORDION: "/component/accordion",

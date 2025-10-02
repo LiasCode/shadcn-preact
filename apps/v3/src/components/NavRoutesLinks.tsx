@@ -56,6 +56,20 @@ export default function NavRoutesLinks() {
         </a>
 
         <a
+          href={AppRoutes.DOCS.DARK_MODE}
+          className="group w-full"
+          data-route-active={isActive(AppRoutes.DOCS.DARK_MODE)}
+        >
+          <Button
+            variant="link"
+            size="default"
+            className="w-full justify-start px-2 py-1 font-normal text-muted-foreground capitalize group-data-[route-active=true]:text-foreground"
+          >
+            Dark Mode
+          </Button>
+        </a>
+
+        <a
           href={AppRoutes.EXAMPLES}
           className="group w-full"
           data-route-active={isActive(AppRoutes.EXAMPLES)}

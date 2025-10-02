@@ -4,26 +4,27 @@ import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
 import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-preact";
 import { AppRoutes } from "../AppRoutes";
 
-export default function ThemingPage() {
+export default function DarkModePage() {
+  const firstAlphaComponentKey = Object.keys(AppRoutes.COMPONENTS).sort()[0] as keyof typeof AppRoutes.COMPONENTS;
+
   return (
     <DocsLayout
-      title="Theming"
-      description="Using CSS Variables or Tailwind CSS for theming."
+      title="Dark Mode"
+      description="Adding dark mode to your site."
     >
       <div>
-        <h2>You can choose between using CSS variables (recommended) or utility classes for theming.</h2>
         <p>
-          See the original documentation of shadcn on
+          See the original documentation for adding dark mode on
           <Button
             variant={"link"}
             asChild
           >
             <a
-              href={"https://v3.shadcn.com/docs/theming"}
+              href={"https://v3.shadcn.com/docs/dark-mode"}
               target={"_blank"}
               rel={"noopener"}
             >
-              https://v3.shadcn.com/docs/theming
+              https://v3.shadcn.com/docs/dark-mode
               <ExternalLink />
             </a>
           </Button>
@@ -33,23 +34,23 @@ export default function ThemingPage() {
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
           <PaginationItem>
-            <a href={AppRoutes.DOCS.INSTALLATION}>
+            <a href={AppRoutes.DOCS.THEMING}>
               <Button
                 className="gap-1 pl-1"
                 variant="outline"
               >
                 <ChevronLeft />
-                Installation
+                Theming
               </Button>
             </a>
           </PaginationItem>
           <PaginationItem>
-            <a href={AppRoutes.DOCS.DARK_MODE}>
+            <a href={AppRoutes.COMPONENTS[firstAlphaComponentKey]}>
               <Button
                 className="gap-1 pr-1 capitalize"
                 variant="outline"
               >
-                Dark Mode
+                {firstAlphaComponentKey.toLocaleLowerCase()}
                 <ChevronRight />
               </Button>
             </a>
