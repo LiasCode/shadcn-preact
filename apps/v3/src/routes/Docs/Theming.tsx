@@ -1,8 +1,7 @@
 import { DocsLayout } from "@/components/Layout/DocsLayout";
-import { Alert, AlertDescription, AlertTitle } from "@ui/alert";
 import { Button } from "@ui/button";
 import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
-import { AlertCircle, ChevronLeft, ChevronRight } from "lucide-preact";
+import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-preact";
 import { AppRoutes } from "../AppRoutes";
 
 export default function ThemingPage() {
@@ -13,14 +12,25 @@ export default function ThemingPage() {
       title="Theming"
       description="Using CSS Variables or Tailwind CSS for theming."
     >
-      <Alert className="border-yellow-400">
-        <AlertCircle
-          className="h-4 w-4"
-          color="#facc15"
-        />
-        <AlertTitle>Page under construction</AlertTitle>
-        <AlertDescription>Theming guide page is on work in progress.</AlertDescription>
-      </Alert>
+      <div>
+        <h2>You can choose between using CSS variables (recommended) or utility classes for theming.</h2>
+        <p>
+          See the original documentation of shadcn on
+          <Button
+            variant={"link"}
+            asChild
+          >
+            <a
+              href={"https://v3.shadcn.com/docs/theming"}
+              target={"_blank"}
+              rel={"noopener"}
+            >
+              https://v3.shadcn.com/docs/theming
+              <ExternalLink />
+            </a>
+          </Button>
+        </p>
+      </div>
 
       <Pagination className="mt-10">
         <PaginationContent className="flex w-full flex-row justify-between">
