@@ -4,7 +4,7 @@ import { Button } from "@ui/button";
 import { useTheme } from "@ui/theme";
 import { Moon, Sun } from "lucide-preact";
 import { useLocation } from "preact-iso";
-import { Suspense, lazy } from "preact/compat";
+import { lazy, Suspense } from "preact/compat";
 import CommandSearchDialog from "./CommandSearchDialog";
 import { ShadcnIcon } from "./ShadcnIcon";
 

@@ -26,10 +26,10 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === "undefined") {
-      return defaultTheme;
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
     }
-    return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
+    return defaultTheme;
   });
 
   useEffect(() => {
