@@ -191,6 +191,28 @@ export function SelectSection() {
 }
 
 export function SelectDemo() {
+  const data: { value: string; label: string }[] = [
+    {
+      value: "apple",
+      label: "Apple",
+    },
+    {
+      value: "banana",
+      label: "Banana",
+    },
+    {
+      value: "blueberry",
+      label: "Blueberry",
+    },
+    {
+      value: "grapes",
+      label: "Grapes",
+    },
+    {
+      value: "pineapple",
+      label: "Pineapple",
+    },
+  ];
   return (
     <Select>
       <SelectTrigger className="w-[180px]">
@@ -199,11 +221,9 @@ export function SelectDemo() {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="apple">Apple</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
+          {data.map((i) => (
+            <SelectItem value={i.value}>{i.label}</SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

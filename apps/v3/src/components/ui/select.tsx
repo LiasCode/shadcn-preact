@@ -352,7 +352,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
 
       if (!target) return;
 
-      nodeForTheSelectedValueChange(target?.props?.children);
+      nodeForTheSelectedValueChange(target?.props?.children || "");
     }, [value]);
 
     return (
@@ -570,6 +570,11 @@ function findNodeOptionByValue(root: VNode<any>, value: string): VNode<any> | nu
 
   while (stack.length) {
     const node = stack.pop()!;
+
+    if (Array.isArray(node)) {
+      stack.push(...node);
+      continue;
+    }
 
     if (typeof node === "string") continue;
     if (typeof node === "number") continue;
