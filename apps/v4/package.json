@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@preact/signals": "^2.3.2",
+    "@tabler/icons-preact": "3.35.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
