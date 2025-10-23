@@ -6,6 +6,7 @@ import { CardDemo } from "@/components/CardDemo";
 import { InputDemo } from "@/components/InputDemo";
 import { InputGroupDemo } from "@/components/InputGroupDemo";
 import { NativeSelectDemo } from "@/components/NativeSelectDemo";
+import { SeparatorDemo } from "@/components/SeparatorDemo";
 import { SpinnerDemo } from "@/components/SpinnerDemo";
 import { Header } from "@/layout/Header";
 
@@ -21,56 +22,63 @@ export default function HomePage() {
             <ButtonDemo />
           </div>
 
-          <Separator />
+          <SectionSeparator />
 
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Avatars</h1>
             <AvatarDemo />
           </div>
 
-          <Separator />
+          <SectionSeparator />
 
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Alert</h1>
             <AlertDemo />
           </div>
 
-          <Separator />
+          <SectionSeparator />
 
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Spinner</h1>
             <SpinnerDemo />
           </div>
 
-          <Separator />
+          <SectionSeparator />
 
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Card</h1>
             <CardDemo />
           </div>
 
-          <Separator />
+          <SectionSeparator />
 
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Input</h1>
             <InputDemo />
           </div>
 
-          <Separator />
+          <SectionSeparator />
 
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Input Group</h1>
             <InputGroupDemo />
           </div>
 
-          <Separator />
+          <SectionSeparator />
 
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Native Select</h1>
             <NativeSelectDemo />
           </div>
 
-          <Separator />
+          <SectionSeparator />
+
+          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
+            <h1>Separator</h1>
+            <SeparatorDemo />
+          </div>
+
+          <SectionSeparator />
 
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Badges</h1>
@@ -82,6 +90,6 @@ export default function HomePage() {
   );
 }
 
-const Separator = () => {
+const SectionSeparator = () => {
   return <div class="h-[1px] w-full bg-border" />;
 };
