@@ -4,6 +4,7 @@ import { BadgeDemo } from "@/components/BadgeDemo";
 import { ButtonDemo } from "@/components/ButtonDemo";
 import { CardDemo } from "@/components/CardDemo";
 import { InputDemo } from "@/components/InputDemo";
+import { NativeSelectDemo } from "@/components/NativeSelectDemo";
 import { SpinnerDemo } from "@/components/SpinnerDemo";
 import { Header } from "@/layout/Header";
 
@@ -52,6 +53,13 @@ export default function HomePage() {
           <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
             <h1>Input</h1>
             <InputDemo />
+          </div>
+
+          <Separator />
+
+          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
+            <h1>Native Select</h1>
+            <NativeSelectDemo />
           </div>
 
           <Separator />
