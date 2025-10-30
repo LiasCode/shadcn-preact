@@ -11,9 +11,9 @@ export function InputDemo() {
       />
 
       <div className="grid w-full max-w-sm items-center gap-3">
-        <Label htmlFor="picture">Picture</Label>
+        <Label htmlFor="picture1">Picture</Label>
         <Input
-          id="picture"
+          id="picture1"
           type="file"
         />
       </div>
@@ -25,10 +25,10 @@ export function InputDemo() {
       />
 
       <div className="grid w-full max-w-sm items-center gap-3">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email1">Email</Label>
         <Input
           type="email"
-          id="email"
+          id="email1"
           placeholder="Email"
         />
       </div>
