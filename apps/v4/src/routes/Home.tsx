@@ -9,6 +9,7 @@ import { NativeSelectDemo } from "@/components/NativeSelectDemo";
 import { SeparatorDemo } from "@/components/SeparatorDemo";
 import { SpinnerDemo } from "@/components/SpinnerDemo";
 import { Header } from "@/layout/Header";
+import { ComponentChild } from "preact";
 
 export default function HomePage() {
   return (
@@ -17,79 +18,69 @@ export default function HomePage() {
         <Header />
 
         <div className="flex h-auto w-full flex-col gap-4 rounded p-2 pt-12">
-          <div className="flex flex-col gap-4">
-            <h1 class={"font-bold"}>Buttons</h1>
-            <ButtonDemo />
-          </div>
+          <DemoSection
+            title="Buttons"
+            slot=<ButtonDemo />
+          />
 
-          <SectionSeparator />
+          <DemoSection
+            title="Avatars"
+            slot=<AvatarDemo />
+          />
 
-          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
-            <h1>Avatars</h1>
-            <AvatarDemo />
-          </div>
+          <DemoSection
+            title="Alert"
+            slot=<AlertDemo />
+          />
 
-          <SectionSeparator />
+          <DemoSection
+            title="Spinner"
+            slot=<SpinnerDemo />
+          />
 
-          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
-            <h1>Alert</h1>
-            <AlertDemo />
-          </div>
+          <DemoSection
+            title="Card"
+            slot=<CardDemo />
+          />
 
-          <SectionSeparator />
+          <DemoSection
+            title="Input"
+            slot=<InputDemo />
+          />
 
-          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
-            <h1>Spinner</h1>
-            <SpinnerDemo />
-          </div>
+          <DemoSection
+            title="Input Group"
+            slot=<InputGroupDemo />
+          />
 
-          <SectionSeparator />
+          <DemoSection
+            title="Native Select"
+            slot=<NativeSelectDemo />
+          />
 
-          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
-            <h1>Card</h1>
-            <CardDemo />
-          </div>
+          <DemoSection
+            title="Separator"
+            slot=<SeparatorDemo />
+          />
 
-          <SectionSeparator />
-
-          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
-            <h1>Input</h1>
-            <InputDemo />
-          </div>
-
-          <SectionSeparator />
-
-          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
-            <h1>Input Group</h1>
-            <InputGroupDemo />
-          </div>
-
-          <SectionSeparator />
-
-          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
-            <h1>Native Select</h1>
-            <NativeSelectDemo />
-          </div>
-
-          <SectionSeparator />
-
-          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
-            <h1>Separator</h1>
-            <SeparatorDemo />
-          </div>
-
-          <SectionSeparator />
-
-          <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
-            <h1>Badges</h1>
-            <BadgeDemo />
-          </div>
+          <DemoSection
+            title="Badges"
+            slot=<BadgeDemo />
+          />
         </div>
       </div>
     </div>
   );
 }
 
-const SectionSeparator = () => {
-  return <div class="h-[1px] w-full bg-border" />;
+const DemoSection = (props: { title: string; slot: ComponentChild }) => {
+  return (
+    <>
+      <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
+        <h1 class={"font-semibold"}>{props.title}</h1>
+        {props.slot}
+      </div>
+      <div class="h-[1px] w-full bg-border" />
+    </>
+  );
 };
