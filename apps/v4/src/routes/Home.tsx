@@ -7,10 +7,13 @@ import { CardDemo } from "@/components/demo/card-demo";
 import { InputDemo } from "@/components/demo/input-demo";
 import { InputGroupDemo } from "@/components/demo/input-group-demo";
 import { KbdDemo } from "@/components/demo/kbd-demo";
+import { LabelDemo } from "@/components/demo/label-demo";
 import { NativeSelectDemo } from "@/components/demo/native-select-demo";
 import { SeparatorDemo } from "@/components/demo/separator-demo";
+import { SkeletonDemo } from "@/components/demo/skeleton-demo";
 import { SpinnerDemo } from "@/components/demo/spinner-demo";
 import { TableDemo } from "@/components/demo/table-demo";
+import { TextareaDemo } from "@/components/demo/textarea-demo";
 import { Header } from "@/layout/Header";
 import type { ComponentChild } from "preact";
 
@@ -59,4 +62,7 @@ const RoutesDemoObj: Record<string, ComponentChild> = {
   "badge": <BadgeDemo />,
   "table": <TableDemo />,
   "kbd": <KbdDemo />,
+  "textarea": <TextareaDemo />,
+  "skeleton": <SkeletonDemo />,
+  "label": <LabelDemo />,
 };

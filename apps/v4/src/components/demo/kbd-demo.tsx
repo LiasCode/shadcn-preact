@@ -2,7 +2,7 @@ import { Kbd, KbdGroup } from "@/components/ui/kbd";
 
 export function KbdDemo() {
   return (
-    <div className={"flex flex-col gap-8"}>
+    <div className={"flex flex-row gap-8"}>
       <KbdGroup>
         <Kbd>⌘</Kbd>
         <Kbd>⇧</Kbd>
