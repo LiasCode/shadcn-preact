@@ -9,7 +9,7 @@ import { NativeSelectDemo } from "@/components/NativeSelectDemo";
 import { SeparatorDemo } from "@/components/SeparatorDemo";
 import { SpinnerDemo } from "@/components/SpinnerDemo";
 import { Header } from "@/layout/Header";
-import { ComponentChild } from "preact";
+import type { ComponentChild } from "preact";
 
 export default function HomePage() {
   return (
