@@ -1,14 +1,16 @@
-import { AlertDemo } from "@/components/AlertDemo";
-import { AvatarDemo } from "@/components/AvatarDemo";
-import { BadgeDemo } from "@/components/BadgeDemo";
-import { ButtonDemo } from "@/components/ButtonDemo";
-import { ButtonGroupDemo } from "@/components/ButtonGroupDemo";
-import { CardDemo } from "@/components/CardDemo";
-import { InputDemo } from "@/components/InputDemo";
-import { InputGroupDemo } from "@/components/InputGroupDemo";
-import { NativeSelectDemo } from "@/components/NativeSelectDemo";
-import { SeparatorDemo } from "@/components/SeparatorDemo";
-import { SpinnerDemo } from "@/components/SpinnerDemo";
+import { AlertDemo } from "@/components/demo/alert-demo";
+import { AvatarDemo } from "@/components/demo/avatar-demo";
+import { BadgeDemo } from "@/components/demo/badge-demo";
+import { ButtonDemo } from "@/components/demo/button-demo";
+import { ButtonGroupDemo } from "@/components/demo/button-group-demo";
+import { CardDemo } from "@/components/demo/card-demo";
+import { InputDemo } from "@/components/demo/input-demo";
+import { InputGroupDemo } from "@/components/demo/input-group-demo";
+import { KbdDemo } from "@/components/demo/kbd-demo";
+import { NativeSelectDemo } from "@/components/demo/native-select-demo";
+import { SeparatorDemo } from "@/components/demo/separator-demo";
+import { SpinnerDemo } from "@/components/demo/spinner-demo";
+import { TableDemo } from "@/components/demo/table-demo";
 import { Header } from "@/layout/Header";
 import type { ComponentChild } from "preact";
 
@@ -19,60 +21,12 @@ export default function HomePage() {
         <Header />
 
         <div className="flex h-auto w-full flex-col gap-4 rounded p-2 pt-12">
-          <DemoSection
-            title="Buttons"
-            slot=<ButtonDemo />
-          />
-
-          <DemoSection
-            title="Button Group"
-            slot=<ButtonGroupDemo />
-          />
-
-          <DemoSection
-            title="Avatars"
-            slot=<AvatarDemo />
-          />
-
-          <DemoSection
-            title="Alert"
-            slot=<AlertDemo />
-          />
-
-          <DemoSection
-            title="Spinner"
-            slot=<SpinnerDemo />
-          />
-
-          <DemoSection
-            title="Card"
-            slot=<CardDemo />
-          />
-
-          <DemoSection
-            title="Input"
-            slot=<InputDemo />
-          />
-
-          <DemoSection
-            title="Input Group"
-            slot=<InputGroupDemo />
-          />
-
-          <DemoSection
-            title="Native Select"
-            slot=<NativeSelectDemo />
-          />
-
-          <DemoSection
-            title="Separator"
-            slot=<SeparatorDemo />
-          />
-
-          <DemoSection
-            title="Badges"
-            slot=<BadgeDemo />
-          />
+          {Object.entries(RoutesDemoObj).map(([key, slot]) => (
+            <DemoSection
+              title={key.split("-").join(" ")}
+              slot={slot}
+            />
+          ))}
         </div>
       </div>
     </div>
@@ -83,10 +37,26 @@ const DemoSection = (props: { title: string; slot: ComponentChild }) => {
   return (
     <>
       <div className="flex h-auto w-full flex-col gap-4 rounded p-2">
-        <h1 class={"font-semibold"}>{props.title}</h1>
+        <h1 class="font-semibold capitalize">{props.title}</h1>
         {props.slot}
       </div>
       <div class="h-[1px] w-full bg-border" />
     </>
   );
+};
+
+const RoutesDemoObj: Record<string, ComponentChild> = {
+  "button": <ButtonDemo />,
+  "button-group": <ButtonGroupDemo />,
+  "avatar": <AvatarDemo />,
+  "alert": <AlertDemo />,
+  "spinner": <SpinnerDemo />,
+  "card": <CardDemo />,
+  "input": <InputDemo />,
+  "input-group": <InputGroupDemo />,
+  "native-select": <NativeSelectDemo />,
+  "separator": <SeparatorDemo />,
+  "badge": <BadgeDemo />,
+  "table": <TableDemo />,
+  "kbd": <KbdDemo />,
 };

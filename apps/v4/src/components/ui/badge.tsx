@@ -1,10 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { forwardRef, type HTMLAttributes } from "preact/compat";
+import type { ComponentProps } from "preact";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
+  "inline-flex items-center justify-center rounded-full border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
   {
     variants: {
       variant: {
@@ -21,21 +21,21 @@ const badgeVariants = cva(
   }
 );
 
-export interface BadgeProps extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {
-  asChild?: boolean;
+function Badge({
+  className,
+  variant,
+  asChild = false,
+  ...props
+}: ComponentProps<"span"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot : "span";
+
+  return (
+    <Comp
+      data-slot="badge"
+      className={cn(badgeVariants({ variant }), className)}
+      {...props}
+    />
+  );
 }
 
-export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, class: classNative, asChild = false, variant, ...props }, forwardedRef) => {
-    const Comp = asChild ? Slot : "span";
-
-    return (
-      <Comp
-        ref={forwardedRef}
-        data-slot="badge"
-        className={cn(badgeVariants({ variant }), className, classNative)}
-        {...props}
-      />
-    );
-  }
-);
+export { Badge, badgeVariants };

@@ -1,119 +1,95 @@
-import type { TdHTMLAttributes, ThHTMLAttributes } from "preact";
-import { type HTMLAttributes, forwardRef } from "preact/compat";
+import type { ComponentProps } from "preact";
 import { cn } from "./share/cn";
 
-export type TableProps = HTMLAttributes<HTMLTableElement>;
+function Table({ className, ...props }: ComponentProps<"table">) {
+  return (
+    <div
+      data-slot="table-container"
+      className="relative w-full overflow-x-auto"
+    >
+      <table
+        data-slot="table"
+        className={cn("w-full caption-bottom text-sm", className)}
+        {...props}
+      />
+    </div>
+  );
+}
 
-const Table = forwardRef<HTMLTableElement, TableProps>(({ className, class: classNative, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
-    <table
-      ref={ref}
-      className={cn("w-full caption-bottom text-sm", className, classNative)}
-      {...props}
-    />
-  </div>
-));
-Table.displayName = "Table";
-
-export type TableHeaderProps = HTMLAttributes<HTMLTableSectionElement>;
-
-const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+function TableHeader({ className, ...props }: ComponentProps<"thead">) {
+  return (
     <thead
-      ref={ref}
-      className={cn("[&_tr]:border-b", className, classNative)}
+      data-slot="table-header"
+      className={cn("[&_tr]:border-b", className)}
       {...props}
     />
-  )
-);
-TableHeader.displayName = "TableHeader";
+  );
+}
 
-export type TableBodyProps = HTMLAttributes<HTMLTableSectionElement>;
-
-const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+function TableBody({ className, ...props }: ComponentProps<"tbody">) {
+  return (
     <tbody
-      ref={ref}
-      className={cn("[&_tr:last-child]:border-0", className, classNative)}
+      data-slot="table-body"
+      className={cn("[&_tr:last-child]:border-0", className)}
       {...props}
     />
-  )
-);
-TableBody.displayName = "TableBody";
+  );
+}
 
-export type TableFooterProps = HTMLAttributes<HTMLTableSectionElement>;
-
-const TableFooter = forwardRef<HTMLTableSectionElement, TableFooterProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+function TableFooter({ className, ...props }: ComponentProps<"tfoot">) {
+  return (
     <tfoot
-      ref={ref}
-      className={cn("border-t bg-muted/50 font-medium last:[&>tr]:border-b-0", className, classNative)}
+      data-slot="table-footer"
+      className={cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className)}
       {...props}
     />
-  )
-);
-TableFooter.displayName = "TableFooter";
+  );
+}
 
-export type TableRowProps = HTMLAttributes<HTMLTableRowElement>;
+function TableRow({ className, ...props }: ComponentProps<"tr">) {
+  return (
+    <tr
+      data-slot="table-row"
+      className={cn("border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted", className)}
+      {...props}
+    />
+  );
+}
 
-const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(({ className, class: classNative, ...props }, ref) => (
-  <tr
-    ref={ref}
-    className={cn(
-      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
-      className,
-      classNative
-    )}
-    {...props}
-  />
-));
-TableRow.displayName = "TableRow";
-
-export type TableHeadProps = ThHTMLAttributes<HTMLTableCellElement>;
-
-const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+function TableHead({ className, ...props }: ComponentProps<"th">) {
+  return (
     <th
-      ref={ref}
+      data-slot="table-head"
       className={cn(
-        "h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-        className,
-        classNative
+        "h-10 whitespace-nowrap px-2 text-left align-middle font-medium text-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        className
       )}
       {...props}
     />
-  )
-);
-TableHead.displayName = "TableHead";
+  );
+}
 
-export type TableCellProps = TdHTMLAttributes<HTMLTableCellElement>;
-
-const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+function TableCell({ className, ...props }: ComponentProps<"td">) {
+  return (
     <td
-      ref={ref}
+      data-slot="table-cell"
       className={cn(
-        "p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-        className,
-        classNative
+        "whitespace-nowrap p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        className
       )}
       {...props}
     />
-  )
-);
-TableCell.displayName = "TableCell";
+  );
+}
 
-export type TableCaptionProps = HTMLAttributes<HTMLTableCaptionElement>;
-
-const TableCaption = forwardRef<HTMLTableCaptionElement, TableCaptionProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+function TableCaption({ className, ...props }: ComponentProps<"caption">) {
+  return (
     <caption
-      ref={ref}
-      className={cn("mt-4 text-muted-foreground text-sm", className, classNative)}
+      data-slot="table-caption"
+      className={cn("mt-4 text-muted-foreground text-sm", className)}
       {...props}
     />
-  )
-);
-TableCaption.displayName = "TableCaption";
+  );
+}
 
 export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow };

@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "preact";
 import { cn } from "./share/cn";
 
-function InputGroup({ className, class: classNative, ...props }: ComponentProps<"div">) {
+function InputGroup({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="input-group"
@@ -26,8 +26,7 @@ function InputGroup({ className, class: classNative, ...props }: ComponentProps<
         // Error state.
         "has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-destructive/20 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40",
 
-        className,
-        classNative
+        className
       )}
       {...props}
     />
@@ -54,7 +53,6 @@ const inputGroupAddonVariants = cva(
 
 function InputGroupAddon({
   className,
-  class: classNative,
   align = "inline-start",
   ...props
 }: ComponentProps<"div"> & VariantProps<typeof inputGroupAddonVariants>) {
@@ -63,7 +61,7 @@ function InputGroupAddon({
       role="group"
       data-slot="input-group-addon"
       data-align={align}
-      className={cn(inputGroupAddonVariants({ align }), className, classNative)}
+      className={cn(inputGroupAddonVariants({ align }), className)}
       onClick={(e) => {
         if ((e.target as HTMLElement).closest("button")) {
           return;
@@ -91,7 +89,6 @@ const inputGroupButtonVariants = cva("text-sm shadow-none flex gap-2 items-cente
 
 function InputGroupButton({
   className,
-  class: classNative,
   type = "button",
   variant = "ghost",
   size = "xs",
@@ -102,47 +99,44 @@ function InputGroupButton({
       type={type}
       data-size={size}
       variant={variant}
-      className={cn(inputGroupButtonVariants({ size }), className, classNative)}
+      className={cn(inputGroupButtonVariants({ size }), className)}
       {...props}
     />
   );
 }
 
-function InputGroupText({ className, class: classNative, ...props }: ComponentProps<"span">) {
+function InputGroupText({ className, ...props }: ComponentProps<"span">) {
   return (
     <span
       className={cn(
         "flex items-center gap-2 text-muted-foreground text-sm [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
-        className,
-        classNative
+        className
       )}
       {...props}
     />
   );
 }
 
-function InputGroupInput({ className, class: classNative, ...props }: ComponentProps<"input">) {
+function InputGroupInput({ className, ...props }: ComponentProps<"input">) {
   return (
     <Input
       data-slot="input-group-control"
       className={cn(
         "flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent",
-        className,
-        classNative
+        className
       )}
       {...props}
     />
   );
 }
 
-function InputGroupTextarea({ className, class: classNative, ...props }: ComponentProps<"textarea">) {
+function InputGroupTextarea({ className, ...props }: ComponentProps<"textarea">) {
   return (
     <Textarea
       data-slot="input-group-control"
       className={cn(
         "flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0 dark:bg-transparent",
-        className,
-        classNative
+        className
       )}
       {...props}
     />

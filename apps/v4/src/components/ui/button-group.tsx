@@ -23,7 +23,6 @@ const buttonGroupVariants = cva(
 
 function ButtonGroup({
   className,
-  class: classNative,
   orientation,
   ...props
 }: ComponentProps<"div"> & VariantProps<typeof buttonGroupVariants>) {
@@ -32,7 +31,7 @@ function ButtonGroup({
       role="group"
       data-slot="button-group"
       data-orientation={orientation}
-      className={cn(buttonGroupVariants({ orientation }), className, classNative)}
+      className={cn(buttonGroupVariants({ orientation }), className)}
       {...props}
     />
   );
@@ -40,7 +39,6 @@ function ButtonGroup({
 
 function ButtonGroupText({
   className,
-  class: classNative,
   asChild = false,
   ...props
 }: ComponentProps<"div"> & {
@@ -52,8 +50,7 @@ function ButtonGroupText({
     <Comp
       className={cn(
         "flex items-center gap-2 rounded-md border bg-muted px-4 font-medium text-sm shadow-xs [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
-        className,
-        classNative
+        className
       )}
       {...props}
     />

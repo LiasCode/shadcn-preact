@@ -1,5 +1,5 @@
-import { type VariantProps, cva } from "class-variance-authority";
-import { type HTMLAttributes, forwardRef } from "preact/compat";
+import { cva, type VariantProps } from "class-variance-authority";
+import type { ComponentProps } from "preact";
 import { cn } from "./share/cn";
 
 const alertVariants = cva(
@@ -18,49 +18,38 @@ const alertVariants = cva(
   }
 );
 
-export type AlertProps = HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>;
-
-export const Alert = forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, class: classNative, variant, ...props }, ref) => (
+function Alert({ className, variant, ...props }: ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
+  return (
     <div
-      ref={ref}
       data-slot="alert"
       role="alert"
-      className={cn(alertVariants({ variant }), className, classNative)}
+      className={cn(alertVariants({ variant }), className)}
       {...props}
     />
-  )
-);
-Alert.displayName = "Alert";
+  );
+}
 
-export type AlertTitleProps = HTMLAttributes<HTMLHeadingElement>;
-
-export const AlertTitle = forwardRef<HTMLParagraphElement, AlertTitleProps>(
-  ({ className, class: classNative, ...props }, ref) => (
-    <h5
-      ref={ref}
-      data-slot="alert-title"
-      className={cn("col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight", className, classNative)}
-      {...props}
-    />
-  )
-);
-AlertTitle.displayName = "AlertTitle";
-
-export type AlertDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
-
-export const AlertDescription = forwardRef<HTMLParagraphElement, AlertDescriptionProps>(
-  ({ className, class: classNative, ...props }, ref) => (
+function AlertTitle({ className, ...props }: ComponentProps<"div">) {
+  return (
     <div
-      ref={ref}
+      data-slot="alert-title"
+      className={cn("col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight", className)}
+      {...props}
+    />
+  );
+}
+
+function AlertDescription({ className, ...props }: ComponentProps<"div">) {
+  return (
+    <div
       data-slot="alert-description"
       className={cn(
         "col-start-2 grid justify-items-start gap-1 text-muted-foreground text-sm [&_p]:leading-relaxed",
-        className,
-        classNative
+        className
       )}
       {...props}
     />
-  )
-);
-AlertDescription.displayName = "AlertDescription";
+  );
+}
+
+export { Alert, AlertDescription, AlertTitle };

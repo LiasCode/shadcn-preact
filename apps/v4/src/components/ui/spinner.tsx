@@ -1,19 +1,17 @@
-import { cn } from "@ui/share/cn";
 import { Loader2Icon } from "lucide-preact";
 import type { ComponentProps } from "preact";
+import { cn } from "./share/cn";
 
-type SpinnerProps = ComponentProps<"svg">;
-
-function Spinner({ className, class: classNative, ...props }: SpinnerProps) {
+function Spinner({ className, ...props }: ComponentProps<"svg">) {
   return (
-    //@ts-expect-error <The icons props are not SignalLike>
+    // @ts-expect-error
     <Loader2Icon
       role="status"
       aria-label="Loading"
-      className={cn("size-4 animate-spin", className, classNative)}
+      className={cn("size-4 animate-spin", className)}
       {...props}
     />
   );
 }
 
-export { Spinner, type SpinnerProps };
+export { Spinner };

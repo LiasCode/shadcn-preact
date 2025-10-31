@@ -1,22 +1,17 @@
-import type { TextareaHTMLAttributes } from "preact";
-import { forwardRef } from "preact/compat";
+import type { ComponentProps } from "preact";
 import { cn } from "./share/cn";
 
-export type TextareaProps = TextareaHTMLAttributes;
+function Textarea({ className, ...props }: ComponentProps<"textarea">) {
+  return (
+    <textarea
+      data-slot="textarea"
+      className={cn(
+        "field-sizing-content flex min-h-16 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs outline-none transition-[color,box-shadow] placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:aria-invalid:ring-destructive/40",
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, class: classNative, ...props }, forwardedRef) => {
-    return (
-      <textarea
-        ref={forwardedRef}
-        className={cn(
-          "flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          className,
-          classNative
-        )}
-        {...props}
-      />
-    );
-  }
-);
-Textarea.displayName = "Textarea";
+export { Textarea };

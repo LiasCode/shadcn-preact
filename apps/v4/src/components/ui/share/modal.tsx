@@ -1,7 +1,7 @@
 import { type HTMLAttributes, type PropsWithChildren, forwardRef, useEffect } from "preact/compat";
+import { cn } from "./cn";
+import { getScrollBarWidth } from "./getScrollBarWidth";
 import { Portal } from "./portal";
-import { cn } from "./share/cn";
-import { getScrollBarWidth } from "./share/getScrollBarWidth";
 
 export type ModalProps = PropsWithChildren<
   HTMLAttributes<HTMLDivElement> & {
