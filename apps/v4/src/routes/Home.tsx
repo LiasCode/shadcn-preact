@@ -2,6 +2,7 @@ import { AlertDemo } from "@/components/AlertDemo";
 import { AvatarDemo } from "@/components/AvatarDemo";
 import { BadgeDemo } from "@/components/BadgeDemo";
 import { ButtonDemo } from "@/components/ButtonDemo";
+import { ButtonGroupDemo } from "@/components/ButtonGroupDemo";
 import { CardDemo } from "@/components/CardDemo";
 import { InputDemo } from "@/components/InputDemo";
 import { InputGroupDemo } from "@/components/InputGroupDemo";
@@ -21,6 +22,11 @@ export default function HomePage() {
           <DemoSection
             title="Buttons"
             slot=<ButtonDemo />
+          />
+
+          <DemoSection
+            title="Button Group"
+            slot=<ButtonGroupDemo />
           />
 
           <DemoSection
