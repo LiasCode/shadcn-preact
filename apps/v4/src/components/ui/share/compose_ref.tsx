@@ -1,11 +1,4 @@
-/**
- * This funtionality is used to compose multiple refs together
- * It allows you to pass multiple refs to a single component
- * and have them all receive the same value.
- *
- * All credit goes to the original author of this code:
- * Radix UI
- */
+// https://github.com/radix-ui/primitives/blob/main/packages/react/compose-refs/src/compose-refs.tsx
 
 import type { RefCallback } from "preact";
 import { useCallback } from "preact/hooks";

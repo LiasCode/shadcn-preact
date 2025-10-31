@@ -4,13 +4,13 @@ import { forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 import { useControlledState } from "./share/useControlledState";
 
-export const toggleVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors md:hover:bg-muted md:hover:text-muted-foreground md:focus-visible:outline-hidden md:focus-visible:ring-1 md:focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+const toggleVariants = cva(
+  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none transition-[color,box-shadow] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive whitespace-nowrap",
   {
     variants: {
       variant: {
         default: "bg-transparent",
-        outline: "border border-input bg-transparent shadow-xs md:hover:bg-accent hover:text-accent-foreground",
+        outline: "border border-input bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground",
       },
       size: {
         default: "h-9 px-2 min-w-9",
@@ -25,30 +25,30 @@ export const toggleVariants = cva(
   }
 );
 
-export type ToggleProps = ButtonHTMLAttributes<HTMLButtonElement> &
+type ToggleProps = ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof toggleVariants> & {
     pressed?: boolean;
     defaultPressed?: boolean;
     onPressedChange?(pressed: boolean): void;
   };
 
-export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
-  ({ className, class: classNative, variant, size, ...props }, ref) => {
-    const [isOn, setIsOn] = useControlledState({
-      defaultValue: Boolean(props.defaultPressed),
-      controlledValue: props.pressed,
-      onChange: props.onPressedChange,
-    });
+const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(({ className, variant, size, ...props }, forwardedRef) => {
+  const [isOn, setIsOn] = useControlledState({
+    defaultValue: Boolean(props.defaultPressed),
+    controlledValue: props.pressed,
+    onChange: props.onPressedChange,
+  });
 
-    return (
-      <button
-        ref={ref}
-        data-state={isOn ? "on" : "off"}
-        className={cn(toggleVariants({ variant, size, className }), classNative)}
-        {...props}
-        onClick={() => setIsOn(!isOn)}
-      />
-    );
-  }
-);
-Toggle.displayName = "Toggle";
+  return (
+    <button
+      ref={forwardedRef}
+      data-slot="toggle"
+      data-state={isOn ? "on" : "off"}
+      className={cn(toggleVariants({ variant, size, className }))}
+      {...props}
+      onClick={() => setIsOn(!isOn)}
+    />
+  );
+});
+
+export { Toggle, toggleVariants, type ToggleProps };
