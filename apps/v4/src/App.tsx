@@ -2,7 +2,6 @@ import { Alert, AlertDescription, AlertTitle } from "@ui/alert";
 import { Button } from "@ui/button";
 import { ExternalLink } from "lucide-preact";
 import { LocationProvider, Route, Router } from "preact-iso";
-import { AppRoutes } from "./routes/AppRoutes";
 import HomePage from "./routes/Home";
 
 export function App() {
@@ -10,8 +9,8 @@ export function App() {
     <LocationProvider>
       <Router>
         <Route
+          path={"/"}
           component={HomePage}
-          path={AppRoutes.HOME}
         />
 
         <Route
@@ -26,7 +25,7 @@ export function App() {
                 <AlertDescription className="text-red-400">This resource doesn't exists</AlertDescription>
               </Alert>
 
-              <a href={AppRoutes.HOME}>
+              <a href={"/"}>
                 <Button variant="secondary">
                   Go home <ExternalLink />
                 </Button>
