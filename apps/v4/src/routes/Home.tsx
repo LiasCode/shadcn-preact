@@ -57,20 +57,20 @@ const DemoSection = (props: { title: string; slot: ComponentChild }) => {
 };
 
 const RoutesDemoObj: Record<string, ComponentChild> = {
+  "alert": <AlertDemo />,
+  "avatar": <AvatarDemo />,
+  "badge": <BadgeDemo />,
   "button": <ButtonDemo />,
   "button-group": <ButtonGroupDemo />,
-  "avatar": <AvatarDemo />,
-  "alert": <AlertDemo />,
-  "spinner": <SpinnerDemo />,
   "card": <CardDemo />,
   "input": <InputDemo />,
   "input-group": <InputGroupDemo />,
+  "kbd": <KbdDemo />,
+  "label": <LabelDemo />,
   "native-select": <NativeSelectDemo />,
   "separator": <SeparatorDemo />,
-  "badge": <BadgeDemo />,
-  "table": <TableDemo />,
-  "kbd": <KbdDemo />,
-  "textarea": <TextareaDemo />,
   "skeleton": <SkeletonDemo />,
-  "label": <LabelDemo />,
+  "spinner": <SpinnerDemo />,
+  "table": <TableDemo />,
+  "textarea": <TextareaDemo />,
 };
