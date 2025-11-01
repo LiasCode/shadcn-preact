@@ -4,6 +4,7 @@ import { BadgeDemo } from "@/components/demo/badge-demo";
 import { ButtonDemo } from "@/components/demo/button-demo";
 import { ButtonGroupDemo } from "@/components/demo/button-group-demo";
 import { CardDemo } from "@/components/demo/card-demo";
+import { EmptyDemo } from "@/components/demo/empty-demo";
 import { InputDemo } from "@/components/demo/input-demo";
 import { InputGroupDemo } from "@/components/demo/input-group-demo";
 import { KbdDemo } from "@/components/demo/kbd-demo";
@@ -63,6 +64,7 @@ const RoutesDemoObj: Record<string, ComponentChild> = {
   "button": <ButtonDemo />,
   "button-group": <ButtonGroupDemo />,
   "card": <CardDemo />,
+  "empty": <EmptyDemo />,
   "input": <InputDemo />,
   "input-group": <InputGroupDemo />,
   "kbd": <KbdDemo />,
