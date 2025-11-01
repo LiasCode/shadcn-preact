@@ -24,12 +24,20 @@ export default function HomePage() {
         <Header />
 
         <div className="flex h-auto w-full flex-col gap-4 rounded p-2 pt-12">
-          {Object.entries(RoutesDemoObj).map(([key, slot]) => (
-            <DemoSection
-              title={key.split("-").join(" ")}
-              slot={slot}
-            />
-          ))}
+          {Object.entries(RoutesDemoObj)
+            .sort((a, b) => {
+              const keyA = a[0].toLowerCase();
+              const keyB = b[0].toLowerCase();
+              if (keyA === keyB) return 1;
+              if (keyA > keyB) return 1;
+              return -1;
+            })
+            .map(([key, slot]) => (
+              <DemoSection
+                title={key.split("-").join(" ")}
+                slot={slot}
+              />
+            ))}
         </div>
       </div>
     </div>
