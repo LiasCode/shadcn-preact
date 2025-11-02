@@ -16,6 +16,7 @@ import { SeparatorDemo } from "@/components/demo/separator-demo";
 import { SkeletonDemo } from "@/components/demo/skeleton-demo";
 import { SpinnerDemo } from "@/components/demo/spinner-demo";
 import { TableDemo } from "@/components/demo/table-demo";
+import { TabsDemo } from "@/components/demo/tabs-demo";
 import { TextareaDemo } from "@/components/demo/textarea-demo";
 import { Header } from "@/layout/Header";
 import type { ComponentChild } from "preact";
@@ -78,5 +79,6 @@ const RoutesDemoObj: Record<string, ComponentChild> = {
   "skeleton": <SkeletonDemo />,
   "spinner": <SpinnerDemo />,
   "table": <TableDemo />,
+  "tabs": <TabsDemo />,
   "textarea": <TextareaDemo />,
 };
