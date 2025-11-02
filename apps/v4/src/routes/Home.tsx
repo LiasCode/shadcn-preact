@@ -5,11 +5,13 @@ import { ButtonDemo } from "@/components/demo/button-demo";
 import { ButtonGroupDemo } from "@/components/demo/button-group-demo";
 import { CardDemo } from "@/components/demo/card-demo";
 import { EmptyDemo } from "@/components/demo/empty-demo";
+import { FieldDemo } from "@/components/demo/field-demo";
 import { InputDemo } from "@/components/demo/input-demo";
 import { InputGroupDemo } from "@/components/demo/input-group-demo";
 import { KbdDemo } from "@/components/demo/kbd-demo";
 import { LabelDemo } from "@/components/demo/label-demo";
 import { NativeSelectDemo } from "@/components/demo/native-select-demo";
+import { PaginationDemo } from "@/components/demo/pagination-demo";
 import { SeparatorDemo } from "@/components/demo/separator-demo";
 import { SkeletonDemo } from "@/components/demo/skeleton-demo";
 import { SpinnerDemo } from "@/components/demo/spinner-demo";
@@ -65,11 +67,13 @@ const RoutesDemoObj: Record<string, ComponentChild> = {
   "button-group": <ButtonGroupDemo />,
   "card": <CardDemo />,
   "empty": <EmptyDemo />,
+  "field": <FieldDemo />,
   "input": <InputDemo />,
   "input-group": <InputGroupDemo />,
   "kbd": <KbdDemo />,
   "label": <LabelDemo />,
   "native-select": <NativeSelectDemo />,
+  "pagination": <PaginationDemo />,
   "separator": <SeparatorDemo />,
   "skeleton": <SkeletonDemo />,
   "spinner": <SpinnerDemo />,
