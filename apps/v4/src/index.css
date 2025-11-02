@@ -120,10 +120,7 @@
 }
 
 :root {
-  font-family: "Geist", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-size: 16px;
+  font-family: "Geist", monospace;
 }
 
 body {
