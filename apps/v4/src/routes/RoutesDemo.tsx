@@ -6,6 +6,7 @@ import { ButtonDemo } from "@/components/demo/button-demo";
 import { ButtonGroupDemo } from "@/components/demo/button-group-demo";
 import { CalendarDemo } from "@/components/demo/calendar-demo";
 import { CardDemo } from "@/components/demo/card-demo";
+import { ChartDemo } from "@/components/demo/chart-demo";
 import { EmptyDemo } from "@/components/demo/empty-demo";
 import { FieldDemo } from "@/components/demo/field-demo";
 import { InputDemo } from "@/components/demo/input-demo";
@@ -33,6 +34,7 @@ export const RoutesDemoObj: Record<string, ComponentChild> = {
   "button-group": <ButtonGroupDemo />,
   "calendar": <CalendarDemo />,
   "card": <CardDemo />,
+  "chart": <ChartDemo />,
   "empty": <EmptyDemo />,
   "field": <FieldDemo />,
   "input": <InputDemo />,
