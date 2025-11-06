@@ -1,6 +1,7 @@
 import { AlertDemo } from "@/components/demo/alert-demo";
 import { AvatarDemo } from "@/components/demo/avatar-demo";
 import { BadgeDemo } from "@/components/demo/badge-demo";
+import { BreadcrumbDemo } from "@/components/demo/breadcrumb-demo";
 import { ButtonDemo } from "@/components/demo/button-demo";
 import { ButtonGroupDemo } from "@/components/demo/button-group-demo";
 import { CardDemo } from "@/components/demo/card-demo";
@@ -25,6 +26,7 @@ export const RoutesDemoObj: Record<string, ComponentChild> = {
   "alert": <AlertDemo />,
   "avatar": <AvatarDemo />,
   "badge": <BadgeDemo />,
+  "breadcrumb": <BreadcrumbDemo />,
   "button": <ButtonDemo />,
   "button-group": <ButtonGroupDemo />,
   "card": <CardDemo />,
