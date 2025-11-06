@@ -120,6 +120,9 @@ importers:
 
   apps/v4:
     dependencies:
+      '@floating-ui/react-dom':
+        specifier: ^2.1.6
+        version: 2.1.6(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@preact/signals':
         specifier: ^2.3.2
         version: 2.3.2(preact@10.27.2)
