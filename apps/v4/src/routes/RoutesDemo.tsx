@@ -4,6 +4,7 @@ import { BadgeDemo } from "@/components/demo/badge-demo";
 import { BreadcrumbDemo } from "@/components/demo/breadcrumb-demo";
 import { ButtonDemo } from "@/components/demo/button-demo";
 import { ButtonGroupDemo } from "@/components/demo/button-group-demo";
+import { CalendarDemo } from "@/components/demo/calendar-demo";
 import { CardDemo } from "@/components/demo/card-demo";
 import { EmptyDemo } from "@/components/demo/empty-demo";
 import { FieldDemo } from "@/components/demo/field-demo";
@@ -29,6 +30,7 @@ export const RoutesDemoObj: Record<string, ComponentChild> = {
   "breadcrumb": <BreadcrumbDemo />,
   "button": <ButtonDemo />,
   "button-group": <ButtonGroupDemo />,
+  "calendar": <CalendarDemo />,
   "card": <CardDemo />,
   "empty": <EmptyDemo />,
   "field": <FieldDemo />,
