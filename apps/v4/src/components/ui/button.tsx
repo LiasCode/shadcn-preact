@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import type { ComponentProps } from "preact";
+import { type ComponentProps, forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
 
@@ -33,25 +33,23 @@ const buttonVariants = cva(
   }
 );
 
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  ...props
-}: ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
+const Button = forwardRef<
+  HTMLButtonElement,
+  ComponentProps<"button"> &
+    VariantProps<typeof buttonVariants> & {
+      asChild?: boolean;
+    }
+>(({ className, variant, size, asChild = false, ...props }, forwardedRef) => {
   const Comp = asChild ? Slot : "button";
 
   return (
     <Comp
+      ref={forwardedRef}
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
   );
-}
+});
 
 export { Button, buttonVariants };
