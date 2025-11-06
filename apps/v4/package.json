@@ -9,6 +9,7 @@
     "format": "prettier --write --cache 'src'"
   },
   "dependencies": {
+    "@floating-ui/react-dom": "^2.1.6",
     "@preact/signals": "^2.3.2",
     "@tabler/icons-preact": "3.35.0",
     "class-variance-authority": "^0.7.1",
