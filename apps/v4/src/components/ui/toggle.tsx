@@ -2,6 +2,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import type { ButtonHTMLAttributes } from "preact";
 import { forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
+import { Slot } from "./share/slot";
 import { useControlledState } from "./share/useControlledState";
 
 const toggleVariants = cva(
@@ -30,23 +31,36 @@ type ToggleProps = ButtonHTMLAttributes<HTMLButtonElement> &
     pressed?: boolean;
     defaultPressed?: boolean;
     onPressedChange?(pressed: boolean): void;
+    asChild?: boolean;
   };
 
 const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(({ className, variant, size, ...props }, forwardedRef) => {
-  const [isOn, setIsOn] = useControlledState({
+  const [isPressed, setIsPressed] = useControlledState({
     defaultValue: Boolean(props.defaultPressed),
     controlledValue: props.pressed,
     onChange: props.onPressedChange,
   });
 
+  const Comp = props.asChild ? Slot : "button";
+
   return (
-    <button
-      ref={forwardedRef}
+    <Comp
+      type="button"
       data-slot="toggle"
-      data-state={isOn ? "on" : "off"}
+      aria-pressed={isPressed}
+      data-state={isPressed ? "on" : "off"}
       className={cn(toggleVariants({ variant, size, className }))}
+      data-disabled={props.disabled ? "" : undefined}
       {...props}
-      onClick={() => setIsOn(!isOn)}
+      ref={forwardedRef}
+      onClick={(e) => {
+        //@ts-expect-error
+        props.onClick?.(e);
+
+        if (Boolean(props.disabled) !== true) {
+          setIsPressed(!isPressed);
+        }
+      }}
     />
   );
 });
