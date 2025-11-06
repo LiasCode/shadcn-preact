@@ -1,9 +1,15 @@
+import { Badge } from "@ui/badge";
 import { Button } from "@ui/button";
 
 export const Header = () => {
   return (
     <header className="fixed top-0 z-10 flex h-12 w-full max-w-[63rem] items-center justify-between rounded-b-md border p-2 [backdrop-filter:blur(5px)_saturate(90%)]">
-      <h1 class="font-bold text-[#b57beb] text-lg">shadcn-preact v4</h1>
+      <div className={"flex flex-row items-center gap-2"}>
+        <span>
+          shadcn-<span className={"text-[#b57beb]"}>preact</span>
+        </span>
+        <Badge variant={"outline"}>{"v4"}</Badge>
+      </div>
       <Button
         variant="ghost"
         onClick={() => {
