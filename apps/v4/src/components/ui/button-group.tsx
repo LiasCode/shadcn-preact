@@ -1,6 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "preact";
+import { forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
 
@@ -37,17 +38,17 @@ function ButtonGroup({
   );
 }
 
-function ButtonGroupText({
-  className,
-  asChild = false,
-  ...props
-}: ComponentProps<"div"> & {
-  asChild?: boolean;
-}) {
+const ButtonGroupText = forwardRef<
+  HTMLDivElement,
+  ComponentProps<"div"> & {
+    asChild?: boolean;
+  }
+>(({ className, asChild = false, ...props }, forwardedRef) => {
   const Comp = asChild ? Slot : "div";
 
   return (
     <Comp
+      ref={forwardedRef}
       className={cn(
         "flex items-center gap-2 rounded-md border bg-muted px-4 font-medium text-sm shadow-xs [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
         className
@@ -55,7 +56,7 @@ function ButtonGroupText({
       {...props}
     />
   );
-}
+});
 
 function ButtonGroupSeparator({ className, orientation = "vertical", ...props }: ComponentProps<typeof Separator>) {
   return (

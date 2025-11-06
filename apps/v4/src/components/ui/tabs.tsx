@@ -3,7 +3,7 @@ import { forwardRef, type PropsWithChildren, useContext } from "preact/compat";
 import { cn } from "./share/cn";
 import { useControlledState } from "./share/useControlledState";
 
-const TabContext = createContext<{
+const TabCtx = createContext<{
   value: string;
   onValueChange: (value: string) => void;
   orientation: "vertical" | "horizontal";
@@ -11,8 +11,8 @@ const TabContext = createContext<{
 } | null>(null);
 
 function useTabs() {
-  const c = useContext(TabContext);
-  if (!c) throw new Error("useTabs should be used within Tabs");
+  const c = useContext(TabCtx);
+  if (!c) throw new Error("useTabs should be used within TabCtx provider");
   return c;
 }
 
@@ -48,7 +48,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(
     });
 
     return (
-      <TabContext.Provider
+      <TabCtx.Provider
         value={{ onValueChange: setValue, value, orientation: orientation || "horizontal", activationMode }}
       >
         <div
@@ -59,7 +59,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(
         >
           {children}
         </div>
-      </TabContext.Provider>
+      </TabCtx.Provider>
     );
   }
 );
@@ -121,4 +121,4 @@ const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(({ className, .
   );
 });
 
-export { Tabs, TabsContent, TabsList, TabsTrigger, useTabs };
+export { Tabs, TabsContent, TabsList, TabsTrigger };

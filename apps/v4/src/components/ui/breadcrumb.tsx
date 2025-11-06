@@ -1,5 +1,6 @@
 import { ChevronRight, MoreHorizontal } from "lucide-preact";
 import type { ComponentProps } from "preact";
+import { forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
 
@@ -36,23 +37,23 @@ function BreadcrumbItem({ className, ...props }: ComponentProps<"li">) {
   );
 }
 
-function BreadcrumbLink({
-  asChild,
-  className,
-  ...props
-}: ComponentProps<"a"> & {
-  asChild?: boolean;
-}) {
+const BreadcrumbLink = forwardRef<
+  HTMLAnchorElement,
+  ComponentProps<"a"> & {
+    asChild?: boolean;
+  }
+>(({ asChild = false, className, ...props }, forwardedRef) => {
   const Comp = asChild ? Slot : "a";
 
   return (
     <Comp
+      ref={forwardedRef}
       data-slot="breadcrumb-link"
       className={cn("transition-colors hover:text-foreground", className)}
       {...props}
     />
   );
-}
+});
 
 function BreadcrumbPage({ className, ...props }: ComponentProps<"span">) {
   return (
