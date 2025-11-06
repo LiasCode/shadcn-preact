@@ -1,11 +1,13 @@
 import type { ComponentProps } from "preact";
+import { forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 
-function Input({ className, type, ...props }: ComponentProps<"input">) {
+const Input = forwardRef<HTMLInputElement, ComponentProps<"input">>(({ className, type, ...props }, forwardedRef) => {
   return (
     <input
       type={type}
       data-slot="input"
+      ref={forwardedRef}
       className={cn(
         "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow] selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
         "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
@@ -15,6 +17,6 @@ function Input({ className, type, ...props }: ComponentProps<"input">) {
       {...props}
     />
   );
-}
+});
 
 export { Input };
