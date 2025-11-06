@@ -18,6 +18,7 @@ import { SpinnerDemo } from "@/components/demo/spinner-demo";
 import { TableDemo } from "@/components/demo/table-demo";
 import { TabsDemo } from "@/components/demo/tabs-demo";
 import { TextareaDemo } from "@/components/demo/textarea-demo";
+import { ToggleDemo } from "@/components/demo/toggle-demo";
 import type { ComponentChild } from "preact";
 
 export const RoutesDemoObj: Record<string, ComponentChild> = {
@@ -41,4 +42,5 @@ export const RoutesDemoObj: Record<string, ComponentChild> = {
   "table": <TableDemo />,
   "tabs": <TabsDemo />,
   "textarea": <TextareaDemo />,
+  "toggle": <ToggleDemo />,
 };
