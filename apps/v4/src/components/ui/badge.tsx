@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import type { ComponentProps } from "preact";
+import { type ComponentProps, forwardRef } from "preact/compat";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
 
@@ -21,21 +21,20 @@ const badgeVariants = cva(
   }
 );
 
-function Badge({
-  className,
-  variant,
-  asChild = false,
-  ...props
-}: ComponentProps<"span"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
+const Badge = forwardRef<
+  HTMLSpanElement,
+  ComponentProps<"span"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }
+>(({ className, variant, asChild = false, ...props }, forwardedRef) => {
   const Comp = asChild ? Slot : "span";
 
   return (
     <Comp
+      ref={forwardedRef}
       data-slot="badge"
       className={cn(badgeVariants({ variant }), className)}
       {...props}
     />
   );
-}
+});
 
 export { Badge, badgeVariants };
