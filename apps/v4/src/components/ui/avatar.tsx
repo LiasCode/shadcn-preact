@@ -1,48 +1,37 @@
-import type { ImgHTMLAttributes } from "preact";
-import {
-  type HTMLAttributes,
-  createContext,
-  forwardRef,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "preact/compat";
+import type { HTMLAttributes, ImgHTMLAttributes } from "preact";
+import { createContext, forwardRef, useContext, useEffect, useLayoutEffect, useState } from "preact/compat";
 import { cn } from "./share/cn";
 
-export type ImageLoadingStatus = "idle" | "loading" | "loaded" | "error";
+type ImageLoadingStatus = "idle" | "loading" | "loaded" | "error";
 
-export const AvatarContext = createContext<{
+const AvatarCtx = createContext<{
   status: ImageLoadingStatus;
   changeStatus: (s: ImageLoadingStatus) => void;
 } | null>(null);
 
-export type AvatarProps = HTMLAttributes<HTMLDivElement>;
-
-export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(({ className, class: classNative, ...props }, ref) => {
+const Avatar = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ className, ...props }, forwardedRef) => {
   const [imgStatus, setImgStatus] = useState<ImageLoadingStatus>("idle");
 
   const changeImgStatus = (s: ImageLoadingStatus) => setImgStatus(s);
 
   return (
-    <AvatarContext.Provider value={{ status: imgStatus, changeStatus: changeImgStatus }}>
+    <AvatarCtx.Provider value={{ status: imgStatus, changeStatus: changeImgStatus }}>
       <div
-        ref={ref}
+        ref={forwardedRef}
         data-slot="avatar"
-        className={cn("relative flex size-8 shrink-0 overflow-hidden rounded-full", className, classNative)}
+        className={cn("relative flex size-8 shrink-0 overflow-hidden rounded-full", className)}
         {...props}
       />
-    </AvatarContext.Provider>
+    </AvatarCtx.Provider>
   );
 });
-Avatar.displayName = "Avatar";
 
-export type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement> & {
+type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement> & {
   onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
 };
 
-export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
-  ({ onLoadingStatusChange, className, class: classNative, ...props }, ref) => {
+const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
+  ({ onLoadingStatusChange, className, ...props }, forwardedRef) => {
     const { status, changeStatus } = useAvatar();
     const loadingStatus = useImageLoadingStatus(props.src as string, {
       crossOrigin: props.crossOrigin,
@@ -56,23 +45,22 @@ export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
 
     return status === "loaded" ? (
       <img
-        ref={ref}
+        ref={forwardedRef}
         data-slot="avatar-image"
-        className={cn("aspect-square size-full", className, classNative)}
+        className={cn("aspect-square size-full", className)}
         {...props}
         alt={props.alt}
       />
     ) : null;
   }
 );
-AvatarImage.displayName = "AvatarImage";
 
-export type AvatarFallbackProps = HTMLAttributes<HTMLSpanElement> & {
+type AvatarFallbackProps = HTMLAttributes<HTMLSpanElement> & {
   delayMs?: number;
 };
 
-export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
-  ({ delayMs, className, class: classNative, ...props }, ref) => {
+const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
+  ({ delayMs, className, ...props }, forwardedRef) => {
     const { status } = useAvatar();
     const [canRender, setCanRender] = useState(delayMs === undefined);
 
@@ -85,24 +73,20 @@ export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
 
     return canRender && status !== "loaded" ? (
       <span
-        ref={ref}
+        ref={forwardedRef}
         data-slot="avatar-fallback"
-        className={cn("flex size-full items-center justify-center rounded-full bg-muted", className, classNative)}
+        className={cn("flex size-full items-center justify-center rounded-full bg-muted", className)}
         {...props}
       />
     ) : null;
   }
 );
-AvatarFallback.displayName = "AvatarFallback";
 
 type useImageLoadingStatusOptions = {
   referrerPolicy: string;
   crossOrigin: ImgHTMLAttributes<HTMLImageElement>["crossOrigin"];
 };
-export function useImageLoadingStatus(
-  src: string | undefined,
-  { referrerPolicy, crossOrigin }: useImageLoadingStatusOptions
-) {
+function useImageLoadingStatus(src: string | undefined, { referrerPolicy, crossOrigin }: useImageLoadingStatusOptions) {
   const [loadingStatus, setLoadingStatus] = useState<ImageLoadingStatus>("idle");
 
   useLayoutEffect(() => {
@@ -142,8 +126,10 @@ export function useImageLoadingStatus(
   return loadingStatus;
 }
 
-export function useAvatar() {
-  const c = useContext(AvatarContext);
+function useAvatar() {
+  const c = useContext(AvatarCtx);
   if (!c) throw new Error("useAvatar should be used inside of an AvatarContextProvider");
   return c;
 }
+
+export { Avatar, AvatarFallback, AvatarImage };
