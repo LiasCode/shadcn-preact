@@ -56,7 +56,6 @@ export default function HighlightCodeInternal(props: {
       <Show when={!isProcessing}>
         <div
           className="max-w-full text-sm *:overflow-auto"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: Is how shiki works
           dangerouslySetInnerHTML={{
             __html: htmlCode,
           }}

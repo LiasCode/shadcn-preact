@@ -54,7 +54,12 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
 
     return (
       <TabContext.Provider
-        value={{ onValueChange: setValue, value, orientation: orientation || "horizontal", activationMode }}
+        value={{
+          onValueChange: setValue,
+          value,
+          orientation: orientation || "horizontal",
+          activationMode,
+        }}
       >
         <div
           ref={forwardedRef}
@@ -96,7 +101,9 @@ export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
 );
 TabsList.displayName = "TabsList";
 
-export type TabsTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & { value?: string };
+export type TabsTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  value?: string;
+};
 
 export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
   ({ className, class: classNative, ...props }, forwardedRef) => {
@@ -120,7 +127,9 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
 );
 TabsTrigger.displayName = "TabsTrigger";
 
-export type TabsContentProps = HTMLAttributes<HTMLDivElement> & { value?: string };
+export type TabsContentProps = HTMLAttributes<HTMLDivElement> & {
+  value?: string;
+};
 
 export const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(
   ({ className, class: classNative, ...props }, forwardedRef) => {

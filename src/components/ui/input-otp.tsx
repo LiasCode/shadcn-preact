@@ -33,7 +33,9 @@ export const InputOTPGroup = forwardRef<ElementRef<"div">, InputOTPGroupProps>(
 );
 InputOTPGroup.displayName = "InputOTPGroup";
 
-export type InputOTPSlotProps = ComponentPropsWithoutRef<"div"> & { index: number };
+export type InputOTPSlotProps = ComponentPropsWithoutRef<"div"> & {
+  index: number;
+};
 
 export const InputOTPSlot = forwardRef<ElementRef<"div">, InputOTPSlotProps>(
   ({ index, className, class: classNative, ...props }, forwardedRef) => {

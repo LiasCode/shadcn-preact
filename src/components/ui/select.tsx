@@ -189,7 +189,9 @@ export function useSelect() {
 }
 
 // Select Trigger
-export type SelectTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
+export type SelectTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  asChild?: boolean;
+};
 
 export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
   ({ children, className, class: classNative, ...props }) => {
@@ -392,6 +394,7 @@ export type SelectGroupProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
   ({ className, class: classNative, ...props }, forwardedRef) => (
+    // biome-ignore lint/a11y/useSemanticElements: <>
     <div
       ref={forwardedRef}
       role="group"
@@ -519,7 +522,6 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
     }, [isFocused]);
 
     return (
-      // biome-ignore lint/a11y/useSemanticElements: <>
       <div
         ref={forwardedRef}
         role="option"

@@ -52,7 +52,7 @@ export const InputToken = forwardRef<HTMLInputElement, TokenInputProps>(
         }}
         className={cn(
           "flex min-h-9 w-full cursor-text flex-row flex-wrap gap-2 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          isFocus ? "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring " : "",
+          isFocus ? "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" : "",
           className,
           classNative
         )}

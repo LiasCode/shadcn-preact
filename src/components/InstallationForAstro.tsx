@@ -96,7 +96,8 @@ export default function InstallationForVite() {
           <h2 class="pt-4 font-semibold">Configure Tailwind CSS</h2>
           <p>
             Add the following basic configuration to your
-            <code className="mx-2 rounded-sm bg-accent px-2">tailwind.config.js</code>file:
+            <code className="mx-2 rounded-sm bg-accent px-2">tailwind.config.js</code>
+            file:
           </p>
 
           <HighlightCode
@@ -120,8 +121,8 @@ export default function InstallationForVite() {
         <StepTitle label="4">Update TypeScript Configuration</StepTitle>
         <StepContent>
           <p>
-            Modify your<code className="mx-2 rounded-sm bg-accent">tsconfig.json</code>to include the following
-            settings:
+            Modify your
+            <code className="mx-2 rounded-sm bg-accent">tsconfig.json</code>to include the following settings:
           </p>
           <HighlightCode
             codeString={`
@@ -220,8 +221,9 @@ export default function InstallationForVite() {
         <StepTitle label="6">Update Tailwind CSS Configuration</StepTitle>
         <StepContent>
           <p>
-            Modify your<code className="mx-2 rounded-sm bg-accent">tailwind.config.js</code>to include dark mode and
-            extend the theme:
+            Modify your
+            <code className="mx-2 rounded-sm bg-accent">tailwind.config.js</code>
+            to include dark mode and extend the theme:
           </p>
 
           <HighlightCode

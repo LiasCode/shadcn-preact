@@ -99,8 +99,8 @@ body {
 }
 
 * {
-  scrollbar-width: thin !important;
-  scrollbar-color: hsl(var(--accent)) transparent !important;
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--accent)) transparent;
 }
 
 p {

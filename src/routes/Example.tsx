@@ -10,7 +10,7 @@ export default function ExamplePage() {
 
       <div className="relative flex w-full flex-1 flex-col items-center justify-start border-accent border-b border-dashed">
         <div className="flex min-h-[calc(100vh-4rem)] w-full max-w-screen-2xl flex-col gap-4 border-accent border-dashed px-1 pt-4 *:max-w-[100vw] *:overflow-auto 2xl:border-x 2xl:px-4">
-          <div className=" flex flex-col items-start gap-10 py-4 md:p-2">
+          <div className="flex flex-col items-start gap-10 py-4 md:p-2">
             <h1 className="font-bold text-2xl leading-tight tracking-tighter md:text-3xl lg:leading-[1.1]">
               Check out some examples
             </h1>

@@ -166,6 +166,7 @@ const CarouselItem = forwardRef<HTMLDivElement, CarouselItemProps>(
     const { orientation } = useCarousel();
 
     return (
+      // biome-ignore lint/a11y/useSemanticElements: <>
       <div
         ref={forwardedRef}
         role="group"

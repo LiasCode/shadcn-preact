@@ -72,6 +72,7 @@ export type BreadcrumbPageProps = ComponentPropsWithoutRef<"span">;
 
 export const BreadcrumbPage = forwardRef<HTMLSpanElement, BreadcrumbPageProps>(
   ({ className, class: classNative, ...props }, forwardedRef) => (
+    // biome-ignore lint/a11y/useSemanticElements: <>
     <span
       ref={forwardedRef}
       role="link"
