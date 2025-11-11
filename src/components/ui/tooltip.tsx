@@ -119,7 +119,9 @@ export function useTooltip() {
   return c;
 }
 
-export type TooltipTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
+export type TooltipTriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  asChild?: boolean;
+};
 
 export const TooltipTrigger = forwardRef<HTMLButtonElement, TooltipTriggerProps>(
   ({ children, asChild, className, class: classNative, ...props }, forwardedRef) => {

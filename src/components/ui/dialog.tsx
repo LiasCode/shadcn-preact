@@ -53,7 +53,9 @@ export function useDialog() {
   return c;
 }
 
-export type DialogTriggerProps = PropsWithChildren & { asChild?: boolean } & ButtonHTMLAttributes<HTMLButtonElement>;
+export type DialogTriggerProps = PropsWithChildren & {
+  asChild?: boolean;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const DialogTrigger = forwardRef<HTMLButtonElement, DialogTriggerProps>(
   ({ children, asChild, ...props }, forwardedRef) => {
@@ -72,7 +74,9 @@ export const DialogTrigger = forwardRef<HTMLButtonElement, DialogTriggerProps>(
   }
 );
 
-export type DialogContentProps = HTMLAttributes<HTMLDivElement> & { autoSelect?: boolean };
+export type DialogContentProps = HTMLAttributes<HTMLDivElement> & {
+  autoSelect?: boolean;
+};
 
 export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
   ({ className, class: classNative, children, ...props }, forwardedRef) => {

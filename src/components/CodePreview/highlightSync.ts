@@ -16,7 +16,11 @@ const highlighterSync = createHighlighterCoreSync({
   engine: createJavaScriptRegexEngine(),
 });
 
-type HighlightCodeSyncData = { codeString: string; lang: BundledLanguage; theme?: BundledTheme };
+type HighlightCodeSyncData = {
+  codeString: string;
+  lang: BundledLanguage;
+  theme?: BundledTheme;
+};
 
 export function highlightCodeSync(data: HighlightCodeSyncData) {
   return highlighterSync.codeToHtml(data.codeString, {

@@ -3,7 +3,7 @@ import { Card, CardContent } from "@ui/card";
 import { Input } from "@ui/input";
 import { Label } from "@ui/label";
 import { cn } from "@ui/share/cn";
-// @ts-ignore-next
+// @ts-expect-error-next
 import ImgPlaceholder from "./placeholder.svg";
 
 export function Login04({ className, ...props }: React.ComponentProps<"div">) {

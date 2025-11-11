@@ -1,30 +1,55 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "target": "ES2020",
+    /* ===================== Output ===================== */
+    "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "noEmit": true,
-    "allowJs": false,
-    "checkJs": false,
+
+    /* ===================== Type Safety ===================== */
     "strict": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* ===================== Code Hygiene ===================== */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noUncheckedIndexedAccess": true,
+    "useUnknownInCatchVariables": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+
+    /* ===================== JavaScript / JSX ===================== */
+    "allowJs": false,
+    "checkJs": false,
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "skipLibCheck": true,
+
+    /* ===================== Imports & Paths ===================== */
     "baseUrl": "./",
     "paths": {
       "react": ["./node_modules/preact/compat/"],
       "react-dom": ["./node_modules/preact/compat/"],
       "@ui/*": ["./src/components/ui/*"],
       "@/*": ["./src/*"]
-    }
+    },
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+
+    /* ===================== Build Performance ===================== */
+    "skipLibCheck": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo"
   },
-  "include": ["src/**/*", "node_modules/vite/client.d.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
+
+  /* ===================== Project Structure ===================== */
+  "include": ["src", "vite.config.ts", "node_modules/vite/client.d.ts"],
+  "exclude": ["node_modules", "**/*.spec.*", "**/*.test.*", "dist", "build"]
 }

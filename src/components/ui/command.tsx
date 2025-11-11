@@ -21,7 +21,9 @@ export const Command = forwardRef<ElementRef<typeof CommandPrimitive>, CommandPr
 );
 Command.displayName = CommandPrimitive.displayName;
 
-export type CommandDialogProps = Pick<DialogProps, "open" | "children"> & { onOpenChange?: (open: boolean) => void };
+export type CommandDialogProps = Pick<DialogProps, "open" | "children"> & {
+  onOpenChange?: (open: boolean) => void;
+};
 
 export const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (

@@ -48,7 +48,6 @@ export function CarouselSection() {
           <Carousel className="w-44 max-w-xs md:w-full">
             <CarouselContent>
               {Array.from({ length: 5 }).map((_, index) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: <>
                 <CarouselItem key={index}>
                   <div className="p-1">
                     <Card>
@@ -169,7 +168,6 @@ export function CarouselSection() {
             <CarouselContent className="-mt-1 h-[200px]">
               {Array.from({ length: 5 }).map((_, index) => (
                 <CarouselItem
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <>
                   key={index}
                   className="pt-1 md:basis-1/2"
                 >
