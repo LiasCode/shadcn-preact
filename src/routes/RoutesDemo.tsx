@@ -34,7 +34,7 @@ export const RoutesDemoObj: Record<string, ComponentChild> = {
   "button-group": <ButtonGroupDemo />,
   "calendar": <CalendarDemo />,
   "card": <CardDemo />,
-  "chart": <ChartDemo />,
+  // "chart": <ChartDemo />,
   "empty": <EmptyDemo />,
   "field": <FieldDemo />,
   "input": <InputDemo />,
