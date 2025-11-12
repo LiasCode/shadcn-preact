@@ -201,7 +201,7 @@ export default function InstallationForVite() {
 
             <HighlightCode
               codeString={`
-  bunx degit https://github.com/LiasCode/shadcn-preact/apps/v3/src/components/ui ./src/components/ui  
+  bunx degit https://github.com/LiasCode/shadcn-preact/src/components/ui#v3 ./src/components/ui
 
 `}
               lang="bash"
