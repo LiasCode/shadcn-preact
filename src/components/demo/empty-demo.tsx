@@ -96,7 +96,7 @@ export function EmptyDemo() {
       <Empty>
         <EmptyHeader>
           <EmptyMedia>
-            <div className="-space-x-2 flex *:data-[slot=avatar]:size-12 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
+            <div className="flex -space-x-2 *:data-[slot=avatar]:size-12 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
               <Avatar>
                 <AvatarImage
                   src="https://github.com/shadcn.png"
