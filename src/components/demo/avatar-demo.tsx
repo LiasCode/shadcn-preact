@@ -17,7 +17,7 @@ export function AvatarDemo() {
         />
         <AvatarFallback>ER</AvatarFallback>
       </Avatar>
-      <div className="-space-x-2 flex *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
+      <div className="flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
         <Avatar>
           <AvatarImage
             src="https://github.com/shadcn.png"
