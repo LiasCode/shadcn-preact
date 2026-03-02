@@ -23,6 +23,11 @@ Shadcn/ui is built upon Radix UI and Tailwind CSS. While Radix UI offers a robus
 
 Visit our [documentation](https://shadcn-preact.onrender.com/docs/installation) to learn more.
 
+## v3
+
+The version 3 code is on [branch](https://github.com/LiasCode/shadcn-preact/tree/v3) and is maintained there.
+
 ## License
 
-Licensed under the [MIT license](https://github.com/LiasCode/shadcn-preact/blob/main/LICENSE.md).
+Licensed under the [MIT license](./LICENSE.md).
+
