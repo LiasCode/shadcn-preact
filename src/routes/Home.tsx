@@ -36,7 +36,7 @@ const DemoSection = (props: { title: string; slot: ComponentChild }) => {
         <h1 class="font-semibold capitalize">{props.title}</h1>
         {props.slot}
       </div>
-      <div class="h-[1px] w-full bg-border" />
+      <div class="h-px w-full bg-border" />
     </>
   );
 };
