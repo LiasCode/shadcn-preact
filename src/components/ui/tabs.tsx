@@ -49,7 +49,12 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(
 
     return (
       <TabCtx.Provider
-        value={{ onValueChange: setValue, value, orientation: orientation || "horizontal", activationMode }}
+        value={{
+          onValueChange: setValue,
+          value,
+          orientation: orientation || "horizontal",
+          activationMode,
+        }}
       >
         <div
           ref={forwardedRef}
