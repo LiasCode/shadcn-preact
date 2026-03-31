@@ -30,12 +30,11 @@
     "jsxImportSource": "preact",
 
     /* ===================== Imports & Paths ===================== */
-    "baseUrl": "./",
     "paths": {
       "react": ["./node_modules/preact/compat/"],
       "react-dom": ["./node_modules/preact/compat/"],
       "@ui/*": ["./src/components/ui/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
     },
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
@@ -46,10 +45,10 @@
     /* ===================== Build Performance ===================== */
     "skipLibCheck": true, // recommended true for speed, false for safety
     "incremental": true,
-    "tsBuildInfoFile": ".tsbuildinfo"
+    "tsBuildInfoFile": ".tsbuildinfo",
   },
 
   /* ===================== Project Structure ===================== */
-  "include": ["src", "vite.config.ts", "node_modules/vite/client.d.ts"],
-  "exclude": ["node_modules", "**/*.spec.*", "**/*.test.*", "dist", "build"]
+  "include": ["src", "vite.config.ts", "src/types.d.ts"],
+  "exclude": ["node_modules", "**/*.spec.*", "**/*.test.*", "dist", "build"],
 }
