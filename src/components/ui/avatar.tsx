@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ImgHTMLAttributes } from "preact";
+import type { ComponentProps, HTMLAttributes, ImgHTMLAttributes } from "preact";
 import { createContext, forwardRef, useContext, useEffect, useLayoutEffect, useState } from "preact/compat";
 import { cn } from "./share/cn";
 
@@ -9,22 +9,28 @@ const AvatarCtx = createContext<{
   changeStatus: (s: ImageLoadingStatus) => void;
 } | null>(null);
 
-const Avatar = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ className, ...props }, forwardedRef) => {
-  const [imgStatus, setImgStatus] = useState<ImageLoadingStatus>("idle");
+const Avatar = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement> & { size?: "default" | "sm" | "lg" }>(
+  ({ className, size = "default", ...props }, forwardedRef) => {
+    const [imgStatus, setImgStatus] = useState<ImageLoadingStatus>("idle");
 
-  const changeImgStatus = (s: ImageLoadingStatus) => setImgStatus(s);
+    const changeImgStatus = (s: ImageLoadingStatus) => setImgStatus(s);
 
-  return (
-    <AvatarCtx.Provider value={{ status: imgStatus, changeStatus: changeImgStatus }}>
-      <div
-        ref={forwardedRef}
-        data-slot="avatar"
-        className={cn("relative flex size-8 shrink-0 overflow-hidden rounded-full", className)}
-        {...props}
-      />
-    </AvatarCtx.Provider>
-  );
-});
+    return (
+      <AvatarCtx.Provider value={{ status: imgStatus, changeStatus: changeImgStatus }}>
+        <div
+          ref={forwardedRef}
+          data-slot="avatar"
+          data-size={size}
+          className={cn(
+            "group/avatar relative flex size-8 shrink-0 select-none rounded-full after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=lg]:size-10 data-[size=sm]:size-6 dark:after:mix-blend-lighten",
+            className
+          )}
+          {...props}
+        />
+      </AvatarCtx.Provider>
+    );
+  }
+);
 
 type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement> & {
   onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
@@ -47,7 +53,7 @@ const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
       <img
         ref={forwardedRef}
         data-slot="avatar-image"
-        className={cn("aspect-square size-full", className)}
+        className={cn("aspect-square size-full rounded-full object-cover", className)}
         {...props}
         alt={props.alt}
       />
@@ -75,12 +81,62 @@ const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
       <span
         ref={forwardedRef}
         data-slot="avatar-fallback"
-        className={cn("flex size-full items-center justify-center rounded-full bg-muted", className)}
+        className={cn(
+          "flex size-full items-center justify-center rounded-full bg-muted text-muted-foreground text-sm group-data-[size=sm]/avatar:text-xs",
+          className
+        )}
         {...props}
       />
     ) : null;
   }
 );
+
+const AvatarBadge = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(
+  ({ className, ...props }, forwardedRef) => {
+    return (
+      <span
+        data-slot="avatar-badge"
+        className={cn(
+          "absolute right-0 bottom-0 z-10 inline-flex select-none items-center justify-center rounded-full bg-primary text-primary-foreground bg-blend-color ring-2 ring-background",
+          "group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden",
+          "group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2",
+          "group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2",
+          className
+        )}
+        ref={forwardedRef}
+        {...props}
+      />
+    );
+  }
+);
+
+const AvatarGroup = forwardRef<HTMLDivElement, ComponentProps<"div">>(({ className, ...props }, forwardedRef) => {
+  return (
+    <div
+      data-slot="avatar-group"
+      className={cn(
+        "group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background",
+        className
+      )}
+      ref={forwardedRef}
+      {...props}
+    />
+  );
+});
+
+const AvatarGroupCount = forwardRef<HTMLDivElement, ComponentProps<"div">>(({ className, ...props }, forwardedRef) => {
+  return (
+    <div
+      data-slot="avatar-group-count"
+      className={cn(
+        "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground text-sm ring-2 ring-background group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3",
+        className
+      )}
+      ref={forwardedRef}
+      {...props}
+    />
+  );
+});
 
 type useImageLoadingStatusOptions = {
   referrerPolicy: string;
@@ -132,4 +188,4 @@ function useAvatar() {
   return c;
 }
 
-export { Avatar, AvatarFallback, AvatarImage };
+export { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage };

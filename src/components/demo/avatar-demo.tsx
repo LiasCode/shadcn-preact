@@ -1,4 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
+import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@ui/avatar";
+import { PlusIcon } from "lucide-preact";
 
 export function AvatarDemo() {
   return (
@@ -7,17 +8,19 @@ export function AvatarDemo() {
         <AvatarImage
           src="https://github.com/shadcn.png"
           alt="@shadcn"
+          className="grayscale"
         />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
-      <Avatar className="rounded-lg">
+      <Avatar>
         <AvatarImage
           src="https://github.com/evilrabbit.png"
           alt="@evilrabbit"
         />
         <AvatarFallback>ER</AvatarFallback>
+        <AvatarBadge className="bg-green-600 dark:bg-green-800" />
       </Avatar>
-      <div className="flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
+      <AvatarGroup className="grayscale">
         <Avatar>
           <AvatarImage
             src="https://github.com/shadcn.png"
@@ -27,8 +30,8 @@ export function AvatarDemo() {
         </Avatar>
         <Avatar>
           <AvatarImage
-            src="https://github.com/leerob.png"
-            alt="@leerob"
+            src="https://github.com/maxleiter.png"
+            alt="@maxleiter"
           />
           <AvatarFallback>LR</AvatarFallback>
         </Avatar>
@@ -38,6 +41,66 @@ export function AvatarDemo() {
             alt="@evilrabbit"
           />
           <AvatarFallback>ER</AvatarFallback>
+        </Avatar>
+        <AvatarGroupCount>+3</AvatarGroupCount>
+      </AvatarGroup>
+
+      <Avatar className="grayscale">
+        <AvatarImage
+          src="https://github.com/pranathip.png"
+          alt="@pranathip"
+        />
+        <AvatarFallback>PP</AvatarFallback>
+        <AvatarBadge>
+          <PlusIcon />
+        </AvatarBadge>
+      </Avatar>
+
+      <AvatarGroup className="grayscale">
+        <Avatar>
+          <AvatarImage
+            src="https://github.com/shadcn.png"
+            alt="@shadcn"
+          />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+        <Avatar>
+          <AvatarImage
+            src="https://github.com/maxleiter.png"
+            alt="@maxleiter"
+          />
+          <AvatarFallback>LR</AvatarFallback>
+        </Avatar>
+        <Avatar>
+          <AvatarImage
+            src="https://github.com/evilrabbit.png"
+            alt="@evilrabbit"
+          />
+          <AvatarFallback>ER</AvatarFallback>
+        </Avatar>
+      </AvatarGroup>
+
+      <div>
+        <Avatar size="sm">
+          <AvatarImage
+            src="https://github.com/shadcn.png"
+            alt="@shadcn"
+          />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+        <Avatar>
+          <AvatarImage
+            src="https://github.com/shadcn.png"
+            alt="@shadcn"
+          />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+        <Avatar size="lg">
+          <AvatarImage
+            src="https://github.com/shadcn.png"
+            alt="@shadcn"
+          />
+          <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </div>
     </div>
