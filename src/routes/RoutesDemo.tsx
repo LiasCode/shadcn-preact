@@ -1,4 +1,5 @@
 import { AlertDemo } from "@/components/demo/alert-demo";
+import { AspectRatioDemo } from "@/components/demo/aspect-ratio-demo";
 import { AvatarDemo } from "@/components/demo/avatar-demo";
 import { BadgeDemo } from "@/components/demo/badge-demo";
 import { BreadcrumbDemo } from "@/components/demo/breadcrumb-demo";
@@ -27,6 +28,7 @@ import type { ComponentChild } from "preact";
 export const RoutesDemoObj: Record<string, ComponentChild> = {
   "alert": <AlertDemo />,
   "avatar": <AvatarDemo />,
+  "aspect-ratio": <AspectRatioDemo />,
   "badge": <BadgeDemo />,
   "breadcrumb": <BreadcrumbDemo />,
   "button": <ButtonDemo />,
