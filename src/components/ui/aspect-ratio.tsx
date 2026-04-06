@@ -23,6 +23,7 @@ const AspectRatio = forwardRef<HTMLDivElement, AspectRatioProps>((props, forward
         ref={forwardedRef}
         className={cn(className)}
         style={Object.assign({}, style, {
+          // ensures children expand in ratio
           position: "absolute",
           top: 0,
           right: 0,
