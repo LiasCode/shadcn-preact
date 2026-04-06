@@ -11,7 +11,7 @@ export function AspectRatioDemo() {
           <img
             src="https://avatar.vercel.sh/shadcn1"
             alt="Aspect Ratio Demo"
-            className="rounded-lg w-full h-full object-cover grayscale dark:brightness-20"
+            className="h-full w-full rounded-lg object-cover grayscale dark:brightness-20"
           />
         </AspectRatio>
       </div>
@@ -24,7 +24,7 @@ export function AspectRatioDemo() {
           <img
             src="https://avatar.vercel.sh/shadcn1"
             alt="Aspect Ratio Demo 2"
-            className="rounded-lg w-full h-full object-cover grayscale dark:brightness-20"
+            className="h-full w-full rounded-lg object-cover grayscale dark:brightness-20"
           />
         </AspectRatio>
       </div>
