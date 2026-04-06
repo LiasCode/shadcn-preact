@@ -32,7 +32,7 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>(({ children, classNam
     <div
       ref={forwardedRef}
       data-slot="progress"
-      className={cn("relative h-2 w-full overflow-hidden rounded-full bg-primary/20", className)}
+      className={cn("relative flex h-1 w-full items-center overflow-x-hidden rounded-full bg-muted", className)}
       aria-valuemax={max}
       aria-valuemin={0}
       aria-valuenow={isNumber(value) ? value : undefined}
@@ -48,7 +48,8 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>(({ children, classNam
         data-state={getProgressState(value, max)}
         data-value={value ?? undefined}
         data-max={max}
-        className="h-full w-full flex-1 bg-primary transition-all"
+        data-slot="progress-indicator"
+        className="size-full flex-1 bg-primary transition-all"
         style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
       />
       {children}
