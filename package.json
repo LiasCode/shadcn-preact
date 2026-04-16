@@ -29,12 +29,12 @@
     "url": "https://lias-code.pages.dev"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.11",
+    "@biomejs/biome": "2.4.12",
     "@preact/preset-vite": "^2.10.5",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^25.6.0",
-    "postcss": "^8.5.9",
-    "prettier": "^3.8.2",
+    "postcss": "^8.5.10",
+    "prettier": "^3.8.3",
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "sass-embedded": "^1.99.0",
