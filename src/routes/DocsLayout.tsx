@@ -14,6 +14,7 @@ type DocsLayoutProps = {
 
 const docsNav = [
   { title: "Introduction", href: "/docs" },
+  { title: "Installation", href: "/docs/installation/vite" },
   { title: "Components", href: "/docs/components" },
 ];
 

@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from "@ui/alert";
 import { Button } from "@ui/button";
 import { ExternalLink } from "lucide-preact";
 import { LocationProvider, Route, Router } from "preact-iso";
-import { ComponentDocPage, ComponentsIndexPage, DocsHomePage } from "./routes/docs-components";
+import { ComponentDocPage, ComponentsIndexPage, DocsHomePage, ViteInstallationPage } from "./routes/docs-components";
 
 export function App() {
   return (
@@ -21,6 +21,11 @@ export function App() {
         <Route
           path={"/docs/components"}
           component={ComponentsIndexPage}
+        />
+
+        <Route
+          path={"/docs/installation/vite"}
+          component={ViteInstallationPage}
         />
 
         <Route
