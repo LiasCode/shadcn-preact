@@ -2,9 +2,9 @@
 
 Port de shadcn/ui a Preact con mínimas dependencias externas. Comparativa contra el catálogo completo de shadcn/ui.
 
-Implementados (35): alert, aspect-ratio, avatar, badge, breadcrumb, button, button-group, calendar, card, chart, combobox, context-menu, dropdown-menu, empty, field, hover-card, input, input-group, kbd, label, menubar, native-select, navigation-menu, pagination, popover, progress, select, separator, skeleton, spinner, table, tabs, textarea, toggle, tooltip.
+Implementados (39): alert, alert-dialog, aspect-ratio, avatar, badge, breadcrumb, button, button-group, calendar, card, chart, combobox, context-menu, dialog, drawer, dropdown-menu, empty, field, hover-card, input, input-group, kbd, label, menubar, native-select, navigation-menu, pagination, popover, progress, select, separator, sheet, skeleton, spinner, table, tabs, textarea, toggle, tooltip.
 
-Faltan ~21 componentes. Ruta crítica: **Command** (desbloquea la command palette).
+Faltan ~17 componentes. Ruta crítica: **Command** (desbloquea la command palette).
 
 ## 🧱 Primitiva base primero (desbloquea casi todo lo demás)
 
@@ -23,10 +23,10 @@ Faltan ~21 componentes. Ruta crítica: **Command** (desbloquea la command palett
 
 ## 🪟 Diálogos / capas modales (dependen de `modal.tsx` + `useLo1ckBodyScroll`)
 
-- [ ] **Dialog**
-- [ ] **Alert Dialog**
-- [ ] **Sheet**
-- [ ] **Drawer** (en shadcn usa `vaul`; tocaría portarlo o hacer versión propia)
+- [x] **Dialog**
+- [x] **Alert Dialog**
+- [x] **Sheet**
+- [x] **Drawer** (en shadcn usa `vaul`; tocaría portarlo o hacer versión propia)
 
 ## ☑️ Inputs de formulario
 
