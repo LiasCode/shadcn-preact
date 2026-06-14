@@ -128,6 +128,19 @@ export type PopoverContentProps = ComponentProps<"div"> & {
   container?: Element | DocumentFragment | null;
 };
 
+// Mirrors Radix's `--radix-popover-content-transform-origin`: the zoom/fade animation
+// should originate from the edge of the content nearest the trigger.
+function getTransformOrigin(side: string, align: string): string {
+  if (side === "top" || side === "bottom") {
+    const y = side === "bottom" ? "top" : "bottom";
+    const x = align === "start" ? "left" : align === "end" ? "right" : "center";
+    return `${x} ${y}`;
+  }
+  const x = side === "right" ? "left" : "right";
+  const y = align === "start" ? "top" : align === "end" ? "bottom" : "center";
+  return `${x} ${y}`;
+}
+
 const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
   (
     { className, side = "bottom", align = "center", sideOffset = 4, container, style, children, ...props },
@@ -135,16 +148,26 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
   ) => {
     const { open, setOpen, reference, triggerId, contentId } = usePopover();
 
+    // Keep the content mounted while it animates out so `data-[state=closed]` animations can play.
+    const [present, setPresent] = useState(open);
+    useEffect(() => {
+      if (open) setPresent(true);
+    }, [open]);
+
     const placement: Placement = align === "center" ? side : `${side}-${align}`;
 
     const {
       refs,
       floatingStyles,
       placement: resolvedPlacement,
+      isPositioned,
     } = useFloating({
       open,
       placement,
       strategy: "fixed",
+      // Position with top/left instead of `transform` so the enter/exit animations (which animate
+      // `transform`) don't override the placement and make the content fly in from the corner.
+      transform: false,
       whileElementsMounted: autoUpdate,
       elements: { reference },
       middleware: [offset(sideOffset), flip({ padding: 8 }), shift({ padding: 8 })],
@@ -176,12 +199,16 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
       };
     }, [open, setOpen, refs.floating, refs.reference]);
 
-    if (!open) return null;
+    if (!present) return null;
 
-    const [resolvedSide, resolvedAlign = "center"] = resolvedPlacement.split("-");
+    const [resolvedSide = side, resolvedAlign = "center"] = resolvedPlacement.split("-");
 
     const mergedStyle = {
       ...floatingStyles,
+      "--radix-popover-content-transform-origin": getTransformOrigin(resolvedSide, resolvedAlign),
+      // Stay invisible at the default top-left position until floating-ui has computed the real
+      // placement, so the open animation plays in-place instead of flying in from the corner.
+      ...(open && !isPositioned ? { opacity: 0, pointerEvents: "none" } : {}),
       ...(style && typeof style === "object" ? style : {}),
     } as ComponentProps<"div">["style"];
 
@@ -193,14 +220,16 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
           role="dialog"
           aria-labelledby={triggerId}
           data-slot="popover-content"
-          data-state={open ? "open" : "closed"}
+          data-state={!open ? "closed" : isPositioned ? "open" : undefined}
           data-side={resolvedSide}
           data-align={resolvedAlign}
           style={mergedStyle}
+          onAnimationEnd={(e: AnimationEvent) => {
+            // Unmount only after the close animation of the content itself finishes.
+            if (e.target === e.currentTarget && !open) setPresent(false);
+          }}
           className={cn(
-            "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden",
-            "fade-in-0 zoom-in-95",
-            "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+            "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 z-50 w-72 origin-(--radix-popover-content-transform-origin) rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden data-[state=closed]:animate-out data-[state=open]:animate-in",
             className
           )}
           {...props}
@@ -213,4 +242,48 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
 );
 PopoverContent.displayName = "PopoverContent";
 
-export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger };
+export type PopoverHeaderProps = ComponentProps<"div">;
+
+const PopoverHeader = forwardRef<HTMLDivElement, PopoverHeaderProps>(({ className, ...props }, forwardedRef) => {
+  return (
+    <div
+      ref={forwardedRef}
+      data-slot="popover-header"
+      className={cn("flex flex-col gap-1 text-sm", className)}
+      {...props}
+    />
+  );
+});
+PopoverHeader.displayName = "PopoverHeader";
+
+export type PopoverTitleProps = ComponentProps<"div">;
+
+const PopoverTitle = forwardRef<HTMLDivElement, PopoverTitleProps>(({ className, ...props }, forwardedRef) => {
+  return (
+    <div
+      ref={forwardedRef}
+      data-slot="popover-title"
+      className={cn("font-medium", className)}
+      {...props}
+    />
+  );
+});
+PopoverTitle.displayName = "PopoverTitle";
+
+export type PopoverDescriptionProps = ComponentProps<"p">;
+
+const PopoverDescription = forwardRef<HTMLParagraphElement, PopoverDescriptionProps>(
+  ({ className, ...props }, forwardedRef) => {
+    return (
+      <p
+        ref={forwardedRef}
+        data-slot="popover-description"
+        className={cn("text-muted-foreground", className)}
+        {...props}
+      />
+    );
+  }
+);
+PopoverDescription.displayName = "PopoverDescription";
+
+export { Popover, PopoverAnchor, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger };
