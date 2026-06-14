@@ -50,7 +50,7 @@ export default defineConfig({
       prerender: {
         enabled: true,
         renderTarget: "#app",
-        additionalPrerenderRoutes: ["/404", "/docs", "/docs/components", ...componentRoutes],
+        additionalPrerenderRoutes: ["/404", "/docs", "/docs/installation/vite", "/docs/components", ...componentRoutes],
         previewMiddlewareEnabled: true,
         previewMiddlewareFallback: "/404",
       },
