@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction, useCallback, useEffect, useRef, useState } from "preact/compat";
+import { type Dispatch, type SetStateAction, useCallback, useRef, useState } from "preact/compat";
 
 type useControlledStateProps<T> = {
   defaultValue?: T;
@@ -51,13 +51,6 @@ export function useControlledState<T>({
     }
     onChange?.(resetValue as T);
   }, [isControlled, onChange]);
-
-  // Sync controlled value changes
-  useEffect(() => {
-    if (isControlled && controlledValue !== internalValue) {
-      setInternalValue(controlledValue);
-    }
-  }, [controlledValue, isControlled, internalValue]);
 
   return [
     value,

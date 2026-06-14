@@ -28,7 +28,12 @@ There is **no test suite** in this repo.
 
 ### Component conventions (`src/components/ui/`)
 
-Follow the existing patterns exactly (see `button.tsx` as the reference):
+- Most have the same api of shadcn originals components 
+- Most have the same styles of shadcn originals components
+
+Utils links:
+- https://github.com/shadcn-ui/ui/blob/main/apps/v4/registry/new-york-v4/ui/calendar.tsx
+- https://ui.shadcn.com/docs/components
 
 - Variants via `class-variance-authority` (`cva`) + `VariantProps`.
 - `forwardRef` from `preact/compat`; props typed with `ComponentProps<"...">`.
