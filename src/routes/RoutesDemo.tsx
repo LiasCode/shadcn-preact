@@ -15,6 +15,7 @@ import { KbdDemo } from "@/components/demo/kbd-demo";
 import { LabelDemo } from "@/components/demo/label-demo";
 import { NativeSelectDemo } from "@/components/demo/native-select-demo";
 import { PaginationDemo } from "@/components/demo/pagination-demo";
+import { PopoverDemo } from "@/components/demo/popover-demo";
 import { ProgressDemo } from "@/components/demo/progress-demo";
 import { SeparatorDemo } from "@/components/demo/separator-demo";
 import { SkeletonDemo } from "@/components/demo/skeleton-demo";
@@ -44,6 +45,7 @@ export const RoutesDemoObj: Record<string, ComponentChild> = {
   "label": <LabelDemo />,
   "native-select": <NativeSelectDemo />,
   "pagination": <PaginationDemo />,
+  "popover": <PopoverDemo />,
   "progress": <ProgressDemo />,
   "separator": <SeparatorDemo />,
   "skeleton": <SkeletonDemo />,
