@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from "@ui/alert";
 import { Button } from "@ui/button";
 import { ExternalLink } from "lucide-preact";
 import { LocationProvider, Route, Router } from "preact-iso";
-import HomePage from "./routes/Home";
+import { ComponentDocPage, ComponentsIndexPage, DocsHomePage } from "./routes/docs-components";
 
 export function App() {
   return (
@@ -10,7 +10,22 @@ export function App() {
       <Router>
         <Route
           path={"/"}
-          component={HomePage}
+          component={DocsHomePage}
+        />
+
+        <Route
+          path={"/docs"}
+          component={DocsHomePage}
+        />
+
+        <Route
+          path={"/docs/components"}
+          component={ComponentsIndexPage}
+        />
+
+        <Route
+          path={"/docs/components/:slug"}
+          component={ComponentDocPage}
         />
 
         <Route
