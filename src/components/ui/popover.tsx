@@ -1,11 +1,12 @@
 import { autoUpdate, flip, offset, type Placement, shift, useFloating } from "@floating-ui/react-dom";
 import { type ComponentProps, createContext } from "preact";
-import { forwardRef, type PropsWithChildren, useContext, useEffect, useId, useMemo, useState } from "preact/compat";
+import { forwardRef, type PropsWithChildren, useContext, useEffect, useId, useMemo, useRef, useState } from "preact/compat";
 import { cn } from "./share/cn";
 import { useComposedRefs } from "./share/compose_ref";
 import { Portal } from "./share/portal";
 import { Slot } from "./share/slot";
 import { useControlledState } from "./share/useControlledState";
+import { useFocusTrap } from "./share/useFocusTrap";
 
 type PopoverContextType = {
   open: boolean;
@@ -173,7 +174,12 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
       middleware: [offset(sideOffset), flip({ padding: 8 }), shift({ padding: 8 })],
     });
 
-    const composedRef = useComposedRefs(forwardedRef, refs.setFloating);
+    const floatingRef = useRef<HTMLDivElement | null>(null);
+    const composedRef = useComposedRefs(forwardedRef, refs.setFloating, floatingRef);
+
+    // Focus trap: active only once floating-ui has placed the element, so focus
+    // moves in-place rather than to the invisible top-left position.
+    useFocusTrap(floatingRef, open && isPositioned);
 
     // Close on Escape and on a pointer press outside both the content and the trigger.
     useEffect(() => {
