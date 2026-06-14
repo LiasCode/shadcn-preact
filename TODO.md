@@ -2,13 +2,13 @@
 
 Port de shadcn/ui a Preact con mínimas dependencias externas. Comparativa contra el catálogo completo de shadcn/ui.
 
-Implementados (26): alert, aspect-ratio, avatar, badge, breadcrumb, button, button-group, calendar, card, chart, empty, field, input, input-group, kbd, label, native-select, pagination, progress, separator, skeleton, spinner, table, tabs, textarea, toggle.
+Implementados (27): alert, aspect-ratio, avatar, badge, breadcrumb, button, button-group, calendar, card, chart, empty, field, input, input-group, kbd, label, native-select, pagination, popover, progress, separator, skeleton, spinner, table, tabs, textarea, toggle.
 
-Faltan ~30 componentes. Ruta crítica: **Popover** primero (desbloquea ~10 overlays) y **Command** (desbloquea Combobox y la command palette).
+Faltan ~29 componentes. Ruta crítica: **Command** (desbloquea Combobox y la command palette).
 
 ## 🧱 Primitiva base primero (desbloquea casi todo lo demás)
 
-- [ ] **Popover** — usa `@floating-ui/react-dom` (ya está en deps) + `portal.tsx`. Base de la mayoría de los overlays.
+- [x] **Popover** — `@floating-ui/react-dom` + `portal.tsx` + `useFocusTrap`. Base de la mayoría de los overlays.
 
 ## 🎈 Overlays flotantes (dependen de Popover/floating-ui)
 
@@ -57,5 +57,5 @@ Faltan ~30 componentes. Ruta crítica: **Popover** primero (desbloquea ~10 overl
 
 ## Notas
 
-- Ya están en `share/`: `@floating-ui/react-dom`, `modal.tsx`, `portal.tsx`, `useLockBodyScroll` — infraestructura de overlays/modales lista.
+- Ya están en `share/`: `@floating-ui/react-dom`, `modal.tsx`, `portal.tsx`, `useLockBodyScroll`, `useFocusTrap` — infraestructura de overlays/modales lista.
 - `chart.tsx` existe pero su demo está comentada en `RoutesDemo.tsx` (`// "chart": <ChartDemo />`).
