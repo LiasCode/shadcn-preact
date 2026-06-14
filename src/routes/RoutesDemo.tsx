@@ -1,4 +1,5 @@
 import { AlertDemo } from "@/components/demo/alert-demo";
+import { AlertDialogDemo } from "@/components/demo/alert-dialog-demo";
 import { AspectRatioDemo } from "@/components/demo/aspect-ratio-demo";
 import { AvatarDemo } from "@/components/demo/avatar-demo";
 import { BadgeDemo } from "@/components/demo/badge-demo";
@@ -9,6 +10,8 @@ import { CalendarDemo } from "@/components/demo/calendar-demo";
 import { CardDemo } from "@/components/demo/card-demo";
 import { ComboboxDemo } from "@/components/demo/combobox-demo";
 import { ContextMenuDemo } from "@/components/demo/context-menu-demo";
+import { DialogDemo } from "@/components/demo/dialog-demo";
+import { DrawerDemo } from "@/components/demo/drawer-demo";
 import { DropdownMenuDemo } from "@/components/demo/dropdown-menu-demo";
 import { EmptyDemo } from "@/components/demo/empty-demo";
 import { FieldDemo } from "@/components/demo/field-demo";
@@ -25,6 +28,7 @@ import { PopoverDemo } from "@/components/demo/popover-demo";
 import { ProgressDemo } from "@/components/demo/progress-demo";
 import { SelectDemo } from "@/components/demo/select-demo";
 import { SeparatorDemo } from "@/components/demo/separator-demo";
+import { SheetDemo } from "@/components/demo/sheet-demo";
 import { SkeletonDemo } from "@/components/demo/skeleton-demo";
 import { SpinnerDemo } from "@/components/demo/spinner-demo";
 import { TableDemo } from "@/components/demo/table-demo";
@@ -36,6 +40,7 @@ import type { ComponentChild } from "preact";
 
 export const RoutesDemoObj: Record<string, ComponentChild> = {
   "alert": <AlertDemo />,
+  "alert-dialog": <AlertDialogDemo />,
   "avatar": <AvatarDemo />,
   "aspect-ratio": <AspectRatioDemo />,
   "badge": <BadgeDemo />,
@@ -47,7 +52,9 @@ export const RoutesDemoObj: Record<string, ComponentChild> = {
   // "chart": <ChartDemo />,
   "combobox": <ComboboxDemo />,
   "context-menu": <ContextMenuDemo />,
+  "dialog": <DialogDemo />,
   "dropdown-menu": <DropdownMenuDemo />,
+  "drawer": <DrawerDemo />,
   "empty": <EmptyDemo />,
   "field": <FieldDemo />,
   "hover-card": <HoverCardDemo />,
@@ -62,6 +69,7 @@ export const RoutesDemoObj: Record<string, ComponentChild> = {
   "popover": <PopoverDemo />,
   "progress": <ProgressDemo />,
   "separator": <SeparatorDemo />,
+  "sheet": <SheetDemo />,
   "select": <SelectDemo />,
   "skeleton": <SkeletonDemo />,
   "spinner": <SpinnerDemo />,
