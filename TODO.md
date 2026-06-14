@@ -2,9 +2,9 @@
 
 Port de shadcn/ui a Preact con mínimas dependencias externas. Comparativa contra el catálogo completo de shadcn/ui.
 
-Implementados (27): alert, aspect-ratio, avatar, badge, breadcrumb, button, button-group, calendar, card, chart, empty, field, input, input-group, kbd, label, native-select, pagination, popover, progress, separator, skeleton, spinner, table, tabs, textarea, toggle.
+Implementados (35): alert, aspect-ratio, avatar, badge, breadcrumb, button, button-group, calendar, card, chart, combobox, context-menu, dropdown-menu, empty, field, hover-card, input, input-group, kbd, label, menubar, native-select, navigation-menu, pagination, popover, progress, select, separator, skeleton, spinner, table, tabs, textarea, toggle, tooltip.
 
-Faltan ~29 componentes. Ruta crítica: **Command** (desbloquea Combobox y la command palette).
+Faltan ~21 componentes. Ruta crítica: **Command** (desbloquea la command palette).
 
 ## 🧱 Primitiva base primero (desbloquea casi todo lo demás)
 
@@ -12,16 +12,16 @@ Faltan ~29 componentes. Ruta crítica: **Command** (desbloquea Combobox y la com
 
 ## 🎈 Overlays flotantes (dependen de Popover/floating-ui)
 
-- [ ] **Tooltip**
-- [ ] **Hover Card**
-- [ ] **Dropdown Menu**
-- [ ] **Context Menu**
-- [ ] **Menubar**
-- [ ] **Navigation Menu**
-- [ ] **Select** (port sin Radix; ya existe `native-select` como alternativa)
-- [ ] **Combobox** (composición: Popover + Command)
+- [x] **Tooltip**
+- [x] **Hover Card**
+- [x] **Dropdown Menu**
+- [x] **Context Menu**
+- [x] **Menubar**
+- [x] **Navigation Menu**
+- [x] **Select** (port sin Radix; ya existe `native-select` como alternativa)
+- [x] **Combobox** (composición: Popover + Command)
 
-## 🪟 Diálogos / capas modales (dependen de `modal.tsx` + `useLockBodyScroll`)
+## 🪟 Diálogos / capas modales (dependen de `modal.tsx` + `useLo1ckBodyScroll`)
 
 - [ ] **Dialog**
 - [ ] **Alert Dialog**
