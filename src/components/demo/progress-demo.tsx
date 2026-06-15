@@ -5,16 +5,16 @@ export function ProgressDemo() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setProgress(90), 500);
+    const timer = setTimeout(() => setProgress(90), 800);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className={"flex flex-row gap-8 *:max-w-sm"}>
+    <div className="flex w-full max-w-sm flex-row items-center justify-center gap-8">
       <Progress
         value={progress}
         className="w-[60%]"
       />
-    </div>
+  </div>
   );
 }
