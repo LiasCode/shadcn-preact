@@ -15,6 +15,6 @@ export function ProgressDemo() {
         value={progress}
         className="w-[60%]"
       />
-  </div>
+    </div>
   );
 }
