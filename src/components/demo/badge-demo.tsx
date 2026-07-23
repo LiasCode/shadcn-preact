@@ -1,5 +1,6 @@
-import { Badge } from "@/components/ui/badge";
 import { BadgeCheckIcon } from "lucide-preact";
+
+import { Badge } from "@/components/ui/badge";
 
 export function BadgeDemo() {
   return (
@@ -11,24 +12,15 @@ export function BadgeDemo() {
         <Badge variant="outline">Outline</Badge>
       </div>
       <div className="flex w-full flex-wrap gap-2">
-        <Badge
-          variant="secondary"
-          className="bg-blue-500 text-white dark:bg-blue-600"
-        >
+        <Badge variant="secondary" className="bg-blue-500 text-white dark:bg-blue-600">
           <BadgeCheckIcon />
           Verified
         </Badge>
         <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">8</Badge>
-        <Badge
-          className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums"
-          variant="destructive"
-        >
+        <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums" variant="destructive">
           99
         </Badge>
-        <Badge
-          className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums"
-          variant="outline"
-        >
+        <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums" variant="outline">
           20+
         </Badge>
       </div>

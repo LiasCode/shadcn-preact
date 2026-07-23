@@ -1,4 +1,5 @@
 import type { ComponentProps } from "preact";
+
 import { cn } from "./share/cn";
 
 function Kbd({ className, ...props }: ComponentProps<"kbd">) {
@@ -9,7 +10,7 @@ function Kbd({ className, ...props }: ComponentProps<"kbd">) {
         "pointer-events-none inline-flex h-5 w-fit min-w-5 select-none items-center justify-center gap-1 rounded-sm bg-muted px-1 font-medium font-sans text-muted-foreground text-xs",
         "[&_svg:not([class*='size-'])]:size-3",
         "[[data-slot=tooltip-content]_&]:bg-background/20 [[data-slot=tooltip-content]_&]:text-background dark:[[data-slot=tooltip-content]_&]:bg-background/10",
-        className
+        className,
       )}
       {...props}
     />
@@ -19,11 +20,7 @@ function Kbd({ className, ...props }: ComponentProps<"kbd">) {
 function KbdGroup({ className, ...props }: ComponentProps<"div">) {
   return (
     //@ts-expect-error
-    <kbd
-      data-slot="kbd-group"
-      className={cn("inline-flex items-center gap-1", className)}
-      {...props}
-    />
+    <kbd data-slot="kbd-group" className={cn("inline-flex items-center gap-1", className)} {...props} />
   );
 }
 

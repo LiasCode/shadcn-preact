@@ -1,6 +1,7 @@
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-preact";
 import { type ComponentProps, createContext } from "preact";
 import { forwardRef, type PropsWithChildren, useContext, useId, useMemo, useRef } from "preact/compat";
+
 import { cn } from "./share/cn";
 import { useComposedRefs } from "./share/compose_ref";
 import { type FloatingAlign, type FloatingSide, useDismissableLayer, useFloatingContent } from "./share/floating";
@@ -61,7 +62,7 @@ const Menubar = forwardRef<HTMLDivElement, MenubarProps>(
         />
       </MenubarRootContext.Provider>
     );
-  }
+  },
 );
 Menubar.displayName = "Menubar";
 
@@ -76,7 +77,7 @@ function MenubarMenu({ value, children }: MenubarMenuProps) {
   const setOpen = (nextOpen: boolean) => root.setValue(nextOpen ? itemValue : "");
   const ctx = useMemo(
     () => ({ value: itemValue, open, setOpen, trigger, setTrigger }),
-    [itemValue, open, setTrigger, trigger]
+    [itemValue, open, setTrigger, trigger],
   );
   return <MenubarMenuContext.Provider value={ctx}>{children}</MenubarMenuContext.Provider>;
 }
@@ -108,12 +109,12 @@ const MenubarTrigger = forwardRef<HTMLButtonElement, MenubarTriggerProps>(
         }}
         className={cn(
           "flex cursor-default select-none items-center rounded-sm px-2 py-1 font-medium text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 MenubarTrigger.displayName = "MenubarTrigger";
 
@@ -151,13 +152,13 @@ const MenubarContent = forwardRef<HTMLDivElement, MenubarContentProps>(
           }}
           className={cn(
             "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 z-50 min-w-32 origin-(--radix-popper-transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
-            className
+            className,
           )}
           {...props}
         />
       </Portal>
     );
-  }
+  },
 );
 MenubarContent.displayName = "MenubarContent";
 
@@ -189,12 +190,12 @@ const MenubarItem = forwardRef<HTMLDivElement, MenubarItemProps>(
         }}
         className={cn(
           "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[disabled]:opacity-50 data-[variant=destructive]:focus:bg-destructive/10 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 MenubarItem.displayName = "MenubarItem";
 
@@ -231,11 +232,7 @@ function MenubarRadioGroup({
 }: ComponentProps<"div"> & { value?: string; onValueChange?: (value: string) => void }) {
   return (
     <MenubarRadioContext.Provider value={{ value, onValueChange }}>
-      <div
-        role="radiogroup"
-        data-slot="menubar-radio-group"
-        {...props}
-      />
+      <div role="radiogroup" data-slot="menubar-radio-group" {...props} />
     </MenubarRadioContext.Provider>
   );
 }
@@ -263,18 +260,12 @@ const MenubarRadioItem = forwardRef<HTMLDivElement, MenubarItemProps & { value: 
         {children}
       </MenubarItem>
     );
-  }
+  },
 );
 MenubarRadioItem.displayName = "MenubarRadioItem";
 
 function MenubarGroup(props: ComponentProps<"div">) {
-  return (
-    <div
-      role="group"
-      data-slot="menubar-group"
-      {...props}
-    />
-  );
+  return <div role="group" data-slot="menubar-group" {...props} />;
 }
 
 function MenubarLabel({ className, inset, ...props }: ComponentProps<"div"> & { inset?: boolean }) {
@@ -322,7 +313,7 @@ function MenubarSubTrigger({ className, inset, children, ...props }: ComponentPr
       tabIndex={-1}
       className={cn(
         "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden focus:bg-accent data-[inset]:pl-8",
-        className
+        className,
       )}
       {...props}
     >
@@ -339,7 +330,7 @@ function MenubarSubContent({ className, ...props }: ComponentProps<"div">) {
       data-slot="menubar-sub-content"
       className={cn(
         "absolute top-0 left-full z-50 ml-1 hidden min-w-32 rounded-md border bg-popover p-1 text-popover-foreground shadow-md group-hover:block",
-        className
+        className,
       )}
       {...props}
     />

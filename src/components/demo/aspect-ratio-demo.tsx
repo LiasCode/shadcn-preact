@@ -4,10 +4,7 @@ export function AspectRatioDemo() {
   return (
     <div className="flex h-auto w-full max-w-sm flex-row gap-4">
       <div className="w-full max-w-48">
-        <AspectRatio
-          ratio={1 / 1}
-          className="rounded-lg bg-muted"
-        >
+        <AspectRatio ratio={1 / 1} className="rounded-lg bg-muted">
           <img
             src="https://avatar.vercel.sh/shadcn1"
             alt="Aspect Ratio Demo"
@@ -17,10 +14,7 @@ export function AspectRatioDemo() {
       </div>
 
       <div className="w-full max-w-40">
-        <AspectRatio
-          ratio={9 / 16}
-          className="rounded-lg bg-muted"
-        >
+        <AspectRatio ratio={9 / 16} className="rounded-lg bg-muted">
           <img
             src="https://avatar.vercel.sh/shadcn1"
             alt="Aspect Ratio Demo 2"

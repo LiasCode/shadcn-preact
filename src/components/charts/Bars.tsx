@@ -1,7 +1,8 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useMemo, useState } from "preact/hooks";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 export const description = "An interactive bar chart";
 
@@ -121,7 +122,7 @@ export function ChartBarInteractive() {
       desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
       mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
     }),
-    []
+    [],
   );
 
   return (
@@ -152,10 +153,7 @@ export function ChartBarInteractive() {
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-62.5 w-full"
-        >
+        <ChartContainer config={chartConfig} className="aspect-auto h-62.5 w-full">
           <BarChart
             accessibilityLayer
             data={chartData}
@@ -185,6 +183,7 @@ export function ChartBarInteractive() {
                   className="w-37.5"
                   nameKey="views"
                   labelFormatter={(value) => {
+                    //@ts-expect-error
                     return new Date(value).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -194,10 +193,7 @@ export function ChartBarInteractive() {
                 />
               }
             />
-            <Bar
-              dataKey={activeChart}
-              fill={`var(--color-${activeChart})`}
-            />
+            <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
           </BarChart>
         </ChartContainer>
       </CardContent>

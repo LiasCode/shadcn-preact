@@ -1,5 +1,7 @@
 import { hydrate, prerender as ssr } from "preact-iso";
+
 import { App } from "./App";
+
 import "./index.css";
 
 if (typeof window !== "undefined") {

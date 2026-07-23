@@ -43,10 +43,7 @@ type AlertDialogActionProps = Parameters<typeof Button>[0];
 function AlertDialogAction({ className, ...props }: AlertDialogActionProps) {
   return (
     <DialogClose asChild>
-      <Button
-        className={className}
-        {...props}
-      />
+      <Button className={className} {...props} />
     </DialogClose>
   );
 }
@@ -56,11 +53,7 @@ type AlertDialogCancelProps = Parameters<typeof Button>[0];
 function AlertDialogCancel({ className, ...props }: AlertDialogCancelProps) {
   return (
     <DialogClose asChild>
-      <Button
-        variant="outline"
-        className={cn(buttonVariants({ variant: "outline" }), className)}
-        {...props}
-      />
+      <Button variant="outline" className={cn(buttonVariants({ variant: "outline" }), className)} {...props} />
     </DialogClose>
   );
 }

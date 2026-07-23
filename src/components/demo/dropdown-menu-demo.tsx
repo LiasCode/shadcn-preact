@@ -1,3 +1,5 @@
+import { useState } from "preact/compat";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,7 +13,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "preact/compat";
 
 export function DropdownMenuDemo() {
   const [showStatusBar, setShowStatusBar] = useState(true);
@@ -22,10 +23,7 @@ export function DropdownMenuDemo() {
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Open menu</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="start"
-        className="w-56"
-      >
+      <DropdownMenuContent align="start" className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
@@ -34,17 +32,11 @@ export function DropdownMenuDemo() {
         </DropdownMenuItem>
         <DropdownMenuItem>Billing</DropdownMenuItem>
         <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuCheckboxItem
-          checked={showStatusBar}
-          onCheckedChange={setShowStatusBar}
-        >
+        <DropdownMenuCheckboxItem checked={showStatusBar} onCheckedChange={setShowStatusBar}>
           Status Bar
         </DropdownMenuCheckboxItem>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup
-          value={position}
-          onValueChange={setPosition}
-        >
+        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
           <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>

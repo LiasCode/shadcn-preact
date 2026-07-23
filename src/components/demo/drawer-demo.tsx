@@ -24,20 +24,14 @@ export function DrawerDemo() {
           </DrawerHeader>
           <div className="p-4 pb-0">
             <div className="flex items-center justify-center space-x-2">
-              <Button
-                variant="outline"
-                size="icon"
-              >
+              <Button variant="outline" size="icon">
                 -
               </Button>
               <div className="flex-1 text-center">
                 <div className="font-bold text-7xl tracking-tighter">350</div>
                 <div className="text-muted-foreground text-sm uppercase">Calories/day</div>
               </div>
-              <Button
-                variant="outline"
-                size="icon"
-              >
+              <Button variant="outline" size="icon">
                 +
               </Button>
             </div>

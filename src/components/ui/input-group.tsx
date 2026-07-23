@@ -1,8 +1,10 @@
+import { cva, type VariantProps } from "class-variance-authority";
+import type { ComponentProps } from "preact";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { cva, type VariantProps } from "class-variance-authority";
-import type { ComponentProps } from "preact";
+
 import { cn } from "./share/cn";
 
 function InputGroup({ className, ...props }: ComponentProps<"div">) {
@@ -26,7 +28,7 @@ function InputGroup({ className, ...props }: ComponentProps<"div">) {
         // Error state.
         "has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-destructive/20 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40",
 
-        className
+        className,
       )}
       {...props}
     />
@@ -48,7 +50,7 @@ const inputGroupAddonVariants = cva(
     defaultVariants: {
       align: "inline-start",
     },
-  }
+  },
 );
 
 function InputGroupAddon({
@@ -76,8 +78,8 @@ function InputGroupAddon({
 const inputGroupButtonVariants = cva("text-sm shadow-none flex gap-2 items-center", {
   variants: {
     size: {
-      "xs": "h-6 gap-1 px-2 rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-3.5 has-[>svg]:px-2",
-      "sm": "h-8 px-2.5 gap-1.5 rounded-md has-[>svg]:px-2.5",
+      xs: "h-6 gap-1 px-2 rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-3.5 has-[>svg]:px-2",
+      sm: "h-8 px-2.5 gap-1.5 rounded-md has-[>svg]:px-2.5",
       "icon-xs": "size-6 rounded-[calc(var(--radius)-5px)] p-0 has-[>svg]:p-0",
       "icon-sm": "size-8 p-0 has-[>svg]:p-0",
     },
@@ -110,7 +112,7 @@ function InputGroupText({ className, ...props }: ComponentProps<"span">) {
     <span
       className={cn(
         "flex items-center gap-2 text-muted-foreground text-sm [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
-        className
+        className,
       )}
       {...props}
     />
@@ -123,7 +125,7 @@ function InputGroupInput({ className, ...props }: ComponentProps<"input">) {
       data-slot="input-group-control"
       className={cn(
         "flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent",
-        className
+        className,
       )}
       {...props}
     />
@@ -136,7 +138,7 @@ function InputGroupTextarea({ className, ...props }: ComponentProps<"textarea">)
       data-slot="input-group-control"
       className={cn(
         "flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0 dark:bg-transparent",
-        className
+        className,
       )}
       {...props}
     />

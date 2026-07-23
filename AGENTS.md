@@ -1,6 +1,4 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+# AGENTS.md
 
 ## What this is
 
@@ -28,10 +26,11 @@ There is **no test suite** in this repo.
 
 ### Component conventions (`src/components/ui/`)
 
-- Most have the same api of shadcn originals components 
+- Most have the same api of shadcn originals components
 - Most have the same styles of shadcn originals components
 
 Utils links:
+
 - https://github.com/shadcn-ui/ui/blob/main/apps/v4/registry/new-york-v4/ui/calendar.tsx
 - https://ui.shadcn.com/docs/components
 

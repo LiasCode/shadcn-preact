@@ -1,6 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-preact";
 import type { ComponentProps } from "preact";
+
+import { Button } from "@/components/ui/button";
+
 import { cn } from "./share/cn";
 
 function Pagination({ className, ...props }: ComponentProps<"nav">) {
@@ -15,22 +17,11 @@ function Pagination({ className, ...props }: ComponentProps<"nav">) {
 }
 
 function PaginationContent({ className, ...props }: ComponentProps<"ul">) {
-  return (
-    <ul
-      data-slot="pagination-content"
-      className={cn("flex items-center gap-0.5", className)}
-      {...props}
-    />
-  );
+  return <ul data-slot="pagination-content" className={cn("flex items-center gap-0.5", className)} {...props} />;
 }
 
 function PaginationItem({ ...props }: ComponentProps<"li">) {
-  return (
-    <li
-      data-slot="pagination-item"
-      {...props}
-    />
-  );
+  return <li data-slot="pagination-item" {...props} />;
 }
 
 type PaginationLinkProps = {
@@ -40,18 +31,8 @@ type PaginationLinkProps = {
 
 function PaginationLink({ className, isActive, size = "icon", ...props }: PaginationLinkProps) {
   return (
-    <Button
-      asChild
-      variant={isActive ? "outline" : "ghost"}
-      size={size}
-      className={cn(className)}
-    >
-      <a
-        aria-current={isActive ? "page" : undefined}
-        data-slot="pagination-link"
-        data-active={isActive}
-        {...props}
-      />
+    <Button asChild variant={isActive ? "outline" : "ghost"} size={size} className={cn(className)}>
+      <a aria-current={isActive ? "page" : undefined} data-slot="pagination-link" data-active={isActive} {...props} />
     </Button>
   );
 }
@@ -62,16 +43,8 @@ function PaginationPrevious({
   ...props
 }: ComponentProps<typeof PaginationLink> & { text?: string }) {
   return (
-    <PaginationLink
-      aria-label="Go to previous page"
-      size="default"
-      className={cn("pl-1.5!", className)}
-      {...props}
-    >
-      <ChevronLeftIcon
-        data-icon="inline-start"
-        className="cn-rtl-flip"
-      />
+    <PaginationLink aria-label="Go to previous page" size="default" className={cn("pl-1.5!", className)} {...props}>
+      <ChevronLeftIcon data-icon="inline-start" className="cn-rtl-flip" />
       <span className="hidden sm:block">{text}</span>
     </PaginationLink>
   );
@@ -83,17 +56,9 @@ function PaginationNext({
   ...props
 }: ComponentProps<typeof PaginationLink> & { text?: string }) {
   return (
-    <PaginationLink
-      aria-label="Go to next page"
-      size="default"
-      className={cn("pr-1.5!", className)}
-      {...props}
-    >
+    <PaginationLink aria-label="Go to next page" size="default" className={cn("pr-1.5!", className)} {...props}>
       <span className="hidden sm:block">{text}</span>
-      <ChevronRightIcon
-        data-icon="inline-end"
-        className="cn-rtl-flip"
-      />
+      <ChevronRightIcon data-icon="inline-end" className="cn-rtl-flip" />
     </PaginationLink>
   );
 }

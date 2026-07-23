@@ -1,7 +1,9 @@
-import { Separator } from "@/components/ui/separator";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "preact";
 import { forwardRef } from "preact/compat";
+
+import { Separator } from "@/components/ui/separator";
+
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
 
@@ -19,7 +21,7 @@ const buttonGroupVariants = cva(
     defaultVariants: {
       orientation: "horizontal",
     },
-  }
+  },
 );
 
 function ButtonGroup({
@@ -51,7 +53,7 @@ const ButtonGroupText = forwardRef<
       ref={forwardedRef}
       className={cn(
         "flex items-center gap-2 rounded-md border bg-muted px-4 font-medium text-sm shadow-xs [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
-        className
+        className,
       )}
       {...props}
     />

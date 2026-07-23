@@ -1,4 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
+
 import {
   Dialog,
   DialogClose,
@@ -39,7 +40,7 @@ const sheetVariants = cva(
     defaultVariants: {
       side: "right",
     },
-  }
+  },
 );
 
 type SheetContentProps = Parameters<typeof Dialog>[0] &

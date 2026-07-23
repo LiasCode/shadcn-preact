@@ -1,3 +1,6 @@
+import { Field, FieldLabel } from "@ui/field";
+import { NativeSelect, NativeSelectOption } from "@ui/native-select";
+
 import {
   Pagination,
   PaginationContent,
@@ -7,8 +10,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Field, FieldLabel } from "@ui/field";
-import { NativeSelect, NativeSelectOption } from "@ui/native-select";
 
 export function PaginationDemo() {
   return (
@@ -22,10 +23,7 @@ export function PaginationDemo() {
             <PaginationLink href="/#">1</PaginationLink>
           </PaginationItem>
           <PaginationItem>
-            <PaginationLink
-              href="/#"
-              isActive
-            >
+            <PaginationLink href="/#" isActive>
               2
             </PaginationLink>
           </PaginationItem>
@@ -47,10 +45,7 @@ export function PaginationDemo() {
             <PaginationLink href="#">1</PaginationLink>
           </PaginationItem>
           <PaginationItem>
-            <PaginationLink
-              href="#"
-              isActive
-            >
+            <PaginationLink href="#" isActive>
               2
             </PaginationLink>
           </PaginationItem>
@@ -74,10 +69,7 @@ export function PaginationDemo() {
 export function PaginationIconsOnly() {
   return (
     <div className="flex items-center justify-between gap-4">
-      <Field
-        orientation="horizontal"
-        className="w-fit"
-      >
+      <Field orientation="horizontal" className="w-fit">
         <FieldLabel htmlFor="select-rows-per-page">Rows per page</FieldLabel>
         <NativeSelect defaultValue="25">
           <NativeSelectOption value="10">10</NativeSelectOption>

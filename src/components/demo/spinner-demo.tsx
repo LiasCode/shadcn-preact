@@ -20,26 +20,15 @@ export function SpinnerDemo() {
       </div>
 
       <div className="flex flex-row items-start gap-4">
-        <Button
-          disabled
-          size="sm"
-        >
+        <Button disabled size="sm">
           <Spinner />
           Loading...
         </Button>
-        <Button
-          variant="outline"
-          disabled
-          size="sm"
-        >
+        <Button variant="outline" disabled size="sm">
           <Spinner />
           Please wait
         </Button>
-        <Button
-          variant="secondary"
-          disabled
-          size="sm"
-        >
+        <Button variant="secondary" disabled size="sm">
           <Spinner />
           Processing
         </Button>

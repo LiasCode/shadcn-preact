@@ -1,3 +1,5 @@
+import type { ComponentType } from "preact";
+
 import { AlertDemo } from "@/components/demo/alert-demo";
 import { AlertDialogDemo } from "@/components/demo/alert-dialog-demo";
 import { AspectRatioDemo } from "@/components/demo/aspect-ratio-demo";
@@ -36,7 +38,6 @@ import { TabsDemo } from "@/components/demo/tabs-demo";
 import { TextareaDemo } from "@/components/demo/textarea-demo";
 import { ToggleDemo } from "@/components/demo/toggle-demo";
 import { TooltipDemo } from "@/components/demo/tooltip-demo";
-import type { ComponentType } from "preact";
 
 export type ComponentDoc = {
   slug: string;

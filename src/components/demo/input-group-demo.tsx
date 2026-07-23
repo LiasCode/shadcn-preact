@@ -1,3 +1,6 @@
+import { IconCheck, IconPlus } from "@tabler/icons-preact";
+import { ArrowUpIcon, Search } from "lucide-preact";
+
 import {
   InputGroup,
   InputGroupAddon,
@@ -6,8 +9,6 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
-import { IconCheck, IconPlus } from "@tabler/icons-preact";
-import { ArrowUpIcon, Search } from "lucide-preact";
 
 export function InputGroupDemo() {
   return (
@@ -32,22 +33,13 @@ export function InputGroupDemo() {
       <InputGroup>
         <InputGroupTextarea placeholder="Ask, Search or Chat..." />
         <InputGroupAddon align="block-end">
-          <InputGroupButton
-            variant="outline"
-            className="rounded-full"
-            size="icon-xs"
-          >
+          <InputGroupButton variant="outline" className="rounded-full" size="icon-xs">
             <IconPlus />
           </InputGroupButton>
 
           <InputGroupText className="ml-auto">52% used</InputGroupText>
 
-          <InputGroupButton
-            variant="default"
-            className="rounded-full"
-            size="icon-xs"
-            disabled
-          >
+          <InputGroupButton variant="default" className="rounded-full" size="icon-xs" disabled>
             <ArrowUpIcon />
             <span className="sr-only">Send</span>
           </InputGroupButton>

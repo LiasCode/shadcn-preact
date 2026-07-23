@@ -1,6 +1,7 @@
-import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@ui/button";
 import { AlertCircleIcon, AlertTriangleIcon, CheckCircle2Icon, InfoIcon } from "lucide-preact";
+
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export function AlertDemo() {
   return (
@@ -20,10 +21,7 @@ export function AlertDemo() {
         </AlertDescription>
       </Alert>
 
-      <Alert
-        variant="destructive"
-        className="max-w-md"
-      >
+      <Alert variant="destructive" className="max-w-md">
         <AlertCircleIcon />
         <AlertTitle>Payment failed</AlertTitle>
         <AlertDescription>
@@ -35,10 +33,7 @@ export function AlertDemo() {
         <AlertTitle>Dark mode is now available</AlertTitle>
         <AlertDescription>Enable it under your profile settings to get started.</AlertDescription>
         <AlertAction>
-          <Button
-            size="xs"
-            variant="default"
-          >
+          <Button size="xs" variant="default">
             Enable
           </Button>
         </AlertAction>

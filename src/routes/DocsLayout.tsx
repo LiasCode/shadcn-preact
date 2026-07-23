@@ -1,10 +1,12 @@
+import { MenuIcon, MoonIcon, SunIcon } from "lucide-preact";
+import type { ComponentChildren } from "preact";
+import { useEffect, useState } from "preact/compat";
+
 import { GitBranchIcon } from "@/components/GitBranchIcon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/components/ui/share/cn";
-import { MenuIcon, MoonIcon, SunIcon } from "lucide-preact";
-import type { ComponentChildren } from "preact";
-import { useEffect, useState } from "preact/compat";
+
 import { componentCategories, componentDocs } from "./docs-data";
 
 type DocsLayoutProps = {
@@ -27,15 +29,12 @@ export function DocsLayout({ children, activeSlug }: DocsLayoutProps) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader
-        mobileNavOpen={mobileNavOpen}
-        onMobileNavOpenChange={setMobileNavOpen}
-      />
+      <SiteHeader mobileNavOpen={mobileNavOpen} onMobileNavOpenChange={setMobileNavOpen} />
       <div className="mx-auto flex w-full max-w-screen-2xl">
         <aside
           className={cn(
             "fixed inset-x-0 top-14 z-40 max-h-[calc(100vh-3.5rem)] overflow-y-auto border-b bg-background p-4 lg:sticky lg:top-14 lg:block lg:h-[calc(100vh-3.5rem)] lg:w-72 lg:shrink-0 lg:border-r lg:border-b-0 lg:pl-6",
-            mobileNavOpen ? "block" : "hidden"
+            mobileNavOpen ? "block" : "hidden",
           )}
         >
           <DocsSidebar activeSlug={activeSlug} />
@@ -65,45 +64,26 @@ function SiteHeader({
         >
           <MenuIcon />
         </Button>
-        <a
-          href="/docs"
-          className="mr-6 flex items-center gap-2 font-semibold"
-        >
+        <a href="/docs" className="mr-6 flex items-center gap-2 font-semibold">
           <span>
             shadcn-<span className="text-[#b57beb]">preact</span>
           </span>
           <Badge variant="outline">v4</Badge>
         </a>
         <nav className="hidden items-center gap-5 text-muted-foreground text-sm md:flex">
-          <a
-            href="/docs"
-            className="transition-colors hover:text-foreground"
-          >
+          <a href="/docs" className="transition-colors hover:text-foreground">
             Docs
           </a>
-          <a
-            href="/docs/components"
-            className="transition-colors hover:text-foreground"
-          >
+          <a href="/docs/components" className="transition-colors hover:text-foreground">
             Components
           </a>
-          <a
-            href="https://github.com/LiasCode/shadcn-preact"
-            className="transition-colors hover:text-foreground"
-          >
+          <a href="https://github.com/LiasCode/shadcn-preact" className="transition-colors hover:text-foreground">
             GitHub
           </a>
         </nav>
         <div className="ml-auto flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            asChild
-          >
-            <a
-              href="https://github.com/LiasCode/shadcn-preact"
-              aria-label="Open GitHub repository"
-            >
+          <Button variant="ghost" size="icon-sm" asChild>
+            <a href="https://github.com/LiasCode/shadcn-preact" aria-label="Open GitHub repository">
               <GitBranchIcon />
             </a>
           </Button>

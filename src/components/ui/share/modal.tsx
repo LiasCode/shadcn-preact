@@ -1,4 +1,5 @@
 import { type HTMLAttributes, type PropsWithChildren, forwardRef, useEffect } from "preact/compat";
+
 import { cn } from "./cn";
 import { getScrollBarWidth } from "./getScrollBarWidth";
 import { Portal } from "./portal";
@@ -12,10 +13,7 @@ export type ModalProps = PropsWithChildren<
 export const Modal = forwardRef<HTMLDivElement, ModalProps>(({ ...props }, ref) => {
   return (
     <Portal>
-      <ModalContent
-        {...props}
-        ref={ref}
-      />
+      <ModalContent {...props} ref={ref} />
     </Portal>
   );
 });
@@ -80,5 +78,5 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
         {props.children}
       </div>
     );
-  }
+  },
 );

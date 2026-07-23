@@ -34,7 +34,7 @@ function DrawerContent({ className, children, container, showCloseButton = false
         showCloseButton={showCloseButton}
         className={cn(
           "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom top-auto right-0 bottom-0 left-0 mt-24 max-h-[80vh] max-w-none translate-x-0 translate-y-0 rounded-t-[10px] rounded-b-none border-b-0 p-0 sm:max-w-none",
-          className
+          className,
         )}
         {...props}
       >

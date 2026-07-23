@@ -1,5 +1,6 @@
-import { Label } from "@/components/ui/label";
 import { Input } from "@ui/input";
+
+import { Label } from "@/components/ui/label";
 
 export function LabelDemo() {
   return (

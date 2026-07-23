@@ -1,7 +1,8 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { TrendingUp } from "lucide-preact";
 import { PolarGrid, RadialBar, RadialBarChart } from "recharts";
+
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 export const description = "A radial chart with a grid";
 
@@ -47,24 +48,9 @@ export function ChartRadialGrid() {
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-62.5"
-        >
-          <RadialBarChart
-            data={chartData}
-            innerRadius={30}
-            outerRadius={100}
-          >
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  hideLabel
-                  nameKey="browser"
-                />
-              }
-            />
+        <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-62.5">
+          <RadialBarChart data={chartData} innerRadius={30} outerRadius={100}>
+            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel nameKey="browser" />} />
             <PolarGrid gridType="circle" />
             <RadialBar dataKey="visitors" />
           </RadialBarChart>

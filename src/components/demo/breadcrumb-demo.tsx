@@ -1,3 +1,5 @@
+import { SlashIcon } from "lucide-preact";
+
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -7,7 +9,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { SlashIcon } from "lucide-preact";
 
 export function BreadcrumbDemo() {
   return (

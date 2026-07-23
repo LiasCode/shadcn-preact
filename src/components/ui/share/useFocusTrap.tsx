@@ -5,7 +5,7 @@ const FOCUSABLE =
 
 function getFocusable(container: HTMLElement): HTMLElement[] {
   return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
-    (el) => !el.closest("[inert]") && el.offsetParent !== null
+    (el) => !el.closest("[inert]") && el.offsetParent !== null,
   );
 }
 
@@ -18,7 +18,7 @@ function getFocusable(container: HTMLElement): HTMLElement[] {
 export function useFocusTrap(
   containerRef: { current: HTMLElement | null },
   active: boolean,
-  { autoFocus = true }: { autoFocus?: boolean } = {}
+  { autoFocus = true }: { autoFocus?: boolean } = {},
 ) {
   const previousFocus = useRef<HTMLElement | null>(null);
 

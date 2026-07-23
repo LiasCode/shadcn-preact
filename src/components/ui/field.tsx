@@ -1,8 +1,10 @@
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentChild, ComponentProps } from "preact";
 import { useMemo } from "preact/hooks";
+
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+
 import { cn } from "./share/cn";
 
 function FieldSet({ className, ...props }: ComponentProps<"fieldset">) {
@@ -12,7 +14,7 @@ function FieldSet({ className, ...props }: ComponentProps<"fieldset">) {
       className={cn(
         "flex flex-col gap-6",
         "has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3",
-        className
+        className,
       )}
       {...props}
     />
@@ -40,7 +42,7 @@ function FieldGroup({ className, ...props }: ComponentProps<"div">) {
       data-slot="field-group"
       className={cn(
         "group/field-group @container/field-group flex w-full flex-col gap-7 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4",
-        className
+        className,
       )}
       {...props}
     />
@@ -102,7 +104,7 @@ function FieldLabel({ className, ...props }: ComponentProps<typeof Label>) {
         "group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50",
         "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border *:data-[slot=field]:p-4",
         "has-data-[state=checked]:border-primary has-data-[state=checked]:bg-primary/5 dark:has-data-[state=checked]:bg-primary/10",
-        className
+        className,
       )}
       {...props}
     />
@@ -115,7 +117,7 @@ function FieldTitle({ className, ...props }: ComponentProps<"div">) {
       data-slot="field-label"
       className={cn(
         "flex w-fit items-center gap-2 font-medium text-sm leading-snug group-data-[disabled=true]/field:opacity-50",
-        className
+        className,
       )}
       {...props}
     />
@@ -130,7 +132,7 @@ function FieldDescription({ className, ...props }: ComponentProps<"p">) {
         "font-normal text-muted-foreground text-sm leading-normal group-has-data-[orientation=horizontal]/field:text-balance",
         "nth-last-2:-mt-1 last:mt-0 [[data-variant=legend]+&]:-mt-1.5",
         "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
-        className
+        className,
       )}
       {...props}
     />

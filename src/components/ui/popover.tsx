@@ -10,6 +10,7 @@ import {
   useRef,
   useState,
 } from "preact/compat";
+
 import { cn } from "./share/cn";
 import { useComposedRefs } from "./share/compose_ref";
 import { Portal } from "./share/portal";
@@ -69,7 +70,7 @@ function Popover({ open: openProp, defaultOpen, onOpenChange, children }: Popove
       setTrigger,
       setAnchor,
     }),
-    [open, setOpen, triggerId, contentId, anchor, trigger]
+    [open, setOpen, triggerId, contentId, anchor, trigger],
   );
 
   return <PopoverContext.Provider value={value}>{children}</PopoverContext.Provider>;
@@ -103,7 +104,7 @@ const PopoverTrigger = forwardRef<HTMLButtonElement, PopoverTriggerProps>(
         {...props}
       />
     );
-  }
+  },
 );
 PopoverTrigger.displayName = "PopoverTrigger";
 
@@ -117,13 +118,7 @@ const PopoverAnchor = forwardRef<HTMLDivElement, PopoverAnchorProps>(({ asChild 
 
   const Comp = asChild ? Slot : "div";
 
-  return (
-    <Comp
-      ref={composedRef}
-      data-slot="popover-anchor"
-      {...props}
-    />
-  );
+  return <Comp ref={composedRef} data-slot="popover-anchor" {...props} />;
 });
 PopoverAnchor.displayName = "PopoverAnchor";
 
@@ -154,7 +149,7 @@ function getTransformOrigin(side: string, align: string): string {
 const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
   (
     { className, side = "bottom", align = "center", sideOffset = 4, container, style, children, ...props },
-    forwardedRef
+    forwardedRef,
   ) => {
     const { open, setOpen, reference, triggerId, contentId } = usePopover();
 
@@ -245,7 +240,7 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
           }}
           className={cn(
             "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 z-50 w-72 origin-(--radix-popover-content-transform-origin) rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden data-[state=closed]:animate-out data-[state=open]:animate-in",
-            className
+            className,
           )}
           {...props}
         >
@@ -253,7 +248,7 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
         </div>
       </Portal>
     );
-  }
+  },
 );
 PopoverContent.displayName = "PopoverContent";
 
@@ -274,14 +269,7 @@ PopoverHeader.displayName = "PopoverHeader";
 export type PopoverTitleProps = ComponentProps<"div">;
 
 const PopoverTitle = forwardRef<HTMLDivElement, PopoverTitleProps>(({ className, ...props }, forwardedRef) => {
-  return (
-    <div
-      ref={forwardedRef}
-      data-slot="popover-title"
-      className={cn("font-medium", className)}
-      {...props}
-    />
-  );
+  return <div ref={forwardedRef} data-slot="popover-title" className={cn("font-medium", className)} {...props} />;
 });
 PopoverTitle.displayName = "PopoverTitle";
 
@@ -297,7 +285,7 @@ const PopoverDescription = forwardRef<HTMLParagraphElement, PopoverDescriptionPr
         {...props}
       />
     );
-  }
+  },
 );
 PopoverDescription.displayName = "PopoverDescription";
 

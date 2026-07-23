@@ -13,6 +13,7 @@ import type { LegendPayload } from "recharts/types/component/DefaultLegendConten
 import type { NameType, Payload, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import type { Props as LegendProps } from "recharts/types/component/Legend";
 import type { TooltipContentProps } from "recharts/types/component/Tooltip";
+
 import { cn } from "./share/cn";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
@@ -38,14 +39,14 @@ export type CustomTooltipProps = TooltipContentProps<ValueType, NameType> & {
   labelKey?: string;
   labelFormatter?: (
     label: TooltipContentProps<number, string>["label"],
-    payload: TooltipContentProps<number, string>["payload"]
+    payload: TooltipContentProps<number, string>["payload"],
   ) => ReactNode;
   formatter?: (
     value: number | string,
     name: string,
     item: Payload<number | string, string>,
     index: number,
-    payload: ReadonlyArray<Payload<number | string, string>>
+    payload: ReadonlyArray<Payload<number | string, string>>,
   ) => ReactNode;
   labelClassName?: string;
   color?: string;
@@ -91,14 +92,11 @@ function ChartContainer({
         data-chart={chartId}
         className={cn(
           "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-hidden [&_.recharts-surface]:outline-hidden",
-          className
+          className,
         )}
         {...props}
       >
-        <ChartStyle
-          id={chartId}
-          config={config}
-        />
+        <ChartStyle id={chartId} config={config} />
         <RechartsPrimitive.ResponsiveContainer>{children}</RechartsPrimitive.ResponsiveContainer>
       </div>
     </ChartContext.Provider>
@@ -126,7 +124,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
               })
               .join("\n")}
             }
-            `
+            `,
           )
           .join("\n"),
       }}
@@ -191,7 +189,7 @@ function ChartTooltipContent({
     <div
       className={cn(
         "grid min-w-32 items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl",
-        className
+        className,
       )}
     >
       {!nestLabel ? tooltipLabel : null}
@@ -206,7 +204,7 @@ function ChartTooltipContent({
               key={item.dataKey}
               className={cn(
                 "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
-                indicator === "dot" && "items-center"
+                indicator === "dot" && "items-center",
               )}
             >
               {formatter && item?.value !== undefined && item.name ? (

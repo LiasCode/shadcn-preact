@@ -1,3 +1,5 @@
+import { useState } from "preact/compat";
+
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -8,7 +10,6 @@ import {
   ContextMenuShortcut,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { useState } from "preact/compat";
 
 export function ContextMenuDemo() {
   const [bookmarks, setBookmarks] = useState(true);
@@ -29,10 +30,7 @@ export function ContextMenuDemo() {
           Forward
           <ContextMenuShortcut>⌘]</ContextMenuShortcut>
         </ContextMenuItem>
-        <ContextMenuCheckboxItem
-          checked={bookmarks}
-          onCheckedChange={setBookmarks}
-        >
+        <ContextMenuCheckboxItem checked={bookmarks} onCheckedChange={setBookmarks}>
           Show Bookmarks
         </ContextMenuCheckboxItem>
         <ContextMenuSeparator />

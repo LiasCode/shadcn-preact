@@ -27,30 +27,16 @@ export function DialogDemo() {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label
-              htmlFor="dialog-name"
-              className="text-right"
-            >
+            <Label htmlFor="dialog-name" className="text-right">
               Name
             </Label>
-            <Input
-              id="dialog-name"
-              defaultValue="LiasCode"
-              className="col-span-3"
-            />
+            <Input id="dialog-name" defaultValue="LiasCode" className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label
-              htmlFor="dialog-username"
-              className="text-right"
-            >
+            <Label htmlFor="dialog-username" className="text-right">
               Username
             </Label>
-            <Input
-              id="dialog-username"
-              defaultValue="@liascode"
-              className="col-span-3"
-            />
+            <Input id="dialog-username" defaultValue="@liascode" className="col-span-3" />
           </div>
         </div>
         <DialogFooter>

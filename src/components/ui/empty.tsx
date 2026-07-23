@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "preact";
+
 import { cn } from "./share/cn";
 
 function Empty({ className, ...props }: ComponentProps<"div">) {
@@ -8,7 +9,7 @@ function Empty({ className, ...props }: ComponentProps<"div">) {
       data-slot="empty"
       className={cn(
         "flex min-w-0 flex-1 flex-col items-center justify-center gap-6 text-balance rounded-lg border-dashed p-6 text-center md:p-12",
-        className
+        className,
       )}
       {...props}
     />
@@ -37,7 +38,7 @@ const emptyMediaVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 function EmptyMedia({
@@ -56,13 +57,7 @@ function EmptyMedia({
 }
 
 function EmptyTitle({ className, ...props }: ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="empty-title"
-      className={cn("font-medium text-lg tracking-tight", className)}
-      {...props}
-    />
-  );
+  return <div data-slot="empty-title" className={cn("font-medium text-lg tracking-tight", className)} {...props} />;
 }
 
 function EmptyDescription({ className, ...props }: ComponentProps<"p">) {
@@ -71,7 +66,7 @@ function EmptyDescription({ className, ...props }: ComponentProps<"p">) {
       data-slot="empty-description"
       className={cn(
         "text-muted-foreground text-sm/relaxed [&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
-        className
+        className,
       )}
       {...props}
     />

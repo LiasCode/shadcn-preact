@@ -1,21 +1,20 @@
+import { CheckIcon, CopyIcon } from "lucide-preact";
+import { useState } from "preact/compat";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { CheckIcon, CopyIcon } from "lucide-preact";
-import { useState } from "preact/compat";
-import { DocsLayout } from "./DocsLayout";
+
 import { componentCategories, componentDocs, getComponentDoc } from "./docs-data";
+import { DocsLayout } from "./DocsLayout";
 
 export function DocsHomePage() {
   return (
     <DocsLayout>
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-10">
         <section className="space-y-4">
-          <Badge
-            className="w-fit"
-            variant="outline"
-          >
+          <Badge className="w-fit" variant="outline">
             Copy-paste components for Preact
           </Badge>
           <h1 className="font-bold text-4xl tracking-tight sm:text-5xl">Build your own shadcn/ui-style Preact kit.</h1>
@@ -27,10 +26,7 @@ export function DocsHomePage() {
             <Button asChild>
               <a href="/docs/installation/vite">Get started</a>
             </Button>
-            <Button
-              variant="outline"
-              asChild
-            >
+            <Button variant="outline" asChild>
               <a href="/docs/components">Browse components</a>
             </Button>
           </div>
@@ -77,10 +73,7 @@ export function ViteInstallationPage() {
       <article className="mx-auto grid w-full max-w-5xl gap-10 xl:grid-cols-[minmax(0,1fr)_220px]">
         <div className="min-w-0 space-y-8">
           <header className="space-y-3">
-            <Badge
-              variant="outline"
-              className="w-fit"
-            >
+            <Badge variant="outline" className="w-fit">
               Vite
             </Badge>
             <h1 className="font-bold text-4xl tracking-tight">Install with Vite</h1>
@@ -91,10 +84,7 @@ export function ViteInstallationPage() {
             </p>
           </header>
 
-          <Section
-            id="create-project"
-            title="Create a Vite project"
-          >
+          <Section id="create-project" title="Create a Vite project">
             <p className="text-muted-foreground">
               Start from the Preact TypeScript template. The components in this repository are TypeScript-first and use
               JSX with `preact/compat` where needed.
@@ -106,10 +96,7 @@ bun install`}
             />
           </Section>
 
-          <Section
-            id="tailwind"
-            title="Install Tailwind CSS"
-          >
+          <Section id="tailwind" title="Install Tailwind CSS">
             <p className="text-muted-foreground">
               This project uses Tailwind CSS v4 through PostCSS. Add Tailwind and the animation utilities used by the
               components.
@@ -125,10 +112,7 @@ bun install`}
             />
           </Section>
 
-          <Section
-            id="css"
-            title="Add theme tokens"
-          >
+          <Section id="css" title="Add theme tokens">
             <p className="text-muted-foreground">
               Replace your global CSS with Tailwind imports and the shadcn-compatible CSS variables. You can copy the
               full token block from this repository&apos;s `src/index.css`.
@@ -196,10 +180,7 @@ bun install`}
             />
           </Section>
 
-          <Section
-            id="dependencies"
-            title="Install component dependencies"
-          >
+          <Section id="dependencies" title="Install component dependencies">
             <p className="text-muted-foreground">
               Install the shared dependencies used across the implemented components. Add optional dependencies only
               when you copy components that need them.
@@ -218,10 +199,7 @@ bun add recharts`}
             />
           </Section>
 
-          <Section
-            id="aliases"
-            title="Configure import aliases"
-          >
+          <Section id="aliases" title="Configure import aliases">
             <p className="text-muted-foreground">
               Keep `@/*` and `@ui/*` in sync between TypeScript and Vite. The React aliases point React-targeting
               packages at `preact/compat`.
@@ -260,10 +238,7 @@ export default defineConfig({
             />
           </Section>
 
-          <Section
-            id="copy-utilities"
-            title="Copy the component source"
-          >
+          <Section id="copy-utilities" title="Copy the component source">
             <p className="text-muted-foreground">
               Use `degit` to download the `src/components/ui` directory directly from the GitHub repository into your
               app. This copies every implemented component plus the shared primitives in `share/`.
@@ -273,22 +248,13 @@ export default defineConfig({
             />
           </Section>
 
-          <Section
-            id="next-steps"
-            title="Next steps"
-          >
+          <Section id="next-steps" title="Next steps">
             <div className="grid gap-3 sm:grid-cols-2">
-              <a
-                href="/docs/components"
-                className="rounded-lg border p-4 transition-colors hover:bg-muted/50"
-              >
+              <a href="/docs/components" className="rounded-lg border p-4 transition-colors hover:bg-muted/50">
                 <div className="font-medium">Browse components</div>
                 <p className="mt-1 text-muted-foreground text-sm">Open the component catalog and copy what you need.</p>
               </a>
-              <a
-                href="/docs/components/button"
-                className="rounded-lg border p-4 transition-colors hover:bg-muted/50"
-              >
+              <a href="/docs/components/button" className="rounded-lg border p-4 transition-colors hover:bg-muted/50">
                 <div className="font-medium">Start with Button</div>
                 <p className="mt-1 text-muted-foreground text-sm">Verify aliases, utilities, and Tailwind tokens.</p>
               </a>
@@ -307,10 +273,7 @@ export default defineConfig({
               ["copy-utilities", "Utilities"],
               ["next-steps", "Next steps"],
             ].map(([id, label]) => (
-              <a
-                href={`#${id}`}
-                className="block text-muted-foreground transition-colors hover:text-foreground"
-              >
+              <a href={`#${id}`} className="block text-muted-foreground transition-colors hover:text-foreground">
                 {label}
               </a>
             ))}
@@ -388,20 +351,14 @@ export function ComponentDocPage({ slug }: { slug: string }) {
             <p className="max-w-2xl text-lg text-muted-foreground">{doc.description}</p>
           </header>
 
-          <section
-            id="preview"
-            className="space-y-3"
-          >
+          <section id="preview" className="space-y-3">
             <h2 className="font-semibold text-2xl tracking-tight">Preview</h2>
             <div className="flex min-h-44 items-center justify-center rounded-lg border bg-card p-6">
               <Demo />
             </div>
           </section>
 
-          <Section
-            id="installation"
-            title="Installation"
-          >
+          <Section id="installation" title="Installation">
             <p className="text-muted-foreground">
               Copy the component source into your project with `degit`. This port is intentionally not distributed as an
               npm package.
@@ -414,17 +371,11 @@ export function ComponentDocPage({ slug }: { slug: string }) {
             )}
           </Section>
 
-          <Section
-            id="usage"
-            title="Usage"
-          >
+          <Section id="usage" title="Usage">
             <CodeBlock code={doc.usage} />
           </Section>
 
-          <Section
-            id="api"
-            title="API Reference"
-          >
+          <Section id="api" title="API Reference">
             <div className="rounded-lg border">
               <div className="grid grid-cols-[1fr_2fr] border-b bg-muted/50 px-4 py-2 font-medium text-sm">
                 <span>Export</span>
@@ -443,10 +394,7 @@ export function ComponentDocPage({ slug }: { slug: string }) {
 
           <Separator />
           <div className="flex justify-between gap-3">
-            <Button
-              variant="outline"
-              asChild
-            >
+            <Button variant="outline" asChild>
               <a href="/docs/components">All components</a>
             </Button>
             <Button asChild>
@@ -458,10 +406,7 @@ export function ComponentDocPage({ slug }: { slug: string }) {
           <div className="sticky top-20 space-y-2 text-sm">
             <div className="font-medium">On This Page</div>
             {["preview", "installation", "usage", "api"].map((id) => (
-              <a
-                href={`#${id}`}
-                className="block text-muted-foreground transition-colors hover:text-foreground"
-              >
+              <a href={`#${id}`} className="block text-muted-foreground transition-colors hover:text-foreground">
                 {id === "api" ? "API Reference" : id[0]!.toUpperCase() + id.slice(1)}
               </a>
             ))}
@@ -474,10 +419,7 @@ export function ComponentDocPage({ slug }: { slug: string }) {
 
 function Section({ id, title, children }: { id: string; title: string; children: preact.ComponentChildren }) {
   return (
-    <section
-      id={id}
-      className="scroll-mt-20 space-y-3"
-    >
+    <section id={id} className="scroll-mt-20 space-y-3">
       <h2 className="font-semibold text-2xl tracking-tight">{title}</h2>
       {children}
     </section>

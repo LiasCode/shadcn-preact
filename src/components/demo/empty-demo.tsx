@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { IconBell, IconCloud, IconFolderCode } from "@tabler/icons-preact";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { ArrowUpRightIcon, PlusIcon, RefreshCcwIcon } from "lucide-preact";
+
+import { Button } from "@/components/ui/button";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 
 export function EmptyDemo() {
   return (
@@ -23,12 +24,7 @@ export function EmptyDemo() {
             <Button variant="outline">Import Project</Button>
           </div>
         </EmptyContent>
-        <Button
-          variant="link"
-          asChild
-          className="text-muted-foreground"
-          size="sm"
-        >
+        <Button variant="link" asChild className="text-muted-foreground" size="sm">
           <a href="/#">
             Learn More <ArrowUpRightIcon />
           </a>
@@ -44,10 +40,7 @@ export function EmptyDemo() {
           <EmptyDescription>Upload files to your cloud storage to access them anywhere.</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <Button
-            variant="outline"
-            size="sm"
-          >
+          <Button variant="outline" size="sm">
             Upload Files
           </Button>
         </EmptyContent>
@@ -62,10 +55,7 @@ export function EmptyDemo() {
           <EmptyDescription>You&apos;re all caught up. New notifications will appear here.</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <Button
-            variant="outline"
-            size="sm"
-          >
+          <Button variant="outline" size="sm">
             <RefreshCcwIcon />
             Refresh
           </Button>
@@ -76,10 +66,7 @@ export function EmptyDemo() {
         <EmptyHeader>
           <EmptyMedia variant="default">
             <Avatar className="size-12">
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                className="grayscale"
-              />
+              <AvatarImage src="https://github.com/shadcn.png" className="grayscale" />
               <AvatarFallback>LR</AvatarFallback>
             </Avatar>
           </EmptyMedia>
@@ -98,24 +85,15 @@ export function EmptyDemo() {
           <EmptyMedia>
             <div className="flex -space-x-2 *:data-[slot=avatar]:size-12 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
               <Avatar>
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
-                />
+                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <Avatar>
-                <AvatarImage
-                  src="https://github.com/maxleiter.png"
-                  alt="@maxleiter"
-                />
+                <AvatarImage src="https://github.com/maxleiter.png" alt="@maxleiter" />
                 <AvatarFallback>LR</AvatarFallback>
               </Avatar>
               <Avatar>
-                <AvatarImage
-                  src="https://github.com/evilrabbit.png"
-                  alt="@evilrabbit"
-                />
+                <AvatarImage src="https://github.com/evilrabbit.png" alt="@evilrabbit" />
                 <AvatarFallback>ER</AvatarFallback>
               </Avatar>
             </div>
