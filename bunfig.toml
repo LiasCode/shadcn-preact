@@ -1,0 +1,12 @@
+logLevel = "debug" # "debug" | "warn" | "error"
+telemetry = false
+
+# Disable automatic .env file loading
+env = false
+
+[install]
+exact = true
+ignoreScripts = false
+auto = "disable"
+logLevel = "debug"
+minimumReleaseAge = 86400 # 24 hours in seconds
