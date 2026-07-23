@@ -1,6 +1,7 @@
 import { CheckIcon, ChevronsUpDownIcon, SearchIcon } from "lucide-preact";
 import { type ComponentProps, createContext } from "preact";
 import { forwardRef, type PropsWithChildren, useContext, useMemo, useRef, useState } from "preact/compat";
+
 import { Button } from "./button";
 import { cn } from "./share/cn";
 import { useComposedRefs } from "./share/compose_ref";
@@ -62,7 +63,7 @@ function Combobox({
   const [query, setQuery] = useState("");
   const ctx = useMemo(
     () => ({ open, setOpen, value, setValue, label, setLabel, query, setQuery, trigger, setTrigger }),
-    [label, open, query, setOpen, setTrigger, setValue, trigger, value]
+    [label, open, query, setOpen, setTrigger, setValue, trigger, value],
   );
   return <ComboboxContext.Provider value={ctx}>{children}</ComboboxContext.Provider>;
 }
@@ -92,7 +93,7 @@ const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProps>(
         <ChevronsUpDownIcon className="opacity-50" />
       </Button>
     );
-  }
+  },
 );
 ComboboxTrigger.displayName = "ComboboxTrigger";
 
@@ -129,13 +130,13 @@ const ComboboxContent = forwardRef<HTMLDivElement, ComboboxContentProps>(
           }}
           className={cn(
             "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 z-50 overflow-hidden rounded-md border bg-popover p-0 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
-            className
+            className,
           )}
           {...props}
         />
       </Portal>
     );
-  }
+  },
 );
 ComboboxContent.displayName = "ComboboxContent";
 
@@ -154,7 +155,7 @@ function ComboboxInput({ className, onInput, ...props }: ComponentProps<"input">
         }}
         className={cn(
           "flex h-9 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
-          className
+          className,
         )}
         {...props}
       />
@@ -206,7 +207,7 @@ const ComboboxItem = forwardRef<HTMLDivElement, ComboboxItemProps>(
         }}
         className={cn(
           "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[selected]:bg-accent data-[selected]:text-accent-foreground data-[disabled]:opacity-50",
-          className
+          className,
         )}
         {...props}
       >
@@ -214,7 +215,7 @@ const ComboboxItem = forwardRef<HTMLDivElement, ComboboxItemProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 ComboboxItem.displayName = "ComboboxItem";
 

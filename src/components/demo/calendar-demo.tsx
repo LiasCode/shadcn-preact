@@ -1,9 +1,10 @@
-import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@ui/button";
 import { Card, CardContent, CardFooter } from "@ui/card";
 import { addDays } from "date-fns";
 import { useState } from "preact/hooks";
 import type { DateRange } from "react-day-picker";
+
+import { Calendar } from "@/components/ui/calendar";
 
 export function CalendarDemo() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -18,10 +19,7 @@ export function CalendarDemo() {
         captionLayout="dropdown"
       />
 
-      <Calendar
-        mode="single"
-        className="rounded-lg border"
-      />
+      <Calendar mode="single" className="rounded-lg border" />
 
       <CalendarRange />
 
@@ -56,10 +54,7 @@ export function CalendarWithPresets() {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
 
   return (
-    <Card
-      className="w-fit max-w-75"
-      size="sm"
-    >
+    <Card className="w-fit max-w-75" size="sm">
       <CardContent>
         <Calendar
           mode="single"

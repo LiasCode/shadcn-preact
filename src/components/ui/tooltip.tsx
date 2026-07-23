@@ -1,5 +1,6 @@
 import { type ComponentProps, createContext } from "preact";
 import { forwardRef, type PropsWithChildren, useContext, useId, useMemo, useRef } from "preact/compat";
+
 import { cn } from "./share/cn";
 import { useComposedRefs } from "./share/compose_ref";
 import { type FloatingAlign, type FloatingSide, useFloatingContent } from "./share/floating";
@@ -61,7 +62,7 @@ function Tooltip({ open: openProp, defaultOpen, onOpenChange, delayDuration, chi
       trigger,
       setTrigger,
     }),
-    [delayDuration, open, provider.delayDuration, reactId, setOpen, setTrigger, trigger]
+    [delayDuration, open, provider.delayDuration, reactId, setOpen, setTrigger, trigger],
   );
 
   return <TooltipContext.Provider value={value}>{children}</TooltipContext.Provider>;
@@ -118,7 +119,7 @@ const TooltipTrigger = forwardRef<HTMLButtonElement, TooltipTriggerProps>(
         {...props}
       />
     );
-  }
+  },
 );
 TooltipTrigger.displayName = "TooltipTrigger";
 
@@ -155,13 +156,13 @@ const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
           onPointerLeave={() => setOpen(false)}
           className={cn(
             "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-popper-transform-origin) text-balance rounded-md bg-primary px-3 py-1.5 text-primary-foreground text-xs data-[state=closed]:animate-out data-[state=open]:animate-in",
-            className
+            className,
           )}
           {...props}
         />
       </Portal>
     );
-  }
+  },
 );
 TooltipContent.displayName = "TooltipContent";
 

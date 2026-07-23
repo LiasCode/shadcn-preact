@@ -10,6 +10,7 @@ import {
   useRef,
   useState,
 } from "preact/compat";
+
 import { cn } from "./share/cn";
 import { useComposedRefs } from "./share/compose_ref";
 import { Portal } from "./share/portal";
@@ -58,19 +59,14 @@ function Dialog({ open: openProp, defaultOpen, onOpenChange, modal = true, child
       descriptionId,
       modal,
     }),
-    [descriptionId, modal, open, reactId, setOpen, titleId]
+    [descriptionId, modal, open, reactId, setOpen, titleId],
   );
 
   return <DialogContext.Provider value={value}>{children}</DialogContext.Provider>;
 }
 
 function DialogPortal({ container, ...props }: ComponentProps<typeof Portal>) {
-  return (
-    <Portal
-      container={container}
-      {...props}
-    />
-  );
+  return <Portal container={container} {...props} />;
 }
 
 type DialogTriggerProps = ComponentProps<"button"> & { asChild?: boolean };
@@ -95,7 +91,7 @@ const DialogTrigger = forwardRef<HTMLButtonElement, DialogTriggerProps>(
         {...props}
       />
     );
-  }
+  },
 );
 DialogTrigger.displayName = "DialogTrigger";
 
@@ -125,13 +121,13 @@ const DialogOverlay = forwardRef<HTMLDivElement, DialogOverlayProps>(
           }}
           className={cn(
             "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=open]:animate-in",
-            className
+            className,
           )}
           {...props}
         />
       </Portal>
     );
-  }
+  },
 );
 DialogOverlay.displayName = "DialogOverlay";
 
@@ -153,7 +149,7 @@ function getScrollbarWidth() {
 const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
   (
     { className, children, container, showCloseButton = true, role = "dialog", onMouseDown, onKeyDown, ...props },
-    forwardedRef
+    forwardedRef,
   ) => {
     const { open, setOpen, titleId, descriptionId, modal } = useDialog();
     const [present, setPresent] = useState(open);
@@ -228,7 +224,7 @@ const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
             onKeyDown={onKeyDown}
             className={cn(
               "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 fixed top-1/2 left-1/2 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg border bg-background p-6 shadow-lg duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in sm:max-w-lg",
-              className
+              className,
             )}
             {...props}
           >
@@ -243,7 +239,7 @@ const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
         </div>
       </Portal>
     );
-  }
+  },
 );
 DialogContent.displayName = "DialogContent";
 
@@ -266,7 +262,7 @@ const DialogClose = forwardRef<HTMLButtonElement, DialogCloseProps>(
         {...props}
       />
     );
-  }
+  },
 );
 DialogClose.displayName = "DialogClose";
 
@@ -316,7 +312,7 @@ const DialogDescription = forwardRef<HTMLParagraphElement, ComponentProps<"p">>(
         {...props}
       />
     );
-  }
+  },
 );
 DialogDescription.displayName = "DialogDescription";
 

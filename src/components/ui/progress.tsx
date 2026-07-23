@@ -1,5 +1,6 @@
 import type { HTMLAttributes } from "preact";
 import { forwardRef } from "preact/compat";
+
 import { cn } from "./share/cn";
 
 type ProgressState = "indeterminate" | "complete" | "loading";

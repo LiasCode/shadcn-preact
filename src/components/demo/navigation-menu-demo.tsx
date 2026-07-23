@@ -35,10 +35,7 @@ export function NavigationMenuDemo() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem value="docs">
-          <NavigationMenuLink
-            href="https://ui.shadcn.com/docs"
-            className="px-4 py-2"
-          >
+          <NavigationMenuLink href="https://ui.shadcn.com/docs" className="px-4 py-2">
             Docs
           </NavigationMenuLink>
         </NavigationMenuItem>

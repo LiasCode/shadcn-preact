@@ -8,6 +8,7 @@
 
 import { Fragment, cloneElement, isValidElement } from "preact";
 import { Children, type ReactElement, type ReactNode, forwardRef } from "preact/compat";
+
 import { composeRefs } from "./compose_ref";
 
 /* -------------------------------------------------------------------------------------------------
@@ -43,20 +44,14 @@ export function createSlot(ownerName: string) {
       });
 
       return (
-        <SlotClone
-          {...slotProps}
-          ref={forwardedRef}
-        >
+        <SlotClone {...slotProps} ref={forwardedRef}>
           {isValidElement(newElement) ? cloneElement(newElement, undefined, newChildren) : null}
         </SlotClone>
       );
     }
 
     return (
-      <SlotClone
-        {...slotProps}
-        ref={forwardedRef}
-      >
+      <SlotClone {...slotProps} ref={forwardedRef}>
         {children}
       </SlotClone>
     );

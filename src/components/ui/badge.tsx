@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { type ComponentProps, forwardRef } from "preact/compat";
+
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
 
@@ -20,7 +21,7 @@ const badgeVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 const Badge = forwardRef<

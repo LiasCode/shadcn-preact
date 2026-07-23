@@ -1,17 +1,12 @@
 import { ChevronRight, MoreHorizontal } from "lucide-preact";
 import type { ComponentProps } from "preact";
 import { forwardRef } from "preact/compat";
+
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
 
 function Breadcrumb({ ...props }: ComponentProps<"nav">) {
-  return (
-    <nav
-      aria-label="breadcrumb"
-      data-slot="breadcrumb"
-      {...props}
-    />
-  );
+  return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />;
 }
 
 function BreadcrumbList({ className, ...props }: ComponentProps<"ol">) {
@@ -20,7 +15,7 @@ function BreadcrumbList({ className, ...props }: ComponentProps<"ol">) {
       data-slot="breadcrumb-list"
       className={cn(
         "wrap-break-word flex flex-wrap items-center gap-1.5 text-muted-foreground text-sm sm:gap-2.5",
-        className
+        className,
       )}
       {...props}
     />
@@ -28,13 +23,7 @@ function BreadcrumbList({ className, ...props }: ComponentProps<"ol">) {
 }
 
 function BreadcrumbItem({ className, ...props }: ComponentProps<"li">) {
-  return (
-    <li
-      data-slot="breadcrumb-item"
-      className={cn("inline-flex items-center gap-1.5", className)}
-      {...props}
-    />
-  );
+  return <li data-slot="breadcrumb-item" className={cn("inline-flex items-center gap-1.5", className)} {...props} />;
 }
 
 const BreadcrumbLink = forwardRef<

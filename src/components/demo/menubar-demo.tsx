@@ -1,3 +1,5 @@
+import { useState } from "preact/compat";
+
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -8,7 +10,6 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import { useState } from "preact/compat";
 
 export function MenubarDemo() {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -30,10 +31,7 @@ export function MenubarDemo() {
       <MenubarMenu value="view">
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
-          <MenubarCheckboxItem
-            checked={showSidebar}
-            onCheckedChange={setShowSidebar}
-          >
+          <MenubarCheckboxItem checked={showSidebar} onCheckedChange={setShowSidebar}>
             Show Sidebar
           </MenubarCheckboxItem>
           <MenubarItem inset>Reload</MenubarItem>

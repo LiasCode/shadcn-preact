@@ -1,6 +1,7 @@
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-preact";
 import { type ComponentProps, createContext } from "preact";
 import { forwardRef, type PropsWithChildren, useContext, useMemo, useRef } from "preact/compat";
+
 import { cn } from "./share/cn";
 import { useComposedRefs } from "./share/compose_ref";
 import { type FloatingAlign, type FloatingSide, useDismissableLayer, useFloatingContent } from "./share/floating";
@@ -17,7 +18,7 @@ type DropdownMenuContextType = {
 
 const DropdownMenuContext = createContext<DropdownMenuContextType | null>(null);
 const DropdownMenuRadioContext = createContext<{ value?: string; onValueChange?: (value: string) => void } | null>(
-  null
+  null,
 );
 
 function useDropdownMenu() {
@@ -44,12 +45,7 @@ function DropdownMenu({ open: openProp, defaultOpen, onOpenChange, children }: D
 }
 
 function DropdownMenuPortal({ container, ...props }: ComponentProps<typeof Portal>) {
-  return (
-    <Portal
-      container={container}
-      {...props}
-    />
-  );
+  return <Portal container={container} {...props} />;
 }
 
 type DropdownMenuTriggerProps = ComponentProps<"button"> & { asChild?: boolean };
@@ -74,7 +70,7 @@ const DropdownMenuTrigger = forwardRef<HTMLButtonElement, DropdownMenuTriggerPro
         {...props}
       />
     );
-  }
+  },
 );
 DropdownMenuTrigger.displayName = "DropdownMenuTrigger";
 
@@ -112,24 +108,18 @@ const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuContentProps>
           }}
           className={cn(
             "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 z-50 min-w-32 origin-(--radix-popper-transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
-            className
+            className,
           )}
           {...props}
         />
       </Portal>
     );
-  }
+  },
 );
 DropdownMenuContent.displayName = "DropdownMenuContent";
 
 function DropdownMenuGroup(props: ComponentProps<"div">) {
-  return (
-    <div
-      role="group"
-      data-slot="dropdown-menu-group"
-      {...props}
-    />
-  );
+  return <div role="group" data-slot="dropdown-menu-group" {...props} />;
 }
 
 type DropdownMenuItemProps = ComponentProps<"div"> & {
@@ -160,12 +150,12 @@ const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps>(
         }}
         className={cn(
           "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[disabled]:opacity-50 data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 DropdownMenuItem.displayName = "DropdownMenuItem";
 
@@ -195,7 +185,7 @@ const DropdownMenuCheckboxItem = forwardRef<HTMLDivElement, DropdownMenuCheckbox
         {children}
       </DropdownMenuItem>
     );
-  }
+  },
 );
 DropdownMenuCheckboxItem.displayName = "DropdownMenuCheckboxItem";
 
@@ -206,11 +196,7 @@ function DropdownMenuRadioGroup({
 }: ComponentProps<"div"> & { value?: string; onValueChange?: (value: string) => void }) {
   return (
     <DropdownMenuRadioContext.Provider value={{ value, onValueChange }}>
-      <div
-        role="radiogroup"
-        data-slot="dropdown-menu-radio-group"
-        {...props}
-      />
+      <div role="radiogroup" data-slot="dropdown-menu-radio-group" {...props} />
     </DropdownMenuRadioContext.Provider>
   );
 }
@@ -240,7 +226,7 @@ const DropdownMenuRadioItem = forwardRef<HTMLDivElement, DropdownMenuRadioItemPr
         {children}
       </DropdownMenuItem>
     );
-  }
+  },
 );
 DropdownMenuRadioItem.displayName = "DropdownMenuRadioItem";
 
@@ -289,7 +275,7 @@ function DropdownMenuSubTrigger({ className, inset, children, ...props }: Compon
       tabIndex={-1}
       className={cn(
         "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden focus:bg-accent data-[inset]:pl-8",
-        className
+        className,
       )}
       {...props}
     >
@@ -306,7 +292,7 @@ function DropdownMenuSubContent({ className, ...props }: ComponentProps<"div">) 
       data-slot="dropdown-menu-sub-content"
       className={cn(
         "absolute top-0 left-full z-50 ml-1 hidden min-w-32 rounded-md border bg-popover p-1 text-popover-foreground shadow-md group-hover:block",
-        className
+        className,
       )}
       {...props}
     />

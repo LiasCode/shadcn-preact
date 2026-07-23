@@ -21,17 +21,11 @@ export function TabsDemo() {
             <CardContent className="grid gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="tabs-demo-name">Name</Label>
-                <Input
-                  id="tabs-demo-name"
-                  defaultValue="Pedro Duarte"
-                />
+                <Input id="tabs-demo-name" defaultValue="Pedro Duarte" />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="tabs-demo-username">Username</Label>
-                <Input
-                  id="tabs-demo-username"
-                  defaultValue="@peduarte"
-                />
+                <Input id="tabs-demo-username" defaultValue="@peduarte" />
               </div>
             </CardContent>
             <CardFooter>
@@ -48,17 +42,11 @@ export function TabsDemo() {
             <CardContent className="grid gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="tabs-demo-current">Current password</Label>
-                <Input
-                  id="tabs-demo-current"
-                  type="password"
-                />
+                <Input id="tabs-demo-current" type="password" />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="tabs-demo-new">New password</Label>
-                <Input
-                  id="tabs-demo-new"
-                  type="password"
-                />
+                <Input id="tabs-demo-new" type="password" />
               </div>
             </CardContent>
             <CardFooter>

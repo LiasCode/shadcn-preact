@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from "preact/compat";
+
 import { cn } from "./share/cn";
 
 const DEFAULT_ORIENTATION = "horizontal";
@@ -27,7 +28,7 @@ function Separator({ className, ...props }: SeparatorProps) {
   // `aria-orientation` defaults to `horizontal` so we only need it if `orientation` is vertical
   const ariaOrientation = orientation === "vertical" ? orientation : undefined;
 
-  const semanticProps = decorative ? { role: "none" } : { "aria-orientation": ariaOrientation, "role": "separator" };
+  const semanticProps = decorative ? { role: "none" } : { "aria-orientation": ariaOrientation, role: "separator" };
 
   return (
     // @ts-expect-error
@@ -40,7 +41,7 @@ function Separator({ className, ...props }: SeparatorProps) {
       orientation={orientation}
       className={cn(
         "shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=vertical]:h-full data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px",
-        className
+        className,
       )}
       {...props}
     />

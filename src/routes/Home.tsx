@@ -1,5 +1,7 @@
-import { Header } from "@/layout/Header";
 import type { ComponentChild } from "preact";
+
+import { Header } from "@/layout/Header";
+
 import { RoutesDemoObj } from "./RoutesDemo";
 
 export default function HomePage() {
@@ -18,10 +20,7 @@ export default function HomePage() {
               return -1;
             })
             .map(([key, slot]) => (
-              <DemoSection
-                title={key.split("-").join(" ")}
-                slot={slot}
-              />
+              <DemoSection title={key.split("-").join(" ")} slot={slot} />
             ))}
         </div>
       </div>

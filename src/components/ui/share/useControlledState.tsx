@@ -40,7 +40,7 @@ export function useControlledState<T>({
       // Always call onChange, even in controlled mode
       onChange?.(resolvedValue);
     },
-    [isControlled, onChange, value]
+    [isControlled, onChange, value],
   );
 
   // Reset function to restore initial value

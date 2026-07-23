@@ -1,6 +1,7 @@
 import { ChevronDownIcon } from "lucide-preact";
 import { type ComponentProps, createContext } from "preact";
 import { forwardRef, useContext, useId, useMemo, useState } from "preact/compat";
+
 import { cn } from "./share/cn";
 
 type NavigationMenuContextType = {
@@ -58,7 +59,7 @@ const NavigationMenu = forwardRef<HTMLElement, NavigationMenuProps>(
         />
       </NavigationMenuContext.Provider>
     );
-  }
+  },
 );
 NavigationMenu.displayName = "NavigationMenu";
 
@@ -81,7 +82,7 @@ function NavigationMenuItem({ value: valueProp, className, onPointerEnter, ...pr
   const open = root.value === value;
   const item = useMemo(
     () => ({ value, open, setOpen: (nextOpen: boolean) => root.setValue(nextOpen ? value : "") }),
-    [open, root, value]
+    [open, root, value],
   );
   return (
     <NavigationMenuItemContext.Provider value={item}>
@@ -128,7 +129,7 @@ const NavigationMenuTrigger = forwardRef<HTMLButtonElement, NavigationMenuTrigge
         />
       </button>
     );
-  }
+  },
 );
 NavigationMenuTrigger.displayName = "NavigationMenuTrigger";
 
@@ -146,12 +147,12 @@ const NavigationMenuContent = forwardRef<HTMLDivElement, NavigationMenuContentPr
         data-state="open"
         className={cn(
           "fade-in-0 zoom-in-95 absolute top-full left-0 z-50 mt-1 w-max min-w-80 animate-in rounded-md border bg-popover p-2 text-popover-foreground shadow-md",
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 NavigationMenuContent.displayName = "NavigationMenuContent";
 
@@ -168,12 +169,12 @@ const NavigationMenuLink = forwardRef<HTMLAnchorElement, NavigationMenuLinkProps
         data-active={active ? "" : undefined}
         className={cn(
           "block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-[active]:bg-accent/50",
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 NavigationMenuLink.displayName = "NavigationMenuLink";
 

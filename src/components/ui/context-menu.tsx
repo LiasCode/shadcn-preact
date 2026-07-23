@@ -1,6 +1,7 @@
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-preact";
 import { type ComponentProps, createContext } from "preact";
 import { forwardRef, type PropsWithChildren, useContext, useMemo, useRef } from "preact/compat";
+
 import { cn } from "./share/cn";
 import { useComposedRefs } from "./share/compose_ref";
 import { useDismissableLayer } from "./share/floating";
@@ -62,7 +63,7 @@ const ContextMenuTrigger = forwardRef<HTMLDivElement, ContextMenuTriggerProps>(
         {...props}
       />
     );
-  }
+  },
 );
 ContextMenuTrigger.displayName = "ContextMenuTrigger";
 
@@ -94,13 +95,13 @@ const ContextMenuContent = forwardRef<HTMLDivElement, ContextMenuContentProps>(
           }}
           className={cn(
             "fade-in-0 zoom-in-95 z-50 min-w-32 origin-top-left animate-in overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
-            className
+            className,
           )}
           {...props}
         />
       </Portal>
     );
-  }
+  },
 );
 ContextMenuContent.displayName = "ContextMenuContent";
 
@@ -132,12 +133,12 @@ const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(
         }}
         className={cn(
           "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[disabled]:opacity-50 data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 ContextMenuItem.displayName = "ContextMenuItem";
 
@@ -167,7 +168,7 @@ const ContextMenuCheckboxItem = forwardRef<HTMLDivElement, ContextMenuCheckboxIt
         {children}
       </ContextMenuItem>
     );
-  }
+  },
 );
 ContextMenuCheckboxItem.displayName = "ContextMenuCheckboxItem";
 
@@ -180,11 +181,7 @@ function ContextMenuRadioGroup({
 }: ComponentProps<"div"> & { value?: string; onValueChange?: (value: string) => void }) {
   return (
     <ContextMenuRadioContext.Provider value={{ value, onValueChange }}>
-      <div
-        role="radiogroup"
-        data-slot="context-menu-radio-group"
-        {...props}
-      />
+      <div role="radiogroup" data-slot="context-menu-radio-group" {...props} />
     </ContextMenuRadioContext.Provider>
   );
 }
@@ -212,7 +209,7 @@ const ContextMenuRadioItem = forwardRef<HTMLDivElement, ContextMenuItemProps & {
         {children}
       </ContextMenuItem>
     );
-  }
+  },
 );
 ContextMenuRadioItem.displayName = "ContextMenuRadioItem";
 
@@ -249,13 +246,7 @@ function ContextMenuShortcut({ className, ...props }: ComponentProps<"span">) {
 }
 
 function ContextMenuGroup(props: ComponentProps<"div">) {
-  return (
-    <div
-      role="group"
-      data-slot="context-menu-group"
-      {...props}
-    />
-  );
+  return <div role="group" data-slot="context-menu-group" {...props} />;
 }
 
 function ContextMenuSub({ children }: PropsWithChildren) {
@@ -271,7 +262,7 @@ function ContextMenuSubTrigger({ className, inset, children, ...props }: Compone
       tabIndex={-1}
       className={cn(
         "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden focus:bg-accent data-[inset]:pl-8",
-        className
+        className,
       )}
       {...props}
     >
@@ -288,7 +279,7 @@ function ContextMenuSubContent({ className, ...props }: ComponentProps<"div">) {
       data-slot="context-menu-sub-content"
       className={cn(
         "absolute top-0 left-full z-50 ml-1 hidden min-w-32 rounded-md border bg-popover p-1 text-popover-foreground shadow-md group-hover:block",
-        className
+        className,
       )}
       {...props}
     />

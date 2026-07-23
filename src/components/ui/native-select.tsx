@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from "lucide-preact";
 import type { ComponentProps } from "preact";
+
 import { cn } from "./share/cn";
 
 type NativeSelectProps = Omit<ComponentProps<"select">, "size"> & {
@@ -30,11 +31,7 @@ function NativeSelect({ className, size = "default", ...props }: NativeSelectPro
 
 function NativeSelectOption({ className, ...props }: ComponentProps<"option">) {
   return (
-    <option
-      data-slot="native-select-option"
-      className={cn("bg-[Canvas] text-[CanvasText]", className)}
-      {...props}
-    />
+    <option data-slot="native-select-option" className={cn("bg-[Canvas] text-[CanvasText]", className)} {...props} />
   );
 }
 

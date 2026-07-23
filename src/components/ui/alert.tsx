@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "preact";
+
 import { cn } from "./share/cn";
 
 const alertVariants = cva(
@@ -15,18 +16,11 @@ const alertVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 function Alert({ className, variant, ...props }: ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
-  return (
-    <div
-      data-slot="alert"
-      role="alert"
-      className={cn(alertVariants({ variant }), className)}
-      {...props}
-    />
-  );
+  return <div data-slot="alert" role="alert" className={cn(alertVariants({ variant }), className)} {...props} />;
 }
 
 function AlertTitle({ className, ...props }: ComponentProps<"div">) {
@@ -35,7 +29,7 @@ function AlertTitle({ className, ...props }: ComponentProps<"div">) {
       data-slot="alert-title"
       className={cn(
         "font-heading font-medium group-has-[>svg]/alert:col-start-2 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
-        className
+        className,
       )}
       {...props}
     />
@@ -48,7 +42,7 @@ function AlertDescription({ className, ...props }: ComponentProps<"div">) {
       data-slot="alert-description"
       className={cn(
         "text-balance text-muted-foreground text-sm md:text-pretty [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
-        className
+        className,
       )}
       {...props}
     />
@@ -56,13 +50,7 @@ function AlertDescription({ className, ...props }: ComponentProps<"div">) {
 }
 
 function AlertAction({ className, ...props }: ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="alert-action"
-      className={cn("absolute top-2 right-2", className)}
-      {...props}
-    />
-  );
+  return <div data-slot="alert-action" className={cn("absolute top-2 right-2", className)} {...props} />;
 }
 
 export { Alert, AlertAction, AlertDescription, AlertTitle };

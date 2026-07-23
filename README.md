@@ -30,4 +30,3 @@ The version 3 code is on [branch](https://github.com/LiasCode/shadcn-preact/tree
 ## License
 
 Licensed under the [MIT license](./LICENSE.md).
-

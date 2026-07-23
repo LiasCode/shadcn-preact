@@ -16,15 +16,7 @@ export const Portal = forwardRef<HTMLDivElement, PortalProps>((props, forwardedR
 
   const container = containerProp || (mounted && globalThis?.document?.body);
 
-  return container
-    ? createPortal(
-        <div
-          {...portalProps}
-          ref={forwardedRef}
-        />,
-        container
-      )
-    : null;
+  return container ? createPortal(<div {...portalProps} ref={forwardedRef} />, container) : null;
 
   // if (typeof window !== "undefined") {
   //   return createPortal(<Show when={show}>{props.children}</Show>, document.body);
