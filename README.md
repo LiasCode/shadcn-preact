@@ -31,7 +31,6 @@ The version 3 code is on [branch](https://github.com/LiasCode/shadcn-preact/tree
 
 Licensed under the [MIT license](./LICENSE.md).
 
-
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/chart?repos=liascode/shadcn-preact&type=date&legend=top-left)](https://www.star-history.com/?repos=liascode%2Fshadcn-preact&type=date&legend=top-left)
