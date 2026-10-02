@@ -11,12 +11,16 @@ import { ToggleGroup } from "@registry/ui/primitives/toggle-group";
 import { useRender } from "@registry/ui/primitives/use-render";
 import { renderToString } from "preact-render-to-string";
 
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../../registry/ui/dialog";
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "../../../registry/ui/drawer";
+import { Popover, PopoverContent, PopoverTrigger } from "../../../registry/ui/popover";
 import { FloatingFocusManager } from "../../../registry/ui/primitives/internals/FloatingFocusManager";
 import { FloatingPortal } from "../../../registry/ui/primitives/internals/FloatingPortal";
 import { useAnchorPositioning } from "../../../registry/ui/primitives/internals/useAnchorPositioning";
 import { useDismiss } from "../../../registry/ui/primitives/internals/useDismiss";
 import { useFloatingRootContext } from "../../../registry/ui/primitives/internals/useFloatingRootContext";
 import { useScrollLock } from "../../../registry/ui/primitives/internals/useScrollLock";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../../registry/ui/tooltip";
 
 // Prerendering runs without a document; refs are skipped there.
 beforeAll(async () => {
@@ -99,4 +103,35 @@ test("floating infrastructure prerenders without browser globals or portal conte
   expect(markup).toContain("positioner");
   expect(markup).toContain("opacity:0");
   expect(markup).not.toContain("popup");
+});
+test("overlay wrappers prerender triggers without browser globals", () => {
+  expect(typeof window).toBe("undefined");
+  const markup = renderToString(
+    <>
+      <Dialog defaultOpen>
+        <DialogTrigger>Dialog</DialogTrigger>
+        <DialogContent>
+          <DialogTitle>Title</DialogTitle>
+        </DialogContent>
+      </Dialog>
+      <Drawer snapPoints={[100, 1]}>
+        <DrawerTrigger>Drawer</DrawerTrigger>
+        <DrawerContent>
+          <DrawerTitle>Title</DrawerTitle>
+        </DrawerContent>
+      </Drawer>
+      <Popover>
+        <PopoverTrigger>Popover</PopoverTrigger>
+        <PopoverContent>Content</PopoverContent>
+      </Popover>
+      <Tooltip>
+        <TooltipTrigger>Tooltip</TooltipTrigger>
+        <TooltipContent>Tip</TooltipContent>
+      </Tooltip>
+    </>,
+  );
+  expect(markup).toContain('data-slot="dialog-trigger"');
+  expect(markup).toContain('data-slot="drawer-trigger"');
+  expect(markup).not.toContain('data-slot="dialog-content"');
+  expect(markup).not.toContain('data-slot="tooltip-content"');
 });

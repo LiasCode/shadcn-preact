@@ -1,26 +1,11 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@registry/ui/avatar";
-import { Button } from "@registry/ui/button";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@registry/ui/hover-card";
+import Example1 from "../examples/hover-card-demo";
+import { HoverCardSides as Example2 } from "../examples/hover-card-sides";
 
 export function HoverCardDemo() {
   return (
-    <HoverCard openDelay={150}>
-      <HoverCardTrigger asChild>
-        <Button variant="link">@shadcn-preact</Button>
-      </HoverCardTrigger>
-      <HoverCardContent className="w-80">
-        <div className="flex justify-between gap-4">
-          <Avatar>
-            <AvatarImage src="https://github.com/LiasCode.png" />
-            <AvatarFallback>LC</AvatarFallback>
-          </Avatar>
-          <div className="space-y-1">
-            <h4 className="font-semibold text-sm">@shadcn-preact</h4>
-            <p className="text-sm">An unofficial shadcn/ui port built for Preact projects.</p>
-            <p className="text-muted-foreground text-xs">Minimal dependencies, copy-paste components.</p>
-          </div>
-        </div>
-      </HoverCardContent>
-    </HoverCard>
+    <div className="relative flex w-full min-w-0 flex-wrap items-start gap-8">
+      <Example1 />
+      <Example2 />
+    </div>
   );
 }

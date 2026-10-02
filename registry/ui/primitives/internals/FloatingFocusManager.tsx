@@ -20,6 +20,7 @@ export interface FloatingFocusManagerProps {
   context: FloatingRootContext;
   disabled?: boolean;
   modal?: boolean;
+  outsideElementsInert?: boolean;
   initialFocus?: FocusTarget;
   returnFocus?: FocusTarget;
   restoreFocus?: boolean | "popup";
@@ -150,7 +151,7 @@ export function FloatingFocusManager(props: FloatingFocusManagerProps) {
                 (element): element is HTMLSpanElement => element != null,
               ),
             ],
-            { inert: true },
+            { inert: latest().outsideElementsInert !== false, ariaHidden: true },
           )
         : () => {};
     let release = markOutside();
@@ -231,7 +232,7 @@ export function FloatingFocusManager(props: FloatingFocusManagerProps) {
         if (target?.isConnected) target.focus({ preventScroll: true });
       });
     };
-  }, [context.open, context.elements.floating, disabled, modal, latest]);
+  }, [context.open, context.elements.floating, disabled, modal, props.outsideElementsInert, latest]);
   useIsoLayoutEffect(() => {
     if (!portal || disabled || modal || !context.open) return undefined;
     portal.setFocusHandlers({ first: () => focusEdge(false), last: () => focusEdge(true) });

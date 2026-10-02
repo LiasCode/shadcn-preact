@@ -1,169 +1,51 @@
-import { type ComponentProps, createContext } from "preact";
-import { forwardRef, type PropsWithChildren, useContext, useId, useMemo, useRef } from "preact/compat";
+import { cn } from "./lib/utils";
+import { Tooltip as TooltipPrimitive } from "./primitives/tooltip";
 
-import { cn } from "./share/cn";
-import { useComposedRefs } from "./share/compose_ref";
-import { type FloatingAlign, type FloatingSide, useFloatingContent } from "./share/floating";
-import { Portal } from "./share/portal";
-import { Slot } from "./share/slot";
-import { useControlledState } from "./share/useControlledState";
-
-type TooltipContextType = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  delayDuration: number;
-  triggerId: string;
-  contentId: string;
-  trigger: HTMLElement | null;
-  setTrigger: (el: HTMLElement | null) => void;
-};
-
-const TooltipContext = createContext<TooltipContextType | null>(null);
-const TooltipProviderContext = createContext({ delayDuration: 0 });
-
-function useTooltip() {
-  const ctx = useContext(TooltipContext);
-  if (!ctx) throw new Error("Tooltip components must be used within a <Tooltip>");
-  return ctx;
+function TooltipProvider({ delay = 0, ...props }: TooltipPrimitive.Provider.Props) {
+  return <TooltipPrimitive.Provider data-slot="tooltip-provider" delay={delay} {...props} />;
 }
 
-type TooltipProviderProps = PropsWithChildren<{ delayDuration?: number }>;
-
-function TooltipProvider({ delayDuration = 0, children }: TooltipProviderProps) {
-  return <TooltipProviderContext.Provider value={{ delayDuration }}>{children}</TooltipProviderContext.Provider>;
+function Tooltip({ ...props }: TooltipPrimitive.Root.Props) {
+  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
 }
 
-type TooltipProps = PropsWithChildren<{
-  open?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  delayDuration?: number;
-}>;
-
-function Tooltip({ open: openProp, defaultOpen, onOpenChange, delayDuration, children }: TooltipProps) {
-  const provider = useContext(TooltipProviderContext);
-  const [open, setOpen] = useControlledState({
-    defaultValue: defaultOpen ?? false,
-    controlledValue: openProp,
-    onChange: onOpenChange,
-  });
-  const reactId = useId();
-  const [trigger, setTrigger] = useControlledState<HTMLElement | null>({
-    defaultValue: null,
-  });
-
-  const value = useMemo(
-    () => ({
-      open,
-      setOpen,
-      delayDuration: delayDuration ?? provider.delayDuration,
-      triggerId: `tooltip-trigger-${reactId}`,
-      contentId: `tooltip-content-${reactId}`,
-      trigger,
-      setTrigger,
-    }),
-    [delayDuration, open, provider.delayDuration, reactId, setOpen, setTrigger, trigger],
-  );
-
-  return <TooltipContext.Provider value={value}>{children}</TooltipContext.Provider>;
+function TooltipTrigger({ ...props }: TooltipPrimitive.Trigger.Props) {
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
-type TooltipTriggerProps = ComponentProps<"button"> & { asChild?: boolean };
-
-const TooltipTrigger = forwardRef<HTMLButtonElement, TooltipTriggerProps>(
-  ({ asChild = false, onBlur, onFocus, onPointerEnter, onPointerLeave, ...props }, forwardedRef) => {
-    const { open, setOpen, delayDuration, setTrigger, triggerId, contentId } = useTooltip();
-    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const composedRef = useComposedRefs(forwardedRef, setTrigger);
-    const Comp = asChild ? Slot : "button";
-
-    const clearTimer = () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    };
-
-    const show = () => {
-      clearTimer();
-      timeoutRef.current = setTimeout(() => setOpen(true), delayDuration);
-    };
-
-    const hide = () => {
-      clearTimer();
-      setOpen(false);
-    };
-
-    return (
-      <Comp
-        ref={composedRef}
-        id={triggerId}
-        type={asChild ? undefined : "button"}
-        data-slot="tooltip-trigger"
-        data-state={open ? "open" : "closed"}
-        aria-describedby={open ? contentId : undefined}
-        onPointerEnter={(e: PointerEvent) => {
-          (onPointerEnter as ((e: PointerEvent) => void) | undefined)?.(e);
-          show();
-        }}
-        onPointerLeave={(e: PointerEvent) => {
-          (onPointerLeave as ((e: PointerEvent) => void) | undefined)?.(e);
-          hide();
-        }}
-        onFocus={(e: FocusEvent) => {
-          (onFocus as ((e: FocusEvent) => void) | undefined)?.(e);
-          show();
-        }}
-        onBlur={(e: FocusEvent) => {
-          (onBlur as ((e: FocusEvent) => void) | undefined)?.(e);
-          hide();
-        }}
-        {...props}
-      />
-    );
-  },
-);
-TooltipTrigger.displayName = "TooltipTrigger";
-
-type TooltipContentProps = ComponentProps<"div"> & {
-  side?: FloatingSide;
-  align?: FloatingAlign;
-  sideOffset?: number;
-  container?: Element | DocumentFragment | null;
-};
-
-const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
-  ({ className, side = "top", align = "center", sideOffset = 0, container, style, ...props }, forwardedRef) => {
-    const { open, setOpen, trigger, contentId } = useTooltip();
-    const floating = useFloatingContent({ open, side, align, sideOffset, reference: trigger });
-    const composedRef = useComposedRefs(forwardedRef, floating.refs.setFloating);
-
-    if (!floating.present) return null;
-
-    return (
-      <Portal container={container}>
-        <div
-          ref={composedRef}
-          id={contentId}
-          role="tooltip"
+function TooltipContent({
+  className,
+  side = "top",
+  sideOffset = 4,
+  align = "center",
+  alignOffset = 0,
+  children,
+  ...props
+}: TooltipPrimitive.Popup.Props &
+  Pick<TooltipPrimitive.Positioner.Props, "align" | "alignOffset" | "side" | "sideOffset">) {
+  return (
+    <TooltipPrimitive.Portal>
+      <TooltipPrimitive.Positioner
+        align={align}
+        alignOffset={alignOffset}
+        side={side}
+        sideOffset={sideOffset}
+        className="isolate z-50"
+      >
+        <TooltipPrimitive.Popup
           data-slot="tooltip-content"
-          data-state={!open ? "closed" : floating.isPositioned ? "open" : undefined}
-          data-side={floating.resolvedSide}
-          data-align={floating.resolvedAlign}
-          style={{ ...(floating.style as object), ...(style && typeof style === "object" ? style : {}) }}
-          onAnimationEnd={(e: AnimationEvent) => {
-            if (e.target === e.currentTarget && !open) floating.setPresent(false);
-          }}
-          onPointerEnter={() => setOpen(true)}
-          onPointerLeave={() => setOpen(false)}
           className={cn(
-            "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-popper-transform-origin) text-balance rounded-md bg-primary px-3 py-1.5 text-primary-foreground text-xs data-[state=closed]:animate-out data-[state=open]:animate-in",
+            "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm data-[side=inline-start]:slide-in-from-right-2 data-[side=inline-end]:slide-in-from-left-2 z-50 w-fit max-w-xs origin-(--transform-origin) bg-foreground text-background",
             className,
           )}
           {...props}
-        />
-      </Portal>
-    );
-  },
-);
-TooltipContent.displayName = "TooltipContent";
+        >
+          {children}
+          <TooltipPrimitive.Arrow className="size-2.5 translate-y-[calc(-50%-2px)] rotate-45 rounded-[2px] data-[side=inline-end]:top-1/2! data-[side=inline-end]:-left-1 data-[side=inline-end]:-translate-y-1/2 data-[side=inline-start]:top-1/2! data-[side=inline-start]:-right-1 data-[side=inline-start]:-translate-y-1/2 z-50 bg-foreground fill-foreground data-[side=bottom]:top-1 data-[side=left]:top-1/2! data-[side=left]:-right-1 data-[side=left]:-translate-y-1/2 data-[side=right]:top-1/2! data-[side=right]:-left-1 data-[side=right]:-translate-y-1/2 data-[side=top]:-bottom-2.5" />
+        </TooltipPrimitive.Popup>
+      </TooltipPrimitive.Positioner>
+    </TooltipPrimitive.Portal>
+  );
+}
 
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };

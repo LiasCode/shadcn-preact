@@ -1,35 +1,19 @@
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@registry/ui/alert-dialog";
-import { Button } from "@registry/ui/button";
+import { AlertDialogBasic as Example1 } from "../examples/alert-dialog-basic";
+import Example2 from "../examples/alert-dialog-demo";
+import { AlertDialogDestructive as Example3 } from "../examples/alert-dialog-destructive";
+import { AlertDialogWithMedia as Example4 } from "../examples/alert-dialog-media";
+import { AlertDialogSmall as Example6 } from "../examples/alert-dialog-small";
+import { AlertDialogSmallWithMedia as Example5 } from "../examples/alert-dialog-small-media";
 
 export function AlertDialogDemo() {
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive">Delete account</Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your account and remove your data from our
-            servers.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <div className="relative flex w-full min-w-0 flex-wrap items-start gap-8">
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
+      <Example5 />
+      <Example6 />
+    </div>
   );
 }

@@ -1,50 +1,17 @@
-import { Button } from "@registry/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogOverlay,
-  DialogTitle,
-  DialogTrigger,
-} from "@registry/ui/dialog";
-import { Input } from "@registry/ui/input";
-import { Label } from "@registry/ui/label";
+import { DialogCloseButton as Example1 } from "../examples/dialog-close-button";
+import { DialogDemo as Example2 } from "../examples/dialog-demo";
+import { DialogNoCloseButton as Example3 } from "../examples/dialog-no-close-button";
+import { DialogScrollableContent as Example4 } from "../examples/dialog-scrollable-content";
+import { DialogStickyFooter as Example5 } from "../examples/dialog-sticky-footer";
 
 export function DialogDemo() {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Edit profile</Button>
-      </DialogTrigger>
-      <DialogOverlay />
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>Make changes to your profile here. Click save when you are done.</DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="dialog-name" className="text-right">
-              Name
-            </Label>
-            <Input id="dialog-name" defaultValue="LiasCode" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="dialog-username" className="text-right">
-              Username
-            </Label>
-            <Input id="dialog-username" defaultValue="@liascode" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button>Save changes</Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <div className="relative flex w-full min-w-0 flex-wrap items-start gap-8">
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
+      <Example5 />
+    </div>
   );
 }
