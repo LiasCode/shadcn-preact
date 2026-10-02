@@ -30,19 +30,30 @@ pages were checked in a browser (or the missing browser check is reported).
 
 ## Registry rules (`registry/ui/`)
 
-- **Self-contained:** files import each other only with relative paths (`./button`, `./share/cn`). Never import from
-  `src/` and never use an alias. `grep -rn 'from "@/' registry` must be empty. (ADR 0002)
-- Same public API and styles as the shadcn/ui originals unless a record says otherwise:
-  - https://ui.shadcn.com/docs/components
-  - https://github.com/shadcn-ui/ui/tree/main/apps/v4/registry/new-york-v4/ui
-- Variants with `class-variance-authority` (`cva`) and `VariantProps`; export both the component and its
-  `*Variants` object.
-- `forwardRef` from `preact/compat`; props typed with `ComponentProps<"...">`.
-- Class merging with `cn()` from `./share/cn`.
-- `asChild` polymorphism with `Slot` from `./share/slot`.
-- Set `data-slot`, `data-variant`, and `data-size`; sibling components select on them
-  (for example `in-data-[slot=button-group]`).
-- Icons come only from `lucide-preact`. (ADR 0004)
+**Strict rule (ADR 0008):** every component matches the original shadcn/ui checked out in `../shadcn`, so the API,
+the look, and the Tailwind classes stay interoperable:
+
+- Reference: `../shadcn/apps/v4/registry/bases/base/ui/<name>.tsx` (the Base UI base), with its `cn-*` classes resolved
+  through the **nova** style, `../shadcn/apps/v4/registry/styles/style-nova.css`. Demos come from
+  `../shadcn/apps/v4/examples/base`.
+- Same file name, exports, props (`render`, state-dependent `className`), `data-slot` and other `data-*` attributes,
+  structure, and resolved classes. A deviation needs its own record.
+- `IconPlaceholder` becomes the `lucide-preact` icon named in its `lucide` prop. Icons come only from `lucide-preact`.
+  (ADR 0004)
+- `@base-ui/react/<name>` is ported to Preact in `registry/ui/primitives/<name>` and imported as
+  `./primitives/<name>`. The reference is Base UI 1.6.0 in
+  `../shadcn/node_modules/.pnpm/@base-ui+react@1.6.0*/node_modules/@base-ui/react` (code and `docs/`).
+- Components are plain functions that receive `ref` as a prop (Preact 11), without `forwardRef` or `"use client"`.
+  React APIs come from `preact/compat` or `preact/hooks`.
+- Variants with `cva` and `VariantProps`, exporting the component and its `*Variants` object; class merging with
+  `cn()`, as upstream.
+- Follow the phase order in ADR 0008. Until a component is rewritten, its old file (using `./share/`, `asChild`, and
+  `forwardRef`) stays as is; do not mix the two styles in one file.
+
+Always:
+
+- **Self-contained:** files import each other only with relative paths (`./button`, `./primitives/dialog`). Never
+  import from `src/` and never use an alias. `grep -rn 'from "@/' registry` must be empty. (ADR 0002)
 - Code that touches `window`, `document`, or `localStorage` must guard with `typeof window !== "undefined"`: it runs
   at build time during prerendering.
 
