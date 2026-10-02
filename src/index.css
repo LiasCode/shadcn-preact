@@ -124,6 +124,48 @@
   }
 }
 
+/*
+ * Scrollbars (ADR 0006): thin, rounded thumbs on a transparent track. Thumb colors keep at least 3:1 against every
+ * surface in their appearance. `color-scheme` follows the site theme so native scrollbars and controls match it.
+ */
+:root {
+  color-scheme: light;
+  --scrollbar-thumb: oklch(0.62 0 0);
+  --scrollbar-thumb-hover: oklch(0.439 0 0);
+}
+
+.dark {
+  color-scheme: dark;
+  --scrollbar-thumb: oklch(0.556 0 0);
+  --scrollbar-thumb-hover: oklch(0.708 0 0);
+}
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+
+  /* Browsers without `scrollbar-color` (Safari) use these instead. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 9999px;
+    background-clip: padding-box;
+    background-color: var(--scrollbar-thumb);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+  }
+}
+
 :root {
   font-family: "Geist", monospace;
 }
