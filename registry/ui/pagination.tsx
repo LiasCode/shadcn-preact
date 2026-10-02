@@ -1,8 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-preact";
 import type { ComponentProps } from "preact";
 
-import { Button } from "@/components/ui/button";
-
+import { Button } from "./button";
 import { cn } from "./share/cn";
 
 function Pagination({ className, ...props }: ComponentProps<"nav">) {

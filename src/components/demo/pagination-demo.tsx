@@ -1,6 +1,5 @@
-import { Field, FieldLabel } from "@ui/field";
-import { NativeSelect, NativeSelectOption } from "@ui/native-select";
-
+import { Field, FieldLabel } from "@registry/ui/field";
+import { NativeSelect, NativeSelectOption } from "@registry/ui/native-select";
 import {
   Pagination,
   PaginationContent,
@@ -9,7 +8,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from "@registry/ui/pagination";
 
 export function PaginationDemo() {
   return (

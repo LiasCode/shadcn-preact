@@ -1,6 +1,5 @@
+import { Progress } from "@registry/ui/progress";
 import { useEffect, useState } from "preact/hooks";
-
-import { Progress } from "@/components/ui/progress";
 
 export function ProgressDemo() {
   const [progress, setProgress] = useState(0);

@@ -1,8 +1,7 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@registry/ui/card";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@registry/ui/chart";
 import { useMemo, useState } from "preact/hooks";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 export const description = "An interactive bar chart";
 

@@ -1,11 +1,11 @@
+import { Badge } from "@registry/ui/badge";
+import { Button } from "@registry/ui/button";
+import { cn } from "@registry/ui/share/cn";
 import { MenuIcon, MoonIcon, SunIcon } from "lucide-preact";
 import type { ComponentChildren } from "preact";
 import { useEffect, useState } from "preact/compat";
 
 import { GitBranchIcon } from "@/components/GitBranchIcon";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/components/ui/share/cn";
 
 import { componentCategories, componentDocs } from "./docs-data";
 

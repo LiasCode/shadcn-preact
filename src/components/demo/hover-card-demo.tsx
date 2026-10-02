@@ -1,6 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Avatar, AvatarFallback, AvatarImage } from "@registry/ui/avatar";
+import { Button } from "@registry/ui/button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@registry/ui/hover-card";
 
 export function HoverCardDemo() {
   return (

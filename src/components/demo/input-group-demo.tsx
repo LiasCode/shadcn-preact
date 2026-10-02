@@ -1,6 +1,3 @@
-import { IconCheck, IconPlus } from "@tabler/icons-preact";
-import { ArrowUpIcon, Search } from "lucide-preact";
-
 import {
   InputGroup,
   InputGroupAddon,
@@ -8,7 +5,8 @@ import {
   InputGroupInput,
   InputGroupText,
   InputGroupTextarea,
-} from "@/components/ui/input-group";
+} from "@registry/ui/input-group";
+import { ArrowUpIcon, CheckIcon, PlusIcon, Search } from "lucide-preact";
 
 export function InputGroupDemo() {
   return (
@@ -25,7 +23,7 @@ export function InputGroupDemo() {
         <InputGroupInput placeholder="@shadcn" />
         <InputGroupAddon align="inline-end">
           <div className="flex size-4 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <IconCheck className="size-3" />
+            <CheckIcon className="size-3" />
           </div>
         </InputGroupAddon>
       </InputGroup>
@@ -34,7 +32,7 @@ export function InputGroupDemo() {
         <InputGroupTextarea placeholder="Ask, Search or Chat..." />
         <InputGroupAddon align="block-end">
           <InputGroupButton variant="outline" className="rounded-full" size="icon-xs">
-            <IconPlus />
+            <PlusIcon />
           </InputGroupButton>
 
           <InputGroupText className="ml-auto">52% used</InputGroupText>

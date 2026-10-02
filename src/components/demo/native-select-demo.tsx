@@ -1,4 +1,4 @@
-import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from "@/components/ui/native-select";
+import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from "@registry/ui/native-select";
 
 export function NativeSelectDemo() {
   return (

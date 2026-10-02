@@ -5,7 +5,7 @@ import {
   ComboboxItem,
   ComboboxList,
   ComboboxTrigger,
-} from "@/components/ui/combobox";
+} from "@registry/ui/combobox";
 
 const frameworks = [
   { value: "preact", label: "Preact" },

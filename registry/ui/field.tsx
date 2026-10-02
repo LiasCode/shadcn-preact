@@ -2,9 +2,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentChild, ComponentProps } from "preact";
 import { useMemo } from "preact/hooks";
 
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-
+import { Label } from "./label";
+import { Separator } from "./separator";
 import { cn } from "./share/cn";
 
 function FieldSet({ className, ...props }: ComponentProps<"fieldset">) {

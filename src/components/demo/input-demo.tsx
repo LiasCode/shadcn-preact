@@ -1,6 +1,6 @@
-import { Button } from "@ui/button";
-import { Input } from "@ui/input";
-import { Label } from "@ui/label";
+import { Button } from "@registry/ui/button";
+import { Input } from "@registry/ui/input";
+import { Label } from "@registry/ui/label";
 
 export function InputDemo() {
   return (

@@ -1,7 +1,6 @@
-import { Button } from "@ui/button";
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "@registry/ui/alert";
+import { Button } from "@registry/ui/button";
 import { AlertCircleIcon, AlertTriangleIcon, CheckCircle2Icon, InfoIcon } from "lucide-preact";
-
-import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export function AlertDemo() {
   return (

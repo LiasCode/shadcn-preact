@@ -23,6 +23,14 @@ Shadcn/ui is built upon Radix UI and Tailwind CSS. While Radix UI offers a robus
 
 Visit our [documentation](https://shadcn-preact.onrender.com/docs/installation) to learn more.
 
+The components live in [`registry/ui`](./registry/ui). Copy them into your project with:
+
+```sh
+bunx degit https://github.com/LiasCode/shadcn-preact/registry/ui#main ./src/components/ui
+```
+
+> The components moved from `src/components/ui` to `registry/ui`. Update your `degit` source if you used the old path.
+
 ## v3
 
 The version 3 code is on [branch](https://github.com/LiasCode/shadcn-preact/tree/v3) and is maintained there.

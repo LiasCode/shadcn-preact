@@ -1,5 +1,5 @@
-import { Button } from "@ui/button";
-import { Spinner } from "@ui/spinner";
+import { Button } from "@registry/ui/button";
+import { Spinner } from "@registry/ui/spinner";
 
 export function SpinnerDemo() {
   return (

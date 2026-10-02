@@ -1,5 +1,3 @@
-import { useState } from "preact/compat";
-
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -9,7 +7,8 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
-} from "@/components/ui/menubar";
+} from "@registry/ui/menubar";
+import { useState } from "preact/compat";
 
 export function MenubarDemo() {
   const [showSidebar, setShowSidebar] = useState(true);

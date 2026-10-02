@@ -35,7 +35,7 @@
     "paths": {
       "react": ["./node_modules/preact/compat/"],
       "react-dom": ["./node_modules/preact/compat/"],
-      "@ui/*": ["./src/components/ui/*"],
+      "@registry/*": ["./registry/*"],
       "@/*": ["./src/*"]
     },
     "resolveJsonModule": true,
@@ -51,5 +51,5 @@
   },
 
   /* ===================== Project Structure ===================== */
-  "include": ["src"]
+  "include": ["src", "registry"]
 }

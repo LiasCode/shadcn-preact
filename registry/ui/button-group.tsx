@@ -2,8 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "preact";
 import { forwardRef } from "preact/compat";
 
-import { Separator } from "@/components/ui/separator";
-
+import { Separator } from "./separator";
 import { cn } from "./share/cn";
 import { Slot } from "./share/slot";
 

@@ -1,8 +1,7 @@
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@registry/ui/chart";
 import { TrendingUp } from "lucide-preact";
 import { PolarGrid, RadialBar, RadialBarChart } from "recharts";
-
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 export const description = "A radial chart with a grid";
 

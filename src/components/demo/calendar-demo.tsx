@@ -1,10 +1,9 @@
-import { Button } from "@ui/button";
-import { Card, CardContent, CardFooter } from "@ui/card";
+import { Button } from "@registry/ui/button";
+import { Calendar } from "@registry/ui/calendar";
+import { Card, CardContent, CardFooter } from "@registry/ui/card";
 import { addDays } from "date-fns";
 import { useState } from "preact/hooks";
 import type { DateRange } from "react-day-picker";
-
-import { Calendar } from "@/components/ui/calendar";
 
 export function CalendarDemo() {
   const [date, setDate] = useState<Date | undefined>(new Date());

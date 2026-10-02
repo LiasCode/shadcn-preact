@@ -2,63 +2,78 @@
 
 ## What this is
 
-An unofficial **Preact port of shadcn/ui**. This is NOT a component library distributed via npm — it's a collection of copy-paste components. The deployed site (`src/`) is a demo/documentation app that renders every component. The components themselves (`src/components/ui/`) are the actual product: they are meant to be copied into other projects.
+An unofficial **Preact port of shadcn/ui**. It is not an npm library: it is a collection of copy-paste components.
 
-A core design goal is **minimizing external dependencies**. shadcn/ui is built on Radix UI; this port reimplements the Radix primitives it needs (Slot, Portal, controlled state, etc.) in `src/components/ui/share/` rather than pulling in Radix. When adding a component, prefer porting/inlining a primitive over adding a dependency.
+- `registry/ui/` is the **product**: the components and their shared primitives (`registry/ui/share/`). People copy
+  this folder into their projects.
+- `src/` is the **documentation site** that demonstrates every component. It is deployed, not distributed.
+
+A core goal is **minimal external dependencies**. shadcn/ui is built on Radix UI; this port reimplements the Radix
+primitives it needs (Slot, Portal, controlled state, focus trap, floating positioning) in `registry/ui/share/`. When
+adding a component, prefer porting a primitive over adding a dependency.
+
+Read the decision records in [`docs/decisions/`](./docs/decisions/README.md) before changing an area. Never edit an
+accepted, committed record; supersede it with a new one.
 
 ## Commands
 
-Package manager is **Bun** (`bun.lock`).
+Package manager is **Bun** (`bun.lock`, exact versions, `bunfig.toml`).
 
-- `bun run dev` — Vite dev server (host exposed on network)
-- `bun run build` — type-check (`tsc -b`) then Vite build with prerendering
-- `bun run preview` — preview the production build
-- `bun run lint` — Biome lint with `--fix --unsafe` (autofixes)
-- `bun run format` — Prettier write over `src` and `tsconfig.*`
+- `bun run dev`: Vite dev server, exposed on the network
+- `bun run build`: type check (`tsc -b`) and Vite build with prerendering
+- `bun run preview`: preview the production build
+- `bun run lint`: oxlint
+- `bun run fmt`: oxfmt (writes); `bun run fmt:check` verifies
 
-There is **no test suite** in this repo.
+There is **no test suite**. A change is done only when `fmt:check`, `lint`, and `build` all pass, and the affected
+pages were checked in a browser (or the missing browser check is reported).
 
-## Architecture
+## Registry rules (`registry/ui/`)
 
-- **Preact + preact-iso**: routing via `LocationProvider`/`Router`/`Route` in `src/App.tsx`. Entry is `src/index.tsx`, which `hydrate`s into `#app` and exports a `prerender` function.
-- **Prerendering / SSR**: `vite.config.ts` enables `@preact/preset-vite` prerender (renderTarget `#app`). Code that touches `window`/`document`/`localStorage` MUST guard with `typeof window !== "undefined"` (see `theme.tsx`, `portal.tsx`) — it runs at build time during prerender.
-- **Demo registration**: each component has a matching demo in `src/components/demo/<name>-demo.tsx`. Demos are registered in `src/routes/RoutesDemo.tsx` (the `RoutesDemoObj` map) and rendered alphabetically by `src/routes/Home.tsx`. When adding a component, also add its demo and register it there.
-
-### Component conventions (`src/components/ui/`)
-
-- Most have the same api of shadcn originals components
-- Most have the same styles of shadcn originals components
-
-Utils links:
-
-- https://github.com/shadcn-ui/ui/blob/main/apps/v4/registry/new-york-v4/ui/calendar.tsx
-- https://ui.shadcn.com/docs/components
-
-- Variants via `class-variance-authority` (`cva`) + `VariantProps`.
+- **Self-contained:** files import each other only with relative paths (`./button`, `./share/cn`). Never import from
+  `src/` and never use an alias. `grep -rn 'from "@/' registry` must be empty. (ADR 0002)
+- Same public API and styles as the shadcn/ui originals unless a record says otherwise:
+  - https://ui.shadcn.com/docs/components
+  - https://github.com/shadcn-ui/ui/tree/main/apps/v4/registry/new-york-v4/ui
+- Variants with `class-variance-authority` (`cva`) and `VariantProps`; export both the component and its
+  `*Variants` object.
 - `forwardRef` from `preact/compat`; props typed with `ComponentProps<"...">`.
-- Class merging via `cn()` from `./share/cn` (clsx + tailwind-merge).
-- `asChild` polymorphism via the `Slot` from `./share/slot` (ported from Radix).
-- Set `data-slot`, `data-variant`, `data-size` attributes — Tailwind selectors in sibling components rely on these (e.g. `in-data-[slot=button-group]`).
-- Export both the component and its `*Variants` object.
+- Class merging with `cn()` from `./share/cn`.
+- `asChild` polymorphism with `Slot` from `./share/slot`.
+- Set `data-slot`, `data-variant`, and `data-size`; sibling components select on them
+  (for example `in-data-[slot=button-group]`).
+- Icons come only from `lucide-preact`. (ADR 0004)
+- Code that touches `window`, `document`, or `localStorage` must guard with `typeof window !== "undefined"`: it runs
+  at build time during prerendering.
 
-`src/components/ui/share/` holds the reusable primitives/hooks: `cn`, `slot`, `portal`, `modal`, `compose_ref`, `useControlledState`, `useLockBodyScroll`, `getScrollBarWidth`, `debounce`.
+## Documentation app (`src/`)
 
-### Styling
+- Preact with `preact-iso` routing. `src/index.tsx` hydrates `#app` and exports `prerender`.
+- Imports components through `@registry/*`; app code uses `@/*`.
+- The component list is kept in both `src/routes/docs-data.tsx` and the prerender routes in `vite.config.ts`; update
+  both when adding a component.
+- Each component has a demo in `src/components/demo/<name>-demo.tsx`.
 
-- **Tailwind CSS v4** (config-less, via `@tailwindcss/postcss`) — global styles and theme tokens live in `src/index.css`. There is no `tailwind.config`.
-- Dark mode is class-based (`.dark` on `<html>`), managed by `ThemeProvider`/`useTheme` in `theme.tsx`.
+## Styling
 
-## Path aliases & React compat
+- **Tailwind CSS v4** via `@tailwindcss/postcss`, no config file. Theme tokens and global styles are in
+  `src/index.css`.
+- Dark mode is class-based (`.dark` on `<html>`), managed by `ThemeProvider` and `useTheme` in
+  `registry/ui/theme.tsx`.
 
-Defined in both `vite.config.ts` and `tsconfig.app.json` — keep them in sync:
+## Aliases and React compatibility
+
+Defined in both `vite.config.ts` and `tsconfig.app.json`; keep them in sync:
 
 - `@/*` → `src/*`
-- `@ui/*` → `src/components/ui/*`
-- `react` / `react-dom` → `preact/compat` (so React-targeting libs like `react-day-picker`, `recharts`, `@floating-ui/react-dom` work). Import React APIs from `preact/compat`, not `react`.
+- `@registry/*` → `registry/*`
+- `react` and `react-dom` → `preact/compat`, so React-targeting libraries (`react-day-picker`, `recharts`,
+  `@floating-ui/react-dom`) work. Import React APIs from `preact/compat`, never from `react`.
 
-## Conventions / tooling notes
+## TypeScript
 
-- **Biome** lints+formats; **Prettier** also formats (with tailwind-class sorting + import organizing). Both enforce 2-space indent, double quotes, semicolons, 120 col, ES5 trailing commas.
-- `noExplicitAny` is off; `useImportType` is enforced (use `import type`).
-- TypeScript is strict with `noUncheckedIndexedAccess` and `noUnused*` on.
-- The maintained release line is the **`v3` branch** (per README); `main` is ahead with newer component updates.
+Strict, with `noUncheckedIndexedAccess` and `noUnused*`. `import type` for type-only imports.
+
+## Branches
+
+The maintained release line is the **`v3` branch**; `main` carries newer component work.

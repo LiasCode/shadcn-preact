@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@registry/ui/button";
 import {
   Field,
   FieldDescription,
@@ -7,10 +7,10 @@ import {
   FieldLegend,
   FieldSeparator,
   FieldSet,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
-import { Textarea } from "@/components/ui/textarea";
+} from "@registry/ui/field";
+import { Input } from "@registry/ui/input";
+import { NativeSelect, NativeSelectOption } from "@registry/ui/native-select";
+import { Textarea } from "@registry/ui/textarea";
 
 export function FieldDemo() {
   return (

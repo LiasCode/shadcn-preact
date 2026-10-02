@@ -3,8 +3,7 @@ import type { ComponentProps } from "preact";
 import { useEffect, useRef } from "preact/hooks";
 import { DayPicker, getDefaultClassNames, type DayButton, type Locale } from "react-day-picker";
 
-import { Button, buttonVariants } from "@/components/ui/button";
-
+import { Button, buttonVariants } from "./button";
 import { cn } from "./share/cn";
 
 function Calendar({

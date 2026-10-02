@@ -5,7 +5,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+} from "@registry/ui/navigation-menu";
 
 export function NavigationMenuDemo() {
   return (

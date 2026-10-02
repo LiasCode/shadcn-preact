@@ -1,6 +1,5 @@
+import { Badge } from "@registry/ui/badge";
 import { BadgeCheckIcon } from "lucide-preact";
-
-import { Badge } from "@/components/ui/badge";
 
 export function BadgeDemo() {
   return (

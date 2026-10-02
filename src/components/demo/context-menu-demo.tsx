@@ -1,5 +1,3 @@
-import { useState } from "preact/compat";
-
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -9,7 +7,8 @@ import {
   ContextMenuSeparator,
   ContextMenuShortcut,
   ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+} from "@registry/ui/context-menu";
+import { useState } from "preact/compat";
 
 export function ContextMenuDemo() {
   const [bookmarks, setBookmarks] = useState(true);

@@ -1,7 +1,6 @@
-import { Button } from "@ui/button";
-import { Label } from "@ui/label";
-
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@registry/ui/button";
+import { Label } from "@registry/ui/label";
+import { Textarea } from "@registry/ui/textarea";
 
 export function TextareaDemo() {
   return (

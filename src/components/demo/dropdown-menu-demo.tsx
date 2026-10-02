@@ -1,6 +1,4 @@
-import { useState } from "preact/compat";
-
-import { Button } from "@/components/ui/button";
+import { Button } from "@registry/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -12,7 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@registry/ui/dropdown-menu";
+import { useState } from "preact/compat";
 
 export function DropdownMenuDemo() {
   const [showStatusBar, setShowStatusBar] = useState(true);

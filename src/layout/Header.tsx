@@ -1,5 +1,5 @@
-import { Badge } from "@ui/badge";
-import { Button } from "@ui/button";
+import { Badge } from "@registry/ui/badge";
+import { Button } from "@registry/ui/button";
 
 export const Header = () => {
   return (

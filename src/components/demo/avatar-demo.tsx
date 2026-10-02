@@ -1,4 +1,4 @@
-import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@ui/avatar";
+import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@registry/ui/avatar";
 import { PlusIcon } from "lucide-preact";
 
 export function AvatarDemo() {

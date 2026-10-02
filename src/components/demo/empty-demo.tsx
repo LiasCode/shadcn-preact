@@ -1,9 +1,7 @@
-import { IconBell, IconCloud, IconFolderCode } from "@tabler/icons-preact";
-import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
-import { ArrowUpRightIcon, PlusIcon, RefreshCcwIcon } from "lucide-preact";
-
-import { Button } from "@/components/ui/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Avatar, AvatarFallback, AvatarImage } from "@registry/ui/avatar";
+import { Button } from "@registry/ui/button";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@registry/ui/empty";
+import { ArrowUpRightIcon, BellIcon, CloudIcon, FolderCodeIcon, PlusIcon, RefreshCcwIcon } from "lucide-preact";
 
 export function EmptyDemo() {
   return (
@@ -11,7 +9,7 @@ export function EmptyDemo() {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <IconFolderCode />
+            <FolderCodeIcon />
           </EmptyMedia>
           <EmptyTitle>No Projects Yet</EmptyTitle>
           <EmptyDescription>
@@ -34,7 +32,7 @@ export function EmptyDemo() {
       <Empty className="border border-dashed">
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <IconCloud />
+            <CloudIcon />
           </EmptyMedia>
           <EmptyTitle>Cloud Storage Empty</EmptyTitle>
           <EmptyDescription>Upload files to your cloud storage to access them anywhere.</EmptyDescription>
@@ -49,7 +47,7 @@ export function EmptyDemo() {
       <Empty className="h-full bg-linear-to-b from-30% from-muted/50 to-background">
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <IconBell />
+            <BellIcon />
           </EmptyMedia>
           <EmptyTitle>No Notifications</EmptyTitle>
           <EmptyDescription>You&apos;re all caught up. New notifications will appear here.</EmptyDescription>

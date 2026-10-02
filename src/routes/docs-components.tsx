@@ -1,10 +1,9 @@
+import { Badge } from "@registry/ui/badge";
+import { Button } from "@registry/ui/button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@registry/ui/card";
+import { Separator } from "@registry/ui/separator";
 import { CheckIcon, CopyIcon } from "lucide-preact";
 import { useState } from "preact/compat";
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 import { componentCategories, componentDocs, getComponentDoc } from "./docs-data";
 import { DocsLayout } from "./DocsLayout";
@@ -35,7 +34,7 @@ export function DocsHomePage() {
           <Card>
             <CardHeader>
               <CardTitle>Copy the code</CardTitle>
-              <CardDescription>No npm package. Components live in `src/components/ui`.</CardDescription>
+              <CardDescription>No npm package. Components live in `registry/ui`.</CardDescription>
             </CardHeader>
           </Card>
           <Card>
@@ -54,12 +53,12 @@ export function DocsHomePage() {
         <section className="space-y-4">
           <h2 className="font-semibold text-2xl tracking-tight">Installation</h2>
           <p className="text-muted-foreground">
-            Use `degit` to copy the component source from GitHub. Keep the `@ui/*` and `@/*` aliases or update imports
-            to match your project.
+            Use `degit` to copy the component source from GitHub. Components import each other with relative paths, so
+            they work in any folder.
           </p>
           <CodeBlock
             code={`bun add preact class-variance-authority clsx tailwind-merge lucide-preact
-bunx degit https://github.com/LiasCode/shadcn-preact/src/components/ui#main ./src/components/ui`}
+bunx degit https://github.com/LiasCode/shadcn-preact/registry/ui#main ./src/components/ui`}
           />
         </section>
       </div>
@@ -201,8 +200,8 @@ bun add recharts`}
 
           <Section id="aliases" title="Configure import aliases">
             <p className="text-muted-foreground">
-              Keep `@/*` and `@ui/*` in sync between TypeScript and Vite. The React aliases point React-targeting
-              packages at `preact/compat`.
+              Keep `@/*` in sync between TypeScript and Vite. The React aliases point React-targeting packages at
+              `preact/compat`.
             </p>
             <CodeBlock
               code={`// tsconfig.app.json
@@ -211,7 +210,6 @@ bun add recharts`}
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@ui/*": ["./src/components/ui/*"],
       "react": ["./node_modules/preact/compat/"],
       "react-dom": ["./node_modules/preact/compat/"]
     }
@@ -229,7 +227,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "./src/"),
-      "@ui": resolve(__dirname, "./src/components/ui/"),
       react: "preact/compat",
       "react-dom": "preact/compat",
     },
@@ -240,11 +237,11 @@ export default defineConfig({
 
           <Section id="copy-utilities" title="Copy the component source">
             <p className="text-muted-foreground">
-              Use `degit` to download the `src/components/ui` directory directly from the GitHub repository into your
-              app. This copies every implemented component plus the shared primitives in `share/`.
+              Use `degit` to download the `registry/ui` directory directly from the GitHub repository into your app.
+              This copies every implemented component plus the shared primitives in `share/`.
             </p>
             <CodeBlock
-              code={"bunx degit https://github.com/LiasCode/shadcn-preact/src/components/ui#main ./src/components/ui"}
+              code={"bunx degit https://github.com/LiasCode/shadcn-preact/registry/ui#main ./src/components/ui"}
             />
           </Section>
 
@@ -364,7 +361,7 @@ export function ComponentDocPage({ slug }: { slug: string }) {
               npm package.
             </p>
             <CodeBlock
-              code={"bunx degit https://github.com/LiasCode/shadcn-preact/src/components/ui#main ./src/components/ui"}
+              code={"bunx degit https://github.com/LiasCode/shadcn-preact/registry/ui#main ./src/components/ui"}
             />
             {doc.dependencies && (
               <p className="text-muted-foreground text-sm">External dependencies: {doc.dependencies.join(", ")}.</p>

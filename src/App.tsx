@@ -1,5 +1,5 @@
-import { Alert, AlertDescription, AlertTitle } from "@ui/alert";
-import { Button } from "@ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@registry/ui/alert";
+import { Button } from "@registry/ui/button";
 import { ExternalLink } from "lucide-preact";
 import { LocationProvider, Route, Router } from "preact-iso";
 

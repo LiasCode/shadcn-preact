@@ -1,6 +1,5 @@
+import { Toggle } from "@registry/ui/toggle";
 import { BookmarkIcon, Italic, Underline } from "lucide-preact";
-
-import { Toggle } from "@/components/ui/toggle";
 
 export function ToggleDemo() {
   return (

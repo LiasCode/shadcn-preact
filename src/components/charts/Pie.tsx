@@ -1,9 +1,8 @@
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@registry/ui/chart";
 import { TrendingUp } from "lucide-preact";
 import { useMemo } from "preact/hooks";
 import { Label, Pie, PieChart } from "recharts";
-
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 export const description = "A donut chart with text";
 

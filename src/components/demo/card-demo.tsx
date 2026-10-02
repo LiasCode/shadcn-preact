@@ -1,7 +1,7 @@
-import { Button } from "@ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@ui/card";
-import { Input } from "@ui/input";
-import { Label } from "@ui/label";
+import { Button } from "@registry/ui/button";
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import { Input } from "@registry/ui/input";
+import { Label } from "@registry/ui/label";
 
 export function CardDemo() {
   return (
