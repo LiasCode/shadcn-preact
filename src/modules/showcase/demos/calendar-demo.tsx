@@ -9,7 +9,7 @@ export function CalendarDemo() {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
-    <div className="flex flex-row flex-wrap gap-8">
+    <div className="relative flex flex-row flex-wrap gap-8 overflow-x-auto">
       <Calendar
         mode="single"
         selected={date}

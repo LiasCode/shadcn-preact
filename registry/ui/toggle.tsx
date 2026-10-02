@@ -1,23 +1,20 @@
-import { type VariantProps, cva } from "class-variance-authority";
-import type { ButtonHTMLAttributes } from "preact";
-import { forwardRef } from "preact/compat";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "./share/cn";
-import { Slot } from "./share/slot";
-import { useControlledState } from "./share/useControlledState";
+import { cn } from "./lib/utils";
+import { Toggle as TogglePrimitive } from "./primitives/toggle";
 
 const toggleVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none transition-[color,box-shadow] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive whitespace-nowrap",
+  "hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&_svg:not([class*='size-'])]:size-4 group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none hover:bg-muted focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default: "bg-transparent",
-        outline: "border border-input bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground",
+        outline: "border-input hover:bg-muted border bg-transparent",
       },
       size: {
-        default: "h-9 px-2 min-w-9",
-        sm: "h-8 px-1.5 min-w-8",
-        lg: "h-10 px-2.5 min-w-10",
+        default: "h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+        sm: "h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
+        lg: "h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
       },
     },
     defaultVariants: {
@@ -27,43 +24,13 @@ const toggleVariants = cva(
   },
 );
 
-type ToggleProps = ButtonHTMLAttributes<HTMLButtonElement> &
-  VariantProps<typeof toggleVariants> & {
-    pressed?: boolean;
-    defaultPressed?: boolean;
-    onPressedChange?(pressed: boolean): void;
-    asChild?: boolean;
-  };
+function Toggle({
+  className,
+  variant = "default",
+  size = "default",
+  ...props
+}: TogglePrimitive.Props & VariantProps<typeof toggleVariants>) {
+  return <TogglePrimitive data-slot="toggle" className={cn(toggleVariants({ variant, size, className }))} {...props} />;
+}
 
-const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(({ className, variant, size, ...props }, forwardedRef) => {
-  const [isPressed, setIsPressed] = useControlledState({
-    defaultValue: Boolean(props.defaultPressed),
-    controlledValue: props.pressed,
-    onChange: props.onPressedChange,
-  });
-
-  const Comp = props.asChild ? Slot : "button";
-
-  return (
-    <Comp
-      type="button"
-      data-slot="toggle"
-      aria-pressed={isPressed}
-      data-state={isPressed ? "on" : "off"}
-      className={cn(toggleVariants({ variant, size, className }))}
-      data-disabled={props.disabled ? "" : undefined}
-      {...props}
-      ref={forwardedRef}
-      onClick={(e) => {
-        //@ts-expect-error
-        props.onClick?.(e);
-
-        if (Boolean(props.disabled) !== true) {
-          setIsPressed(!isPressed);
-        }
-      }}
-    />
-  );
-});
-
-export { Toggle, toggleVariants, type ToggleProps };
+export { Toggle, toggleVariants };

@@ -7,6 +7,10 @@ the `@base-ui/utils` package.
 
 Base UI is released under the MIT license; see [LICENSE](./LICENSE).
 
-Ported entry points: `merge-props`, `use-render`, `direction-provider`, `button`, `separator`, `input`, `avatar`, and
-`progress`. Input currently supports the standalone Field.Control context; Base UI Field/Form providers and automatic
-composite context await the phases that need them (ADR 0012).
+Ported entry points: `merge-props`, `use-render`, `direction-provider`, `button`, `separator`, `input`, `avatar`,
+`progress`, `toggle`, `toggle-group`, `checkbox`, `switch`, `radio`, `radio-group`, `collapsible`, `accordion`, `tabs`,
+and `slider`. Composite list registration and linear roving focus live in `internals/composite/`.
+
+The exposed parts are those needed by the rebuilt shadcn components. Input and form controls currently use the
+standalone Field context; Base UI Field/Form validation, CheckboxGroup, grid/Toolbar integration, and unused parts
+such as Tabs.Indicator and Slider.Label/Value remain deferred (ADRs 0012 and 0013).

@@ -1,125 +1,69 @@
-import { type ComponentProps, createContext } from "preact";
-import { forwardRef, type PropsWithChildren, useContext } from "preact/compat";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "./share/cn";
-import { useControlledState } from "./share/useControlledState";
+import { cn } from "./lib/utils";
+import { Tabs as TabsPrimitive } from "./primitives/tabs";
 
-const TabCtx = createContext<{
-  value: string;
-  onValueChange: (value: string) => void;
-  orientation: "vertical" | "horizontal";
-  activationMode?: "automatic" | "manual";
-} | null>(null);
-
-function useTabs() {
-  const c = useContext(TabCtx);
-  if (!c) throw new Error("useTabs should be used within TabCtx provider");
-  return c;
+function Tabs({ className, orientation = "horizontal", ...props }: TabsPrimitive.Root.Props) {
+  return (
+    <TabsPrimitive.Root
+      data-slot="tabs"
+      data-orientation={orientation}
+      className={cn("gap-2 group/tabs flex data-horizontal:flex-col", className)}
+      {...props}
+    />
+  );
 }
 
-type TabsProps = PropsWithChildren<ComponentProps<"div">> & {
-  /** The value for the selected tab, if controlled */
-  value?: string;
-  /** The value of the tab to select by default, if uncontrolled */
-  defaultValue?: string;
-  /** A function called when a new tab is selected */
-  onValueChange?: (value: string) => void;
-  /**
-   * The orientation the tabs are layed out.
-   * Mainly so arrow navigation is done accordingly (left & right vs. up & down)
-   * @defaultValue horizontal
-   */
-  orientation?: "vertical" | "horizontal";
-  /**
-   * Whether a tab is activated automatically or manually.
-   * @defaultValue automatic
-   * */
-  activationMode?: "automatic" | "manual";
-};
-
-const Tabs = forwardRef<HTMLDivElement, TabsProps>(
-  (
-    { value: controlledValue, defaultValue, onValueChange, activationMode, orientation, children, className, ...props },
-    forwardedRef,
-  ) => {
-    const [value, setValue] = useControlledState({
-      defaultValue: defaultValue ?? "",
-      controlledValue,
-      onChange: onValueChange,
-    });
-
-    return (
-      <TabCtx.Provider
-        value={{
-          onValueChange: setValue,
-          value,
-          orientation: orientation || "horizontal",
-          activationMode,
-        }}
-      >
-        <div ref={forwardedRef} data-slot="tabs" className={cn("flex flex-col gap-2", className)} {...props}>
-          {children}
-        </div>
-      </TabCtx.Provider>
-    );
+const tabsListVariants = cva(
+  "rounded-lg p-[3px] group-data-horizontal/tabs:h-8 data-[variant=line]:rounded-none group/tabs-list inline-flex w-fit items-center justify-center text-muted-foreground group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col",
+  {
+    variants: {
+      variant: {
+        default: "bg-muted",
+        line: "gap-1 bg-transparent",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
   },
 );
 
-const TabsList = forwardRef<HTMLDivElement, ComponentProps<"div">>(({ className, ...props }, forwardedRef) => {
-  const { orientation } = useTabs();
-
+function TabsList({
+  className,
+  variant = "default",
+  ...props
+}: TabsPrimitive.List.Props & VariantProps<typeof tabsListVariants>) {
   return (
-    <div
-      ref={forwardedRef}
+    <TabsPrimitive.List
       data-slot="tabs-list"
-      data-orientation={orientation}
-      className={cn(
-        "inline-flex h-9 w-fit items-center justify-center rounded-lg bg-muted p-0.75 text-muted-foreground",
-        className,
-      )}
+      data-variant={variant}
+      className={cn(tabsListVariants({ variant }), className)}
       {...props}
     />
   );
-});
+}
 
-type TabsTriggerProps = ComponentProps<"button"> & { value?: string };
-
-const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(({ className, ...props }, forwardedRef) => {
-  const { value, onValueChange, orientation } = useTabs();
+function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
   return (
-    <button
-      ref={forwardedRef}
-      data-state={value === props.value ? "active" : "inactive"}
-      data-orientation={orientation}
+    <TabsPrimitive.Tab
       data-slot="tabs-trigger"
-      onClick={() => onValueChange(props.value || "")}
-      type="button"
       className={cn(
-        "inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-md border border-transparent px-2 py-1 font-medium text-foreground text-sm transition-[color,box-shadow] focus-visible:border-ring focus-visible:outline-1 focus-visible:outline-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:shadow-sm dark:text-muted-foreground dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 dark:data-[state=active]:text-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "gap-1.5 rounded-md border border-transparent px-1.5 py-0.5 text-sm font-medium group-data-[variant=default]/tabs-list:data-active:shadow-sm group-data-[variant=line]/tabs-list:data-active:shadow-none [&_svg:not([class*='size-'])]:size-4 has-data-[icon=inline-end]:pr-1 has-data-[icon=inline-start]:pl-1 relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center whitespace-nowrap text-foreground/60 transition-all group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:group-data-[variant=line]/tabs-list:data-active:border-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-transparent",
+        "data-active:bg-background data-active:text-foreground dark:data-active:border-input dark:data-active:bg-input/30 dark:data-active:text-foreground",
+        "after:absolute after:bg-foreground after:opacity-0 after:transition-opacity group-data-horizontal/tabs:after:inset-x-0 group-data-horizontal/tabs:after:bottom-[-5px] group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:inset-y-0 group-data-vertical/tabs:after:-right-1 group-data-vertical/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-active:after:opacity-100",
         className,
       )}
       {...props}
     />
   );
-});
+}
 
-type TabsContentProps = ComponentProps<"div"> & { value?: string };
-
-const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(({ className, ...props }, forwardedRef) => {
-  const { value, orientation } = useTabs();
-
+function TabsContent({ className, ...props }: TabsPrimitive.Panel.Props) {
   return (
-    value === props.value && (
-      <div
-        ref={forwardedRef}
-        data-orientation={orientation}
-        data-state="active"
-        data-slot="tabs-content"
-        className={cn("flex-1 outline-none", className)}
-        {...props}
-      />
-    )
+    <TabsPrimitive.Panel data-slot="tabs-content" className={cn("text-sm flex-1 outline-none", className)} {...props} />
   );
-});
+}
 
-export { Tabs, TabsContent, TabsList, TabsTrigger };
+export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants };

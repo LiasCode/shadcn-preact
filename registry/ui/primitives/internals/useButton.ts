@@ -1,6 +1,7 @@
 import { useCallback, useRef } from "preact/hooks";
 
 import { makeEventPreventable, mergeProps } from "../merge-props";
+import { useCompositeRootContext } from "./composite/root/CompositeRootContext";
 import type { HTMLProps } from "./types";
 import { useFocusableWhenDisabled } from "./useFocusableWhenDisabled";
 import { useIsoLayoutEffect } from "./useIsoLayoutEffect";
@@ -20,8 +21,10 @@ export function useButton(parameters: UseButtonParameters = {}) {
     focusableWhenDisabled,
     tabIndex = 0,
     native: isNativeButton = true,
-    composite = false,
+    composite: compositeProp,
   } = parameters;
+  const compositeContext = useCompositeRootContext(true);
+  const composite = compositeProp ?? Boolean(compositeContext);
   const elementRef = useRef<HTMLElement | null>(null);
   const { props: focusableProps } = useFocusableWhenDisabled({
     disabled,
