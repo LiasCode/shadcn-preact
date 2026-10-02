@@ -1,28 +1,19 @@
-import { Badge } from "@registry/ui/badge";
-import { BadgeCheckIcon } from "lucide-preact";
+import { BadgeCustomColors as Example1 } from "../examples/badge-colors";
+import Example2 from "../examples/badge-demo";
+import { BadgeWithIconLeft as Example3 } from "../examples/badge-icon";
+import { BadgeAsLink as Example4 } from "../examples/badge-link";
+import { BadgeWithSpinner as Example5 } from "../examples/badge-spinner";
+import { BadgeVariants as Example6 } from "../examples/badge-variants";
 
 export function BadgeDemo() {
   return (
-    <div className="flex flex-col items-center gap-2">
-      <div className="flex w-full flex-wrap gap-2">
-        <Badge>Badge</Badge>
-        <Badge variant="secondary">Secondary</Badge>
-        <Badge variant="destructive">Destructive</Badge>
-        <Badge variant="outline">Outline</Badge>
-      </div>
-      <div className="flex w-full flex-wrap gap-2">
-        <Badge variant="secondary" className="bg-blue-500 text-white dark:bg-blue-600">
-          <BadgeCheckIcon />
-          Verified
-        </Badge>
-        <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">8</Badge>
-        <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums" variant="destructive">
-          99
-        </Badge>
-        <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums" variant="outline">
-          20+
-        </Badge>
-      </div>
+    <div className="flex w-full flex-col items-start gap-8">
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
+      <Example5 />
+      <Example6 />
     </div>
   );
 }

@@ -1,117 +1,67 @@
-import type { AccessibleImgHTMLAttributes, ComponentProps, HTMLAttributes, ImgHTMLAttributes } from "preact";
-import { createContext, forwardRef, useContext, useEffect, useLayoutEffect, useState } from "preact/compat";
+import { cn } from "./lib/utils";
+import { Avatar as AvatarPrimitive } from "./primitives/avatar";
+import type { ComponentProps } from "./primitives/internals/types";
 
-import { cn } from "./share/cn";
+function Avatar({
+  className,
+  size = "default",
+  ...props
+}: AvatarPrimitive.Root.Props & {
+  size?: "default" | "sm" | "lg";
+}) {
+  return (
+    <AvatarPrimitive.Root
+      data-slot="avatar"
+      data-size={size}
+      className={cn(
+        "size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
 
-type ImageLoadingStatus = "idle" | "loading" | "loaded" | "error";
+function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
+  return (
+    <AvatarPrimitive.Image
+      data-slot="avatar-image"
+      className={cn("rounded-full aspect-square size-full object-cover", className)}
+      {...props}
+    />
+  );
+}
 
-const AvatarCtx = createContext<{
-  status: ImageLoadingStatus;
-  changeStatus: (s: ImageLoadingStatus) => void;
-} | null>(null);
+function AvatarFallback({ className, ...props }: AvatarPrimitive.Fallback.Props) {
+  return (
+    <AvatarPrimitive.Fallback
+      data-slot="avatar-fallback"
+      className={cn(
+        "bg-muted text-muted-foreground rounded-full flex size-full items-center justify-center text-sm group-data-[size=sm]/avatar:text-xs",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
 
-const Avatar = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement> & { size?: "default" | "sm" | "lg" }>(
-  ({ className, size = "default", ...props }, forwardedRef) => {
-    const [imgStatus, setImgStatus] = useState<ImageLoadingStatus>("idle");
+function AvatarBadge({ className, ...props }: ComponentProps<"span">) {
+  return (
+    <span
+      data-slot="avatar-badge"
+      className={cn(
+        "bg-primary text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none",
+        "group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden",
+        "group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2",
+        "group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
 
-    const changeImgStatus = (s: ImageLoadingStatus) => setImgStatus(s);
-
-    return (
-      <AvatarCtx.Provider value={{ status: imgStatus, changeStatus: changeImgStatus }}>
-        <div
-          ref={forwardedRef}
-          data-slot="avatar"
-          data-size={size}
-          className={cn(
-            "group/avatar relative flex size-8 shrink-0 select-none rounded-full after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=lg]:size-10 data-[size=sm]:size-6 dark:after:mix-blend-lighten",
-            className,
-          )}
-          {...props}
-        />
-      </AvatarCtx.Provider>
-    );
-  },
-);
-
-type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement> & {
-  onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
-};
-
-const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
-  ({ onLoadingStatusChange, className, ...props }, forwardedRef) => {
-    const { status, changeStatus } = useAvatar();
-    const loadingStatus = useImageLoadingStatus(props.src as string, {
-      crossOrigin: typeof props.crossOrigin === "string" ? props.crossOrigin : undefined,
-      referrerPolicy: typeof props.referrerPolicy === "string" ? props.referrerPolicy : undefined,
-    });
-
-    useEffect(() => {
-      changeStatus(loadingStatus);
-      onLoadingStatusChange?.(loadingStatus);
-    }, [loadingStatus, changeStatus, onLoadingStatusChange]);
-
-    return status === "loaded" ? (
-      <img
-        ref={forwardedRef}
-        data-slot="avatar-image"
-        className={cn("aspect-square size-full rounded-full object-cover", className)}
-        // Preact 11 types `alt` and `role` as a discriminated union, which the wide public props cannot satisfy.
-        {...(props as AccessibleImgHTMLAttributes<HTMLImageElement>)}
-      />
-    ) : null;
-  },
-);
-
-type AvatarFallbackProps = HTMLAttributes<HTMLSpanElement> & {
-  delayMs?: number;
-};
-
-const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
-  ({ delayMs, className, ...props }, forwardedRef) => {
-    const { status } = useAvatar();
-    const [canRender, setCanRender] = useState(delayMs === undefined);
-
-    useEffect(() => {
-      if (delayMs === undefined) return;
-
-      const timerId = setTimeout(() => setCanRender(true), delayMs);
-      return () => clearTimeout(timerId);
-    }, [delayMs]);
-
-    return canRender && status !== "loaded" ? (
-      <span
-        ref={forwardedRef}
-        data-slot="avatar-fallback"
-        className={cn(
-          "flex size-full items-center justify-center rounded-full bg-muted text-muted-foreground text-sm group-data-[size=sm]/avatar:text-xs",
-          className,
-        )}
-        {...props}
-      />
-    ) : null;
-  },
-);
-
-const AvatarBadge = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(
-  ({ className, ...props }, forwardedRef) => {
-    return (
-      <span
-        data-slot="avatar-badge"
-        className={cn(
-          "absolute right-0 bottom-0 z-10 inline-flex select-none items-center justify-center rounded-full bg-primary text-primary-foreground bg-blend-color ring-2 ring-background",
-          "group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden",
-          "group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2",
-          "group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2",
-          className,
-        )}
-        ref={forwardedRef}
-        {...props}
-      />
-    );
-  },
-);
-
-const AvatarGroup = forwardRef<HTMLDivElement, ComponentProps<"div">>(({ className, ...props }, forwardedRef) => {
+function AvatarGroup({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="avatar-group"
@@ -119,74 +69,22 @@ const AvatarGroup = forwardRef<HTMLDivElement, ComponentProps<"div">>(({ classNa
         "group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background",
         className,
       )}
-      ref={forwardedRef}
       {...props}
     />
   );
-});
+}
 
-const AvatarGroupCount = forwardRef<HTMLDivElement, ComponentProps<"div">>(({ className, ...props }, forwardedRef) => {
+function AvatarGroupCount({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="avatar-group-count"
       className={cn(
-        "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground text-sm ring-2 ring-background group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3",
+        "bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background",
         className,
       )}
-      ref={forwardedRef}
       {...props}
     />
   );
-});
-
-type useImageLoadingStatusOptions = {
-  referrerPolicy: string | undefined;
-  crossOrigin: string | undefined;
-};
-function useImageLoadingStatus(src: string | undefined, { referrerPolicy, crossOrigin }: useImageLoadingStatusOptions) {
-  const [loadingStatus, setLoadingStatus] = useState<ImageLoadingStatus>("idle");
-
-  useLayoutEffect(() => {
-    if (!src) {
-      setLoadingStatus("error");
-      return;
-    }
-
-    let isMounted = true;
-    const image = new Image();
-
-    const updateStatus = (status: ImageLoadingStatus) => () => {
-      if (!isMounted) return;
-      setLoadingStatus(status);
-    };
-
-    setLoadingStatus("loading");
-
-    image.onload = updateStatus("loaded");
-    image.onerror = updateStatus("error");
-
-    if (referrerPolicy) {
-      image.referrerPolicy = referrerPolicy;
-    }
-
-    if (crossOrigin) {
-      image.crossOrigin = crossOrigin;
-    }
-
-    image.src = src;
-
-    return () => {
-      isMounted = false;
-    };
-  }, [src, referrerPolicy, crossOrigin]);
-
-  return loadingStatus;
 }
 
-function useAvatar() {
-  const c = useContext(AvatarCtx);
-  if (!c) throw new Error("useAvatar should be used inside of an AvatarContextProvider");
-  return c;
-}
-
-export { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage };
+export { Avatar, AvatarImage, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarBadge };

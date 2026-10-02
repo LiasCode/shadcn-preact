@@ -1,22 +1,15 @@
-import { Separator } from "@registry/ui/separator";
+import Example1 from "../examples/separator-demo";
+import { SeparatorList as Example2 } from "../examples/separator-list";
+import { SeparatorMenu as Example3 } from "../examples/separator-menu";
+import { SeparatorVertical as Example4 } from "../examples/separator-vertical";
 
 export function SeparatorDemo() {
   return (
-    <div className={"flex flex-row gap-8 *:max-w-sm"}>
-      <div>
-        <div className="space-y-1">
-          <h4 className="font-medium text-sm leading-none">Radix Primitives</h4>
-          <p className="text-muted-foreground text-sm">An open-source UI component library.</p>
-        </div>
-        <Separator className="my-4" />
-        <div className="flex h-5 items-center space-x-4 text-sm">
-          <div>Blog</div>
-          <Separator orientation="vertical" />
-          <div>Docs</div>
-          <Separator orientation="vertical" />
-          <div>Source</div>
-        </div>
-      </div>
+    <div className="flex w-full flex-col items-start gap-8">
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
     </div>
   );
 }

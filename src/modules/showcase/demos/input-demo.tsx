@@ -1,39 +1,33 @@
-import { Button } from "@registry/ui/button";
-import { Input } from "@registry/ui/input";
-import { Label } from "@registry/ui/label";
+import { InputBadge as Example1 } from "../examples/input-badge";
+import { InputBasic as Example2 } from "../examples/input-basic";
+import { InputButtonGroup as Example3 } from "../examples/input-button-group";
+import { InputDemo as Example4 } from "../examples/input-demo";
+import { InputDisabled as Example5 } from "../examples/input-disabled";
+import { InputField as Example6 } from "../examples/input-field";
+import { InputFieldgroup as Example7 } from "../examples/input-fieldgroup";
+import { InputFile as Example8 } from "../examples/input-file";
+import { InputGrid as Example9 } from "../examples/input-grid";
+import { InputInline as Example10 } from "../examples/input-inline";
+import { InputInputGroup as Example11 } from "../examples/input-input-group";
+import { InputInvalid as Example12 } from "../examples/input-invalid";
+import { InputRequired as Example13 } from "../examples/input-required";
 
 export function InputDemo() {
   return (
-    <div className={"flex flex-col gap-8 *:max-w-sm"}>
-      <Input type="email" placeholder="Email" />
-
-      <div className="grid w-full max-w-sm items-center gap-3">
-        <Label htmlFor="picture1">Picture</Label>
-        <Input id="picture1" type="file" />
-      </div>
-
-      <Input disabled type="email" placeholder="Email" />
-
-      <div className="grid w-full max-w-sm items-center gap-3">
-        <Label htmlFor="email1">Email</Label>
-        <Input type="email" id="email1" placeholder="Email" />
-      </div>
-
-      <div className="flex w-full max-w-sm items-center gap-2">
-        <Input type="email" placeholder="Email" />
-        <Button type="submit" variant="outline">
-          Subscribe
-        </Button>
-      </div>
-
-      <form onSubmit={(e) => e.preventDefault()} className="w-2/3 space-y-2">
-        <div className={"flex flex-col gap-2"}>
-          <Label>Username</Label>
-          <Input placeholder="shadcn" />
-          <span>This is your public display name.</span>
-        </div>
-        <Button type="submit">Submit</Button>
-      </form>
+    <div className="flex w-full flex-col items-start gap-8">
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
+      <Example5 />
+      <Example6 />
+      <Example7 />
+      <Example8 />
+      <Example9 />
+      <Example10 />
+      <Example11 />
+      <Example12 />
+      <Example13 />
     </div>
   );
 }

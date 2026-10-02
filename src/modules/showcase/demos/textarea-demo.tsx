@@ -1,28 +1,17 @@
-import { Button } from "@registry/ui/button";
-import { Label } from "@registry/ui/label";
-import { Textarea } from "@registry/ui/textarea";
+import { TextareaButton as Example1 } from "../examples/textarea-button";
+import Example2 from "../examples/textarea-demo";
+import { TextareaDisabled as Example3 } from "../examples/textarea-disabled";
+import { TextareaField as Example4 } from "../examples/textarea-field";
+import { TextareaInvalid as Example5 } from "../examples/textarea-invalid";
 
 export function TextareaDemo() {
   return (
-    <div className={"flex flex-row flex-wrap gap-8 *:max-w-sm"}>
-      <Textarea placeholder="Type your message here." />
-      <Textarea placeholder="Type your message here." disabled />
-
-      <div className="grid w-full gap-3">
-        <Label htmlFor="message">Your message</Label>
-        <Textarea placeholder="Type your message here." id="message" />
-      </div>
-
-      <div className="grid w-full gap-3">
-        <Label htmlFor="message-2">Your Message</Label>
-        <Textarea placeholder="Type your message here." id="message-2" />
-        <p className="text-muted-foreground text-sm">Your message will be copied to the support team.</p>
-      </div>
-
-      <div className="grid w-full gap-2">
-        <Textarea placeholder="Type your message here." />
-        <Button>Send message</Button>
-      </div>
+    <div className="flex w-full flex-col items-start gap-8">
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
+      <Example5 />
     </div>
   );
 }

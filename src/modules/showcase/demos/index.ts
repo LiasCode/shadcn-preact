@@ -21,6 +21,7 @@ import { FieldDemo } from "./field-demo";
 import { HoverCardDemo } from "./hover-card-demo";
 import { InputDemo } from "./input-demo";
 import { InputGroupDemo } from "./input-group-demo";
+import { ItemDemo } from "./item-demo";
 import { KbdDemo } from "./kbd-demo";
 import { LabelDemo } from "./label-demo";
 import { MenubarDemo } from "./menubar-demo";
@@ -70,6 +71,7 @@ export const showcase: readonly ShowcaseEntry[] = [
   { slug: "hover-card", name: "Hover Card", Demo: HoverCardDemo },
   { slug: "input", name: "Input", Demo: InputDemo },
   { slug: "input-group", name: "Input Group", Demo: InputGroupDemo },
+  { slug: "item", name: "Item", Demo: ItemDemo },
   { slug: "kbd", name: "Kbd", Demo: KbdDemo },
   { slug: "label", name: "Label", Demo: LabelDemo },
   { slug: "menubar", name: "Menubar", Demo: MenubarDemo },

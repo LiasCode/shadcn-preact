@@ -1,48 +1,41 @@
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-  InputGroupText,
-  InputGroupTextarea,
-} from "@registry/ui/input-group";
-import { ArrowUpIcon, CheckIcon, PlusIcon, Search } from "lucide-preact";
+import { InputGroupBasic as Example1 } from "../examples/input-group-basic";
+import { InputGroupBlockEnd as Example2 } from "../examples/input-group-block-end";
+import { InputGroupBlockStart as Example3 } from "../examples/input-group-block-start";
+import Example4 from "../examples/input-group-button-group";
+import Example5 from "../examples/input-group-custom";
+import { InputGroupDemo as Example6 } from "../examples/input-group-demo";
+import Example7 from "../examples/input-group-icon";
+import { InputGroupInCard as Example8 } from "../examples/input-group-in-card";
+import { InputGroupInlineEnd as Example9 } from "../examples/input-group-inline-end";
+import { InputGroupInlineStart as Example10 } from "../examples/input-group-inline-start";
+import { InputGroupKbd as Example11 } from "../examples/input-group-kbd";
+import Example12 from "../examples/input-group-spinner";
+import Example13 from "../examples/input-group-text";
+import Example15 from "../examples/input-group-textarea";
+import { InputGroupTextareaExamples as Example14 } from "../examples/input-group-textarea-examples";
+import { InputGroupWithButtons as Example16 } from "../examples/input-group-with-buttons";
+import { InputGroupWithKbd as Example17 } from "../examples/input-group-with-kbd";
 
 export function InputGroupDemo() {
   return (
-    <div className={"flex flex-col gap-8 *:max-w-sm"}>
-      <InputGroup>
-        <InputGroupInput placeholder="Search..." />
-        <InputGroupAddon>
-          <Search />
-        </InputGroupAddon>
-        <InputGroupAddon align="inline-end">12 results</InputGroupAddon>
-      </InputGroup>
-
-      <InputGroup>
-        <InputGroupInput placeholder="@shadcn" />
-        <InputGroupAddon align="inline-end">
-          <div className="flex size-4 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <CheckIcon className="size-3" />
-          </div>
-        </InputGroupAddon>
-      </InputGroup>
-
-      <InputGroup>
-        <InputGroupTextarea placeholder="Ask, Search or Chat..." />
-        <InputGroupAddon align="block-end">
-          <InputGroupButton variant="outline" className="rounded-full" size="icon-xs">
-            <PlusIcon />
-          </InputGroupButton>
-
-          <InputGroupText className="ml-auto">52% used</InputGroupText>
-
-          <InputGroupButton variant="default" className="rounded-full" size="icon-xs" disabled>
-            <ArrowUpIcon />
-            <span className="sr-only">Send</span>
-          </InputGroupButton>
-        </InputGroupAddon>
-      </InputGroup>
+    <div className="flex w-full flex-col items-start gap-8">
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
+      <Example5 />
+      <Example6 />
+      <Example7 />
+      <Example8 />
+      <Example9 />
+      <Example10 />
+      <Example11 />
+      <Example12 />
+      <Example13 />
+      <Example14 />
+      <Example15 />
+      <Example16 />
+      <Example17 />
     </div>
   );
 }

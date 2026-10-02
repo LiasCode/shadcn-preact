@@ -1,26 +1,28 @@
-import type { ComponentProps } from "preact";
+import type { JSX } from "preact";
 
-import { cn } from "./share/cn";
+import { cn } from "./lib/utils";
+import type { ComponentProps } from "./primitives/internals/types";
 
 function Kbd({ className, ...props }: ComponentProps<"kbd">) {
   return (
     <kbd
       data-slot="kbd"
       className={cn(
-        "pointer-events-none inline-flex h-5 w-fit min-w-5 select-none items-center justify-center gap-1 rounded-sm bg-muted px-1 font-medium font-sans text-muted-foreground text-xs",
-        "[&_svg:not([class*='size-'])]:size-3",
-        "[[data-slot=tooltip-content]_&]:bg-background/20 [[data-slot=tooltip-content]_&]:text-background dark:[[data-slot=tooltip-content]_&]:bg-background/10",
+        "bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit min-w-5 gap-1 rounded-sm px-1 font-sans text-xs font-medium [&_svg:not([class*='size-'])]:size-3 pointer-events-none inline-flex items-center justify-center select-none",
         className,
       )}
-      {...props}
+      {...(props as JSX.IntrinsicElements["kbd"])}
     />
   );
 }
 
 function KbdGroup({ className, ...props }: ComponentProps<"div">) {
   return (
-    //@ts-expect-error
-    <kbd data-slot="kbd-group" className={cn("inline-flex items-center gap-1", className)} {...props} />
+    <kbd
+      data-slot="kbd-group"
+      className={cn("gap-1 inline-flex items-center", className)}
+      {...(props as JSX.IntrinsicElements["kbd"])}
+    />
   );
 }
 

@@ -1,12 +1,14 @@
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-preact";
-import type { ComponentProps } from "preact";
+import type { JSX } from "preact";
 
 import { Button } from "./button";
-import { cn } from "./share/cn";
+import { cn } from "./lib/utils";
+import type { ComponentProps } from "./primitives/internals/types";
 
 function Pagination({ className, ...props }: ComponentProps<"nav">) {
   return (
     <nav
+      role="navigation"
       aria-label="pagination"
       data-slot="pagination"
       className={cn("mx-auto flex w-full justify-center", className)}
@@ -16,7 +18,7 @@ function Pagination({ className, ...props }: ComponentProps<"nav">) {
 }
 
 function PaginationContent({ className, ...props }: ComponentProps<"ul">) {
-  return <ul data-slot="pagination-content" className={cn("flex items-center gap-0.5", className)} {...props} />;
+  return <ul data-slot="pagination-content" className={cn("gap-0.5 flex items-center", className)} {...props} />;
 }
 
 function PaginationItem({ ...props }: ComponentProps<"li">) {
@@ -30,9 +32,20 @@ type PaginationLinkProps = {
 
 function PaginationLink({ className, isActive, size = "icon", ...props }: PaginationLinkProps) {
   return (
-    <Button asChild variant={isActive ? "outline" : "ghost"} size={size} className={cn(className)}>
-      <a aria-current={isActive ? "page" : undefined} data-slot="pagination-link" data-active={isActive} {...props} />
-    </Button>
+    <Button
+      variant={isActive ? "outline" : "ghost"}
+      size={size}
+      className={cn(className)}
+      nativeButton={false}
+      render={
+        <a
+          aria-current={isActive ? "page" : undefined}
+          data-slot="pagination-link"
+          data-active={isActive}
+          {...(props as JSX.IntrinsicElements["a"])}
+        />
+      }
+    />
   );
 }
 
@@ -67,7 +80,7 @@ function PaginationEllipsis({ className, ...props }: ComponentProps<"span">) {
     <span
       aria-hidden
       data-slot="pagination-ellipsis"
-      className={cn("flex size-8 items-center justify-center [&_svg:not([class*='size-'])]:size-4", className)}
+      className={cn("size-8 [&_svg:not([class*='size-'])]:size-4 flex items-center justify-center", className)}
       {...props}
     >
       <MoreHorizontalIcon />

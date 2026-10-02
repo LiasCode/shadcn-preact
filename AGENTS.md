@@ -49,7 +49,7 @@ the look, and the Tailwind classes stay interoperable:
   `../shadcn/node_modules/.pnpm/@base-ui+react@1.6.0*/node_modules/@base-ui/react` (code and `docs/`).
 - Primitives keep Base UI's structure: public entry points in `primitives/<name>`, shared code in
   `primitives/internals/<UpstreamModule>.ts`. Preact adaptations are listed in ADR 0010; add new ones there or in a
-  new record.
+  new record. Type and phase-2 adaptations are in ADR 0012.
 - Components are plain functions that receive `ref` as a prop (Preact 11), without `forwardRef` or `"use client"`.
   React APIs come from `preact/compat` or `preact/hooks`.
 - Variants with `cva` and `VariantProps`, exporting the component and its `*Variants` object; class merging with

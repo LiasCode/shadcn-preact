@@ -1,71 +1,23 @@
-import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@registry/ui/avatar";
-import { PlusIcon } from "lucide-preact";
+import { AvatarWithBadge as Example2 } from "../examples/avatar-badge";
+import { AvatarBadgeIconExample as Example1 } from "../examples/avatar-badge-icon";
+import Example3 from "../examples/avatar-basic";
+import Example4 from "../examples/avatar-demo";
+import { AvatarGroupExample as Example7 } from "../examples/avatar-group";
+import { AvatarGroupCountExample as Example6 } from "../examples/avatar-group-count";
+import { AvatarGroupCountIconExample as Example5 } from "../examples/avatar-group-count-icon";
+import { AvatarSizeExample as Example8 } from "../examples/avatar-size";
 
 export function AvatarDemo() {
   return (
-    <div className="flex flex-row flex-wrap items-center gap-12">
-      <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" className="grayscale" />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
-      <Avatar>
-        <AvatarImage src="https://github.com/evilrabbit.png" alt="@evilrabbit" />
-        <AvatarFallback>ER</AvatarFallback>
-        <AvatarBadge className="bg-green-600 dark:bg-green-800" />
-      </Avatar>
-      <AvatarGroup className="grayscale">
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-        <Avatar>
-          <AvatarImage src="https://github.com/maxleiter.png" alt="@maxleiter" />
-          <AvatarFallback>LR</AvatarFallback>
-        </Avatar>
-        <Avatar>
-          <AvatarImage src="https://github.com/evilrabbit.png" alt="@evilrabbit" />
-          <AvatarFallback>ER</AvatarFallback>
-        </Avatar>
-        <AvatarGroupCount>+3</AvatarGroupCount>
-      </AvatarGroup>
-
-      <Avatar className="grayscale">
-        <AvatarImage src="https://github.com/pranathip.png" alt="@pranathip" />
-        <AvatarFallback>PP</AvatarFallback>
-        <AvatarBadge>
-          <PlusIcon />
-        </AvatarBadge>
-      </Avatar>
-
-      <AvatarGroup className="grayscale">
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-        <Avatar>
-          <AvatarImage src="https://github.com/maxleiter.png" alt="@maxleiter" />
-          <AvatarFallback>LR</AvatarFallback>
-        </Avatar>
-        <Avatar>
-          <AvatarImage src="https://github.com/evilrabbit.png" alt="@evilrabbit" />
-          <AvatarFallback>ER</AvatarFallback>
-        </Avatar>
-      </AvatarGroup>
-
-      <div>
-        <Avatar size="sm">
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-        <Avatar size="lg">
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-      </div>
+    <div className="flex w-full flex-col items-start gap-8">
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
+      <Example5 />
+      <Example6 />
+      <Example7 />
+      <Example8 />
     </div>
   );
 }

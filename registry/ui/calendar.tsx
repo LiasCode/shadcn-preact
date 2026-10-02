@@ -165,7 +165,7 @@ function CalendarDayButton({
         defaultClassNames.day,
         className,
       )}
-      {...props}
+      {...(props as ComponentProps<typeof Button>)}
     />
   );
 }

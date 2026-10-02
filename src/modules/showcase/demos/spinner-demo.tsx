@@ -1,38 +1,21 @@
-import { Button } from "@registry/ui/button";
-import { Spinner } from "@registry/ui/spinner";
+import { SpinnerBadge as Example1 } from "../examples/spinner-badge";
+import { SpinnerButton as Example2 } from "../examples/spinner-button";
+import { SpinnerCustom as Example3 } from "../examples/spinner-custom";
+import { SpinnerDemo as Example4 } from "../examples/spinner-demo";
+import { SpinnerEmpty as Example5 } from "../examples/spinner-empty";
+import { SpinnerInputGroup as Example6 } from "../examples/spinner-input-group";
+import { SpinnerSize as Example7 } from "../examples/spinner-size";
 
 export function SpinnerDemo() {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-row items-start gap-6">
-        <Spinner className="size-3" />
-        <Spinner className="size-4" />
-        <Spinner className="size-6" />
-        <Spinner className="size-8" />
-      </div>
-
-      <div className="flex flex-row items-start gap-6">
-        <Spinner className="size-6 text-red-500" />
-        <Spinner className="size-6 text-green-500" />
-        <Spinner className="size-6 text-blue-500" />
-        <Spinner className="size-6 text-yellow-500" />
-        <Spinner className="size-6 text-purple-500" />
-      </div>
-
-      <div className="flex flex-row items-start gap-4">
-        <Button disabled size="sm">
-          <Spinner />
-          Loading...
-        </Button>
-        <Button variant="outline" disabled size="sm">
-          <Spinner />
-          Please wait
-        </Button>
-        <Button variant="secondary" disabled size="sm">
-          <Spinner />
-          Processing
-        </Button>
-      </div>
+    <div className="flex min-w-0 w-full flex-col items-start gap-8 overflow-x-auto">
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
+      <Example5 />
+      <Example6 />
+      <Example7 />
     </div>
   );
 }

@@ -1,17 +1,11 @@
-import { Progress } from "@registry/ui/progress";
-import { useEffect, useState } from "preact/hooks";
+import Example1 from "../examples/progress-demo";
+import { ProgressWithLabel as Example2 } from "../examples/progress-label";
 
 export function ProgressDemo() {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setProgress(90), 800);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="flex w-full max-w-sm flex-row items-center justify-center gap-8">
-      <Progress value={progress} className="w-[60%]" />
+    <div className="flex w-full flex-col items-start gap-8">
+      <Example1 />
+      <Example2 />
     </div>
   );
 }

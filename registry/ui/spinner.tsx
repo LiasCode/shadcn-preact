@@ -1,12 +1,17 @@
 import { Loader2Icon } from "lucide-preact";
-import type { ComponentProps } from "preact";
 
-import { cn } from "./share/cn";
+import { cn } from "./lib/utils";
+import type { ComponentProps } from "./primitives/internals/types";
 
 function Spinner({ className, ...props }: ComponentProps<"svg">) {
   return (
-    // @ts-expect-error
-    <Loader2Icon role="status" aria-label="Loading" className={cn("size-4 animate-spin", className)} {...props} />
+    <Loader2Icon
+      data-slot="spinner"
+      role="status"
+      aria-label="Loading"
+      className={cn("size-4 animate-spin", className)}
+      {...props}
+    />
   );
 }
 

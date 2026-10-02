@@ -15,14 +15,14 @@ export function HomeView() {
             An unofficial port of shadcn/ui to Preact and Tailwind CSS v4, with the same component API and without Radix
             UI. Components are source files you copy into your app, customize, and own.
           </p>
-          <Button asChild className="w-fit">
-            <a href="/components">Browse components</a>
+          <Button nativeButton={false} render={<a href="/components" />} className="w-fit">
+            Browse components
           </Button>
         </section>
         <section className="space-y-3">
           <h2 className="font-semibold text-xl tracking-tight">Get the components</h2>
           <CodeBlock
-            code={`bun add class-variance-authority clsx tailwind-merge lucide-preact
+            code={`bun add class-variance-authority cn clsx tailwind-merge lucide-preact tw-animate-css shadcn
 ${copyComponentsCommand}`}
           />
         </section>

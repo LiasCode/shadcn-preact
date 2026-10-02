@@ -1,97 +1,56 @@
-import type { HTMLAttributes } from "preact";
-import { forwardRef } from "preact/compat";
+import { cn } from "./lib/utils";
+import { Progress as ProgressPrimitive } from "./primitives/progress";
 
-import { cn } from "./share/cn";
-
-type ProgressState = "indeterminate" | "complete" | "loading";
-
-const DEFAULT_MAX = 100;
-
-type ProgressProps = HTMLAttributes<HTMLDivElement> & {
-  value?: number | null | undefined;
-  max?: number;
-  getValueLabel?(value: number, max: number): string;
-};
-
-const Progress = forwardRef<HTMLDivElement, ProgressProps>(({ children, className, ...props }, forwardedRef) => {
-  const { value: valueProp = null, max: maxProp, getValueLabel = defaultGetValueLabel, ...progressProps } = props;
-
-  if ((maxProp || maxProp === 0) && !isValidMaxNumber(maxProp)) {
-    console.error(getInvalidMaxError(`${maxProp}`, "Progress"));
-  }
-
-  const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX;
-
-  if (valueProp !== null && !isValidValueNumber(valueProp, max)) {
-    console.error(getInvalidValueError(`${valueProp}`, "Progress"));
-  }
-
-  const value = isValidValueNumber(valueProp, max) ? valueProp : null;
-  const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined;
-
+function Progress({ className, children, value, ...props }: ProgressPrimitive.Root.Props) {
   return (
-    <div
-      ref={forwardedRef}
+    <ProgressPrimitive.Root
+      value={value}
       data-slot="progress"
-      className={cn("relative flex h-1 w-full items-center overflow-x-hidden rounded-full bg-muted", className)}
-      aria-valuemax={max}
-      aria-valuemin={0}
-      aria-valuenow={isNumber(value) ? value : undefined}
-      aria-valuetext={valueLabel}
-      role="progressbar"
-      data-state={getProgressState(value, max)}
-      data-value={value ?? undefined}
-      data-max={max}
-      {...progressProps}
+      className={cn("flex flex-wrap gap-3", className)}
+      {...props}
     >
-      <div
-        ref={forwardedRef}
-        data-state={getProgressState(value, max)}
-        data-value={value ?? undefined}
-        data-max={max}
-        data-slot="progress-indicator"
-        className="size-full flex-1 bg-primary transition-all"
-        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-      />
       {children}
-    </div>
+      <ProgressTrack>
+        <ProgressIndicator />
+      </ProgressTrack>
+    </ProgressPrimitive.Root>
   );
-});
-
-/* ---------------------------------------------------------------------------------------------- */
-
-function defaultGetValueLabel(value: number, max: number) {
-  return `${Math.round((value / max) * 100)}%`;
 }
 
-function getProgressState(value: number | undefined | null, maxValue: number): ProgressState {
-  return value == null ? "indeterminate" : value === maxValue ? "complete" : "loading";
+function ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {
+  return (
+    <ProgressPrimitive.Track
+      className={cn("bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden", className)}
+      data-slot="progress-track"
+      {...props}
+    />
+  );
 }
 
-function isNumber(value: any): value is number {
-  return typeof value === "number";
+function ProgressIndicator({ className, ...props }: ProgressPrimitive.Indicator.Props) {
+  return (
+    <ProgressPrimitive.Indicator
+      data-slot="progress-indicator"
+      className={cn("bg-primary h-full transition-all", className)}
+      {...props}
+    />
+  );
 }
 
-function isValidMaxNumber(max: any): max is number {
-  return isNumber(max) && !Number.isNaN(max) && max > 0;
+function ProgressLabel({ className, ...props }: ProgressPrimitive.Label.Props) {
+  return (
+    <ProgressPrimitive.Label className={cn("text-sm font-medium", className)} data-slot="progress-label" {...props} />
+  );
 }
 
-function isValidValueNumber(value: any, max: number): value is number {
-  return isNumber(value) && !Number.isNaN(value) && value <= max && value >= 0;
+function ProgressValue({ className, ...props }: ProgressPrimitive.Value.Props) {
+  return (
+    <ProgressPrimitive.Value
+      className={cn("text-muted-foreground ml-auto text-sm tabular-nums", className)}
+      data-slot="progress-value"
+      {...props}
+    />
+  );
 }
 
-// Split this out for clearer readability of the error message.
-function getInvalidMaxError(propValue: string, componentName: string) {
-  return `Invalid prop \`max\` of value \`${propValue}\` supplied to \`${componentName}\`. Only numbers greater than 0 are valid max values. Defaulting to \`${DEFAULT_MAX}\`.`;
-}
-
-function getInvalidValueError(propValue: string, componentName: string) {
-  return `Invalid prop \`value\` of value \`${propValue}\` supplied to \`${componentName}\`. The \`value\` prop must be:
-  - a positive number
-  - less than the value passed to \`max\` (or ${DEFAULT_MAX} if no \`max\` prop is set)
-  - \`null\` or \`undefined\` if the progress is indeterminate.
-
-Defaulting to \`null\`.`;
-}
-
-export { Progress };
+export { Progress, ProgressTrack, ProgressIndicator, ProgressLabel, ProgressValue };

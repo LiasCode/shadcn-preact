@@ -26,14 +26,16 @@ function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto flex h-14 w-full max-w-screen-2xl items-center gap-6 px-4 lg:px-6">
-        <a href="/" className="flex items-center gap-2 font-semibold">
+      <div className="mx-auto flex h-14 w-full max-w-screen-2xl items-center gap-1 px-3 sm:gap-6 sm:px-4 lg:px-6">
+        <a href="/" className="flex shrink-0 items-center gap-2 whitespace-nowrap font-semibold">
           <span>
             shadcn-<span className="text-[#b57beb]">preact</span>
           </span>
-          <Badge variant="outline">v4</Badge>
+          <Badge variant="outline" className="hidden sm:inline-flex">
+            v4
+          </Badge>
         </a>
-        <nav className="flex items-center gap-5 text-muted-foreground text-sm">
+        <nav className="flex items-center gap-3 text-xs text-muted-foreground sm:gap-5 sm:text-sm">
           {siteNav.map((item) => (
             <a
               href={item.href}
@@ -45,10 +47,14 @@ function SiteHeader() {
           ))}
         </nav>
         <div className="ml-auto flex items-center gap-1">
-          <Button variant="ghost" size="icon-sm" asChild>
-            <a href={repositoryUrl} aria-label="Open GitHub repository" title="GitHub repository">
-              <GitBranchIcon />
-            </a>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="hidden sm:inline-flex"
+            nativeButton={false}
+            render={<a href={repositoryUrl} aria-label="Open GitHub repository" title="GitHub repository" />}
+          >
+            <GitBranchIcon />
           </Button>
           <ThemeToggle />
         </div>

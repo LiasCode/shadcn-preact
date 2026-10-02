@@ -1,13 +1,9 @@
-import { Input } from "@registry/ui/input";
-import { Label } from "@registry/ui/label";
+import Example1 from "../examples/label-demo";
 
 export function LabelDemo() {
   return (
-    <div className={"flex flex-row flex-wrap gap-8"}>
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="terms">Introduce your name</Label>
-        <Input id={"terms"} />
-      </div>
+    <div className="flex w-full flex-col items-start gap-8">
+      <Example1 />
     </div>
   );
 }

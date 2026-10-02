@@ -6,3 +6,7 @@ imports `@base-ui/react/<name>`. `internals/` holds the shared code that Base UI
 the `@base-ui/utils` package.
 
 Base UI is released under the MIT license; see [LICENSE](./LICENSE).
+
+Ported entry points: `merge-props`, `use-render`, `direction-provider`, `button`, `separator`, `input`, `avatar`, and
+`progress`. Input currently supports the standalone Field.Control context; Base UI Field/Form providers and automatic
+composite context await the phases that need them (ADR 0012).
