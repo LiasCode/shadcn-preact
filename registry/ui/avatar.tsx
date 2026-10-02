@@ -1,4 +1,4 @@
-import type { ComponentProps, HTMLAttributes, ImgHTMLAttributes } from "preact";
+import type { AccessibleImgHTMLAttributes, ComponentProps, HTMLAttributes, ImgHTMLAttributes } from "preact";
 import { createContext, forwardRef, useContext, useEffect, useLayoutEffect, useState } from "preact/compat";
 
 import { cn } from "./share/cn";
@@ -41,8 +41,8 @@ const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
   ({ onLoadingStatusChange, className, ...props }, forwardedRef) => {
     const { status, changeStatus } = useAvatar();
     const loadingStatus = useImageLoadingStatus(props.src as string, {
-      crossOrigin: props.crossOrigin,
-      referrerPolicy: props.crossOrigin as string,
+      crossOrigin: typeof props.crossOrigin === "string" ? props.crossOrigin : undefined,
+      referrerPolicy: typeof props.referrerPolicy === "string" ? props.referrerPolicy : undefined,
     });
 
     useEffect(() => {
@@ -55,8 +55,8 @@ const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
         ref={forwardedRef}
         data-slot="avatar-image"
         className={cn("aspect-square size-full rounded-full object-cover", className)}
-        {...props}
-        alt={props.alt}
+        // Preact 11 types `alt` and `role` as a discriminated union, which the wide public props cannot satisfy.
+        {...(props as AccessibleImgHTMLAttributes<HTMLImageElement>)}
       />
     ) : null;
   },
@@ -140,8 +140,8 @@ const AvatarGroupCount = forwardRef<HTMLDivElement, ComponentProps<"div">>(({ cl
 });
 
 type useImageLoadingStatusOptions = {
-  referrerPolicy: string;
-  crossOrigin: ImgHTMLAttributes<HTMLImageElement>["crossOrigin"];
+  referrerPolicy: string | undefined;
+  crossOrigin: string | undefined;
 };
 function useImageLoadingStatus(src: string | undefined, { referrerPolicy, crossOrigin }: useImageLoadingStatusOptions) {
   const [loadingStatus, setLoadingStatus] = useState<ImageLoadingStatus>("idle");
@@ -169,7 +169,7 @@ function useImageLoadingStatus(src: string | undefined, { referrerPolicy, crossO
       image.referrerPolicy = referrerPolicy;
     }
 
-    if (typeof crossOrigin === "string") {
+    if (crossOrigin) {
       image.crossOrigin = crossOrigin;
     }
 

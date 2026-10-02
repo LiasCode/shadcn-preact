@@ -1,4 +1,4 @@
-import type { ComponentProps } from "preact";
+import type { AccessibleInputHTMLAttributes, ComponentProps } from "preact";
 import { forwardRef } from "preact/compat";
 
 import { cn } from "./share/cn";
@@ -6,7 +6,6 @@ import { cn } from "./share/cn";
 const Input = forwardRef<HTMLInputElement, ComponentProps<"input">>(({ className, type, ...props }, forwardedRef) => {
   return (
     <input
-      type={type}
       data-slot="input"
       ref={forwardedRef}
       className={cn(
@@ -15,7 +14,8 @@ const Input = forwardRef<HTMLInputElement, ComponentProps<"input">>(({ className
         "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
         className,
       )}
-      {...props}
+      // Preact 11 types `type` and `role` as a discriminated union, which the wide public props cannot satisfy.
+      {...({ type, ...props } as AccessibleInputHTMLAttributes<HTMLInputElement>)}
     />
   );
 });

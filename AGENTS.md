@@ -23,9 +23,9 @@ Package manager is **Bun** (`bun.lock`, exact versions, `bunfig.toml`).
 - `bun run build`: type check (`tsc -b`) and Vite build with prerendering
 - `bun run preview`: preview the production build
 - `bun run lint`: oxlint
-- `bun run fmt`: oxfmt (writes); `bun run fmt:check` verifies
+- `bun run format`: oxfmt (writes); `bunx oxfmt --check` verifies
 
-There is **no test suite**. A change is done only when `fmt:check`, `lint`, and `build` all pass, and the affected
+There is **no test suite**. A change is done only when `bunx oxfmt --check`, `lint`, and `build` all pass, and the affected
 pages were checked in a browser (or the missing browser check is reported).
 
 ## Registry rules (`registry/ui/`)
