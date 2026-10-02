@@ -49,12 +49,12 @@ pages were checked in a browser (or the missing browser check is reported).
 ## Documentation app (`src/`)
 
 - Preact with `preact-iso` routing. `src/main.tsx` hydrates `#app` and exports `prerender`; `src/App.tsx` holds the
-  providers and `src/routes.tsx` every route. Layout follows ADR 0003.
+  providers and `src/routes.tsx` every route. Layout follows ADR 0003 as amended by ADR 0005.
 - Imports components through `@registry/*`; app code uses `@/*`.
-- `src/modules/docs/catalog.ts` is the only list of components. Navigation, the components index, and the prerender
-  routes in `vite.config.ts` derive from it, so it must stay free of JSX and browser APIs.
-- Adding a component: its file in `registry/ui/`, a demo in `src/modules/docs/demos/<name>-demo.tsx`, an entry in the
-  catalog, and the demo in `src/modules/docs/demos/index.ts` (the type check fails if it is missing).
+- The site has only two views (ADR 0005): an introduction (`/`) and a showcase of every component (`/components`).
+  There is no per-component documentation; do not add it back without a new record.
+- Adding a component: its file in `registry/ui/`, a demo in `src/modules/showcase/demos/<name>-demo.tsx`, and an
+  entry in `src/modules/showcase/demos/index.ts`.
 - A new static route goes in `src/routes.tsx` and in `additionalPrerenderRoutes` in `vite.config.ts`.
 
 ## Styling
