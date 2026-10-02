@@ -1,200 +1,131 @@
+import { cva } from "class-variance-authority";
 import { ChevronDownIcon } from "lucide-preact";
-import { type ComponentProps, createContext } from "preact";
-import { forwardRef, useContext, useId, useMemo, useState } from "preact/compat";
 
-import { cn } from "./share/cn";
+import { cn } from "./lib/utils";
+import type { ComponentProps } from "./primitives/internals/types";
+import { NavigationMenu as NavigationMenuPrimitive } from "./primitives/navigation-menu";
 
-type NavigationMenuContextType = {
-  value: string;
-  setValue: (value: string) => void;
-};
-
-type NavigationMenuItemContextType = {
-  value: string;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-};
-
-const NavigationMenuContext = createContext<NavigationMenuContextType | null>(null);
-const NavigationMenuItemContext = createContext<NavigationMenuItemContextType | null>(null);
-
-function useNavigationMenu() {
-  const ctx = useContext(NavigationMenuContext);
-  if (!ctx) throw new Error("NavigationMenu components must be used within a <NavigationMenu>");
-  return ctx;
-}
-
-function useNavigationMenuItem() {
-  const ctx = useContext(NavigationMenuItemContext);
-  if (!ctx) throw new Error("NavigationMenu item components must be used within a <NavigationMenuItem>");
-  return ctx;
-}
-
-type NavigationMenuProps = ComponentProps<"nav"> & {
-  value?: string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
-};
-
-const NavigationMenu = forwardRef<HTMLElement, NavigationMenuProps>(
-  ({ className, value: valueProp, defaultValue = "", onValueChange, onPointerLeave, ...props }, forwardedRef) => {
-    const [internalValue, setInternalValue] = useState(defaultValue);
-    const value = valueProp ?? internalValue;
-    const setValue = (nextValue: string) => {
-      if (valueProp === undefined) setInternalValue(nextValue);
-      onValueChange?.(nextValue);
-    };
-
-    return (
-      <NavigationMenuContext.Provider value={{ value, setValue }}>
-        <nav
-          ref={forwardedRef}
-          data-slot="navigation-menu"
-          onPointerLeave={(e: PointerEvent) => {
-            (onPointerLeave as ((e: PointerEvent) => void) | undefined)?.(e);
-            setValue("");
-          }}
-          className={cn("relative z-10 flex max-w-max flex-1 items-center justify-center", className)}
-          {...props}
-        />
-      </NavigationMenuContext.Provider>
-    );
-  },
-);
-NavigationMenu.displayName = "NavigationMenu";
-
-function NavigationMenuList({ className, ...props }: ComponentProps<"ul">) {
+function NavigationMenu({
+  align = "start",
+  className,
+  children,
+  ...props
+}: NavigationMenuPrimitive.Root.Props & Pick<NavigationMenuPrimitive.Positioner.Props, "align">) {
   return (
-    <ul
+    <NavigationMenuPrimitive.Root
+      data-slot="navigation-menu"
+      className={cn("group/navigation-menu relative flex max-w-max flex-1 items-center justify-center", className)}
+      {...props}
+    >
+      {children}
+      <NavigationMenuPositioner align={align} />
+    </NavigationMenuPrimitive.Root>
+  );
+}
+
+function NavigationMenuList({ className, ...props }: ComponentProps<typeof NavigationMenuPrimitive.List>) {
+  return (
+    <NavigationMenuPrimitive.List
       data-slot="navigation-menu-list"
-      className={cn("group flex flex-1 list-none items-center justify-center gap-1", className)}
+      className={cn("gap-0 group flex flex-1 list-none items-center justify-center", className)}
       {...props}
     />
   );
 }
 
-type NavigationMenuItemProps = ComponentProps<"li"> & { value?: string };
-
-function NavigationMenuItem({ value: valueProp, className, onPointerEnter, ...props }: NavigationMenuItemProps) {
-  const root = useNavigationMenu();
-  const generatedId = useId();
-  const value = valueProp ?? `navigation-${generatedId}`;
-  const open = root.value === value;
-  const item = useMemo(
-    () => ({ value, open, setOpen: (nextOpen: boolean) => root.setValue(nextOpen ? value : "") }),
-    [open, root, value],
-  );
+function NavigationMenuItem({ className, ...props }: ComponentProps<typeof NavigationMenuPrimitive.Item>) {
   return (
-    <NavigationMenuItemContext.Provider value={item}>
-      <li
-        data-slot="navigation-menu-item"
-        data-state={open ? "open" : "closed"}
-        className={cn("relative", className)}
-        onPointerEnter={(e: PointerEvent) => {
-          (onPointerEnter as ((e: PointerEvent) => void) | undefined)?.(e);
-          root.setValue(value);
-        }}
-        {...props}
-      />
-    </NavigationMenuItemContext.Provider>
+    <NavigationMenuPrimitive.Item data-slot="navigation-menu-item" className={cn("relative", className)} {...props} />
   );
 }
 
-const navigationMenuTriggerStyle =
-  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 font-medium text-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-accent/50";
+const navigationMenuTriggerStyle = cva(
+  "hover:bg-muted focus:bg-muted data-open:hover:bg-muted data-open:focus:bg-muted data-open:bg-muted/50 focus-visible:ring-ring/50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all focus-visible:ring-3 focus-visible:outline-1 disabled:opacity-50 group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center outline-none disabled:pointer-events-none",
+);
 
-type NavigationMenuTriggerProps = ComponentProps<"button">;
+function NavigationMenuTrigger({ className, children, ...props }: NavigationMenuPrimitive.Trigger.Props) {
+  return (
+    <NavigationMenuPrimitive.Trigger
+      data-slot="navigation-menu-trigger"
+      className={cn(navigationMenuTriggerStyle(), "group", className)}
+      {...props}
+    >
+      {children}{" "}
+      <ChevronDownIcon
+        className="relative top-px ml-1 size-3 transition duration-300 group-data-open/navigation-menu-trigger:rotate-180 group-data-popup-open/navigation-menu-trigger:rotate-180"
+        aria-hidden="true"
+      />
+    </NavigationMenuPrimitive.Trigger>
+  );
+}
 
-const NavigationMenuTrigger = forwardRef<HTMLButtonElement, NavigationMenuTriggerProps>(
-  ({ className, children, onClick, ...props }, forwardedRef) => {
-    const { open, setOpen } = useNavigationMenuItem();
-    return (
-      <button
-        ref={forwardedRef}
-        type="button"
-        data-slot="navigation-menu-trigger"
-        data-state={open ? "open" : "closed"}
-        aria-expanded={open}
-        onClick={(e: MouseEvent) => {
-          (onClick as ((e: MouseEvent) => void) | undefined)?.(e);
-          setOpen(!open);
-        }}
-        className={cn(navigationMenuTriggerStyle, className)}
+function NavigationMenuContent({ className, ...props }: NavigationMenuPrimitive.Content.Props) {
+  return (
+    <NavigationMenuPrimitive.Content
+      data-slot="navigation-menu-content"
+      className={cn(
+        "data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 group-data-[viewport=false]/navigation-menu:bg-popover group-data-[viewport=false]/navigation-menu:text-popover-foreground group-data-[viewport=false]/navigation-menu:data-open:animate-in group-data-[viewport=false]/navigation-menu:data-closed:animate-out group-data-[viewport=false]/navigation-menu:data-closed:zoom-out-95 group-data-[viewport=false]/navigation-menu:data-open:zoom-in-95 group-data-[viewport=false]/navigation-menu:data-open:fade-in-0 group-data-[viewport=false]/navigation-menu:data-closed:fade-out-0 group-data-[viewport=false]/navigation-menu:ring-foreground/10 p-1 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[viewport=false]/navigation-menu:rounded-lg group-data-[viewport=false]/navigation-menu:shadow group-data-[viewport=false]/navigation-menu:ring-1 group-data-[viewport=false]/navigation-menu:duration-300 data-ending-style:data-activation-direction=left:translate-x-[50%] data-ending-style:data-activation-direction=right:translate-x-[-50%] data-starting-style:data-activation-direction=left:translate-x-[-50%] data-starting-style:data-activation-direction=right:translate-x-[50%] h-full w-auto transition-[opacity,transform,translate] duration-[0.35s] data-ending-style:opacity-0 data-starting-style:opacity-0 **:data-[slot=navigation-menu-link]:focus:ring-0 **:data-[slot=navigation-menu-link]:focus:outline-none",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function NavigationMenuPositioner({
+  className,
+  side = "bottom",
+  sideOffset = 8,
+  align = "start",
+  alignOffset = 0,
+  ...props
+}: NavigationMenuPrimitive.Positioner.Props) {
+  return (
+    <NavigationMenuPrimitive.Portal>
+      <NavigationMenuPrimitive.Positioner
+        side={side}
+        sideOffset={sideOffset}
+        align={align}
+        alignOffset={alignOffset}
+        className={cn(
+          "ease-[cubic-bezier(0.22,1,0.36,1)] data-[side=bottom]:before:top-[-10px] data-[side=bottom]:before:right-0 data-[side=bottom]:before:left-0 isolate z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width) transition-[top,left,right,bottom] duration-[0.35s] data-instant:transition-none",
+          className,
+        )}
         {...props}
       >
-        {children}
-        <ChevronDownIcon
-          className="relative top-px ml-1 size-3 transition-transform duration-200 group-data-[state=open]:rotate-180"
-          aria-hidden="true"
-        />
-      </button>
-    );
-  },
-);
-NavigationMenuTrigger.displayName = "NavigationMenuTrigger";
+        <NavigationMenuPrimitive.Popup className="bg-popover text-popover-foreground ring-foreground/10 rounded-lg shadow ring-1 outline-none data-ending-style:scale-90 data-ending-style:opacity-0 data-ending-style:duration-150 data-starting-style:scale-90 data-starting-style:opacity-0 data-[ending-style]:easing-[ease] xs:w-(--popup-width) relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) transition-[opacity,transform,width,height,scale,translate] duration-[0.35s] ease-[cubic-bezier(0.22,1,0.36,1)]">
+          <NavigationMenuPrimitive.Viewport className="relative size-full overflow-hidden" />
+        </NavigationMenuPrimitive.Popup>
+      </NavigationMenuPrimitive.Positioner>
+    </NavigationMenuPrimitive.Portal>
+  );
+}
 
-type NavigationMenuContentProps = ComponentProps<"div">;
-
-const NavigationMenuContent = forwardRef<HTMLDivElement, NavigationMenuContentProps>(
-  ({ className, ...props }, forwardedRef) => {
-    const { open } = useNavigationMenuItem();
-    if (!open) return null;
-
-    return (
-      <div
-        ref={forwardedRef}
-        data-slot="navigation-menu-content"
-        data-state="open"
-        className={cn(
-          "fade-in-0 zoom-in-95 absolute top-full left-0 z-50 mt-1 w-max min-w-80 animate-in rounded-md border bg-popover p-2 text-popover-foreground shadow-md",
-          className,
-        )}
-        {...props}
-      />
-    );
-  },
-);
-NavigationMenuContent.displayName = "NavigationMenuContent";
-
-type NavigationMenuLinkProps = ComponentProps<"a"> & {
-  active?: boolean;
-};
-
-const NavigationMenuLink = forwardRef<HTMLAnchorElement, NavigationMenuLinkProps>(
-  ({ className, active, ...props }, forwardedRef) => {
-    return (
-      <a
-        ref={forwardedRef}
-        data-slot="navigation-menu-link"
-        data-active={active ? "" : undefined}
-        className={cn(
-          "block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-[active]:bg-accent/50",
-          className,
-        )}
-        {...props}
-      />
-    );
-  },
-);
-NavigationMenuLink.displayName = "NavigationMenuLink";
-
-function NavigationMenuViewport({ className, ...props }: ComponentProps<"div">) {
+function NavigationMenuLink({ className, ...props }: NavigationMenuPrimitive.Link.Props) {
   return (
-    <div
-      data-slot="navigation-menu-viewport"
-      className={cn("absolute top-full left-0 flex justify-center", className)}
+    <NavigationMenuPrimitive.Link
+      data-slot="navigation-menu-link"
+      className={cn(
+        "data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 focus-visible:ring-ring/50 hover:bg-muted focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&_svg:not([class*='size-'])]:size-4",
+        className,
+      )}
       {...props}
     />
   );
 }
 
-function NavigationMenuIndicator({ className, ...props }: ComponentProps<"div">) {
+function NavigationMenuIndicator({ className, ...props }: ComponentProps<typeof NavigationMenuPrimitive.Icon>) {
   return (
-    <div
+    <NavigationMenuPrimitive.Icon
       data-slot="navigation-menu-indicator"
-      className={cn("top-full z-1 flex h-1.5 items-end justify-center overflow-hidden", className)}
+      className={cn(
+        "data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in top-full z-1 flex h-1.5 items-end justify-center overflow-hidden",
+        className,
+      )}
       {...props}
-    />
+    >
+      <div className="bg-border rounded-tl-sm shadow-md relative top-[60%] h-2 w-2 rotate-45" />
+    </NavigationMenuPrimitive.Icon>
   );
 }
 
@@ -207,5 +138,5 @@ export {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-  NavigationMenuViewport,
+  NavigationMenuPositioner,
 };

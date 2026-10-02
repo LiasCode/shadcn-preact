@@ -1,41 +1,17 @@
-import {
-  Menubar,
-  MenubarCheckboxItem,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@registry/ui/menubar";
-import { useState } from "preact/compat";
+import { MenubarCheckbox as Example1 } from "../examples/menubar-checkbox";
+import Example2 from "../examples/menubar-demo";
+import { MenubarIcons as Example3 } from "../examples/menubar-icons";
+import { MenubarRadio as Example4 } from "../examples/menubar-radio";
+import { MenubarSubmenu as Example5 } from "../examples/menubar-submenu";
 
 export function MenubarDemo() {
-  const [showSidebar, setShowSidebar] = useState(true);
-
   return (
-    <Menubar>
-      <MenubarMenu value="file">
-        <MenubarTrigger>File</MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem>
-            New Tab
-            <MenubarShortcut>⌘T</MenubarShortcut>
-          </MenubarItem>
-          <MenubarItem>New Window</MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem>Share</MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
-      <MenubarMenu value="view">
-        <MenubarTrigger>View</MenubarTrigger>
-        <MenubarContent>
-          <MenubarCheckboxItem checked={showSidebar} onCheckedChange={setShowSidebar}>
-            Show Sidebar
-          </MenubarCheckboxItem>
-          <MenubarItem inset>Reload</MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
-    </Menubar>
+    <div className="relative flex w-full min-w-0 flex-wrap items-start gap-8">
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
+      <Example5 />
+    </div>
   );
 }

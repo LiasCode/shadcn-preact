@@ -20,6 +20,10 @@ import { useAnchorPositioning } from "../../../registry/ui/primitives/internals/
 import { useDismiss } from "../../../registry/ui/primitives/internals/useDismiss";
 import { useFloatingRootContext } from "../../../registry/ui/primitives/internals/useFloatingRootContext";
 import { useScrollLock } from "../../../registry/ui/primitives/internals/useScrollLock";
+import { Menu } from "../../../registry/ui/primitives/menu";
+import { NavigationMenu } from "../../../registry/ui/primitives/navigation-menu";
+import { ScrollArea } from "../../../registry/ui/primitives/scroll-area";
+import { Select } from "../../../registry/ui/primitives/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../registry/ui/tooltip";
 
 // Prerendering runs without a document; refs are skipped there.
@@ -134,4 +138,45 @@ test("overlay wrappers prerender triggers without browser globals", () => {
   expect(markup).toContain('data-slot="drawer-trigger"');
   expect(markup).not.toContain('data-slot="dialog-content"');
   expect(markup).not.toContain('data-slot="tooltip-content"');
+});
+
+test("menu, selection, navigation and scroll primitives prerender without browser globals", () => {
+  const markup = renderToString(
+    <>
+      <Menu.Root defaultOpen>
+        <Menu.Trigger>Menu</Menu.Trigger>
+        <Menu.Portal>
+          <Menu.Popup>Hidden menu</Menu.Popup>
+        </Menu.Portal>
+      </Menu.Root>
+      <Select.Root name="fruit" items={{ apple: "Apple" }} defaultValue="apple">
+        <Select.Trigger>
+          <Select.Value />
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Popup>Hidden list</Select.Popup>
+        </Select.Portal>
+      </Select.Root>
+      <NavigationMenu.Root defaultValue="a">
+        <NavigationMenu.List>
+          <NavigationMenu.Item value="a">
+            <NavigationMenu.Trigger>Nav</NavigationMenu.Trigger>
+            <NavigationMenu.Content>Hidden content</NavigationMenu.Content>
+          </NavigationMenu.Item>
+        </NavigationMenu.List>
+      </NavigationMenu.Root>
+      <ScrollArea.Root>
+        <ScrollArea.Viewport>Scroll content</ScrollArea.Viewport>
+        <ScrollArea.Scrollbar>
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
+      </ScrollArea.Root>
+    </>,
+  );
+  expect(markup).toContain("Apple");
+  expect(markup).toContain('name="fruit"');
+  expect(markup).toContain("Scroll content");
+  expect(markup).not.toContain("Hidden menu");
+  expect(markup).not.toContain("Hidden list");
+  expect(markup).not.toContain("Hidden content");
 });

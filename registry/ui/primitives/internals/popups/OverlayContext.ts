@@ -5,7 +5,16 @@ import type { BaseUIChangeEventDetails } from "../createBaseUIEventDetails";
 import type { FloatingRootContext } from "../useFloatingRootContext";
 import type { TransitionStatus } from "../useTransitionStatus";
 import type { PopupHandle } from "./PopupHandle";
-export type OverlayKind = "dialog" | "alert-dialog" | "drawer" | "popover" | "tooltip" | "preview-card";
+export type OverlayKind =
+  | "dialog"
+  | "alert-dialog"
+  | "drawer"
+  | "popover"
+  | "tooltip"
+  | "preview-card"
+  | "menu"
+  | "select"
+  | "navigation-menu";
 export type OverlayReason =
   | "trigger-press"
   | "close-press"
@@ -16,7 +25,13 @@ export type OverlayReason =
   | "none"
   | "trigger-hover"
   | "trigger-focus"
-  | "swipe";
+  | "swipe"
+  | "item-press"
+  | "list-navigation"
+  | "sibling-open"
+  | "cancel-open"
+  | "link-press"
+  | "window-resize";
 export type OverlayChangeDetails = BaseUIChangeEventDetails<OverlayReason> & { preventUnmountOnClose(): void };
 export interface OverlayRootProps<Payload = unknown> {
   open?: boolean;

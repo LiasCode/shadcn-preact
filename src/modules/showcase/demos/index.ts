@@ -34,6 +34,7 @@ import { PaginationDemo } from "./pagination-demo";
 import { PopoverDemo } from "./popover-demo";
 import { ProgressDemo } from "./progress-demo";
 import { RadioGroupDemo } from "./radio-group-demo";
+import { ScrollAreaDemo } from "./scroll-area-demo";
 import { SelectDemo } from "./select-demo";
 import { SeparatorDemo } from "./separator-demo";
 import { SheetDemo } from "./sheet-demo";
@@ -91,6 +92,7 @@ export const showcase: readonly ShowcaseEntry[] = [
   { slug: "popover", name: "Popover", Demo: PopoverDemo },
   { slug: "progress", name: "Progress", Demo: ProgressDemo },
   { slug: "radio-group", name: "Radio Group", Demo: RadioGroupDemo },
+  { slug: "scroll-area", name: "Scroll Area", Demo: ScrollAreaDemo },
   { slug: "select", name: "Select", Demo: SelectDemo },
   { slug: "separator", name: "Separator", Demo: SeparatorDemo },
   { slug: "sheet", name: "Sheet", Demo: SheetDemo },

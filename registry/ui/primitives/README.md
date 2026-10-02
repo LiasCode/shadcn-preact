@@ -9,7 +9,7 @@ Base UI is released under the MIT license; see [LICENSE](./LICENSE).
 
 Ported entry points: `merge-props`, `use-render`, `direction-provider`, `button`, `separator`, `input`, `avatar`,
 `progress`, `toggle`, `toggle-group`, `checkbox`, `switch`, `radio`, `radio-group`, `collapsible`, `accordion`, `tabs`,
-`slider`, `dialog`, `alert-dialog`, `drawer`, `popover`, `tooltip`, and `preview-card`. Composite list registration and linear roving focus live in `internals/composite/`.
+`slider`, `dialog`, `alert-dialog`, `drawer`, `popover`, `tooltip`, `preview-card`, `menu`, `context-menu`, `menubar`, `navigation-menu`, `select`, and `scroll-area`. Composite list registration and linear roving focus live in `internals/composite/`.
 
 The exposed parts are those needed by the rebuilt shadcn components. Input and form controls currently use the
 standalone Field context; Base UI Field/Form validation, CheckboxGroup, grid/Toolbar integration, and unused parts
@@ -24,3 +24,7 @@ The browser fixture is available with `bun run dev` at `/tests/fixtures/floating
 Overlay entry points share lifecycle, trigger handles, hover interaction, and native drawer gestures (ADR 0015).
 They expose the parts needed by the rebuilt wrappers; unused React store APIs and Drawer SwipeArea/Indent parts
 remain deferred. Sheet uses Dialog, and HoverCard uses PreviewCard.
+
+Menus, selection, and custom scrollbars use the shared Preact popup context and native DOM interactions (ADR 0016).
+Menu is shared by DropdownMenu, ContextMenu, and Menubar. NavigationMenu moves content into its viewport; Select
+keeps native form inputs. Unused Menu.LinkItem/Viewport and ScrollArea.Content parts remain deferred.

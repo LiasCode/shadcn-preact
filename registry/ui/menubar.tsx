@@ -1,335 +1,229 @@
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-preact";
-import { type ComponentProps, createContext } from "preact";
-import { forwardRef, type PropsWithChildren, useContext, useId, useMemo, useRef } from "preact/compat";
+import { CheckIcon } from "lucide-preact";
 
-import { cn } from "./share/cn";
-import { useComposedRefs } from "./share/compose_ref";
-import { type FloatingAlign, type FloatingSide, useDismissableLayer, useFloatingContent } from "./share/floating";
-import { Portal } from "./share/portal";
-import { useControlledState } from "./share/useControlledState";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "./dropdown-menu";
+import { cn } from "./lib/utils";
+import type { ComponentProps } from "./primitives/internals/types";
+import { Menu as MenuPrimitive } from "./primitives/menu";
+import { Menubar as MenubarPrimitive } from "./primitives/menubar";
 
-type MenubarRootContextType = {
-  value: string;
-  setValue: (value: string) => void;
-};
-
-type MenubarMenuContextType = {
-  value: string;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  trigger: HTMLElement | null;
-  setTrigger: (el: HTMLElement | null) => void;
-};
-
-const MenubarRootContext = createContext<MenubarRootContextType | null>(null);
-const MenubarMenuContext = createContext<MenubarMenuContextType | null>(null);
-const MenubarRadioContext = createContext<{ value?: string; onValueChange?: (value: string) => void } | null>(null);
-
-function useMenubarRoot() {
-  const ctx = useContext(MenubarRootContext);
-  if (!ctx) throw new Error("Menubar components must be used within a <Menubar>");
-  return ctx;
-}
-
-function useMenubarMenu() {
-  const ctx = useContext(MenubarMenuContext);
-  if (!ctx) throw new Error("MenubarMenu components must be used within a <MenubarMenu>");
-  return ctx;
-}
-
-type MenubarProps = ComponentProps<"div"> & {
-  value?: string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
-};
-
-const Menubar = forwardRef<HTMLDivElement, MenubarProps>(
-  ({ className, value: valueProp, defaultValue, onValueChange, ...props }, forwardedRef) => {
-    const [value, setValue] = useControlledState({
-      defaultValue: defaultValue ?? "",
-      controlledValue: valueProp,
-      onChange: onValueChange,
-    });
-
-    return (
-      <MenubarRootContext.Provider value={{ value, setValue }}>
-        <div
-          ref={forwardedRef}
-          role="menubar"
-          data-slot="menubar"
-          className={cn("flex h-9 items-center gap-1 rounded-md border bg-background p-1 shadow-xs", className)}
-          {...props}
-        />
-      </MenubarRootContext.Provider>
-    );
-  },
-);
-Menubar.displayName = "Menubar";
-
-type MenubarMenuProps = PropsWithChildren<{ value?: string }>;
-
-function MenubarMenu({ value, children }: MenubarMenuProps) {
-  const root = useMenubarRoot();
-  const [trigger, setTrigger] = useControlledState<HTMLElement | null>({ defaultValue: null });
-  const generatedId = useId();
-  const itemValue = value ?? `menubar-${generatedId}`;
-  const open = root.value === itemValue;
-  const setOpen = (nextOpen: boolean) => root.setValue(nextOpen ? itemValue : "");
-  const ctx = useMemo(
-    () => ({ value: itemValue, open, setOpen, trigger, setTrigger }),
-    [itemValue, open, setTrigger, trigger],
-  );
-  return <MenubarMenuContext.Provider value={ctx}>{children}</MenubarMenuContext.Provider>;
-}
-
-type MenubarTriggerProps = ComponentProps<"button">;
-
-const MenubarTrigger = forwardRef<HTMLButtonElement, MenubarTriggerProps>(
-  ({ className, onClick, onPointerEnter, ...props }, forwardedRef) => {
-    const root = useMenubarRoot();
-    const { open, setOpen, setTrigger, value } = useMenubarMenu();
-    const composedRef = useComposedRefs(forwardedRef, setTrigger);
-
-    return (
-      <button
-        ref={composedRef}
-        type="button"
-        role="menuitem"
-        data-slot="menubar-trigger"
-        data-state={open ? "open" : "closed"}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        onClick={(e: MouseEvent) => {
-          (onClick as ((e: MouseEvent) => void) | undefined)?.(e);
-          setOpen(!open);
-        }}
-        onPointerEnter={(e: PointerEvent) => {
-          (onPointerEnter as ((e: PointerEvent) => void) | undefined)?.(e);
-          if (root.value) root.setValue(value);
-        }}
-        className={cn(
-          "flex cursor-default select-none items-center rounded-sm px-2 py-1 font-medium text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
-          className,
-        )}
-        {...props}
-      />
-    );
-  },
-);
-MenubarTrigger.displayName = "MenubarTrigger";
-
-type MenubarContentProps = ComponentProps<"div"> & {
-  side?: FloatingSide;
-  align?: FloatingAlign;
-  sideOffset?: number;
-  container?: Element | DocumentFragment | null;
-};
-
-const MenubarContent = forwardRef<HTMLDivElement, MenubarContentProps>(
-  ({ className, side = "bottom", align = "start", sideOffset = 4, container, style, ...props }, forwardedRef) => {
-    const { open, setOpen, trigger } = useMenubarMenu();
-    const floating = useFloatingContent({ open, side, align, sideOffset, reference: trigger });
-    const contentRef = useRef<HTMLDivElement | null>(null);
-    const triggerRef = useRef<HTMLElement | null>(trigger);
-    triggerRef.current = trigger;
-    const composedRef = useComposedRefs(forwardedRef, floating.refs.setFloating, contentRef);
-    useDismissableLayer({ open, onOpenChange: setOpen, contentRef, triggerRef });
-
-    if (!floating.present) return null;
-
-    return (
-      <Portal container={container}>
-        <div
-          ref={composedRef}
-          role="menu"
-          data-slot="menubar-content"
-          data-state={!open ? "closed" : floating.isPositioned ? "open" : undefined}
-          data-side={floating.resolvedSide}
-          data-align={floating.resolvedAlign}
-          style={{ ...(floating.style as object), ...(style && typeof style === "object" ? style : {}) }}
-          onAnimationEnd={(e: AnimationEvent) => {
-            if (e.target === e.currentTarget && !open) floating.setPresent(false);
-          }}
-          className={cn(
-            "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 z-50 min-w-32 origin-(--radix-popper-transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
-            className,
-          )}
-          {...props}
-        />
-      </Portal>
-    );
-  },
-);
-MenubarContent.displayName = "MenubarContent";
-
-type MenubarItemProps = ComponentProps<"div"> & {
-  inset?: boolean;
-  variant?: "default" | "destructive";
-  disabled?: boolean;
-  onSelect?: (event: MouseEvent) => void;
-};
-
-const MenubarItem = forwardRef<HTMLDivElement, MenubarItemProps>(
-  ({ className, inset, variant = "default", disabled, onClick, onSelect, ...props }, forwardedRef) => {
-    const { setOpen } = useMenubarMenu();
-    return (
-      <div
-        ref={forwardedRef}
-        role="menuitem"
-        data-slot="menubar-item"
-        data-inset={inset ? "" : undefined}
-        data-variant={variant}
-        data-disabled={disabled ? "" : undefined}
-        aria-disabled={disabled}
-        tabIndex={disabled ? undefined : -1}
-        onClick={(e: MouseEvent) => {
-          if (disabled) return;
-          (onClick as ((e: MouseEvent) => void) | undefined)?.(e);
-          (onSelect as ((event: MouseEvent) => void) | undefined)?.(e);
-          if (!e.defaultPrevented) setOpen(false);
-        }}
-        className={cn(
-          "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[disabled]:opacity-50 data-[variant=destructive]:focus:bg-destructive/10 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-          className,
-        )}
-        {...props}
-      />
-    );
-  },
-);
-MenubarItem.displayName = "MenubarItem";
-
-const MenubarCheckboxItem = forwardRef<
-  HTMLDivElement,
-  MenubarItemProps & { checked?: boolean; onCheckedChange?: (checked: boolean) => void }
->(({ className, children, checked, onCheckedChange, onSelect, ...props }, forwardedRef) => {
+function Menubar({ className, ...props }: MenubarPrimitive.Props) {
   return (
-    <MenubarItem
-      ref={forwardedRef}
-      role="menuitemcheckbox"
-      aria-checked={checked}
-      data-state={checked ? "checked" : "unchecked"}
-      className={cn("pl-8", className)}
-      onSelect={(e) => {
-        onCheckedChange?.(!checked);
-        (onSelect as ((event: MouseEvent) => void) | undefined)?.(e as unknown as MouseEvent);
-      }}
+    <MenubarPrimitive
+      data-slot="menubar"
+      className={cn("h-8 gap-0.5 rounded-lg border p-[3px] flex items-center", className)}
+      {...props}
+    />
+  );
+}
+
+function MenubarMenu({ ...props }: ComponentProps<typeof DropdownMenu>) {
+  return <DropdownMenu data-slot="menubar-menu" {...props} />;
+}
+
+function MenubarGroup({ ...props }: ComponentProps<typeof DropdownMenuGroup>) {
+  return <DropdownMenuGroup data-slot="menubar-group" {...props} />;
+}
+
+function MenubarPortal({ ...props }: ComponentProps<typeof DropdownMenuPortal>) {
+  return <DropdownMenuPortal data-slot="menubar-portal" {...props} />;
+}
+
+function MenubarTrigger({ className, ...props }: ComponentProps<typeof DropdownMenuTrigger>) {
+  return (
+    <DropdownMenuTrigger
+      data-slot="menubar-trigger"
+      className={cn(
+        "hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function MenubarContent({
+  className,
+  align = "start",
+  alignOffset = -4,
+  sideOffset = 8,
+  ...props
+}: ComponentProps<typeof DropdownMenuContent>) {
+  return (
+    <DropdownMenuContent
+      data-slot="menubar-content"
+      align={align}
+      alignOffset={alignOffset}
+      sideOffset={sideOffset}
+      className={cn(
+        "bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 data-[side=inline-start]:slide-in-from-right-2 data-[side=inline-end]:slide-in-from-left-2 cn-menu-target cn-menu-translucent",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function MenubarItem({ className, inset, variant = "default", ...props }: ComponentProps<typeof DropdownMenuItem>) {
+  return (
+    <DropdownMenuItem
+      data-slot="menubar-item"
+      data-inset={inset}
+      data-variant={variant}
+      className={cn(
+        "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function MenubarCheckboxItem({
+  className,
+  children,
+  checked,
+  inset,
+  ...props
+}: MenuPrimitive.CheckboxItem.Props & {
+  inset?: boolean;
+}) {
+  return (
+    <MenuPrimitive.CheckboxItem
+      data-slot="menubar-checkbox-item"
+      data-inset={inset}
+      className={cn(
+        "focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        className,
+      )}
+      checked={checked}
       {...props}
     >
-      <span className="absolute left-2 flex size-3.5 items-center justify-center">
-        {checked && <CheckIcon className="size-4" />}
+      <span className="left-1.5 size-4 [&_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center">
+        <MenuPrimitive.CheckboxItemIndicator>
+          <CheckIcon />
+        </MenuPrimitive.CheckboxItemIndicator>
       </span>
       {children}
-    </MenubarItem>
+    </MenuPrimitive.CheckboxItem>
   );
-});
-MenubarCheckboxItem.displayName = "MenubarCheckboxItem";
+}
 
-function MenubarRadioGroup({
-  value,
-  onValueChange,
+function MenubarRadioGroup({ ...props }: ComponentProps<typeof DropdownMenuRadioGroup>) {
+  return <DropdownMenuRadioGroup data-slot="menubar-radio-group" {...props} />;
+}
+
+function MenubarRadioItem({
+  className,
+  children,
+  inset,
   ...props
-}: ComponentProps<"div"> & { value?: string; onValueChange?: (value: string) => void }) {
+}: MenuPrimitive.RadioItem.Props & {
+  inset?: boolean;
+}) {
   return (
-    <MenubarRadioContext.Provider value={{ value, onValueChange }}>
-      <div role="radiogroup" data-slot="menubar-radio-group" {...props} />
-    </MenubarRadioContext.Provider>
-  );
-}
-
-const MenubarRadioItem = forwardRef<HTMLDivElement, MenubarItemProps & { value: string }>(
-  ({ className, children, value, onSelect, ...props }, forwardedRef) => {
-    const radio = useContext(MenubarRadioContext);
-    const checked = radio?.value === value;
-    return (
-      <MenubarItem
-        ref={forwardedRef}
-        role="menuitemradio"
-        aria-checked={checked}
-        data-state={checked ? "checked" : "unchecked"}
-        className={cn("pl-8", className)}
-        onSelect={(e) => {
-          radio?.onValueChange?.(value);
-          (onSelect as ((event: MouseEvent) => void) | undefined)?.(e as unknown as MouseEvent);
-        }}
-        {...props}
-      >
-        <span className="absolute left-2 flex size-3.5 items-center justify-center">
-          {checked && <CircleIcon className="size-2 fill-current" />}
-        </span>
-        {children}
-      </MenubarItem>
-    );
-  },
-);
-MenubarRadioItem.displayName = "MenubarRadioItem";
-
-function MenubarGroup(props: ComponentProps<"div">) {
-  return <div role="group" data-slot="menubar-group" {...props} />;
-}
-
-function MenubarLabel({ className, inset, ...props }: ComponentProps<"div"> & { inset?: boolean }) {
-  return (
-    <div
-      data-slot="menubar-label"
-      data-inset={inset ? "" : undefined}
-      className={cn("px-2 py-1.5 font-medium text-sm data-[inset]:pl-8", className)}
-      {...props}
-    />
-  );
-}
-
-function MenubarSeparator({ className, ...props }: ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="menubar-separator"
-      aria-hidden="true"
-      className={cn("-mx-1 my-1 h-px bg-border", className)}
-      {...props}
-    />
-  );
-}
-
-function MenubarShortcut({ className, ...props }: ComponentProps<"span">) {
-  return (
-    <span
-      data-slot="menubar-shortcut"
-      className={cn("ml-auto text-muted-foreground text-xs tracking-widest", className)}
-      {...props}
-    />
-  );
-}
-
-function MenubarSub({ children }: PropsWithChildren) {
-  return <div className="group relative">{children}</div>;
-}
-
-function MenubarSubTrigger({ className, inset, children, ...props }: ComponentProps<"div"> & { inset?: boolean }) {
-  return (
-    <div
-      role="menuitem"
-      data-slot="menubar-sub-trigger"
-      data-inset={inset ? "" : undefined}
-      tabIndex={-1}
+    <MenuPrimitive.RadioItem
+      data-slot="menubar-radio-item"
+      data-inset={inset}
       className={cn(
-        "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden focus:bg-accent data-[inset]:pl-8",
+        "focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className,
       )}
       {...props}
     >
+      <span className="left-1.5 size-4 [&_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center">
+        <MenuPrimitive.RadioItemIndicator>
+          <CheckIcon />
+        </MenuPrimitive.RadioItemIndicator>
+      </span>
       {children}
-      <ChevronRightIcon className="ml-auto size-4" />
-    </div>
+    </MenuPrimitive.RadioItem>
   );
 }
 
-function MenubarSubContent({ className, ...props }: ComponentProps<"div">) {
+function MenubarLabel({
+  className,
+  inset,
+  ...props
+}: ComponentProps<typeof DropdownMenuLabel> & {
+  inset?: boolean;
+}) {
   return (
-    <div
-      role="menu"
+    <DropdownMenuLabel
+      data-slot="menubar-label"
+      data-inset={inset}
+      className={cn("px-1.5 py-1 text-sm font-medium data-inset:pl-7", className)}
+      {...props}
+    />
+  );
+}
+
+function MenubarSeparator({ className, ...props }: ComponentProps<typeof DropdownMenuSeparator>) {
+  return (
+    <DropdownMenuSeparator
+      data-slot="menubar-separator"
+      className={cn("bg-border -mx-1 my-1 h-px", className)}
+      {...props}
+    />
+  );
+}
+
+function MenubarShortcut({ className, ...props }: ComponentProps<typeof DropdownMenuShortcut>) {
+  return (
+    <DropdownMenuShortcut
+      data-slot="menubar-shortcut"
+      className={cn(
+        "text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function MenubarSub({ ...props }: ComponentProps<typeof DropdownMenuSub>) {
+  return <DropdownMenuSub data-slot="menubar-sub" {...props} />;
+}
+
+function MenubarSubTrigger({
+  className,
+  inset,
+  ...props
+}: ComponentProps<typeof DropdownMenuSubTrigger> & {
+  inset?: boolean;
+}) {
+  return (
+    <DropdownMenuSubTrigger
+      data-slot="menubar-sub-trigger"
+      data-inset={inset}
+      className={cn(
+        "focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function MenubarSubContent({ className, ...props }: ComponentProps<typeof DropdownMenuSubContent>) {
+  return (
+    <DropdownMenuSubContent
       data-slot="menubar-sub-content"
       className={cn(
-        "absolute top-0 left-full z-50 ml-1 hidden min-w-32 rounded-md border bg-popover p-1 text-popover-foreground shadow-md group-hover:block",
+        "bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent",
         className,
       )}
       {...props}
@@ -339,18 +233,19 @@ function MenubarSubContent({ className, ...props }: ComponentProps<"div">) {
 
 export {
   Menubar,
-  MenubarCheckboxItem,
+  MenubarPortal,
+  MenubarMenu,
+  MenubarTrigger,
   MenubarContent,
   MenubarGroup,
-  MenubarItem,
+  MenubarSeparator,
   MenubarLabel,
-  MenubarMenu,
+  MenubarItem,
+  MenubarShortcut,
+  MenubarCheckboxItem,
   MenubarRadioGroup,
   MenubarRadioItem,
-  MenubarSeparator,
-  MenubarShortcut,
   MenubarSub,
-  MenubarSubContent,
   MenubarSubTrigger,
-  MenubarTrigger,
+  MenubarSubContent,
 };
