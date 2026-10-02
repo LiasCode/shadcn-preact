@@ -21,8 +21,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@registry": resolve(resolve(__dirname), "./registry/"),
-      "@": resolve(resolve(__dirname), "./src/"),
+      "@registry": resolve(resolve(import.meta.dirname), "./registry/"),
+      "@": resolve(resolve(import.meta.dirname), "./src/"),
     },
   },
   define: {

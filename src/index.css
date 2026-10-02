@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+/* Vendored `shadcn/tailwind.css` (ADR 0009); `bun run parity` checks it against upstream. */
+@import "./styles/shadcn-tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 

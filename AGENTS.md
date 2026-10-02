@@ -24,6 +24,9 @@ Package manager is **Bun** (`bun.lock`, exact versions, `bunfig.toml`).
 - `bun run preview`: preview the production build
 - `bun run lint`: oxlint
 - `bun run format`: oxfmt (writes); `bunx oxfmt --check` verifies
+- `bun run reference`: writes the upstream base-nova reference (components and examples) to
+  `$TMPDIR/shadcn-preact-reference/base-nova` (ADR 0009)
+- `bun run parity`: checks the vendored CSS, the theme tokens, and every rebuilt component against upstream
 
 There is **no test suite**. A change is done only when `bunx oxfmt --check`, `lint`, and `build` all pass, and the affected
 pages were checked in a browser (or the missing browser check is reported).
@@ -47,6 +50,9 @@ the look, and the Tailwind classes stay interoperable:
   React APIs come from `preact/compat` or `preact/hooks`.
 - Variants with `cva` and `VariantProps`, exporting the component and its `*Variants` object; class merging with
   `cn()`, as upstream.
+- A rebuilt component is done only when `bun run parity` passes. Port its upstream examples from the reference to
+  `src/modules/showcase/examples/<example>.tsx` and render them from its showcase entry. (ADR 0009)
+- Class merging comes from `./lib/utils` (the `cn` package), like upstream.
 - Follow the phase order in ADR 0008. Until a component is rewritten, its old file (using `./share/`, `asChild`, and
   `forwardRef`) stays as is; do not mix the two styles in one file.
 
