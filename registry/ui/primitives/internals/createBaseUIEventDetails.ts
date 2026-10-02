@@ -1,5 +1,8 @@
 interface ReasonToEventMap {
   none: Event;
+  "escape-key": KeyboardEvent;
+  "outside-press": MouseEvent | PointerEvent | TouchEvent;
+  "focus-out": FocusEvent;
   "trigger-press": MouseEvent | PointerEvent | TouchEvent | KeyboardEvent;
   "track-press": PointerEvent | MouseEvent | TouchEvent;
   "input-change": InputEvent | Event;

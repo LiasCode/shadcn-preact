@@ -14,3 +14,9 @@ and `slider`. Composite list registration and linear roving focus live in `inter
 The exposed parts are those needed by the rebuilt shadcn components. Input and form controls currently use the
 standalone Field context; Base UI Field/Form validation, CheckboxGroup, grid/Toolbar integration, and unused parts
 such as Tabs.Indicator and Slider.Label/Value remain deferred (ADRs 0012 and 0013).
+
+Floating infrastructure (ADR 0014) lives in `internals/`: `useAnchorPositioning`, `FloatingTree`/`FloatingTreeStore`,
+`useFloatingRootContext`, `useDismiss`, `FloatingPortal`/`FloatingPortalLite`, `FloatingFocusManager`, `FocusGuard`,
+`markOthers`, and scroll-lock hooks. These are shared internal APIs for the next overlay phases. Native Floating UI
+computation uses the existing `@floating-ui/react-dom` dependency; interactions and state use Preact.
+The browser fixture is available with `bun run dev` at `/tests/fixtures/floating.html` and is excluded from the site build.

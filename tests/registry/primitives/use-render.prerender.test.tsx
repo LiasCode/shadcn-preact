@@ -11,6 +11,13 @@ import { ToggleGroup } from "@registry/ui/primitives/toggle-group";
 import { useRender } from "@registry/ui/primitives/use-render";
 import { renderToString } from "preact-render-to-string";
 
+import { FloatingFocusManager } from "../../../registry/ui/primitives/internals/FloatingFocusManager";
+import { FloatingPortal } from "../../../registry/ui/primitives/internals/FloatingPortal";
+import { useAnchorPositioning } from "../../../registry/ui/primitives/internals/useAnchorPositioning";
+import { useDismiss } from "../../../registry/ui/primitives/internals/useDismiss";
+import { useFloatingRootContext } from "../../../registry/ui/primitives/internals/useFloatingRootContext";
+import { useScrollLock } from "../../../registry/ui/primitives/internals/useScrollLock";
+
 // Prerendering runs without a document; refs are skipped there.
 beforeAll(async () => {
   await GlobalRegistrator.unregister();
@@ -69,4 +76,27 @@ test("state primitives prerender without browser globals", () => {
   expect(markup).toContain('aria-expanded="true"');
   expect(markup).toContain('value="20"');
   expect(markup).toContain('value="40"');
+});
+function FloatingSubject() {
+  const context = useFloatingRootContext({ open: true, elements: { reference: null, floating: null } });
+  useDismiss(context);
+  useScrollLock(true);
+  const position = useAnchorPositioning({ mounted: true });
+  return (
+    <>
+      <div style={position.positionerStyles}>positioner</div>
+      <FloatingPortal>
+        <FloatingFocusManager context={context}>
+          <div>popup</div>
+        </FloatingFocusManager>
+      </FloatingPortal>
+    </>
+  );
+}
+test("floating infrastructure prerenders without browser globals or portal content", () => {
+  expect(typeof window).toBe("undefined");
+  const markup = renderToString(<FloatingSubject />);
+  expect(markup).toContain("positioner");
+  expect(markup).toContain("opacity:0");
+  expect(markup).not.toContain("popup");
 });
