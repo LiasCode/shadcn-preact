@@ -10,3 +10,7 @@ ignoreScripts = false
 auto = "disable"
 logLevel = "debug"
 minimumReleaseAge = 86400 # 24 hours in seconds
+
+[test]
+root = "./tests"
+preload = ["./tests/setup.ts"]

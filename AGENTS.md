@@ -23,12 +23,13 @@ Package manager is **Bun** (`bun.lock`, exact versions, `bunfig.toml`).
 - `bun run build`: type check (`tsc -b`) and Vite build with prerendering
 - `bun run preview`: preview the production build
 - `bun run lint`: oxlint
+- `bun run test`: core primitive regression tests with Bun and happy-dom (ADR 0011)
 - `bun run format`: oxfmt (writes); `bunx oxfmt --check` verifies
 - `bun run reference`: writes the upstream base-nova reference (components and examples) to
   `$TMPDIR/shadcn-preact-reference/base-nova` (ADR 0009)
 - `bun run parity`: checks the vendored CSS, the theme tokens, and every rebuilt component against upstream
 
-There is **no test suite**. A change is done only when `bunx oxfmt --check`, `lint`, and `build` all pass, and the affected
+A change is done only when `bunx oxfmt --check`, `test`, `lint`, and `build` all pass, and the affected
 pages were checked in a browser (or the missing browser check is reported).
 
 ## Registry rules (`registry/ui/`)
