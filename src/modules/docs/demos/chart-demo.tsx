@@ -1,6 +1,6 @@
-import { ChartBarInteractive } from "../charts/Bars";
-import { ChartPieDonutText } from "../charts/Pie";
-import { ChartRadialGrid } from "../charts/Radial";
+import { ChartBarInteractive } from "./charts/bars";
+import { ChartPieDonutText } from "./charts/pie";
+import { ChartRadialGrid } from "./charts/radial";
 
 export function ChartDemo() {
   return (

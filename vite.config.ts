@@ -3,46 +3,7 @@ import { resolve } from "node:path";
 import preact from "@preact/preset-vite";
 import { defineConfig } from "vite";
 
-const componentRoutes = [
-  "alert",
-  "alert-dialog",
-  "aspect-ratio",
-  "avatar",
-  "badge",
-  "breadcrumb",
-  "button",
-  "button-group",
-  "calendar",
-  "card",
-  "combobox",
-  "context-menu",
-  "dialog",
-  "drawer",
-  "dropdown-menu",
-  "empty",
-  "field",
-  "hover-card",
-  "input",
-  "input-group",
-  "kbd",
-  "label",
-  "menubar",
-  "native-select",
-  "navigation-menu",
-  "pagination",
-  "popover",
-  "progress",
-  "select",
-  "separator",
-  "sheet",
-  "skeleton",
-  "spinner",
-  "table",
-  "tabs",
-  "textarea",
-  "toggle",
-  "tooltip",
-].map((component) => `/docs/components/${component}`);
+import { componentRoutes } from "./src/modules/docs/catalog";
 
 // https://vitejs.dev/config/
 export default defineConfig({

@@ -1,13 +1,13 @@
 import { Badge } from "@registry/ui/badge";
 import { Button } from "@registry/ui/button";
 import { cn } from "@registry/ui/share/cn";
-import { MenuIcon, MoonIcon, SunIcon } from "lucide-preact";
+import { useTheme } from "@registry/ui/theme";
+import { GitBranchIcon, MenuIcon, MoonIcon, SunIcon } from "lucide-preact";
 import type { ComponentChildren } from "preact";
 import { useEffect, useState } from "preact/compat";
 
-import { GitBranchIcon } from "@/components/GitBranchIcon";
-
-import { componentCategories, componentDocs } from "./docs-data";
+import { repositoryUrl } from "@/lib/site";
+import { componentCategories, components } from "@/modules/docs/catalog";
 
 type DocsLayoutProps = {
   children: ComponentChildren;
@@ -77,13 +77,13 @@ function SiteHeader({
           <a href="/docs/components" className="transition-colors hover:text-foreground">
             Components
           </a>
-          <a href="https://github.com/LiasCode/shadcn-preact" className="transition-colors hover:text-foreground">
+          <a href={repositoryUrl} className="transition-colors hover:text-foreground">
             GitHub
           </a>
         </nav>
         <div className="ml-auto flex items-center gap-1">
           <Button variant="ghost" size="icon-sm" asChild>
-            <a href="https://github.com/LiasCode/shadcn-preact" aria-label="Open GitHub repository">
+            <a href={repositoryUrl} aria-label="Open GitHub repository">
               <GitBranchIcon />
             </a>
           </Button>
@@ -95,24 +95,18 @@ function SiteHeader({
 }
 
 function ThemeToggle() {
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
+  const { theme, setTheme } = useTheme();
 
   return (
     <Button
       variant="ghost"
       size="icon-sm"
       aria-label="Toggle theme"
-      onClick={() => {
-        const nextDark = !document.documentElement.classList.contains("dark");
-        document.documentElement.classList.toggle("dark", nextDark);
-        setDark(nextDark);
-      }}
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
-      {dark ? <SunIcon /> : <MoonIcon />}
+      {/* The icon follows the `.dark` class, so the prerendered markup matches after hydration. */}
+      <SunIcon className="hidden dark:block" />
+      <MoonIcon className="dark:hidden" />
     </Button>
   );
 }
@@ -132,17 +126,17 @@ function DocsSidebar({ activeSlug }: { activeSlug?: string }) {
         ))}
       </div>
       {componentCategories.map((category) => {
-        const docs = componentDocs.filter((doc) => doc.category === category);
+        const entries = components.filter((entry) => entry.category === category);
         return (
           <div className="grid gap-1">
             <div className="mb-1 font-medium text-muted-foreground text-xs uppercase tracking-wide">{category}</div>
-            {docs.map((doc) => (
+            {entries.map((entry) => (
               <a
-                href={`/docs/components/${doc.slug}`}
-                data-active={activeSlug === doc.slug ? "" : undefined}
+                href={`/docs/components/${entry.slug}`}
+                data-active={activeSlug === entry.slug ? "" : undefined}
                 className="rounded-md px-2 py-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[active]:bg-muted data-[active]:font-medium data-[active]:text-foreground"
               >
-                {doc.name}
+                {entry.name}
               </a>
             ))}
           </div>

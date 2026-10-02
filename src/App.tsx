@@ -1,42 +1,14 @@
-import { Alert, AlertDescription, AlertTitle } from "@registry/ui/alert";
-import { Button } from "@registry/ui/button";
-import { ExternalLink } from "lucide-preact";
-import { LocationProvider, Route, Router } from "preact-iso";
+import { ThemeProvider } from "@registry/ui/theme";
+import { LocationProvider } from "preact-iso";
 
-import { ComponentDocPage, ComponentsIndexPage, DocsHomePage, ViteInstallationPage } from "./routes/docs-components";
+import { AppRoutes } from "./routes";
 
 export function App() {
   return (
-    <LocationProvider>
-      <Router>
-        <Route path={"/"} component={DocsHomePage} />
-
-        <Route path={"/docs"} component={DocsHomePage} />
-
-        <Route path={"/docs/components"} component={ComponentsIndexPage} />
-
-        <Route path={"/docs/installation/vite"} component={ViteInstallationPage} />
-
-        <Route path={"/docs/components/:slug"} component={ComponentDocPage} />
-
-        <Route
-          default
-          component={() => (
-            <div className="flex h-screen w-screen flex-col items-center justify-center gap-6 bg-background">
-              <Alert variant="destructive" className="max-w-125 border-red-500">
-                <AlertTitle className="font-bold text-red-500">404 error, Not found</AlertTitle>
-                <AlertDescription className="text-red-400">This resource doesn't exists</AlertDescription>
-              </Alert>
-
-              <a href={"/"}>
-                <Button variant="secondary">
-                  Go home <ExternalLink />
-                </Button>
-              </a>
-            </div>
-          )}
-        />
-      </Router>
-    </LocationProvider>
+    <ThemeProvider defaultTheme="light" storageKey="shadcn-preact-theme">
+      <LocationProvider>
+        <AppRoutes />
+      </LocationProvider>
+    </ThemeProvider>
   );
 }

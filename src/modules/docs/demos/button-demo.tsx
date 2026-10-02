@@ -1,7 +1,5 @@
 import { Button } from "@registry/ui/button";
-import { ArrowUpRightIcon, Loader2Icon } from "lucide-preact";
-
-import { GitBranchIcon } from "../GitBranchIcon";
+import { ArrowUpRightIcon, GitBranchIcon, Loader2Icon } from "lucide-preact";
 
 export function ButtonDemo() {
   return (
