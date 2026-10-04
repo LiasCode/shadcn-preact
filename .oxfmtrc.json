@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["src/styles/shadcn-tailwind.css"],
+  "ignorePatterns": ["src/styles/shadcn-tailwind.css", "upstream/**", ".cache/**"],
   "printWidth": 120,
   "useTabs": false,
   "tabWidth": 2,

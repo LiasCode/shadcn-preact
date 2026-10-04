@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .tsbuildinfo
+
+# Generated upstream reference
+.cache/

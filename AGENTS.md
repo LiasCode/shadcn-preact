@@ -26,7 +26,9 @@ Package manager is **Bun** (`bun.lock`, exact versions, `bunfig.toml`).
 - `bun run test`: core primitive regression tests with Bun and happy-dom (ADR 0011)
 - `bun run format`: oxfmt (writes); `bunx oxfmt --check` verifies
 - `bun run reference`: writes the upstream base-nova reference (components and examples) to
-  `$TMPDIR/shadcn-preact-reference/base-nova` (ADR 0009)
+  `.cache/shadcn-reference/base-nova` (ADR 0009)
+- `bun run upstream:setup`: initialize the pinned shadcn Git submodule; clone with `--recurse-submodules` to fetch it initially.
+- `bun run check`: format check, tests, parity regression checks, parity, lint, and build.
 - `bun run parity`: checks the vendored CSS, the theme tokens, and every rebuilt component against upstream
 
 A change is done only when `bunx oxfmt --check`, `test`, `lint`, and `build` all pass, and the affected
@@ -34,19 +36,18 @@ pages were checked in a browser (or the missing browser check is reported).
 
 ## Registry rules (`registry/ui/`)
 
-**Strict rule (ADR 0008):** every component matches the original shadcn/ui checked out in `../shadcn`, so the API,
+**Strict rule (ADR 0008):** every component matches the original shadcn/ui checked out in `upstream/shadcn`, so the API,
 the look, and the Tailwind classes stay interoperable:
 
-- Reference: `../shadcn/apps/v4/registry/bases/base/ui/<name>.tsx` (the Base UI base), with its `cn-*` classes resolved
-  through the **nova** style, `../shadcn/apps/v4/registry/styles/style-nova.css`. Demos come from
-  `../shadcn/apps/v4/examples/base`.
+- Reference: `upstream/shadcn/apps/v4/registry/bases/base/ui/<name>.tsx` (the Base UI base), with its `cn-*` classes resolved
+  through the **nova** style, `upstream/shadcn/apps/v4/registry/styles/style-nova.css`. Demos come from
+  `upstream/shadcn/apps/v4/examples/base`.
 - Same file name, exports, props (`render`, state-dependent `className`), `data-slot` and other `data-*` attributes,
   structure, and resolved classes. A deviation needs its own record.
 - `IconPlaceholder` becomes the `lucide-preact` icon named in its `lucide` prop. Icons come only from `lucide-preact`.
   (ADR 0004)
 - `@base-ui/react/<name>` is ported to Preact in `registry/ui/primitives/<name>` and imported as
-  `./primitives/<name>`. The reference is Base UI 1.6.0 in
-  `../shadcn/node_modules/.pnpm/@base-ui+react@1.6.0*/node_modules/@base-ui/react` (code and `docs/`).
+  `./primitives/<name>`. The primitive reference is Base UI 1.6.0 (code and `docs/`); install its source locally when porting a new primitive. The parity commands use the submodule and root development dependencies without installing the upstream monorepo.
 - Primitives keep Base UI's structure: public entry points in `primitives/<name>`, shared code in
   `primitives/internals/<UpstreamModule>.ts`. Preact adaptations are listed in ADR 0010; add new ones there or in a
   new record. Type and phase-2 adaptations are in ADR 0012.

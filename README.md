@@ -64,6 +64,26 @@ checkout described in [ADR 0009](./docs/decisions/0009-upstream-reference-and-pa
 parity does not certify full primitive behavior or visual equivalence; see
 [ADR 0022](./docs/decisions/0022-structural-wrapper-parity.md).
 
+## Development
+
+Clone the project together with its pinned upstream reference:
+
+```sh
+git clone --recurse-submodules https://github.com/LiasCode/shadcn-preact.git
+cd shadcn-preact
+bun install --frozen-lockfile
+bun run check
+```
+
+For an existing clone, run `bun run upstream:setup` first. Git requires `--recurse-submodules` or this setup
+command; a plain clone does not fetch submodule contents automatically. After switching branches or pulling a
+change to the recorded upstream revision, run `bun run upstream:setup` again.
+
+The shadcn reference lives in `upstream/shadcn`, pinned by the parent repository. Reference/parity commands use
+the root development dependencies; installing the upstream monorepo is unnecessary. `bun run reference` generates
+its output in the ignored `.cache/shadcn-reference/base-nova` directory. Updating the upstream pin is an explicit
+change that must pass the parity checks; see [ADR 0023](./docs/decisions/0023-pinned-upstream-submodule.md).
+
 ## v3
 
 The version 3 code is on [branch](https://github.com/LiasCode/shadcn-preact/tree/v3) and is maintained there.

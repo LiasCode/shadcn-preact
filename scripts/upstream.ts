@@ -7,11 +7,11 @@ import { basename, join, resolve } from "node:path";
 
 export const STYLE = "nova";
 
-export const shadcnDir = resolve(process.env.SHADCN_DIR ?? join(import.meta.dirname, "../../shadcn"));
+export const shadcnDir = resolve(process.env.SHADCN_DIR ?? join(import.meta.dirname, "../upstream/shadcn"));
 
 if (!existsSync(join(shadcnDir, "apps/v4/registry/bases/base/ui"))) {
   throw new Error(
-    `The shadcn/ui checkout was not found at ${shadcnDir}. Clone it next to this repository or set SHADCN_DIR.`,
+    `The shadcn/ui checkout was not found at ${shadcnDir}. Run bun run upstream:setup (or clone with --recurse-submodules).`,
   );
 }
 

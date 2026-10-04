@@ -1,0 +1,3 @@
+[submodule "upstream/shadcn"]
+	path = upstream/shadcn
+	url = https://github.com/shadcn-ui/ui.git
