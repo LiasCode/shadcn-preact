@@ -1,16 +1,19 @@
 // Checks the registry against the original shadcn/ui (ADR 0008): the vendored shadcn Tailwind CSS, the neutral theme
-// tokens, and, for every rebuilt component, its exports and every literal token (Tailwind classes, data-slot values,
-// tag names). Components still on the old `./share/` primitives are reported as pending. Usage: bun run parity
+// tokens, exports, runtime literal multiplicity, declared props/defaults and JSX structure/attributes.
+// Missing or retired wrappers fail. This is static wrapper parity, not functional certification. Usage: bun run parity
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { basename, join } from "node:path";
+import { basename, join, resolve } from "node:path";
 
+import { parityAdaptations, matchesAdaptation } from "./parity-adaptations";
+import { componentShape, compareEntries } from "./parity-shape";
 import { componentNames, paths, referenceComponent, tsMorph } from "./upstream";
 
 const root = join(import.meta.dirname, "..");
-const registryDir = join(root, "registry/ui");
+// An isolated fixture directory is used by CLI regression tests; production checks default to registry/ui.
+const registryDir = resolve(process.env.PARITY_REGISTRY_DIR ?? join(root, "registry/ui"));
 const project = new tsMorph.Project({ useInMemoryFileSystem: true });
-const { Node, ScriptKind } = tsMorph;
+const { ScriptKind } = tsMorph;
 
 let failures = 0;
 const fail = (message: string) => {
@@ -42,28 +45,11 @@ for (const [mode, selector] of [
 }
 if (failures === 0) console.log("✓ neutral theme tokens match upstream");
 
-type Shape = { exports: Set<string>; tokens: Map<string, number> };
-
-function shapeOf(source: string, filename: string): Shape {
+function exportsOf(source: string, filename: string): Set<string> {
   const file = project.createSourceFile(filename, source, { scriptKind: ScriptKind.TSX, overwrite: true });
-  const exports = new Set<string>(file.getExportedDeclarations().keys());
-  const tokens = new Map<string, number>();
-  file.forEachDescendant((node: InstanceType<typeof Node>) => {
-    if (!Node.isStringLiteral(node) && !Node.isNoSubstitutionTemplateLiteral(node)) return;
-    const parent = node.getParent();
-    // SSR guards are required by ADR 0008's Preact adaptation, not upstream UI tokens.
-    if (
-      Node.isBinaryExpression(parent) &&
-      (Node.isTypeOfExpression(parent.getLeft()) || Node.isTypeOfExpression(parent.getRight()))
-    )
-      return;
-    if (Node.isImportDeclaration(parent) || Node.isExportDeclaration(parent)) return;
-    for (const token of node.getLiteralText().split(/\s+/).filter(Boolean)) {
-      tokens.set(token, (tokens.get(token) ?? 0) + 1);
-    }
-  });
-  return { exports, tokens };
+  return new Set(file.getExportedDeclarations().keys());
 }
+const usedAdaptations = new Set<string>();
 
 function difference<T>(a: Iterable<T>, b: Set<T> | Map<T, unknown>): T[] {
   return [...a].filter((item) => !b.has(item));
@@ -81,22 +67,41 @@ let matching = 0;
 for (const name of componentNames()) {
   if (!local.has(name)) {
     missing.push(name);
+    fail(`${name}: missing upstream component`);
     continue;
   }
   const source = readFileSync(join(registryDir, `${name}.tsx`), "utf8");
   if (source.includes('from "./share/')) {
     pending.push(name);
+    fail(`${name}: still uses retired primitives`);
     continue;
   }
 
-  const ours = shapeOf(source, `ours-${name}.tsx`);
-  const theirs = shapeOf(await referenceComponent(name), `upstream-${name}.tsx`);
+  const reference = await referenceComponent(name);
+  const ours = componentShape(source, `ours-${name}.tsx`);
+  const theirs = componentShape(reference, `upstream-${name}.tsx`);
+  const ourExports = exportsOf(source, `ours-${name}.tsx`);
+  const theirExports = exportsOf(reference, `upstream-${name}.tsx`);
   const problems = [
-    ...difference(theirs.exports, ours.exports).map((item) => `missing export ${item}`),
-    ...difference(ours.exports, theirs.exports).map((item) => `extra export ${item}`),
-    ...difference(theirs.tokens.keys(), ours.tokens).map((item) => `missing "${item}"`),
-    ...difference(ours.tokens.keys(), theirs.tokens).map((item) => `extra "${item}"`),
+    ...difference(theirExports, ourExports).map((item) => `missing export ${item}`),
+    ...difference(ourExports, theirExports).map((item) => `extra export ${item}`),
+    ...compareEntries("runtime literal counts", ours.tokens, theirs.tokens),
   ];
+  for (const category of ["props", "jsx"] as const) {
+    const localShape = new Map(ours[category]);
+    const upstreamShape = new Map(theirs[category]);
+    for (const adaptation of parityAdaptations) {
+      if (adaptation.component !== name || adaptation.category !== category) continue;
+      const local = localShape.get(adaptation.member);
+      const upstream = upstreamShape.get(adaptation.member);
+      if (matchesAdaptation(local, upstream, adaptation)) {
+        localShape.delete(adaptation.member);
+        upstreamShape.delete(adaptation.member);
+        usedAdaptations.add(`${name}:${category}:${adaptation.member}`);
+      }
+    }
+    problems.push(...compareEntries(category, localShape, upstreamShape));
+  }
   if (problems.length > 0) {
     fail(`${name}:\n    ${problems.join("\n    ")}`);
   } else {
@@ -104,7 +109,16 @@ for (const name of componentNames()) {
   }
 }
 
-console.log(`✓ ${matching} rebuilt components match upstream`);
+for (const adaptation of parityAdaptations) {
+  const key = `${adaptation.component}:${adaptation.category}:${adaptation.member}`;
+  if (!usedAdaptations.has(key))
+    fail(`${key}: reviewed adaptation no longer matches; inspect and update/remove its exact contract`);
+}
+console.log(`✓ ${matching} wrappers match upstream exports, runtime literal counts, prop declarations and JSX`);
+console.log(`… ${usedAdaptations.size} exact documented adaptation(s)`);
+console.log(
+  "… Static wrapper parity does not certify primitive behavior, resolved public types or visual equivalence.",
+);
 console.log(`… ${pending.length} pending (old primitives): ${pending.join(", ") || "none"}`);
 console.log(`… ${missing.length} not ported yet: ${missing.join(", ") || "none"}`);
 

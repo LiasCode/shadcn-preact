@@ -58,6 +58,12 @@ build the site, start `bun run preview`, and run `node scripts/phase8-browser.mj
 external tool: set `PERFORMANCE_PLAYWRIGHT_MODULE` to its installed module path and `PERFORMANCE_URL` if the
 preview uses another port.
 
+`bun run parity` checks upstream exports, runtime literal counts, declared props/defaults, and JSX/render structure,
+plus CSS and theme tokens. `bun run parity:test` runs its mutation regression checks. Both require the upstream
+checkout described in [ADR 0009](./docs/decisions/0009-upstream-reference-and-parity-tooling.md). Static wrapper
+parity does not certify full primitive behavior or visual equivalence; see
+[ADR 0022](./docs/decisions/0022-structural-wrapper-parity.md).
+
 ## v3
 
 The version 3 code is on [branch](https://github.com/LiasCode/shadcn-preact/tree/v3) and is maintained there.

@@ -14,6 +14,7 @@
     "lint": "oxlint",
     "reference": "bun scripts/reference.ts",
     "parity": "bun scripts/parity.ts",
+    "parity:test": "bun scripts/parity-regressions.ts",
     "test": "bun test",
     "performance": "bun scripts/performance.mjs"
   },
