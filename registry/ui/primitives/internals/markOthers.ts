@@ -28,32 +28,60 @@ export function markOthers(
   avoidElements: Element[],
   options: { ariaHidden?: boolean; inert?: boolean; mark?: boolean } = {},
 ) {
-  if (typeof window === "undefined" || !avoidElements[0]) return () => {};
+  if (typeof window === "undefined" || !avoidElements[0])
+    return Object.assign(() => {}, { update: (_elements?: Element[]) => {} });
   const body = avoidElements[0].ownerDocument.body;
   // Keep shadow hosts and their ancestors reachable when the popup lives in a shadow tree.
   function host(element: Element): Element {
     const root = element.getRootNode();
     return "host" in root ? host((root as ShadowRoot).host) : element;
   }
-  const allowed = avoidElements.map((element) => (body.contains(element) ? element : host(element)));
-  const live = Array.from(body.querySelectorAll("[aria-live]"));
-  const releases: (() => void)[] = [];
-  function walk(parent: Element, control: boolean) {
-    for (const child of parent.children) {
-      if (child.tagName === "SCRIPT") continue;
+  const locked = new Map<Element, Map<string, () => void>>();
+  function update(elements = avoidElements) {
+    const allowed = elements.map((element) => (body.contains(element) ? element : host(element)));
+    const live = Array.from(body.querySelectorAll("[aria-live]"));
+    const desired = new Map<Element, Set<string>>();
+    function walk(parent: Element, control: boolean) {
       const targets = control ? allowed.concat(live) : allowed;
-      if (targets.includes(child)) continue;
-      if (targets.some((element) => child.contains(element))) {
-        walk(child, control);
-        continue;
+      for (const child of parent.children) {
+        if (child.tagName === "SCRIPT" || targets.includes(child)) continue;
+        if (targets.some((element) => child.contains(element))) {
+          walk(child, control);
+          continue;
+        }
+        const attribute = control ? (options.inert ? "inert" : "aria-hidden") : "data-base-ui-inert";
+        let attributes = desired.get(child);
+        if (!attributes) desired.set(child, (attributes = new Set()));
+        attributes.add(attribute);
       }
-      const attribute = control ? (options.inert ? "inert" : "aria-hidden") : "data-base-ui-inert";
-      releases.push(lock(child, attribute, attribute === "aria-hidden" ? "true" : ""));
+    }
+    if (options.inert || options.ariaHidden) walk(body, true);
+    if (options.mark !== false) walk(body, false);
+    // Retain unchanged locks: toggling inert on every DOM mutation invalidates descendant styles.
+    for (const [element, attributes] of locked) {
+      for (const [attribute, release] of attributes) {
+        if (!desired.get(element)?.has(attribute)) {
+          release();
+          attributes.delete(attribute);
+        }
+      }
+      if (!attributes.size) locked.delete(element);
+    }
+    for (const [element, attributes] of desired) {
+      let current = locked.get(element);
+      if (!current) locked.set(element, (current = new Map()));
+      for (const attribute of attributes) {
+        if (!current.has(attribute))
+          current.set(attribute, lock(element, attribute, attribute === "aria-hidden" ? "true" : ""));
+      }
     }
   }
-  if (options.inert || options.ariaHidden) walk(body, true);
-  if (options.mark !== false) walk(body, false);
-  return () => {
-    for (const release of releases) release();
-  };
+  update();
+  return Object.assign(
+    () => {
+      for (const attributes of locked.values()) for (const release of attributes.values()) release();
+      locked.clear();
+    },
+    { update },
+  );
 }

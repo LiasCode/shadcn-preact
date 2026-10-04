@@ -1,93 +1,48 @@
-import { Button } from "@registry/ui/button";
-import { Calendar } from "@registry/ui/calendar";
-import { Card, CardContent, CardFooter } from "@registry/ui/card";
-import { addDays } from "date-fns";
+import { NativeSelect, NativeSelectOption } from "@registry/ui/native-select";
 import { useState } from "preact/hooks";
-import type { DateRange } from "react-day-picker";
+
+import Example0 from "../examples/calendar-basic";
+import { CalendarBookedDates as Example1 } from "../examples/calendar-booked-dates";
+import { CalendarCaption as Example2 } from "../examples/calendar-caption";
+import { CalendarCustomDays as Example3 } from "../examples/calendar-custom-days";
+import Example4 from "../examples/calendar-demo";
+import { CalendarMultiple as Example5 } from "../examples/calendar-multiple";
+import { CalendarWithPresets as Example6 } from "../examples/calendar-presets";
+import { CalendarRange as Example7 } from "../examples/calendar-range";
+import { CalendarWithTime as Example8 } from "../examples/calendar-time";
+import { CalendarWeekNumbers as Example9 } from "../examples/calendar-week-numbers";
+const examples = [
+  ["Basic", Example0],
+  ["Booked dates", Example1],
+  ["Caption", Example2],
+  ["Custom days", Example3],
+  ["Demo", Example4],
+  ["Multiple", Example5],
+  ["Presets", Example6],
+  ["Range", Example7],
+  ["Time", Example8],
+  ["Week numbers", Example9],
+] as const;
 
 export function CalendarDemo() {
-  const [date, setDate] = useState<Date | undefined>(new Date());
-
+  const [selected, setSelected] = useState(0);
+  const [, Example] = examples[selected]!;
   return (
-    <div className="relative flex flex-row flex-wrap gap-8 overflow-x-auto">
-      <Calendar
-        mode="single"
-        selected={date}
-        onSelect={setDate}
-        className="rounded-md border shadow-sm"
-        captionLayout="dropdown"
-      />
-
-      <Calendar mode="single" className="rounded-lg border" />
-
-      <CalendarRange />
-
-      <CalendarWithPresets />
-    </div>
-  );
-}
-
-export function CalendarRange() {
-  const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(new Date().getFullYear(), 0, 12),
-    to: addDays(new Date(new Date().getFullYear(), 0, 12), 30),
-  });
-  return (
-    <Card className="h-fit w-fit p-0">
-      <CardContent className="p-0">
-        <Calendar
-          mode="range"
-          defaultMonth={dateRange?.from}
-          selected={dateRange}
-          onSelect={setDateRange}
-          numberOfMonths={2}
-          disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
-        />
-      </CardContent>
-    </Card>
-  );
-}
-
-export function CalendarWithPresets() {
-  const [date, setDate] = useState<Date | undefined>(new Date(new Date().getFullYear(), 1, 12));
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
-
-  return (
-    <Card className="w-fit max-w-75" size="sm">
-      <CardContent>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          month={currentMonth}
-          onMonthChange={setCurrentMonth}
-          fixedWeeks
-          className="p-0 [--cell-size:--spacing(9.5)]"
-        />
-      </CardContent>
-      <CardFooter className="flex flex-wrap gap-2 border-t">
-        {[
-          { label: "Today", value: 0 },
-          { label: "Tomorrow", value: 1 },
-          { label: "In 3 days", value: 3 },
-          { label: "In a week", value: 7 },
-          { label: "In 2 weeks", value: 14 },
-        ].map((preset) => (
-          <Button
-            key={preset.value}
-            variant="outline"
-            size="sm"
-            className="flex-1"
-            onClick={() => {
-              const newDate = addDays(new Date(), preset.value);
-              setDate(newDate);
-              setCurrentMonth(new Date(newDate.getFullYear(), newDate.getMonth(), 1));
-            }}
-          >
-            {preset.label}
-          </Button>
+    <div className="w-full min-w-0 space-y-4">
+      <NativeSelect
+        aria-label="Calendar example"
+        value={String(selected)}
+        onChange={(event) => setSelected(Number(event.currentTarget.value))}
+      >
+        {examples.map(([name], index) => (
+          <NativeSelectOption key={name} value={String(index)}>
+            {name}
+          </NativeSelectOption>
         ))}
-      </CardFooter>
-    </Card>
+      </NativeSelect>
+      <div className="relative w-full min-w-0 overflow-x-auto">
+        <Example />
+      </div>
+    </div>
   );
 }

@@ -265,7 +265,7 @@ export function useAnchorPositioning(params: UseAnchorPositioningParameters) {
     if (request !== generation.current || !getParams().mounted) return;
     if (current.lazyFlip) lockedSide.current = result.placement.split("-")[0]!;
     const rect = anchor.getBoundingClientRect();
-    setPosition({
+    const next: Position = {
       x: result.x,
       y: result.y,
       placement: result.placement,
@@ -278,7 +278,10 @@ export function useAnchorPositioning(params: UseAnchorPositioningParameters) {
         result.middlewareData.hide?.referenceHidden || (!rect.width && !rect.height && !rect.x && !rect.y),
       ),
       positioned: true,
-    });
+    };
+    setPosition((previous) =>
+      (Object.keys(next) as (keyof Position)[]).some((key) => next[key] !== previous[key]) ? next : previous,
+    );
   });
   const rootReference = params.floatingRootContext?.elements.reference;
   useIsoLayoutEffect(() => {

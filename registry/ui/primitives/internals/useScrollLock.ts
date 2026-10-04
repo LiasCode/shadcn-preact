@@ -1,6 +1,6 @@
 import { useIsoLayoutEffect } from "./useIsoLayoutEffect";
 const documents = new WeakMap<Document, { count: number; restore: () => void }>();
-/** Lock both possible page scrollers while retaining consumer inline declarations. */
+/** Lock page scrolling without introducing a new sticky containing scrollport. */
 export function lockScroll(document: Document) {
   const existing = documents.get(document);
   if (existing) existing.count++;
@@ -40,7 +40,10 @@ export function lockScroll(document: Document) {
           `${(parseFloat(view?.getComputedStyle(body).paddingRight ?? "0") || 0) + gutter}px`,
         );
     }
-    for (const element of [html, body]) element.style.setProperty("overflow", "hidden", "important");
+    html.style.setProperty("overflow", "hidden", "important");
+    // Hidden makes body a scroll container, moving document-sticky navigation offscreen.
+    // Clip blocks overflow without changing its scrollport; quirks-mode body scrollers need hidden.
+    body.style.setProperty("overflow", document.scrollingElement === body ? "hidden" : "clip", "important");
     html.setAttribute("data-base-ui-scroll-locked", "");
     documents.set(document, {
       count: 1,

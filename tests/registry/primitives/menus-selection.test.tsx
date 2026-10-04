@@ -1,4 +1,4 @@
-import { expect, test } from "bun:test";
+import { expect, spyOn, test } from "bun:test";
 
 import { useState } from "preact/hooks";
 
@@ -490,6 +490,30 @@ function Area() {
     </ScrollArea.Root>
   );
 }
+test("scroll area releases removed content from resize observation and avoids observing it twice", async () => {
+  const observe = spyOn(ResizeObserver.prototype, "observe");
+  const unobserve = spyOn(ResizeObserver.prototype, "unobserve");
+  try {
+    render(<Area />);
+    await settle();
+    const viewport = get("#viewport");
+    const original = viewport.firstElementChild!;
+    observe.mockClear();
+    const added = document.createElement("div");
+    viewport.append(added);
+    await settle();
+    expect(observe.mock.calls.filter(([element]) => element === original)).toHaveLength(0);
+    expect(observe.mock.calls.filter(([element]) => element === added)).toHaveLength(1);
+    original.remove();
+    await settle();
+    expect(unobserve).toHaveBeenCalledWith(original);
+    expect(observe.mock.calls.filter(([element]) => element === added)).toHaveLength(1);
+  } finally {
+    observe.mockRestore();
+    unobserve.mockRestore();
+  }
+});
+
 test("scroll area measures overflow, thumb travel, edge attributes and corner dimensions", async () => {
   render(<Area />);
   dimensions(get("#viewport"), { clientWidth: 100, clientHeight: 100, scrollWidth: 500, scrollHeight: 500 });

@@ -116,6 +116,7 @@ export function OverlayPopup(props: OverlayPopupProps) {
       disabled={!context.mounted}
       modal={context.modal !== false}
       outsideElementsInert={context.modal === true}
+      referenceInside={context.kind === "combobox"}
       initialFocus={initialFocus ?? ((type) => (type === "touch" ? context.popupRef.current : true))}
       returnFocus={finalFocus}
       restoreFocus="popup"

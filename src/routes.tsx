@@ -1,8 +1,8 @@
-import { Route, Router } from "preact-iso";
+import { lazy, Route, Router } from "preact-iso";
 
 import { NotFound } from "./layouts/not-found";
 import { HomeView } from "./modules/showcase/views/home";
-import { ShowcaseView } from "./modules/showcase/views/showcase";
+const ShowcaseView = lazy(() => import("./modules/showcase/views/showcase").then((module) => module.ShowcaseView));
 
 // Static paths are also prerendered; keep `additionalPrerenderRoutes` in `vite.config.ts` in sync.
 export function AppRoutes() {

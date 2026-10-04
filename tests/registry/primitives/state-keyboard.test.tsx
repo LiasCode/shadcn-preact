@@ -1,4 +1,4 @@
-import { expect, test } from "bun:test";
+import { expect, spyOn, test } from "bun:test";
 
 import { Accordion } from "@registry/ui/primitives/accordion";
 import { Checkbox } from "@registry/ui/primitives/checkbox";
@@ -317,6 +317,42 @@ test("slider keyboard respects decimals, range gaps and commits", () => {
     [0.3, 0.6],
     [0.4, 0.6],
   ]);
+});
+
+test("slider value changes retain resize subscriptions and center alignment needs no size observer", () => {
+  const observe = spyOn(ResizeObserver.prototype, "observe");
+  const disconnect = spyOn(ResizeObserver.prototype, "disconnect");
+  try {
+    const container = render(
+      <Slider.Root defaultValue={50} thumbAlignment="edge">
+        <Slider.Control>
+          <Slider.Track>
+            <Slider.Thumb index={0} />
+          </Slider.Track>
+        </Slider.Control>
+      </Slider.Root>,
+    );
+    const input = container.querySelector("input")!;
+    observe.mockClear();
+    disconnect.mockClear();
+    for (let index = 0; index < 5; index++) fire(input, key("ArrowRight"));
+    expect(input.value).toBe("55");
+    expect(observe).not.toHaveBeenCalled();
+    expect(disconnect).not.toHaveBeenCalled();
+    render(
+      <Slider.Root defaultValue={50} thumbAlignment="center">
+        <Slider.Control>
+          <Slider.Track>
+            <Slider.Thumb index={0} />
+          </Slider.Track>
+        </Slider.Control>
+      </Slider.Root>,
+    );
+    expect(observe).not.toHaveBeenCalled();
+  } finally {
+    observe.mockRestore();
+    disconnect.mockRestore();
+  }
 });
 
 test("slider cancellation suppresses commits and restores the input", () => {

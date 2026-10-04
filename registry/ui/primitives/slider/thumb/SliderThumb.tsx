@@ -9,6 +9,7 @@ import { useBaseUiId } from "../../internals/useId";
 import { useIsoLayoutEffect } from "../../internals/useIsoLayoutEffect";
 import { useMergedRefs } from "../../internals/useMergedRefs";
 import { useRenderElement } from "../../internals/useRenderElement";
+import { useStableCallback } from "../../internals/useStableCallback";
 import { visuallyHidden } from "../../internals/visuallyHidden";
 import { mergeProps } from "../../merge-props";
 import type { SliderRootState } from "../root/SliderRoot";
@@ -68,6 +69,17 @@ export function SliderThumb(componentProps: SliderThumbProps) {
   const [hydrating, setHydrating] = useState(true);
   useIsoLayoutEffect(() => setHydrating(false), []);
   const vertical = orientation === "vertical";
+  const update = useStableCallback(() => {
+    const thumb = thumbRef.current;
+    if (!thumb || index < 0 || context.alignment === "center") return;
+    const control = context.controlRef.current;
+    if (!control) return;
+    const thumbSize = vertical ? thumb.getBoundingClientRect().height : thumb.getBoundingClientRect().width;
+    const controlSize = vertical ? control.getBoundingClientRect().height : control.getBoundingClientRect().width;
+    const percent = ((value - min) / (max - min)) * 100;
+    const position = ((thumbSize / 2 + ((controlSize - thumbSize) * percent) / 100) / controlSize) * 100;
+    context.setPosition(index, Number.isFinite(position) ? position : undefined);
+  });
   useIsoLayoutEffect(() => {
     const thumb = thumbRef.current;
     if (!thumb || index < 0) return undefined;
@@ -81,18 +93,10 @@ export function SliderThumb(componentProps: SliderThumbProps) {
         })
         .join(" ") || undefined,
     );
-    const update = () => {
-      const control = context.controlRef.current;
-      if (!control) return;
-      const thumbSize = vertical ? thumb.getBoundingClientRect().height : thumb.getBoundingClientRect().width;
-      const controlSize = vertical ? control.getBoundingClientRect().height : control.getBoundingClientRect().width;
-      const percent = ((value - min) / (max - min)) * 100;
-      const position = ((thumbSize / 2 + ((controlSize - thumbSize) * percent) / 100) / controlSize) * 100;
-      context.setPosition(index, Number.isFinite(position) ? position : undefined);
-    };
-    update();
     const observer =
-      typeof window !== "undefined" && typeof ResizeObserver === "function" ? new ResizeObserver(update) : undefined;
+      typeof window !== "undefined" && typeof ResizeObserver === "function" && context.alignment !== "center"
+        ? new ResizeObserver(update)
+        : undefined;
     observer?.observe(thumb);
     if (context.controlRef.current) observer?.observe(context.controlRef.current);
     const ownerForm = input?.form;
@@ -106,7 +110,10 @@ export function SliderThumb(componentProps: SliderThumbProps) {
       observer?.disconnect();
       ownerForm?.removeEventListener("reset", reset);
     };
-  }, [index, context.thumbs, context.reset, vertical, id, value, min, max, context.setPosition, context.controlRef]);
+  }, [index, context.thumbs, context.reset, id, context.alignment, context.controlRef, update]);
+  useIsoLayoutEffect(() => {
+    update();
+  }, [value, min, max, vertical, index, context.alignment, update]);
   const percent = ((value - min) / (max - min)) * 100;
   const position = context.positions.get(index);
   const inset = context.alignment !== "center";

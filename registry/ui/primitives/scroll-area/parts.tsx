@@ -201,8 +201,20 @@ export function Viewport(props: BaseUIComponentProps<"div", ScrollAreaState>) {
     if (!e) return;
     const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(ctx.measure) : null;
     ro?.observe(e);
+    const observed = new Set<Element>();
     const observeChildren = () => {
-      for (const child of e.children) ro?.observe(child);
+      for (const child of observed) {
+        if (child.parentElement !== e) {
+          ro?.unobserve(child);
+          observed.delete(child);
+        }
+      }
+      for (const child of e.children) {
+        if (!observed.has(child)) {
+          ro?.observe(child);
+          observed.add(child);
+        }
+      }
     };
     observeChildren();
     const mo =

@@ -11,9 +11,15 @@ import { ToggleGroup } from "@registry/ui/primitives/toggle-group";
 import { useRender } from "@registry/ui/primitives/use-render";
 import { renderToString } from "preact-render-to-string";
 
+import { Calendar } from "../../../registry/ui/calendar";
+import { Carousel, CarouselContent, CarouselItem } from "../../../registry/ui/carousel";
+import { ChartContainer } from "../../../registry/ui/chart";
+import { Command, CommandInput, CommandItem, CommandList } from "../../../registry/ui/command";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../../registry/ui/dialog";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "../../../registry/ui/drawer";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "../../../registry/ui/input-otp";
 import { Popover, PopoverContent, PopoverTrigger } from "../../../registry/ui/popover";
+import { Combobox } from "../../../registry/ui/primitives/combobox";
 import { FloatingFocusManager } from "../../../registry/ui/primitives/internals/FloatingFocusManager";
 import { FloatingPortal } from "../../../registry/ui/primitives/internals/FloatingPortal";
 import { useAnchorPositioning } from "../../../registry/ui/primitives/internals/useAnchorPositioning";
@@ -24,6 +30,10 @@ import { Menu } from "../../../registry/ui/primitives/menu";
 import { NavigationMenu } from "../../../registry/ui/primitives/navigation-menu";
 import { ScrollArea } from "../../../registry/ui/primitives/scroll-area";
 import { Select } from "../../../registry/ui/primitives/select";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "../../../registry/ui/resizable";
+import { SidebarProvider, Sidebar, SidebarContent } from "../../../registry/ui/sidebar";
+import { Toaster as SonnerToaster } from "../../../registry/ui/sonner";
+import { Toaster } from "../../../registry/ui/toast";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../registry/ui/tooltip";
 
 // Prerendering runs without a document; refs are skipped there.
@@ -179,4 +189,52 @@ test("menu, selection, navigation and scroll primitives prerender without browse
   expect(markup).not.toContain("Hidden menu");
   expect(markup).not.toContain("Hidden list");
   expect(markup).not.toContain("Hidden content");
+});
+test("phase 7 components and their compatibility libraries prerender without browser globals", () => {
+  const html = renderToString(
+    <>
+      <Calendar mode="single" month={new Date(2026, 9, 1)} />
+      <ChartContainer config={{ count: { label: "Count", color: "red" } }}>
+        <div />
+      </ChartContainer>
+      <Combobox.Root items={[{ value: "1", label: "One" }]} itemToStringValue={(value) => value.value}>
+        <Combobox.Input />
+        <Combobox.Trigger>Open</Combobox.Trigger>
+      </Combobox.Root>
+      <Command>
+        <CommandInput />
+        <CommandList>
+          <CommandItem>One</CommandItem>
+        </CommandList>
+      </Command>
+      <Carousel>
+        <CarouselContent>
+          <CarouselItem>Slide</CarouselItem>
+        </CarouselContent>
+      </Carousel>
+      <InputOTP maxLength={1}>
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+        </InputOTPGroup>
+      </InputOTP>
+      <ResizablePanelGroup>
+        <ResizablePanel>One</ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel>Two</ResizablePanel>
+      </ResizablePanelGroup>
+      <SidebarProvider>
+        <Sidebar>
+          <SidebarContent>Navigation</SidebarContent>
+        </Sidebar>
+      </SidebarProvider>
+      <SonnerToaster />
+      <Toaster />
+    </>,
+  );
+  expect(html).toContain('data-slot="calendar"');
+  expect(html).toContain('data-slot="command"');
+  expect(html).toContain('data-slot="resizable-panel"');
+  expect(html).toContain('data-slot="input-otp"');
+  expect(html).toContain('role="combobox"');
+  expect(html).toContain("Navigation");
 });

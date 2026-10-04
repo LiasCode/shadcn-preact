@@ -14,20 +14,25 @@
     "lint": "oxlint",
     "reference": "bun scripts/reference.ts",
     "parity": "bun scripts/parity.ts",
-    "test": "bun test"
+    "test": "bun test",
+    "performance": "bun scripts/performance.mjs"
   },
   "dependencies": {
     "@floating-ui/react-dom": "2.1.9",
     "class-variance-authority": "0.7.1",
-    "clsx": "2.1.1",
+    "cmdk": "1.1.1",
     "cn": "0.4.0",
     "date-fns": "4.4.0",
+    "embla-carousel-autoplay": "8.6.0",
+    "embla-carousel-react": "8.6.0",
+    "input-otp": "1.5.0",
     "lucide-preact": "1.49.0",
     "preact": "11.0.0",
     "preact-iso": "2.12.2",
     "react-day-picker": "10.0.2",
+    "react-resizable-panels": "4.14.2",
     "recharts": "3.10.1",
-    "tailwind-merge": "3.7.0"
+    "sonner": "2.0.8"
   },
   "devDependencies": {
     "@happy-dom/global-registrator": "20.14.5",

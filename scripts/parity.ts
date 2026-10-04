@@ -51,6 +51,12 @@ function shapeOf(source: string, filename: string): Shape {
   file.forEachDescendant((node: InstanceType<typeof Node>) => {
     if (!Node.isStringLiteral(node) && !Node.isNoSubstitutionTemplateLiteral(node)) return;
     const parent = node.getParent();
+    // SSR guards are required by ADR 0008's Preact adaptation, not upstream UI tokens.
+    if (
+      Node.isBinaryExpression(parent) &&
+      (Node.isTypeOfExpression(parent.getLeft()) || Node.isTypeOfExpression(parent.getRight()))
+    )
+      return;
     if (Node.isImportDeclaration(parent) || Node.isExportDeclaration(parent)) return;
     for (const token of node.getLiteralText().split(/\s+/).filter(Boolean)) {
       tokens.set(token, (tokens.get(token) ?? 0) + 1);

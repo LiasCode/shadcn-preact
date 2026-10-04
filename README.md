@@ -17,7 +17,25 @@ _Use this as a reference to build your own component libraries._
 
 **Why if Preact is compatible with React?**
 
-Shadcn/ui is built upon Radix UI and Tailwind CSS. While Radix UI offers a robust set of components, it introduces several dependencies that may not align seamlessly with Preact projects. This port aims to provide better integration with Preact and reduce reliance on external packages. Although some components may still require additional dependencies, every effort is made to minimize and adapt them as needed.
+The `main` branch follows shadcn/ui's Base UI base and nova style. Its headless primitives are ported to Preact,
+while composed components keep upstream libraries where they work through `preact/compat`.
+
+Use Preact 11 and alias `react` and `react-dom` to `preact/compat`, plus `react/jsx-runtime` and
+`react/jsx-dev-runtime` to `preact/jsx-runtime`. Vite's Preact preset configures these runtime aliases.
+The shared styling dependencies are `class-variance-authority`, `cn`, `lucide-preact`, `tw-animate-css`, and
+`shadcn/tailwind.css`; floating components also use `@floating-ui/react-dom`.
+
+| Component | Additional dependency                                        |
+| --------- | ------------------------------------------------------------ |
+| Calendar  | `react-day-picker`, `date-fns` for date examples             |
+| Chart     | `recharts`                                                   |
+| Command   | `cmdk`                                                       |
+| Carousel  | `embla-carousel-react`, optionally `embla-carousel-autoplay` |
+| Input OTP | `input-otp`                                                  |
+| Resizable | `react-resizable-panels` 4.x                                 |
+| Sonner    | `sonner`                                                     |
+
+Combobox and Toast use local Preact primitives and add no runtime dependency.
 
 ## Documentation
 
@@ -30,6 +48,9 @@ bunx degit https://github.com/LiasCode/shadcn-preact/registry/ui#main ./src/comp
 ```
 
 > The components moved from `src/components/ui` to `registry/ui`. Update your `degit` source if you used the old path.
+
+The [catalog performance report](./docs/performance/2026-10-04-components.md) covers all showcase components.
+Run `bun run performance` for the server-render benchmark; the report also documents optional browser profiling.
 
 ## v3
 

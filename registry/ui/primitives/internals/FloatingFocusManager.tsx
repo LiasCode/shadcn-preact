@@ -21,6 +21,7 @@ export interface FloatingFocusManagerProps {
   disabled?: boolean;
   modal?: boolean;
   outsideElementsInert?: boolean;
+  referenceInside?: boolean;
   initialFocus?: FocusTarget;
   returnFocus?: FocusTarget;
   restoreFocus?: boolean | "popup";
@@ -119,7 +120,9 @@ export function FloatingFocusManager(props: FloatingFocusManagerProps) {
     const within = (target: EventTarget | null) =>
       isNode(target) &&
       [
-        ...inside().filter((element) => !modal || element !== latest().context.elements.domReference),
+        ...inside().filter(
+          (element) => !modal || latest().referenceInside || element !== latest().context.elements.domReference,
+        ),
         portal?.beforeOutsideRef.current,
         portal?.afterOutsideRef.current,
         beforeInsideRef.current,
@@ -141,23 +144,18 @@ export function FloatingFocusManager(props: FloatingFocusManagerProps) {
       if (target && !popup.contains(doc.activeElement)) target.focus({ preventScroll: true });
     });
     // Each nested portal lives within its parent's host, so it remains accessible through parent locks.
-    const markOutside = () =>
-      modal
-        ? markOthers(
-            [
-              popup,
-              ...inside().filter((element) => element !== context.elements.domReference),
-              ...[beforeInsideRef.current, afterInsideRef.current].filter(
-                (element): element is HTMLSpanElement => element != null,
-              ),
-            ],
-            { inert: latest().outsideElementsInert !== false, ariaHidden: true },
-          )
-        : () => {};
-    let release = markOutside();
+    const outsideElements = () => [
+      popup,
+      ...inside().filter((element) => latest().referenceInside || element !== context.elements.domReference),
+      ...[beforeInsideRef.current, afterInsideRef.current].filter(
+        (element): element is HTMLSpanElement => element != null,
+      ),
+    ];
+    const release = modal
+      ? markOthers(outsideElements(), { inert: latest().outsideElementsInert !== false, ariaHidden: true })
+      : null;
     const outsideObserver = new MutationObserver(() => {
-      release();
-      release = markOutside();
+      release?.update(outsideElements());
     });
     if (modal) outsideObserver.observe(doc.body, { childList: true, subtree: true });
     const keydown = (event: KeyboardEvent) => {
@@ -207,7 +205,7 @@ export function FloatingFocusManager(props: FloatingFocusManagerProps) {
       doc.removeEventListener("focusin", focusin);
       const wasTop = isTop();
       stack.splice(stack.indexOf(layer), 1);
-      release();
+      release?.();
       if (originalTabIndex === null) popup.removeAttribute("tabindex");
       queueMicrotask(() => {
         if (!wasTop) return;

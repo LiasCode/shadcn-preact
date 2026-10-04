@@ -73,7 +73,8 @@ test("dialog render triggers connect ARIA, focus and return focus through an ani
   expect(popup.getAttribute("aria-describedby")).toBe(document.querySelector("[data-slot=dialog-description]")!.id);
   expect(document.querySelector("[data-slot=dialog-trigger]")!.getAttribute("aria-controls")).toBe(popup.id);
   expect(document.activeElement).toBe(popup.querySelector("[data-slot=dialog-close]"));
-  expect(document.body.style.overflow).toBe("hidden");
+  expect(document.body.style.overflow).toBe("clip");
+  expect(document.documentElement.style.overflow).toBe("hidden");
   click("[data-slot=dialog-content] [data-slot=dialog-close]");
   await settle(70);
   expect(document.querySelector("[data-slot=dialog-content]")).toBeNull();
@@ -154,7 +155,8 @@ test("nested dialogs close only the inner layer and keep the parent active", asy
   await settle(70);
   expect(document.querySelectorAll("[data-slot=dialog-content]")).toHaveLength(1);
   expect(document.activeElement?.id).toBe("inner");
-  expect(document.body.style.overflow).toBe("hidden");
+  expect(document.body.style.overflow).toBe("clip");
+  expect(document.documentElement.style.overflow).toBe("hidden");
   escape();
   await settle(70);
   expect(document.querySelectorAll("[data-slot=dialog-content]")).toHaveLength(0);

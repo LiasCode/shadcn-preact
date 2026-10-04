@@ -1,4 +1,4 @@
-import { describe, expect, test } from "bun:test";
+import { describe, expect, spyOn, test } from "bun:test";
 
 import { render as preactRender } from "preact";
 import { useState } from "preact/hooks";
@@ -165,7 +165,8 @@ describe("floating infrastructure", () => {
     await settle();
     expect(document.querySelector("[data-popup=child]")).toBeNull();
     expect(document.querySelector("[data-popup=parent]")).not.toBeNull();
-    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.overflow).toBe("clip");
+    expect(document.documentElement.style.overflow).toBe("hidden");
     expect(document.activeElement).toBe(document.querySelector("[data-trigger=child]"));
     escape();
     await settle();
@@ -285,20 +286,76 @@ describe("floating infrastructure", () => {
     expect(shadowHost.hasAttribute("inert")).toBe(false);
     releaseD();
   });
+  test("updating modal background locks keeps unchanged attributes and reconciles new inside elements", () => {
+    document.body.innerHTML = '<main><button>outside</button></main><section><div id="popup"></div></section>';
+    const popup = document.querySelector("#popup")!;
+    const main = document.querySelector("main")!;
+    const section = document.querySelector("section")!;
+    const release = markOthers([popup], { inert: true });
+    const observer = new MutationObserver(() => {});
+    observer.observe(document.body, { attributes: true, subtree: true });
+    release.update();
+    expect(observer.takeRecords()).toHaveLength(0);
+    const added = document.createElement("button");
+    document.body.append(added);
+    release.update();
+    expect(added.hasAttribute("inert")).toBe(true);
+    expect(observer.takeRecords().some((record) => record.target === main)).toBe(false);
+    release.update([main]);
+    expect(main.hasAttribute("inert")).toBe(false);
+    expect(section.hasAttribute("inert")).toBe(true);
+    release();
+    expect(document.querySelectorAll("[inert],[data-base-ui-inert]")).toHaveLength(0);
+    observer.disconnect();
+  });
+  test("tabbable traversal reads shared ancestor styles once and refreshes them on the next traversal", () => {
+    const container = render(
+      <div>
+        {Array.from({ length: 20 }, (_, index) => (
+          <button key={index}>{index}</button>
+        ))}
+      </div>,
+    );
+    const parent = container.firstElementChild as HTMLElement;
+    const styles = spyOn(window, "getComputedStyle");
+    try {
+      expect(getTabbableElements(container)).toHaveLength(20);
+      expect(styles.mock.calls.filter(([element]) => element === parent)).toHaveLength(1);
+      parent.style.display = "none";
+      expect(getTabbableElements(container)).toHaveLength(0);
+      parent.style.display = "block";
+      expect(getTabbableElements(container)).toHaveLength(20);
+    } finally {
+      styles.mockRestore();
+    }
+  });
   test("scroll locks are per-document, reference-counted and restore inline priorities", () => {
     document.body.style.setProperty("overflow", "auto", "important");
     document.body.style.paddingRight = "7px";
     const a = lockScroll(document);
     const b = lockScroll(document);
-    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.overflow).toBe("clip");
+    expect(document.documentElement.style.overflow).toBe("hidden");
     a();
-    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.overflow).toBe("clip");
+    expect(document.documentElement.style.overflow).toBe("hidden");
     b();
     expect(document.body.style.overflow).toBe("auto");
     expect(document.body.style.getPropertyPriority("overflow")).toBe("important");
     expect(document.body.style.paddingRight).toBe("7px");
     b();
     document.body.removeAttribute("style");
+  });
+  test("body scrolling documents keep their native scroller locked and restore its overflow", () => {
+    const other = document.implementation.createHTMLDocument();
+    Object.defineProperty(other, "scrollingElement", { value: other.body });
+    other.body.style.overflow = "scroll";
+    const release = lockScroll(other);
+    expect(other.body.style.overflow).toBe("hidden");
+    expect(other.documentElement.style.overflow).toBe("hidden");
+    release();
+    expect(other.body.style.overflow).toBe("scroll");
+    expect(other.documentElement.style.overflow).toBe("");
   });
   test("tab candidates skip disabled fieldsets, hidden ancestors and unselected radio groups", () => {
     const container = render(
@@ -407,7 +464,8 @@ describe("floating infrastructure", () => {
     const release = lockScroll(document);
     const releaseOther = lockScroll(other);
     releaseOther();
-    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.overflow).toBe("clip");
+    expect(document.documentElement.style.overflow).toBe("hidden");
     release();
     expect(document.body.style.overflowX).toBe("clip");
     expect(document.body.style.overflowY).toBe("auto");
@@ -415,7 +473,10 @@ describe("floating infrastructure", () => {
     document.body.removeAttribute("style");
   });
   test("positioning handles logical RTL sides, dimensions and closed keepMounted elements", async () => {
+    let renders = 0;
+    let update: (() => Promise<void>) | undefined;
     function Position({ open }: { open: boolean }) {
+      renders++;
       const anchor = document.querySelector<HTMLElement>("#anchor")!;
       const positioning = useAnchorPositioning({
         mounted: open,
@@ -425,6 +486,7 @@ describe("floating infrastructure", () => {
         collisionAvoidance: { side: "none", align: "none" },
         keepMounted: true,
       });
+      update = positioning.update;
       return (
         <div
           ref={positioning.refs.setFloating}
@@ -461,6 +523,11 @@ describe("floating infrastructure", () => {
     expect(positioner.dataset.physical).toBe("right");
     expect(positioner.style.getPropertyValue("--anchor-width")).toBe("40px");
     expect(positioner.style.getPropertyValue("--transform-origin")).not.toBe("");
+    const positionedRenders = renders;
+    await act(async () => {
+      await update?.();
+    });
+    expect(renders).toBe(positionedRenders);
     act(() =>
       preactRender(
         <DirectionProvider direction="rtl">

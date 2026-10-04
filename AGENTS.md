@@ -4,12 +4,12 @@
 
 An unofficial **Preact port of shadcn/ui**. It is not an npm library: it is a collection of copy-paste components.
 
-- `registry/ui/` is the **product**: the components and their shared primitives (`registry/ui/share/`). People copy
+- `registry/ui/` is the **product**: the components and their shared primitives (`registry/ui/primitives/`). People copy
   this folder into their projects.
 - `src/` is the **documentation site** that demonstrates every component. It is deployed, not distributed.
 
 A core goal is **minimal external dependencies**. shadcn/ui is built on Radix UI; this port reimplements the Radix
-primitives it needs (Slot, Portal, controlled state, focus trap, floating positioning) in `registry/ui/share/`. When
+primitives it needs (Slot, Portal, controlled state, focus trap, floating positioning) in `registry/ui/primitives/`. When
 adding a component, prefer porting a primitive over adding a dependency.
 
 Read the decision records in [`docs/decisions/`](./docs/decisions/README.md) before changing an area. Never edit an
@@ -91,8 +91,9 @@ Defined in both `vite.config.ts` and `tsconfig.app.json`; keep them in sync:
 
 - `@/*` → `src/*`
 - `@registry/*` → `registry/*`
+- `react/jsx-runtime` and `react/jsx-dev-runtime` → `preact/jsx-runtime`
 - `react` and `react-dom` → `preact/compat`, so React-targeting libraries (`react-day-picker`, `recharts`,
-  `@floating-ui/react-dom`) work. Import React APIs from `preact/compat`, never from `react`.
+  `@floating-ui/react-dom`, `cmdk`, `input-otp`, `embla-carousel-react`, `react-resizable-panels`, `sonner`) work. Import React APIs from `preact/compat`, never from `react`.
 
 ## TypeScript
 

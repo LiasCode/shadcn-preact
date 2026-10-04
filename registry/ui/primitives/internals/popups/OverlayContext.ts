@@ -14,6 +14,7 @@ export type OverlayKind =
   | "preview-card"
   | "menu"
   | "select"
+  | "combobox"
   | "navigation-menu";
 export type OverlayReason =
   | "trigger-press"
@@ -31,7 +32,11 @@ export type OverlayReason =
   | "sibling-open"
   | "cancel-open"
   | "link-press"
-  | "window-resize";
+  | "window-resize"
+  | "input-change"
+  | "input-press"
+  | "clear-press"
+  | "chip-remove-press";
 export type OverlayChangeDetails = BaseUIChangeEventDetails<OverlayReason> & { preventUnmountOnClose(): void };
 export interface OverlayRootProps<Payload = unknown> {
   open?: boolean;
