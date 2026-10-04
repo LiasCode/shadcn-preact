@@ -3,6 +3,8 @@ import { afterAll, beforeAll, expect, test } from "bun:test";
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { Accordion } from "@registry/ui/primitives/accordion";
 import { Checkbox } from "@registry/ui/primitives/checkbox";
+import { Field } from "@registry/ui/primitives/field";
+import { Form } from "@registry/ui/primitives/form";
 import { mergeProps } from "@registry/ui/primitives/merge-props";
 import { Slider } from "@registry/ui/primitives/slider";
 import { Tabs } from "@registry/ui/primitives/tabs";
@@ -277,4 +279,21 @@ test("phase 8 primitives prerender without browser globals", () => {
   expect(markup).toContain('data-message-id="m1"');
   expect(markup).toContain('aria-valuemax="1"');
   expect(markup).toContain('data-shortcut="A"');
+});
+test("Field and Form prerender without browser globals", () => {
+  expect(typeof window).toBe("undefined");
+  const html = renderToString(
+    <Form errors={{ email: "Taken" }}>
+      <Field.Root name="email">
+        <Field.Label>Email</Field.Label>
+        <Field.Control defaultValue="before" />
+        <Field.Description>Required</Field.Description>
+        <Field.Error />
+        <Field.Validity>{(state) => <span>{state.error}</span>}</Field.Validity>
+      </Field.Root>
+    </Form>,
+  );
+  expect(html).toContain('name="email"');
+  expect(html).toContain('aria-invalid="true"');
+  expect(html).toContain("Taken");
 });

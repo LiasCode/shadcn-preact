@@ -1,12 +1,16 @@
+import { useContext, useRef } from "preact/hooks";
+
 import type { BaseUIChangeEventDetails } from "../../internals/createBaseUIEventDetails";
 import { createChangeEventDetails } from "../../internals/createBaseUIEventDetails";
+import { FieldRootContext, fieldValidityMapping } from "../../internals/FieldRootContext";
 import type { ComponentProps, ElementRef } from "../../internals/types";
 import type { BaseUIComponentProps } from "../../internals/types";
 import { useBaseUiId } from "../../internals/useId";
+import { useIsoLayoutEffect } from "../../internals/useIsoLayoutEffect";
 import { useRenderElement } from "../../internals/useRenderElement";
 import { mergeProps } from "../../merge-props";
 
-// The default Field.Root context, used by Input outside Base UI Field/Form (ADR 0012).
+// Shared state of Field.Root and its controls; standalone controls keep the default state.
 export interface FieldControlState {
   disabled: boolean;
   valid: boolean | null;
@@ -29,36 +33,76 @@ export function FieldControl(componentProps: FieldControlProps) {
     id: idProp,
     value,
     defaultValue,
-    disabled = false,
+    disabled: disabledProp = false,
     onValueChange,
     onChange,
     onInput,
     ...elementProps
   } = componentProps;
   const id = useBaseUiId(idProp);
-  const state: FieldControlState = {
-    disabled,
-    valid: null,
-    touched: false,
-    dirty: false,
-    filled: false,
-    focused: false,
-  };
+  const field = useContext(FieldRootContext);
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
+  const disabled = field?.state.disabled || disabledProp;
+  const register = field?.register;
+  useIsoLayoutEffect(() => {
+    if (!register || !inputRef.current || disabled) return;
+    return register(inputRef.current, id, elementProps.name);
+  }, [register, disabled, id, elementProps.name]);
+  useIsoLayoutEffect(() => {
+    if (
+      value !== undefined &&
+      inputRef.current &&
+      field?.controlId === id &&
+      String(value) !== String(field.validity.value)
+    )
+      field.change(String(value));
+  }, [value, field]);
+  const state: FieldControlState = field
+    ? { ...field.state, disabled }
+    : {
+        disabled,
+        valid: null,
+        touched: false,
+        dirty: false,
+        filled: false,
+        focused: false,
+      };
   return useRenderElement("input", componentProps, {
     state,
-    ref,
+    ref: [ref ?? null, inputRef],
     props: [
       {
         id,
         disabled,
+        name: field?.name ?? elementProps.name,
+        "aria-invalid": (field?.state.valid === false && !disabled) || undefined,
+        "aria-labelledby": field?.labelId,
+        "aria-describedby": field?.messages.join(" ") || undefined,
+        onFocus() {
+          field?.focus(true);
+        },
+        onBlur() {
+          field?.focus(false);
+        },
         ...(value !== undefined ? { value } : { defaultValue }),
         onInput(event: Event & { currentTarget: HTMLInputElement }) {
-          onValueChange?.(event.currentTarget.value, createChangeEventDetails("none", event));
+          const details = createChangeEventDetails("none", event);
+          const next = event.currentTarget.value;
+          onValueChange?.(next, details);
+          if (details.isCanceled) {
+            event.currentTarget.value = String(value ?? field?.validity.value ?? defaultValue ?? "");
+            return;
+          }
+          field?.change(next);
         },
       },
-      { ...elementProps, onInput: mergeProps<"input">({ onInput: onChange }, { onInput }).onInput },
+      {
+        ...elementProps,
+        name: field?.name ?? elementProps.name,
+        onInput: mergeProps<"input">({ onInput: onChange }, { onInput }).onInput,
+      },
     ],
-    stateAttributesMapping: { valid: () => null },
+    stateAttributesMapping: field ? fieldValidityMapping : { valid: () => null },
   });
 }
 export declare namespace FieldControl {
