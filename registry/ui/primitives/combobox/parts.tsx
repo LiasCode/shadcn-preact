@@ -1,5 +1,5 @@
 import { createContext, type ComponentChildren, type Ref } from "preact";
-import { useContext, useEffect, useMemo, useRef, useState } from "preact/hooks";
+import { useContext, useMemo, useRef, useState } from "preact/hooks";
 
 import { useDirection } from "../direction-provider";
 import {
@@ -7,6 +7,9 @@ import {
   createGenericEventDetails,
   type BaseUIGenericEventDetails,
 } from "../internals/createBaseUIEventDetails";
+import { FieldPopupLifecycle } from "../internals/FieldPopupLifecycle";
+import { FieldRootContext, fieldValidityMapping } from "../internals/FieldRootContext";
+import { FieldsetRootContext } from "../internals/FieldsetRootContext";
 import { getElementProps } from "../internals/popups/getElementProps";
 import {
   useOverlayContext,
@@ -16,12 +19,14 @@ import {
 } from "../internals/popups/OverlayContext";
 import { OverlayPortal, OverlayPositioner, OverlayPopup, usePositionContext } from "../internals/popups/OverlayParts";
 import { OverlayRoot } from "../internals/popups/OverlayRoot";
+import { stringifyAsValue } from "../internals/resolveValueLabel";
 import type { BaseUIComponentProps, NativeButtonProps } from "../internals/types";
 import { useButton } from "../internals/useButton";
 import { useControlled } from "../internals/useControlled";
 import { useBaseUiId } from "../internals/useId";
 import { useIsoLayoutEffect } from "../internals/useIsoLayoutEffect";
 import { usePopupTabExit } from "../internals/usePopupTabExit";
+import { useRegisterFieldControl } from "../internals/useRegisterFieldControl";
 import { useRenderElement } from "../internals/useRenderElement";
 import { useStableCallback } from "../internals/useStableCallback";
 import { visuallyHidden } from "../internals/visuallyHidden";
@@ -74,6 +79,7 @@ interface RegisteredItem {
   disabled: boolean;
 }
 interface ContextValue {
+  trigger: { current: HTMLElement | null };
   value: any;
   multiple: boolean;
   disabled: boolean;
@@ -134,12 +140,12 @@ export function Root<V = any, M extends boolean | undefined = false>({
   highlightItemOnHover = true,
   loopFocus = true,
   openOnInputClick = true,
-  disabled = false,
+  disabled: disabledProp = false,
   readOnly = false,
   required = false,
-  name,
+  name: nameProp,
   form,
-  id,
+  id: idProp,
   autoComplete,
   inputRef,
   actionsRef,
@@ -149,6 +155,11 @@ export function Root<V = any, M extends boolean | undefined = false>({
   children,
   ...overlay
 }: RootProps<V, M>) {
+  const field = useContext(FieldRootContext);
+  const fieldset = useContext(FieldsetRootContext);
+  const disabled = field?.state.disabled || fieldset?.disabled || disabledProp;
+  const name = field?.name ?? nameProp;
+  const id = useBaseUiId(idProp);
   const direction = useDirection();
   const pendingNavigation = useRef<KeyboardEvent | null>(null);
   const [value, setValue] = useControlled<any>({
@@ -169,6 +180,7 @@ export function Root<V = any, M extends boolean | undefined = false>({
     list = useRef<HTMLElement | null>(null),
     chips = useRef<HTMLElement | null>(null);
   const hiddenInput = useRef<HTMLInputElement | null>(null);
+  const trigger = useRef<HTMLElement | null>(null);
   const label: (value: any) => string = (value) => (value == null ? "" : itemToStringLabel(value));
   const equal = isItemEqualToValue;
   const normalizedQuery = useMemo(
@@ -306,26 +318,56 @@ export function Root<V = any, M extends boolean | undefined = false>({
   useIsoLayoutEffect(() => {
     if (!multiple && controlled !== undefined) setInputValue(label(controlled));
   }, [controlled, multiple]);
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const owner = hiddenInput.current?.form;
     if (!owner) return;
     const reset = (event: Event) =>
-      queueMicrotask(() => {
+      setTimeout(() => {
         if (event.defaultPrevented) return;
         const next = defaultValue ?? (multiple ? [] : null);
         const details = createChangeEventDetails("none", event, undefined, { preventUnmountOnClose() {} });
         onValueChange?.(next as any, details);
+        const restoredValue = controlled !== undefined ? controlled : details.isCanceled ? value : next;
         if (!details.isCanceled) {
           setValue(next);
-          changeInput(defaultInputValue ?? (multiple ? "" : label(next)), event, "item-press");
+          changeInput(defaultInputValue ?? (multiple ? "" : label(restoredValue)), event, "item-press");
         }
+        if (hiddenInput.current) hiddenInput.current.value = serialize(multiple ? restoredValue?.[0] : restoredValue);
       });
     owner.addEventListener("reset", reset);
     return () => owner.removeEventListener("reset", reset);
-  }, [form, defaultValue, defaultInputValue, multiple, onValueChange, setValue, changeInput]);
-  const serialize = (v: any) =>
-    v == null ? "" : (itemToStringValue?.(v) ?? (typeof v === "object" && "value" in v ? String(v.value) : String(v)));
+  }, [
+    form,
+    defaultValue,
+    defaultInputValue,
+    controlled,
+    value,
+    multiple,
+    onValueChange,
+    setValue,
+    changeInput,
+    itemToStringValue,
+  ]);
+  const serialize = (v: any) => stringifyAsValue(v, itemToStringValue);
   const serialized = multiple ? (value as any[]).map(serialize) : [serialize(value)];
+  useRegisterFieldControl({
+    inputRef: hiddenInput,
+    controlRef: input,
+    id,
+    name: nameProp,
+    disabled,
+    value,
+    getFormValue: () => (multiple ? serialized : (serialized[0] ?? "")),
+    focus: () => (input.current && input.current.isConnected ? input.current : trigger.current)?.focus(),
+    isEqual: (next, initial) =>
+      Object.is(next, initial) ||
+      (next != null &&
+        initial != null &&
+        (Array.isArray(next) && Array.isArray(initial)
+          ? next.length === initial.length &&
+            next.every((entry, index) => Object.is(entry, initial[index]) || equal(entry, initial[index]))
+          : equal(next as V, initial as V))),
+  });
   const previous = useRef(value);
   useIsoLayoutEffect(() => {
     if (previous.current === value) return;
@@ -341,6 +383,7 @@ export function Root<V = any, M extends boolean | undefined = false>({
     required,
     id,
     input,
+    trigger,
     list,
     chips,
     direction,
@@ -379,6 +422,7 @@ export function Root<V = any, M extends boolean | undefined = false>({
         }}
       >
         <Lifecycle inline={inline} />
+        <FieldPopupLifecycle />
         {children}
         <input
           ref={(node) => {
@@ -437,7 +481,7 @@ interface InputState {
   listEmpty: boolean;
   disabled: boolean;
   readOnly: boolean;
-  valid: null;
+  valid: boolean | null;
   touched: boolean;
   dirty: boolean;
   filled: boolean;
@@ -447,6 +491,7 @@ export function Input({
   disabled: ownDisabled = false,
   ...props
 }: BaseUIComponentProps<"input", InputState> & { disabled?: boolean }) {
+  const field = useContext(FieldRootContext);
   const c = useCombobox(),
     overlay = useOverlayContext();
   const inside = useRef(false);
@@ -463,11 +508,11 @@ export function Input({
     listEmpty: c.empty,
     disabled,
     readOnly: c.readOnly,
-    valid: null,
-    touched: false,
-    dirty: false,
-    filled: false,
-    focused: false,
+    valid: field?.state.valid ?? null,
+    touched: field?.state.touched ?? false,
+    dirty: field?.state.dirty ?? false,
+    filled: field?.state.filled ?? false,
+    focused: field?.state.focused ?? false,
   };
   const tabExit = usePopupTabExit(
     () => (inside.current ? overlay.reference : c.input.current),
@@ -476,12 +521,12 @@ export function Input({
   const external = getElementProps(props);
   const onChange = external.onChange;
   delete external.onChange;
-  return useRenderElement("input", props, {
+  const element = useRenderElement("input", props, {
     state,
     ref: [props.ref ?? null, c.input, setInputElement],
     stateAttributesMapping: {
       ...popupStateMapping,
-      valid: () => null,
+      valid: fieldValidityMapping.valid,
       popupSide: () => null,
       listEmpty: (empty) => (empty ? { "data-list-empty": "" } : null),
     },
@@ -497,6 +542,12 @@ export function Input({
         "aria-controls": overlay.mounted ? `${overlay.id}-list` : undefined,
         "aria-activedescendant": c.active?.id || undefined,
         "aria-required": c.required || undefined,
+        "aria-labelledby": field?.labelId,
+        "aria-describedby": field?.messages.join(" ") || undefined,
+        "aria-invalid": (field?.state.valid === false && !disabled) || undefined,
+        onFocus() {
+          field?.focus(true);
+        },
         value: c.inputValue,
         onInput(event: Event) {
           if (disabled || c.readOnly) return;
@@ -530,12 +581,15 @@ export function Input({
               ?.focus();
         },
         onBlur(event: FocusEvent) {
+          if (!overlay.open) field?.focus(false);
           if (!overlay.open && !c.multiple) c.changeInput(c.label(c.value), event, "item-press");
         },
       },
       mergeProps({ onInput: onChange }, external),
     ],
   });
+  // The rendered Input must not register its query as another Field control.
+  return <FieldRootContext.Provider value={null}>{element}</FieldRootContext.Provider>;
 }
 export namespace Input {
   export type Props = Parameters<typeof Input>[0];
@@ -545,6 +599,7 @@ export function Trigger({
   disabled: ownDisabled = false,
   ...props
 }: BaseUIComponentProps<"button", Omit<InputState, "readOnly"> & { placeholder: boolean }> & NativeButtonProps) {
+  const field = useContext(FieldRootContext);
   const c = useCombobox(),
     overlay = useOverlayContext();
   const element = useRef<HTMLElement | null>(null);
@@ -557,15 +612,15 @@ export function Trigger({
       popupSide: null,
       listEmpty: c.empty,
       placeholder: c.multiple ? !c.value.length : c.value == null,
-      valid: null,
-      touched: false,
-      dirty: false,
-      filled: false,
-      focused: false,
+      valid: field?.state.valid ?? null,
+      touched: field?.state.touched ?? false,
+      dirty: field?.state.dirty ?? false,
+      filled: field?.state.filled ?? false,
+      focused: field?.state.focused ?? false,
     },
     stateAttributesMapping: {
       ...popupStateMapping,
-      valid: () => null,
+      valid: fieldValidityMapping.valid,
       popupSide: () => null,
       listEmpty: (empty) => (empty ? { "data-list-empty": "" } : null),
     },
@@ -573,12 +628,22 @@ export function Trigger({
       props.ref ?? null,
       element,
       buttonRef,
+      c.trigger,
       (node: HTMLElement | null) => {
         if (node && !c.input.current && !c.chips.current) overlay.setReference(node);
       },
     ],
     props: [
       getButtonProps({
+        "aria-labelledby": field?.labelId,
+        "aria-describedby": field?.messages.join(" ") || undefined,
+        "aria-invalid": (field?.state.valid === false && !disabled) || undefined,
+        onFocus() {
+          field?.focus(true);
+        },
+        onBlur() {
+          if (!overlay.open) field?.focus(false);
+        },
         tabIndex: c.input.current && !overlay.popupRef.current?.contains(c.input.current) ? -1 : 0,
         "aria-haspopup": "listbox",
         "aria-expanded": overlay.open,

@@ -1,6 +1,5 @@
-import { useContext } from "preact/hooks";
-
-import { FieldRootContext, fieldValidityMapping } from "../../internals/FieldRootContext";
+import { fieldValidityMapping } from "../../internals/FieldRootContext";
+import { useFieldLabelScope } from "../../internals/LabelableContext";
 import type { BaseUIComponentProps } from "../../internals/types";
 import { useBaseUiId } from "../../internals/useId";
 import { useIsoLayoutEffect } from "../../internals/useIsoLayoutEffect";
@@ -20,7 +19,7 @@ export function FieldLabel(props: FieldLabelProps) {
     style: _style,
     ...elementProps
   } = props;
-  const field = useContext(FieldRootContext);
+  const field = useFieldLabelScope();
   if (!field) throw new Error("Field.Label requires Field.Root.");
   const id = useBaseUiId(idProp);
   useIsoLayoutEffect(() => field.label(id), [field.label, id]);
@@ -32,9 +31,14 @@ export function FieldLabel(props: FieldLabelProps) {
         id,
         htmlFor: nativeLabel ? field.controlId : undefined,
         onClick(event: MouseEvent) {
-          if (!nativeLabel && !field.state.disabled) {
+          const control =
+            typeof window !== "undefined" && field.controlId ? document.getElementById(field.controlId) : null;
+          if (
+            (!nativeLabel || (control && !["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(control.tagName))) &&
+            !field.state.disabled
+          ) {
             event.preventDefault();
-            if (typeof window !== "undefined" && field.controlId) document.getElementById(field.controlId)?.focus();
+            field.focusControl();
           }
         },
       },

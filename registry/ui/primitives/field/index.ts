@@ -5,3 +5,4 @@ export type { FieldLabelProps } from "./label/FieldLabel";
 export type { FieldDescriptionProps } from "./description/FieldDescription";
 export type { FieldErrorProps } from "./error/FieldError";
 export type { FieldValidityProps } from "./validity/FieldValidity";
+export type { FieldItemProps } from "./item/FieldItem";

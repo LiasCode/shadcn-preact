@@ -101,7 +101,7 @@ export function SliderThumb(componentProps: SliderThumbProps) {
     if (context.controlRef.current) observer?.observe(context.controlRef.current);
     const ownerForm = input?.form;
     const reset = (event: Event) =>
-      queueMicrotask(() => {
+      setTimeout(() => {
         if (!event.defaultPrevented) context.reset();
       });
     ownerForm?.addEventListener("reset", reset);
@@ -146,8 +146,9 @@ export function SliderThumb(componentProps: SliderThumbProps) {
       disabled,
       id: inputId,
       "aria-label": getAriaLabel?.(index) ?? ariaLabelProp,
-      "aria-labelledby": ariaLabelledBy ?? labelledBy,
-      "aria-describedby": ariaDescribedBy,
+      "aria-labelledby": ariaLabelledBy ?? context.field?.labelId ?? labelledBy,
+      "aria-describedby": ariaDescribedBy ?? (context.field?.messages.join(" ") || undefined),
+      "aria-invalid": (context.state.valid === false && !disabled) || undefined,
       "aria-orientation": orientation,
       "aria-valuenow": value,
       "aria-valuetext": valueText,

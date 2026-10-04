@@ -4,9 +4,13 @@ import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { Accordion } from "@registry/ui/primitives/accordion";
 import { Checkbox } from "@registry/ui/primitives/checkbox";
 import { Field } from "@registry/ui/primitives/field";
+import { Fieldset } from "@registry/ui/primitives/fieldset";
 import { Form } from "@registry/ui/primitives/form";
 import { mergeProps } from "@registry/ui/primitives/merge-props";
+import { Radio } from "@registry/ui/primitives/radio";
+import { RadioGroup } from "@registry/ui/primitives/radio-group";
 import { Slider } from "@registry/ui/primitives/slider";
+import { Switch } from "@registry/ui/primitives/switch";
 import { Tabs } from "@registry/ui/primitives/tabs";
 import { Toggle } from "@registry/ui/primitives/toggle";
 import { ToggleGroup } from "@registry/ui/primitives/toggle-group";
@@ -296,4 +300,76 @@ test("Field and Form prerender without browser globals", () => {
   expect(html).toContain('name="email"');
   expect(html).toContain('aria-invalid="true"');
   expect(html).toContain("Taken");
+});
+test("checkable Field/Form controls prerender without browser globals", () => {
+  expect(typeof window).toBe("undefined");
+  const html = renderToString(
+    <Form>
+      <Field.Root name="terms">
+        <Field.Label>Terms</Field.Label>
+        <Checkbox.Root defaultChecked />
+      </Field.Root>
+      <Field.Root name="updates" disabled>
+        <Switch.Root />
+      </Field.Root>
+      <Field.Root name="plan">
+        <RadioGroup defaultValue="a">
+          <Radio.Root value="a" />
+        </RadioGroup>
+      </Field.Root>
+    </Form>,
+  );
+  expect(html).toContain('name="terms"');
+  expect(html).toContain('name="updates"');
+  expect(html).toContain('name="plan"');
+  expect(html).toContain('role="radiogroup"');
+});
+test("selection and Slider field providers prerender without browser globals", () => {
+  expect(typeof window).toBe("undefined");
+  const html = renderToString(
+    <Form>
+      <Field.Root name="choice">
+        <Select.Root defaultValue="a">
+          <Select.Trigger />
+        </Select.Root>
+      </Field.Root>
+      <Field.Root name="city">
+        <Combobox.Root defaultValue="Madrid">
+          <Combobox.Input />
+        </Combobox.Root>
+      </Field.Root>
+      <Field.Root name="budget">
+        <Slider.Root defaultValue={[20, 40]}>
+          <Slider.Control>
+            <Slider.Thumb index={0} />
+            <Slider.Thumb index={1} />
+          </Slider.Control>
+        </Slider.Root>
+      </Field.Root>
+    </Form>,
+  );
+  expect(html).toContain('name="choice"');
+  expect(html).toContain('name="city"');
+  expect(html).toContain('name="budget"');
+});
+test("Field.Item and Fieldset prerender without browser globals", () => {
+  expect(typeof window).toBe("undefined");
+  const html = renderToString(
+    <Fieldset.Root disabled>
+      <Fieldset.Legend>Preferences</Fieldset.Legend>
+      <Field.Root name="plan">
+        <RadioGroup>
+          <Field.Item>
+            <Radio.Root value="a" />
+            <Field.Label>Basic</Field.Label>
+            <Field.Description>Simple plan</Field.Description>
+          </Field.Item>
+        </RadioGroup>
+      </Field.Root>
+    </Fieldset.Root>,
+  );
+  expect(html).toContain("Preferences");
+  expect(html).toContain("Basic");
+  expect(html).toContain("data-disabled");
+  expect(html).toContain('name="plan"');
 });

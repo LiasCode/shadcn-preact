@@ -1,6 +1,7 @@
 import { useContext, useRef } from "preact/hooks";
 
 import { FieldRootContext, fieldValidityMapping, type FieldValidityData } from "../../internals/FieldRootContext";
+import { useFieldLabelScope } from "../../internals/LabelableContext";
 import type { BaseUIComponentProps } from "../../internals/types";
 import { useBaseUiId } from "../../internals/useId";
 import { useIsoLayoutEffect } from "../../internals/useIsoLayoutEffect";
@@ -17,16 +18,17 @@ export function FieldError(props: FieldErrorProps) {
   const { ref, id: idProp, match, render: _render, className: _className, style: _style, ...elementProps } = props;
   const field = useContext(FieldRootContext);
   if (!field) throw new Error("Field.Error requires Field.Root.");
+  const scope = useFieldLabelScope()!;
   const id = useBaseUiId(idProp);
   const open =
     match === true ||
-    (!field.state.disabled &&
+    (!scope.state.disabled &&
       (typeof match === "string" ? Boolean(field.validity.state[match]) : field.state.valid === false));
   const { mounted, setMounted, transitionStatus } = useTransitionStatus(open);
   const errorRef = useRef<HTMLElement | null>(null);
   const lastMessage = useRef<ReturnType<typeof ErrorMessage>>(null);
   if (open) lastMessage.current = ErrorMessage(field.validity.errors, field.validity.error);
-  useIsoLayoutEffect(() => (open ? field.message(id) : undefined), [open, field.message, id]);
+  useIsoLayoutEffect(() => (open ? scope.message(id) : undefined), [open, scope.message, id]);
   useOpenChangeComplete({
     open,
     ref: errorRef,
@@ -37,7 +39,7 @@ export function FieldError(props: FieldErrorProps) {
   return useRenderElement("div", props, {
     enabled: mounted,
     ref: [ref ?? null, errorRef],
-    state: { ...field.state, transitionStatus },
+    state: { ...scope.state, transitionStatus },
     props: { id, children: lastMessage.current, ...elementProps },
     stateAttributesMapping: {
       ...fieldValidityMapping,

@@ -23,7 +23,7 @@ export function SwitchRoot(componentProps: SwitchRootProps) {
     required: _required,
     inputRef: _inputRef,
     nativeButton: _nativeButton,
-    name,
+    name: _name,
     form,
     id: _id,
     value: _value,
@@ -52,8 +52,8 @@ export function SwitchRoot(componentProps: SwitchRootProps) {
   return (
     <SwitchRootContext.Provider value={state}>
       {element}
-      {!state.checked && name && uncheckedValue !== undefined && (
-        <input type="hidden" name={name} form={form} value={uncheckedValue} disabled={state.disabled} />
+      {!state.checked && inputProps.name && uncheckedValue !== undefined && (
+        <input type="hidden" name={inputProps.name} form={form} value={uncheckedValue} disabled={state.disabled} />
       )}
       <input {...inputProps} />
     </SwitchRootContext.Provider>

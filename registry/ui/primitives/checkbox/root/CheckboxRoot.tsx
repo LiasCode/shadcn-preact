@@ -36,7 +36,7 @@ export function CheckboxRoot(componentProps: CheckboxRootProps) {
     indeterminate: _indeterminate,
     inputRef: _inputRef,
     nativeButton: _nativeButton,
-    name,
+    name: _name,
     form,
     id: _id,
     value: _value,
@@ -61,10 +61,10 @@ export function CheckboxRoot(componentProps: CheckboxRootProps) {
   return (
     <CheckboxRootContext.Provider value={state}>
       {element}
-      {!state.checked && name && !parent && uncheckedValue !== undefined && (
-        <input type="hidden" name={name} form={form} value={uncheckedValue} disabled={state.disabled} />
+      {!state.checked && inputProps.name && !parent && uncheckedValue !== undefined && (
+        <input type="hidden" name={inputProps.name} form={form} value={uncheckedValue} disabled={state.disabled} />
       )}
-      <input {...inputProps} name={parent ? undefined : name} />
+      <input {...inputProps} name={parent ? undefined : inputProps.name} />
     </CheckboxRootContext.Provider>
   );
 }

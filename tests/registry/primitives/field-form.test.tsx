@@ -74,6 +74,7 @@ test("onBlur validates only after focus leaves and Field mode overrides Form", (
     </Form>,
   );
   const input = root.querySelector("input")!;
+  change(input, "edited");
   change(input, "");
   expect(input.hasAttribute("data-invalid")).toBe(false);
   fire(input, new FocusEvent("focusin", { bubbles: true }));

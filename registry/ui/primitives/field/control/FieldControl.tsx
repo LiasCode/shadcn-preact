@@ -3,6 +3,8 @@ import { useContext, useRef } from "preact/hooks";
 import type { BaseUIChangeEventDetails } from "../../internals/createBaseUIEventDetails";
 import { createChangeEventDetails } from "../../internals/createBaseUIEventDetails";
 import { FieldRootContext, fieldValidityMapping } from "../../internals/FieldRootContext";
+import { FieldsetRootContext } from "../../internals/FieldsetRootContext";
+import { useItemControl } from "../../internals/LabelableContext";
 import type { ComponentProps, ElementRef } from "../../internals/types";
 import type { BaseUIComponentProps } from "../../internals/types";
 import { useBaseUiId } from "../../internals/useId";
@@ -42,7 +44,9 @@ export function FieldControl(componentProps: FieldControlProps) {
   const id = useBaseUiId(idProp);
   const field = useContext(FieldRootContext);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
-  const disabled = field?.state.disabled || disabledProp;
+  const fieldset = useContext(FieldsetRootContext);
+  const item = useItemControl(id, inputRef);
+  const disabled = field?.state.disabled || fieldset?.disabled || item?.state.disabled || disabledProp;
   const register = field?.register;
   useIsoLayoutEffect(() => {
     if (!register || !inputRef.current || disabled) return;
@@ -76,8 +80,8 @@ export function FieldControl(componentProps: FieldControlProps) {
         disabled,
         name: field?.name ?? elementProps.name,
         "aria-invalid": (field?.state.valid === false && !disabled) || undefined,
-        "aria-labelledby": field?.labelId,
-        "aria-describedby": field?.messages.join(" ") || undefined,
+        "aria-labelledby": item?.labelId ?? field?.labelId,
+        "aria-describedby": (item?.messages ?? field?.messages)?.join(" ") || undefined,
         onFocus() {
           field?.focus(true);
         },

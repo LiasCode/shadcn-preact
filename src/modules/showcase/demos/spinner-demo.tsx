@@ -8,7 +8,7 @@ import { SpinnerSize as Example7 } from "../examples/spinner-size";
 
 export function SpinnerDemo() {
   return (
-    <div className="flex min-w-0 w-full flex-col items-start gap-8 overflow-x-auto">
+    <div className="flex min-w-0 w-full flex-col items-start gap-8 overflow-x-auto py-5">
       <Example1 />
       <Example2 />
       <Example3 />

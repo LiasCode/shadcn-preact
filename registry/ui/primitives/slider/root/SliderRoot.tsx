@@ -1,4 +1,4 @@
-import { useRef, useState } from "preact/hooks";
+import { useContext, useRef, useState } from "preact/hooks";
 
 import { clamp } from "../../internals/clamp";
 import { CompositeList } from "../../internals/composite/list/CompositeList";
@@ -8,9 +8,12 @@ import {
   type BaseUIGenericEventDetails,
   type BaseUIChangeEventDetails,
 } from "../../internals/createBaseUIEventDetails";
+import { FieldRootContext } from "../../internals/FieldRootContext";
+import { FieldsetRootContext } from "../../internals/FieldsetRootContext";
 import type { BaseUIComponentProps, Orientation } from "../../internals/types";
 import { useControlled } from "../../internals/useControlled";
 import { useBaseUiId } from "../../internals/useId";
+import { useRegisterFieldControl } from "../../internals/useRegisterFieldControl";
 import { useRenderElement } from "../../internals/useRenderElement";
 import { useStableCallback } from "../../internals/useStableCallback";
 import { SliderRootContext } from "./SliderRootContext";
@@ -58,13 +61,13 @@ export function SliderRoot<Value extends number | readonly number[]>(componentPr
     ref,
     value: valueProp,
     defaultValue,
-    disabled = false,
+    disabled: disabledProp = false,
     min = 0,
     max = 100,
     step = 1,
     minStepsBetweenValues = 0,
     largeStep = 10,
-    name,
+    name: nameProp,
     form,
     orientation = "horizontal",
     format,
@@ -79,6 +82,12 @@ export function SliderRoot<Value extends number | readonly number[]>(componentPr
     style: _style,
     ...elementProps
   } = componentProps;
+  const field = useContext(FieldRootContext);
+  const fieldset = useContext(FieldsetRootContext);
+  const disabled = field?.state.disabled || fieldset?.disabled || disabledProp;
+  const name = field?.name ?? nameProp;
+  const rootRef = useRef<HTMLElement | null>(null);
+  const nativeInput = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useControlled<number | readonly number[]>({
     controlled: valueProp,
     default: defaultValue ?? min,
@@ -136,6 +145,22 @@ export function SliderRoot<Value extends number | readonly number[]>(componentPr
     setValue(defaultValue ?? min);
     forceSync((tick) => tick + 1);
   });
+  useRegisterFieldControl({
+    inputRef: nativeInput,
+    controlRef: rootRef,
+    id,
+    name: nameProp,
+    disabled,
+    value,
+    getInput: () => {
+      const inputs = [...(rootRef.current?.querySelectorAll<HTMLInputElement>('input[type="range"]') ?? [])].filter(
+        (input) => !input.disabled,
+      );
+      return inputs.find((input) => !input.validity.valid) ?? inputs[0] ?? null;
+    },
+    focus: () => rootRef.current?.querySelector<HTMLInputElement>('input[type="range"]:not(:disabled)')?.focus(),
+    isFilled: () => false,
+  });
   const state = {
     activeThumbIndex,
     disabled,
@@ -146,21 +171,36 @@ export function SliderRoot<Value extends number | readonly number[]>(componentPr
     orientation,
     step,
     values,
-    valid: null,
-    touched: false,
-    dirty: false,
-    filled: false,
-    focused: false,
+    valid: field?.state.valid ?? null,
+    touched: field?.state.touched ?? false,
+    dirty: field?.state.dirty ?? false,
+    filled: field?.state.filled ?? false,
+    focused: field?.state.focused ?? false,
   };
   const element = useRenderElement("div", componentProps, {
     state,
-    ref,
-    props: [{ role: "group", id }, elementProps],
+    ref: [ref ?? null, rootRef],
+    props: [
+      {
+        role: "group",
+        id,
+        "aria-labelledby": field?.labelId,
+        "aria-describedby": field?.messages.join(" ") || undefined,
+        onFocus() {
+          field?.focus(true);
+        },
+        onBlur(event: FocusEvent) {
+          if (!rootRef.current?.contains(event.relatedTarget as Node | null)) field?.focus(false);
+        },
+      },
+      elementProps,
+    ],
     stateAttributesMapping: sliderStateAttributesMapping,
   });
   return (
     <SliderRootContext.Provider
       value={{
+        field,
         positions,
         setPosition,
         state,

@@ -1,9 +1,13 @@
-import { useRef, useState } from "preact/hooks";
+import { useContext, useRef, useState } from "preact/hooks";
 
 import { CompositeRoot } from "../internals/composite/root/CompositeRoot";
 import type { BaseUIChangeEventDetails } from "../internals/createBaseUIEventDetails";
+import { FieldRootContext, fieldValidityMapping } from "../internals/FieldRootContext";
+import { FieldsetRootContext } from "../internals/FieldsetRootContext";
 import type { BaseUIComponentProps, ElementRef } from "../internals/types";
 import { useControlled } from "../internals/useControlled";
+import { useBaseUiId } from "../internals/useId";
+import { useRegisterFieldControl } from "../internals/useRegisterFieldControl";
 import { useStableCallback } from "../internals/useStableCallback";
 import { RadioGroupContext } from "./RadioGroupContext";
 export interface RadioGroupState {
@@ -30,10 +34,10 @@ export interface RadioGroupProps<Value> extends Omit<BaseUIComponentProps<"div",
 export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
   const {
     ref,
-    disabled = false,
+    disabled: disabledProp = false,
     readOnly = false,
     required = false,
-    name,
+    name: nameProp,
     form,
     inputRef,
     value: valueProp,
@@ -44,6 +48,12 @@ export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
     style: _style,
     ...elementProps
   } = componentProps;
+  const field = useContext(FieldRootContext);
+  const fieldset = useContext(FieldsetRootContext);
+  const disabled = field?.state.disabled || fieldset?.disabled || disabledProp;
+  const name = field?.name ?? nameProp;
+  const id = useBaseUiId(elementProps.id);
+  const controlRef = useRef<HTMLElement | null>(null);
   const [value, setValue] = useControlled({ controlled: valueProp, default: defaultValue, name: "RadioGroup" });
   const [, forceSync] = useState(0);
   const registeredInput = useRef<HTMLInputElement | null>(null);
@@ -55,7 +65,9 @@ export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
       registeredInput.current.disabled ||
       !registeredInput.current.isConnected
     ) {
+      const needsRegistration = !registeredInput.current || !registeredInput.current.isConnected;
       registeredInput.current = input;
+      if (needsRegistration) forceSync((tick) => tick + 1);
       if (typeof inputRef === "function") inputRef(input);
       else if (inputRef) inputRef.current = input;
     }
@@ -70,20 +82,44 @@ export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
     setValue(defaultValue as Value);
     forceSync((tick) => tick + 1);
   });
+  const getInput = useStableCallback(() => {
+    const inputs = controlRef.current?.querySelectorAll<HTMLInputElement>('input[type="radio"]');
+    const enabled = [...(inputs ?? [])].filter((input) => !input.disabled);
+    return enabled.find((input) => input.checked) ?? enabled[0] ?? null;
+  });
+  useRegisterFieldControl({
+    inputRef: registeredInput,
+    controlRef,
+    id,
+    name: nameProp,
+    disabled,
+    value: value ?? null,
+    getInput,
+    getFormValue: () => (getInput()?.checked ? (value ?? null) : null),
+    focus: () => {
+      const inputs = [...(controlRef.current?.querySelectorAll<HTMLInputElement>('input[type="radio"]') ?? [])];
+      const current = getInput();
+      if (current) {
+        const radios = [...(controlRef.current?.querySelectorAll<HTMLElement>('[role="radio"]') ?? [])];
+        radios[inputs.indexOf(current)]?.focus();
+      }
+    },
+  });
   const state = {
     disabled,
     readOnly,
     required,
-    valid: null,
-    touched: false,
-    dirty: false,
-    filled: false,
-    focused: false,
+    valid: field?.state.valid ?? null,
+    touched: field?.state.touched ?? false,
+    dirty: field?.state.dirty ?? false,
+    filled: field?.state.filled ?? false,
+    focused: field?.state.focused ?? false,
   };
   return (
     <RadioGroupContext.Provider
       value={{
         value,
+        state,
         disabled,
         readOnly,
         required,
@@ -102,10 +138,21 @@ export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
         className={componentProps.className}
         style={componentProps.style}
         state={state}
-        refs={[ref ?? null]}
+        refs={[ref ?? null, controlRef]}
+        stateAttributesMapping={fieldValidityMapping}
         props={[
           {
+            id,
             role: "radiogroup",
+            "aria-labelledby": field?.labelId ?? fieldset?.legendId,
+            "aria-describedby": field?.messages.join(" ") || undefined,
+            "aria-invalid": (field?.state.valid === false && !disabled) || undefined,
+            onFocus() {
+              field?.focus(true);
+            },
+            onBlur(event: FocusEvent) {
+              if (!controlRef.current?.contains(event.relatedTarget as Node | null)) field?.focus(false);
+            },
             "aria-required": required || undefined,
             "aria-disabled": disabled || undefined,
             "aria-readonly": readOnly || undefined,

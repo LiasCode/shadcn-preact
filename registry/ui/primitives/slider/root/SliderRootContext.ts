@@ -1,8 +1,10 @@
 import { createContext } from "preact";
 import { useContext } from "preact/hooks";
 
+import type { FieldRootContextValue } from "../../internals/FieldRootContext";
 import type { SliderRootState, SliderRoot } from "./SliderRoot";
 export interface SliderContext {
+  field: FieldRootContextValue | null;
   positions: Map<number, number>;
   setPosition(index: number, value: number | undefined): void;
   state: SliderRootState;

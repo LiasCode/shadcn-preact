@@ -2,6 +2,8 @@ import { useContext, useRef, useState } from "preact/hooks";
 
 import { CompositeItem } from "../../internals/composite/item/CompositeItem";
 import { createChangeEventDetails } from "../../internals/createBaseUIEventDetails";
+import { FieldsetRootContext } from "../../internals/FieldsetRootContext";
+import { useItemControl } from "../../internals/LabelableContext";
 import type { BaseUIComponentProps, ElementRef, NonNativeButtonProps } from "../../internals/types";
 import { useButton } from "../../internals/useButton";
 import { useBaseUiId } from "../../internals/useId";
@@ -41,7 +43,7 @@ export function RadioRoot<Value>(componentProps: RadioRootProps<Value>) {
     ...elementProps
   } = componentProps;
   const group = useContext(RadioGroupContext);
-  const disabled = disabledProp || group?.disabled || false;
+  const fieldset = useContext(FieldsetRootContext);
   const readOnly = readOnlyProp || group?.readOnly || false;
   const required = requiredProp || group?.required || false;
   const checked = group ? group.value === value : value === "";
@@ -50,6 +52,9 @@ export function RadioRoot<Value>(componentProps: RadioRootProps<Value>) {
   const mergedInputRef = useMergedRefs(inputRef, inputRefProp);
   const [labelledBy, setLabelledBy] = useState<string>();
   const id = useBaseUiId();
+  const hiddenId = !nativeButton && idProp ? idProp : `${id}-input`;
+  const item = useItemControl(hiddenId, radioRef);
+  const disabled = disabledProp || group?.disabled || fieldset?.disabled || item?.state.disabled || false;
   const { getButtonProps, buttonRef } = useButton({ disabled, native: nativeButton, composite: false });
   useIsoLayoutEffect(() => {
     const input = inputRef.current;
@@ -66,7 +71,7 @@ export function RadioRoot<Value>(componentProps: RadioRootProps<Value>) {
     );
     const ownerForm = input.form;
     const reset = (event: Event) =>
-      queueMicrotask(() => {
+      setTimeout(() => {
         if (!event.defaultPrevented) group?.reset();
       });
     ownerForm?.addEventListener("reset", reset);
@@ -77,11 +82,11 @@ export function RadioRoot<Value>(componentProps: RadioRootProps<Value>) {
     disabled,
     readOnly,
     required,
-    touched: false,
-    dirty: false,
-    filled: false,
-    focused: false,
-    valid: null,
+    touched: group?.state.touched ?? false,
+    dirty: group?.state.dirty ?? false,
+    filled: group?.state.filled ?? false,
+    focused: group?.state.focused ?? false,
+    valid: group?.state.valid ?? null,
   };
   const props = [
     {
@@ -89,7 +94,8 @@ export function RadioRoot<Value>(componentProps: RadioRootProps<Value>) {
       "aria-checked": checked,
       "aria-readonly": readOnly || undefined,
       "aria-required": required || undefined,
-      "aria-labelledby": labelledBy,
+      "aria-labelledby": item?.labelId ?? labelledBy,
+      "aria-describedby": item?.messages.join(" ") || undefined,
       "data-composite-item-active": checked ? "" : undefined,
       id: nativeButton ? idProp : id,
       onKeyDown(event: KeyboardEvent) {
@@ -138,7 +144,7 @@ export function RadioRoot<Value>(componentProps: RadioRootProps<Value>) {
         type="radio"
         ref={mergedInputRef}
         form={group?.form}
-        id={nativeButton ? undefined : idProp}
+        id={item ? hiddenId : nativeButton ? undefined : idProp}
         name={group?.name}
         tabIndex={-1}
         style={visuallyHidden}

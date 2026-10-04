@@ -2,6 +2,9 @@ import { createContext, type ComponentChildren, type Ref } from "preact";
 import { useContext, useEffect, useRef, useState } from "preact/hooks";
 
 import { createChangeEventDetails } from "../internals/createBaseUIEventDetails";
+import { FieldPopupLifecycle } from "../internals/FieldPopupLifecycle";
+import { FieldRootContext, fieldValidityMapping } from "../internals/FieldRootContext";
+import { FieldsetRootContext } from "../internals/FieldsetRootContext";
 import { getElementProps } from "../internals/popups/getElementProps";
 import {
   useOverlayContext,
@@ -11,6 +14,7 @@ import {
 } from "../internals/popups/OverlayContext";
 import { OverlayPortal, OverlayPositioner, OverlayPopup, usePositionContext } from "../internals/popups/OverlayParts";
 import { OverlayRoot } from "../internals/popups/OverlayRoot";
+import { stringifyAsValue } from "../internals/resolveValueLabel";
 import type { BaseUIComponentProps, NativeButtonProps, NonNativeButtonProps } from "../internals/types";
 import { useButton } from "../internals/useButton";
 import { useControlled } from "../internals/useControlled";
@@ -18,6 +22,7 @@ import { useBaseUiId } from "../internals/useId";
 import { useIsoLayoutEffect } from "../internals/useIsoLayoutEffect";
 import { useListNavigation, itemLabels } from "../internals/useListNavigation";
 import { usePopupTabExit } from "../internals/usePopupTabExit";
+import { useRegisterFieldControl } from "../internals/useRegisterFieldControl";
 import { useRenderElement } from "../internals/useRenderElement";
 import { useStableCallback } from "../internals/useStableCallback";
 import { visuallyHidden } from "../internals/visuallyHidden";
@@ -80,13 +85,13 @@ export function Root<V = any, M extends boolean | undefined = false>({
   value: controlled,
   defaultValue,
   multiple = false as M,
-  disabled = false,
+  disabled: disabledProp = false,
   readOnly = false,
   required = false,
-  name,
+  name: nameProp,
   form,
   autoComplete,
-  id,
+  id: idProp,
   inputRef,
   items,
   itemToStringLabel,
@@ -98,6 +103,11 @@ export function Root<V = any, M extends boolean | undefined = false>({
   actionsRef,
   ...overlay
 }: RootProps<V, M>) {
+  const field = useContext(FieldRootContext);
+  const fieldset = useContext(FieldsetRootContext);
+  const disabled = field?.state.disabled || fieldset?.disabled || disabledProp;
+  const name = field?.name ?? nameProp;
+  const id = useBaseUiId(idProp);
   const [value, setValue] = useControlled<any>({
     controlled,
     default: defaultValue ?? (multiple ? [] : null),
@@ -139,7 +149,7 @@ export function Root<V = any, M extends boolean | undefined = false>({
     setValue(next);
     return true;
   });
-  const stringify = (v: any) => itemToStringValue?.(v) ?? (v == null ? "" : String(v));
+  const stringify = (v: any) => stringifyAsValue(v, itemToStringValue);
   const serialized = multiple ? (value as any[]).map(stringify) : [stringify(value)];
   const placeholder = multiple ? (value as any[]).length === 0 : value == null;
   const context: SelectContextValue = {
@@ -159,23 +169,42 @@ export function Root<V = any, M extends boolean | undefined = false>({
     setList,
     placeholder,
   };
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const node = input.current,
       owner = node?.form;
     if (!owner) return;
     const reset = (event: Event) => {
-      queueMicrotask(() => {
+      setTimeout(() => {
         if (event.defaultPrevented) return;
         const next = defaultValue ?? (multiple ? [] : null);
         const details = createChangeEventDetails("none", event, undefined, { preventUnmountOnClose() {} });
         onValueChange?.(next as any, details);
         if (!details.isCanceled) setValue(next);
-        if (node) node.value = stringify(controlled !== undefined ? controlled : details.isCanceled ? value : next);
+        const restoredValue = controlled !== undefined ? controlled : details.isCanceled ? value : next;
+        if (node) node.value = stringify(multiple ? restoredValue?.[0] : restoredValue);
       });
     };
     owner.addEventListener("reset", reset);
     return () => owner.removeEventListener("reset", reset);
-  }, [form, defaultValue, controlled, value, multiple, onValueChange, setValue]);
+  }, [form, defaultValue, controlled, value, multiple, onValueChange, setValue, itemToStringValue]);
+  useRegisterFieldControl({
+    inputRef: input,
+    controlRef: triggerRef,
+    id,
+    name: nameProp,
+    disabled,
+    value,
+    getFormValue: () => (multiple ? serialized : (serialized[0] ?? "")),
+    isFilled: () => (multiple ? value.length > 0 : value != null && serialized[0] !== ""),
+    isEqual: (next, initial) =>
+      Object.is(next, initial) ||
+      (next != null &&
+        initial != null &&
+        (Array.isArray(next) && Array.isArray(initial)
+          ? next.length === initial.length &&
+            next.every((entry, index) => Object.is(entry, initial[index]) || equal(entry, initial[index]))
+          : equal(next as V, initial as V))),
+  });
   const previous = useRef(value);
   useIsoLayoutEffect(() => {
     if (previous.current === value) return;
@@ -193,6 +222,7 @@ export function Root<V = any, M extends boolean | undefined = false>({
   return (
     <Context.Provider value={context}>
       <OverlayRoot kind="select" modal={true} disabled={disabled} actionsRef={actionsRef as any} {...overlay}>
+        <FieldPopupLifecycle />
         {children}
         <input
           ref={(node) => {
@@ -233,7 +263,7 @@ interface TriggerState {
   value: any;
   placeholder: boolean;
   disabled: boolean;
-  valid: null;
+  valid: boolean | null;
   touched: boolean;
   dirty: boolean;
   filled: boolean;
@@ -244,6 +274,7 @@ export function Trigger({
   disabled: ownDisabled = false,
   ...props
 }: BaseUIComponentProps<"button", TriggerState> & NativeButtonProps) {
+  const field = useContext(FieldRootContext);
   const select = useSelect(),
     ctx = useOverlayContext(),
     el = useRef<HTMLElement | null>(null);
@@ -259,11 +290,11 @@ export function Trigger({
     value: select.value,
     placeholder: select.placeholder,
     disabled: select.disabled || ownDisabled || false,
-    valid: null,
-    touched: false,
-    dirty: false,
-    filled: false,
-    focused: false,
+    valid: field?.state.valid ?? null,
+    touched: field?.state.touched ?? false,
+    dirty: field?.state.dirty ?? false,
+    filled: field?.state.filled ?? false,
+    focused: field?.state.focused ?? false,
   };
   const show = (event: Event) => {
     if (state.disabled || select.readOnly) return;
@@ -278,7 +309,12 @@ export function Trigger({
   return useRenderElement("button", props, {
     state,
     ref: [props.ref ?? null, el, buttonRef, ctx.setReference, select.triggerRef],
-    stateAttributesMapping: { ...popupStateMapping, value: () => null, popupSide: () => null, valid: () => null },
+    stateAttributesMapping: {
+      ...popupStateMapping,
+      value: () => null,
+      popupSide: () => null,
+      valid: fieldValidityMapping.valid,
+    },
     props: [
       getButtonProps({
         id,
@@ -287,6 +323,15 @@ export function Trigger({
         "aria-expanded": ctx.open,
         "aria-controls": ctx.mounted ? ctx.popupId : undefined,
         "aria-required": select.required || undefined,
+        "aria-labelledby": field?.labelId,
+        "aria-describedby": field?.messages.join(" ") || undefined,
+        "aria-invalid": (field?.state.valid === false && !state.disabled) || undefined,
+        onFocus() {
+          field?.focus(true);
+        },
+        onBlur(event: FocusEvent) {
+          if (!ctx.open && !ctx.popupRef.current?.contains(event.relatedTarget as Node | null)) field?.focus(false);
+        },
         "aria-readonly": select.readOnly || undefined,
         onClick(event: MouseEvent) {
           if (ctx.open) ctx.change(false, event, "trigger-press");
