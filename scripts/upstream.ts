@@ -63,6 +63,7 @@ async function resolveIcons(source: string, filename: string): Promise<string> {
 function rewriteComponentImports(source: string): string {
   return source
     .replace(/^"use client"\n+/m, "")
+    .replaceAll('from "@shadcn/react/', 'from "./primitives/')
     .replaceAll('from "@base-ui/react/', 'from "./primitives/')
     .replaceAll('from "@base-ui/react"', 'from "./primitives"')
     .replaceAll('from "cn"', 'from "./lib/utils"')
@@ -76,7 +77,7 @@ function rewriteComponentImports(source: string): string {
 function rewriteExampleImports(source: string): string {
   return source
     .replace(/^"use client"\n+/m, "")
-    .replaceAll(`from "@/styles/base-${STYLE}/ui/`, 'from "@registry/ui/')
+    .replace(/from "@\/styles\/base-(?:nova|rhea)\/ui\//g, 'from "@registry/ui/')
     .replaceAll('from "lucide-react"', 'from "lucide-preact"');
 }
 

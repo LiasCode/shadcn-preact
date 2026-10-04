@@ -35,7 +35,7 @@ The shared styling dependencies are `class-variance-authority`, `cn`, `lucide-pr
 | Resizable | `react-resizable-panels` 4.x                                 |
 | Sonner    | `sonner`                                                     |
 
-Combobox and Toast use local Preact primitives and add no runtime dependency.
+Combobox, Toast, Message Scroller, and Questionnaire use local Preact primitives and add no runtime dependency.
 
 ## Documentation
 
@@ -49,8 +49,14 @@ bunx degit https://github.com/LiasCode/shadcn-preact/registry/ui#main ./src/comp
 
 > The components moved from `src/components/ui` to `registry/ui`. Update your `degit` source if you used the old path.
 
-The [catalog performance report](./docs/performance/2026-10-04-components.md) covers all showcase components.
+The [catalog performance report](./docs/performance/2026-10-04-components.md) records the 55-component baseline before phase 8.
 Run `bun run performance` for the server-render benchmark; the report also documents optional browser profiling.
+
+All 62 upstream components are ported, with 61 showcase sections and 57 additional examples from
+[phase 8](./docs/decisions/0021-conversation-and-questionnaire-components.md). To run its browser regression checks,
+build the site, start `bun run preview`, and run `node scripts/phase8-browser.mjs`. Playwright is an optional
+external tool: set `PERFORMANCE_PLAYWRIGHT_MODULE` to its installed module path and `PERFORMANCE_URL` if the
+preview uses another port.
 
 ## v3
 

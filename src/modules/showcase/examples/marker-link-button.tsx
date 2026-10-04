@@ -1,0 +1,30 @@
+import { Marker, MarkerContent, MarkerIcon } from "@registry/ui/marker";
+import { GitBranchIcon, RotateCcwIcon } from "lucide-preact";
+import { toast } from "sonner";
+
+export function MarkerLinkButtonDemo() {
+  return (
+    <div className="flex w-full max-w-sm flex-col gap-8 py-12">
+      <Marker render={<a href="#links-and-buttons" />}>
+        <MarkerIcon>
+          <GitBranchIcon />
+        </MarkerIcon>
+        <MarkerContent>View the pull request</MarkerContent>
+      </Marker>
+      <Marker
+        render={
+          <button
+            type="button"
+            className="transition-colors hover:text-foreground"
+            onClick={() => toast("You clicked the revert button")}
+          />
+        }
+      >
+        <MarkerIcon>
+          <RotateCcwIcon />
+        </MarkerIcon>
+        <MarkerContent>Revert this change</MarkerContent>
+      </Marker>
+    </div>
+  );
+}

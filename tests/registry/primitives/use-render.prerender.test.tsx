@@ -18,6 +18,13 @@ import { Command, CommandInput, CommandItem, CommandList } from "../../../regist
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../../registry/ui/dialog";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "../../../registry/ui/drawer";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../../../registry/ui/input-otp";
+import {
+  MessageScroller,
+  MessageScrollerContent,
+  MessageScrollerItem,
+  MessageScrollerProvider,
+  MessageScrollerViewport,
+} from "../../../registry/ui/message-scroller";
 import { Popover, PopoverContent, PopoverTrigger } from "../../../registry/ui/popover";
 import { Combobox } from "../../../registry/ui/primitives/combobox";
 import { FloatingFocusManager } from "../../../registry/ui/primitives/internals/FloatingFocusManager";
@@ -30,6 +37,12 @@ import { Menu } from "../../../registry/ui/primitives/menu";
 import { NavigationMenu } from "../../../registry/ui/primitives/navigation-menu";
 import { ScrollArea } from "../../../registry/ui/primitives/scroll-area";
 import { Select } from "../../../registry/ui/primitives/select";
+import {
+  Questionnaire,
+  QuestionnaireChoice,
+  QuestionnaireItem,
+  QuestionnaireProgress,
+} from "../../../registry/ui/questionnaire";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "../../../registry/ui/resizable";
 import { SidebarProvider, Sidebar, SidebarContent } from "../../../registry/ui/sidebar";
 import { Toaster as SonnerToaster } from "../../../registry/ui/sonner";
@@ -237,4 +250,31 @@ test("phase 7 components and their compatibility libraries prerender without bro
   expect(html).toContain('data-slot="input-otp"');
   expect(html).toContain('role="combobox"');
   expect(html).toContain("Navigation");
+});
+
+test("phase 8 primitives prerender without browser globals", () => {
+  expect(typeof window).toBe("undefined");
+  const markup = renderToString(
+    <>
+      <MessageScrollerProvider>
+        <MessageScroller>
+          <MessageScrollerViewport>
+            <MessageScrollerContent>
+              <MessageScrollerItem messageId="m1">Message</MessageScrollerItem>
+            </MessageScrollerContent>
+          </MessageScrollerViewport>
+        </MessageScroller>
+      </MessageScrollerProvider>
+      <Questionnaire items={[{ name: "answer", choices: [{ value: "a" }] }]} shortcuts="letters">
+        <QuestionnaireProgress />
+        <QuestionnaireItem name="answer">
+          <QuestionnaireChoice value="a">Answer</QuestionnaireChoice>
+        </QuestionnaireItem>
+      </Questionnaire>
+    </>,
+  );
+  expect(markup).toContain('role="log"');
+  expect(markup).toContain('data-message-id="m1"');
+  expect(markup).toContain('aria-valuemax="1"');
+  expect(markup).toContain('data-shortcut="A"');
 });

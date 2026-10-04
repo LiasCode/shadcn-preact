@@ -185,3 +185,45 @@ body {
 p {
   max-width: 75ch;
 }
+/* Showcase-only message entrances use transforms so transcript layout stays stable. */
+@keyframes demo-message-enter {
+  from {
+    opacity: 0;
+    transform: var(--demo-message-transform, translateY(10px));
+    filter: var(--demo-message-filter, none);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+.demo-message-enter {
+  animation: demo-message-enter 260ms ease-out both;
+}
+.demo-message-fade {
+  --demo-message-transform: none;
+}
+.demo-message-slide-side {
+  --demo-message-transform: translateX(18px);
+}
+.demo-message-pop {
+  --demo-message-transform: translateY(6px) scale(0.94);
+  transform-origin: bottom right;
+}
+.demo-message-spring-bounce {
+  --demo-message-transform: translateY(12px) scale(0.96);
+  animation-timing-function: cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+.demo-message-blur-fade {
+  --demo-message-transform: translateY(6px);
+  --demo-message-filter: blur(4px);
+}
+.demo-message-scale-fade {
+  --demo-message-transform: scale(0.98);
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-message-enter {
+    animation: none;
+  }
+}

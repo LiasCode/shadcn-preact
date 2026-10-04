@@ -4,9 +4,11 @@ import { AccordionDemo } from "./accordion-demo";
 import { AlertDemo } from "./alert-demo";
 import { AlertDialogDemo } from "./alert-dialog-demo";
 import { AspectRatioDemo } from "./aspect-ratio-demo";
+import { AttachmentDemo } from "./attachment-demo";
 import { AvatarDemo } from "./avatar-demo";
 import { BadgeDemo } from "./badge-demo";
 import { BreadcrumbDemo } from "./breadcrumb-demo";
+import { BubbleDemo } from "./bubble-demo";
 import { ButtonDemo } from "./button-demo";
 import { ButtonGroupDemo } from "./button-group-demo";
 import { CalendarDemo } from "./calendar-demo";
@@ -30,12 +32,16 @@ import { InputOtpDemo } from "./input-otp-demo";
 import { ItemDemo } from "./item-demo";
 import { KbdDemo } from "./kbd-demo";
 import { LabelDemo } from "./label-demo";
+import { MarkerDemo } from "./marker-demo";
 import { MenubarDemo } from "./menubar-demo";
+import { MessageDemo } from "./message-demo";
+import { MessageScrollerDemo } from "./message-scroller-demo";
 import { NativeSelectDemo } from "./native-select-demo";
 import { NavigationMenuDemo } from "./navigation-menu-demo";
 import { PaginationDemo } from "./pagination-demo";
 import { PopoverDemo } from "./popover-demo";
 import { ProgressDemo } from "./progress-demo";
+import { QuestionnaireDemo } from "./questionnaire-demo";
 import { RadioGroupDemo } from "./radio-group-demo";
 import { ResizableDemo } from "./resizable-demo";
 import { ScrollAreaDemo } from "./scroll-area-demo";
@@ -69,9 +75,11 @@ export const showcase: readonly ShowcaseEntry[] = [
   { slug: "alert", name: "Alert", Demo: AlertDemo },
   { slug: "alert-dialog", name: "Alert Dialog", Demo: AlertDialogDemo },
   { slug: "aspect-ratio", name: "Aspect Ratio", Demo: AspectRatioDemo },
+  { slug: "attachment", name: "Attachment", Demo: AttachmentDemo },
   { slug: "avatar", name: "Avatar", Demo: AvatarDemo },
   { slug: "badge", name: "Badge", Demo: BadgeDemo },
   { slug: "breadcrumb", name: "Breadcrumb", Demo: BreadcrumbDemo },
+  { slug: "bubble", name: "Bubble", Demo: BubbleDemo },
   { slug: "button", name: "Button", Demo: ButtonDemo },
   { slug: "button-group", name: "Button Group", Demo: ButtonGroupDemo },
   { slug: "calendar", name: "Calendar", Demo: CalendarDemo },
@@ -95,12 +103,16 @@ export const showcase: readonly ShowcaseEntry[] = [
   { slug: "item", name: "Item", Demo: ItemDemo },
   { slug: "kbd", name: "Kbd", Demo: KbdDemo },
   { slug: "label", name: "Label", Demo: LabelDemo },
+  { slug: "marker", name: "Marker", Demo: MarkerDemo },
   { slug: "menubar", name: "Menubar", Demo: MenubarDemo },
+  { slug: "message", name: "Message", Demo: MessageDemo },
+  { slug: "message-scroller", name: "Message Scroller", Demo: MessageScrollerDemo },
   { slug: "native-select", name: "Native Select", Demo: NativeSelectDemo },
   { slug: "navigation-menu", name: "Navigation Menu", Demo: NavigationMenuDemo },
   { slug: "pagination", name: "Pagination", Demo: PaginationDemo },
   { slug: "popover", name: "Popover", Demo: PopoverDemo },
   { slug: "progress", name: "Progress", Demo: ProgressDemo },
+  { slug: "questionnaire", name: "Questionnaire", Demo: QuestionnaireDemo },
   { slug: "radio-group", name: "Radio Group", Demo: RadioGroupDemo },
   { slug: "resizable", name: "Resizable", Demo: ResizableDemo },
   { slug: "scroll-area", name: "Scroll Area", Demo: ScrollAreaDemo },

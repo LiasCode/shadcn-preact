@@ -1,0 +1,11 @@
+import * as React from "preact/compat";
+
+function useLatest<T>(value: T) {
+  const ref = React.useRef(value);
+
+  ref.current = value;
+
+  return ref;
+}
+
+export { useLatest };
