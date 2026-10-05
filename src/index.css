@@ -172,13 +172,7 @@
   font-family: "Geist", monospace;
 }
 
-body {
-  display: block;
-  background-origin: 0 0;
-}
-
 #app {
-  flex: 1;
   position: relative;
 }
 

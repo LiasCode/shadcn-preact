@@ -1,1 +1,0 @@
-export { FloatingPortal as FloatingPortalLite } from "./FloatingPortal";

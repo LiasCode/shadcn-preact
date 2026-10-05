@@ -25,7 +25,7 @@ Use **Bun**, exact dependency versions, `bun.lock`, and `bunfig.toml`.
 - `bun run preview`: serve the production build.
 - `bun run format`: write Oxfmt formatting; `bunx oxfmt --check`: verify formatting.
 - `bun run lint`: Oxlint.
-- `bun run test`: primitive regressions using Bun and happy-dom.
+- `bun run test`: primitive and component-installation regressions using Bun and happy-dom.
 - `bun run reference`: generate resolved base-nova components/examples in `.cache/shadcn-reference/base-nova`.
 - `bun run parity`: compare all wrappers, vendored CSS, and theme tokens with the pinned upstream.
 - `bun run parity:test`: mutation and CLI regressions for the parity checker.
@@ -122,8 +122,22 @@ browser check. Browser parity is separate from `check`; install Chromium with `b
 ## Documentation app and styling
 
 - Use `preact-iso`: `src/main.tsx` hydrates `#app` and exports `prerender`; `src/App.tsx` holds providers;
-  `src/routes.tsx` defines routes. Only introduction `/` and showcase `/components` are product views.
-  Do not restore per-component documentation routes.
+  `src/routes.tsx` defines routes. Following the requested shadcn-style site organization, `/` is the
+  landing page, `/docs` is the introduction, `/docs/installation` is the manual setup guide, and
+  `/docs/components` is the catalog. `/components` remains a compatibility route for existing links.
+  Documentation uses `src/layouts/docs-layout.tsx` with shared sidebar navigation and optional page contents.
+  `src/lib/component-catalog.ts` is the shared navigation metadata; it must not import demo code.
+  `/docs/components/<slug>` gives each catalog component its own installation, usage, and examples page.
+  Each page lazily imports only its demo and documentation; `/components` retains the legacy full showcase.
+  `scripts/component-docs.ts` generates page data in `.cache/component-docs` when Vite starts.
+  Each guide uses `degit@3.10.0 --files` to select the component's relative-import dependency closure
+  and both MIT licenses from the repository. Selection happens in `.cache/shadcn-preact/<slug>` before
+  copying into `src/components/ui`: degit's file filter prunes the destination, so never point a filtered
+  `--force` clone directly at a consumer's existing component directory.
+  Package versions come from the root manifest, descriptions/usage from the pinned upstream MDX, and example
+  code from local ports. Installation regressions in `tests/docs` verify file selections and copied imports.
+  The build requires the pinned submodule; it no longer packages or serves source archives.
+  Prerender all catalog paths from `componentCatalog`; do not import the aggregate demos into individual pages.
 - App imports use `@/*`; registry consumers use `@registry/*`.
   Keep aliases aligned in `vite.config.ts` and `tsconfig.app.json`: `react`/`react-dom` to `preact/compat`,
   JSX runtimes to `preact/jsx-runtime`.

@@ -39,7 +39,12 @@ Combobox, Toast, Message Scroller, and Questionnaire use local Preact primitives
 
 ## Documentation
 
-See every component on the [showcase](https://shadcn-preact.onrender.com/components).
+Start with the [introduction](https://shadcn-preact.onrender.com/docs) and
+[installation guide](https://shadcn-preact.onrender.com/docs/installation), then browse the
+[component catalog](https://shadcn-preact.onrender.com/docs/components). Every catalog component has an
+independent page with usage, demos, exact dependencies, and a component-specific degit command.
+
+The [legacy showcase](https://shadcn-preact.onrender.com/components) remains available.
 
 The components live in [`registry/ui`](./registry/ui). Copy them into your project with:
 

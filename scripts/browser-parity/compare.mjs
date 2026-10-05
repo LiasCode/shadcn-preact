@@ -58,7 +58,6 @@ async function start(runtime) {
     server: { host: "127.0.0.1", port: 0, fs: { allow: [root] } },
     css: { postcss: root },
     oxc: { jsx: { runtime: "automatic", importSource: local ? "preact" : "react" } },
-    define: { "process.env.IS_PREACT": JSON.stringify(String(local)) },
   });
   servers.push(server);
 

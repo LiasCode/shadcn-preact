@@ -8,8 +8,8 @@ import { useLocation } from "preact-iso";
 import { repositoryUrl } from "@/lib/site";
 
 const siteNav = [
-  { title: "Introduction", href: "/" },
-  { title: "Components", href: "/components" },
+  { title: "Docs", href: "/docs" },
+  { title: "Components", href: "/docs/components" },
 ];
 
 export function SiteLayout({ children }: { children: ComponentChildren }) {
@@ -35,11 +35,23 @@ function SiteHeader() {
             v4
           </Badge>
         </a>
-        <nav className="flex items-center gap-3 text-xs text-muted-foreground sm:gap-5 sm:text-sm">
+        <nav
+          aria-label="Main navigation"
+          className="flex items-center gap-3 text-xs text-muted-foreground sm:gap-5 sm:text-sm"
+        >
           {siteNav.map((item) => (
             <a
+              key={item.href}
               href={item.href}
-              aria-current={path === item.href ? "page" : undefined}
+              aria-current={
+                (
+                  item.href === "/docs"
+                    ? path === "/docs" || path === "/docs/installation"
+                    : path.startsWith("/docs/components") || path === "/components"
+                )
+                  ? "page"
+                  : undefined
+              }
               className="transition-colors hover:text-foreground aria-[current=page]:text-foreground"
             >
               {item.title}
