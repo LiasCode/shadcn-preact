@@ -484,9 +484,11 @@ export function Popup(props: OverlayPopup.Props) {
       aria-modal={undefined}
       aria-labelledby={ctx.reference?.id}
       aria-multiselectable={select.multiple || undefined}
-      initialFocus={() =>
+      initialFocus={(type) =>
         select.list?.querySelector<HTMLElement>("[aria-selected=true]:not([aria-disabled=true])") ??
-        select.list?.querySelector<HTMLElement>("[role=option]:not([aria-disabled=true])") ??
+        (type === "keyboard"
+          ? select.list?.querySelector<HTMLElement>("[role=option]:not([aria-disabled=true])")
+          : null) ??
         ctx.popupRef.current
       }
       onKeyDown={(event) => {

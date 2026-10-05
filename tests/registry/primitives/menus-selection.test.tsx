@@ -332,6 +332,21 @@ test("select labels are present before opening; keyboard selection updates nativ
   expect(Boolean(document.querySelector("[role=listbox]"))).toBe(false);
   expect(document.activeElement?.id).toBe("select");
 });
+test("an empty select opened with the pointer focuses its popup and arrows enter the options", async () => {
+  render(
+    <Select.Root items={fruits}>
+      <SelectParts />
+    </Select.Root>,
+  );
+  click("#select");
+  await settle();
+  expect(document.activeElement).toBe(get("[role=listbox]"));
+  key("ArrowDown");
+  expect(document.activeElement?.id).toBe("fruit-a");
+  key("Enter");
+  await settle(80);
+  expect(get("#select").textContent).toBe("Apple");
+});
 test("select cancellation, readonly state and form reset preserve controlled semantics", async () => {
   function Subject() {
     const [readOnly, setReadOnly] = useState(false);

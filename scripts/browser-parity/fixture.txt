@@ -1,0 +1,174 @@
+import { DirectionProvider } from "@primitive/direction-provider";
+import { Field } from "@primitive/field";
+import { Form } from "@primitive/form";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@ui/accordion";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction,
+  AlertDialogFooter,
+} from "@ui/alert-dialog";
+import { Button } from "@ui/button";
+import { Checkbox } from "@ui/checkbox";
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@ui/dialog";
+import { Input } from "@ui/input";
+import { Popover, PopoverTrigger, PopoverContent, PopoverTitle, PopoverDescription } from "@ui/popover";
+import { RadioGroup, RadioGroupItem } from "@ui/radio-group";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@ui/select";
+import { Switch } from "@ui/switch";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@ui/tabs";
+import { Toggle } from "@ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@ui/toggle-group";
+import { useState } from "react";
+
+import "./style.css";
+
+function Fixture() {
+  const name = new URLSearchParams(location.search).get("case");
+  const [value, setValue] = useState("");
+  const direction = new URLSearchParams(location.search).get("direction") ?? "ltr";
+  return (
+    <DirectionProvider direction={direction}>
+      <main data-fixture={name}>
+        {name === "button" && (
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={() => setValue("clicked")}>Action</Button>
+            <Button variant="outline">Outline</Button>
+            <Button disabled>Disabled</Button>
+            <output>{value}</output>
+          </div>
+        )}
+        {name === "input" && <Input aria-label="Text" placeholder="Enter text" />}
+        {name === "checkbox" && <Checkbox aria-label="Accept" />}
+        {name === "tabs" && (
+          <Tabs defaultValue="first">
+            <TabsList>
+              <TabsTrigger value="first">First</TabsTrigger>
+              <TabsTrigger value="second">Second</TabsTrigger>
+              <TabsTrigger value="disabled" disabled>
+                Disabled
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="first">First panel</TabsContent>
+            <TabsContent value="second">Second panel</TabsContent>
+          </Tabs>
+        )}
+        {name === "accordion" && (
+          <Accordion>
+            <AccordionItem value="one">
+              <AccordionTrigger>Details</AccordionTrigger>
+              <AccordionContent>Content of the details panel.</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
+        {name === "dialog" && (
+          <Dialog>
+            <DialogTrigger render={<Button />}>Open dialog</DialogTrigger>
+            <DialogContent>
+              <DialogTitle>Account</DialogTitle>
+              <DialogDescription>Edit your account details.</DialogDescription>
+              <Input aria-label="Display name" />
+            </DialogContent>
+          </Dialog>
+        )}
+        {name === "select" && (
+          <Select
+            items={[
+              { label: "Apple", value: "apple" },
+              { label: "Banana", value: "banana" },
+            ]}
+          >
+            <SelectTrigger aria-label="Fruit">
+              <SelectValue placeholder="Choose fruit" />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false}>
+              <SelectItem value="apple">Apple</SelectItem>
+              <SelectItem value="banana">Banana</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
+        {name === "field" && (
+          <Form validationMode="onBlur" onFormSubmit={(values) => setValue(String(values.username))}>
+            <Field.Root name="username" validate={(text) => (text === "admin" ? "Reserved username" : null)}>
+              <Field.Label>Username</Field.Label>
+              <Input required pattern="[a-z]{3,}" />
+              <div className="min-h-5">
+                <Field.Error />
+              </div>
+            </Field.Root>
+            <Button type="submit">Save</Button>
+            <Button type="reset" variant="outline">
+              Reset
+            </Button>
+            <output>{value}</output>
+          </Form>
+        )}
+        {name === "switch" && (
+          <div className="flex gap-4">
+            <Switch aria-label="Notifications" />
+            <Switch aria-label="Unavailable switch" disabled />
+          </div>
+        )}
+        {name === "radio-group" && (
+          <RadioGroup defaultValue="email" aria-label="Contact">
+            <RadioGroupItem value="email" aria-label="Email" />
+            <RadioGroupItem value="unavailable" aria-label="Unavailable radio" disabled />
+            <RadioGroupItem value="phone" aria-label="Phone" />
+          </RadioGroup>
+        )}
+        {name === "toggle" && (
+          <div className="flex gap-3">
+            <Toggle aria-label="Bold" variant="outline">
+              Bold
+            </Toggle>
+            <Toggle aria-label="Unavailable toggle" disabled>
+              Disabled
+            </Toggle>
+          </div>
+        )}
+        {name === "toggle-group" && (
+          <ToggleGroup defaultValue={["left"]} variant="outline">
+            <ToggleGroupItem value="left" aria-label="Left">
+              Left
+            </ToggleGroupItem>
+            <ToggleGroupItem value="disabled" aria-label="Unavailable alignment" disabled>
+              Disabled
+            </ToggleGroupItem>
+            <ToggleGroupItem value="right" aria-label="Right">
+              Right
+            </ToggleGroupItem>
+          </ToggleGroup>
+        )}
+        {name === "popover" && (
+          <Popover>
+            <PopoverTrigger render={<Button />}>Open settings</PopoverTrigger>
+            <PopoverContent align="start">
+              <PopoverTitle>Settings</PopoverTitle>
+              <PopoverDescription>Update your display name.</PopoverDescription>
+              <Input aria-label="Popover name" />
+            </PopoverContent>
+          </Popover>
+        )}
+        {name === "alert-dialog" && (
+          <AlertDialog>
+            <AlertDialogTrigger render={<Button />}>Delete record</AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogTitle>Confirm removal</AlertDialogTitle>
+              <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel removal</AlertDialogCancel>
+                <AlertDialogAction onClick={() => setValue("confirmed")}>Confirm removal</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+            <output>{value}</output>
+          </AlertDialog>
+        )}
+      </main>
+    </DirectionProvider>
+  );
+}
+MOUNT;

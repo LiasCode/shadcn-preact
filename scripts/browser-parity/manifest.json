@@ -1,0 +1,33 @@
+{
+  "wrappers": [
+    "button",
+    "input",
+    "checkbox",
+    "tabs",
+    "accordion",
+    "dialog",
+    "select",
+    "switch",
+    "radio-group",
+    "toggle",
+    "toggle-group",
+    "popover",
+    "alert-dialog"
+  ],
+  "cases": [
+    "button",
+    "input",
+    "checkbox",
+    "tabs",
+    "accordion",
+    "dialog",
+    "select",
+    "field",
+    "switch",
+    "radio-group",
+    "toggle",
+    "toggle-group",
+    "popover",
+    "alert-dialog"
+  ]
+}

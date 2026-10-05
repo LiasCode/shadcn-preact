@@ -84,6 +84,31 @@ the root development dependencies; installing the upstream monorepo is unnecessa
 its output in the ignored `.cache/shadcn-reference/base-nova` directory. Updating the upstream pin is an explicit
 change that must pass the parity checks; see [ADR 0023](./docs/decisions/0023-pinned-upstream-submodule.md).
 
+## Browser comparison with upstream
+
+The comparison tool mounts the port with Preact and the pinned upstream wrappers with real React/Base UI
+in independent browser pages. Everything uses the repository's submodule and development dependencies.
+
+```sh
+bunx playwright install chromium
+bun run parity:browser
+bun run parity:browser:test
+```
+
+On Linux CI hosts that need browser system packages, use `bunx playwright install --with-deps chromium`.
+The suite covers Button, Input, Checkbox, Tabs, Accordion, Dialog, Select, Field/Form, Switch, RadioGroup,
+Toggle, ToggleGroup, Popover and AlertDialog. Light/dark, desktop/mobile and LTR/RTL configurations
+produce 328 state comparisons. It checks expected interactions on both runtimes and
+compares screenshots against the live reference. Mutation checks verify that visual and behavioral changes fail.
+
+Screenshots, differences, geometry and the revision/browser report are written to
+`.cache/browser-parity/results`. To inspect one fixture, use `BROWSER_PARITY_CASE=select bun run parity:browser`.
+Use a comma-separated case list to select several fixtures and `BROWSER_PARITY_DIRECTION=rtl` to select one direction.
+This is a separate check requiring Chromium; `bun run check` remains usable without browser binaries.
+Animations, fonts, additional engines and the remaining catalog need further coverage; see
+[ADR 0029](./docs/decisions/0029-independent-browser-parity.md) and
+[ADR 0030](./docs/decisions/0030-browser-controls-overlays-and-rtl.md).
+
 ## v3
 
 The version 3 code is on [branch](https://github.com/LiasCode/shadcn-preact/tree/v3) and is maintained there.

@@ -334,8 +334,13 @@ export function useAnchorPositioning(params: UseAnchorPositioningParameters) {
     update,
   ]);
   const renderedSide = position.placement.split("-")[0]! as "top" | "right" | "bottom" | "left";
+  const dpr = floating?.ownerDocument.defaultView?.devicePixelRatio || 1;
   const positionerStyles: CSSProperties = position.positioned
-    ? { position: positionMethod, [position.sideX ?? "left"]: position.x, [position.sideY ?? "top"]: position.y }
+    ? {
+        position: positionMethod,
+        [position.sideX ?? "left"]: Math.round(position.x * dpr) / dpr,
+        [position.sideY ?? "top"]: Math.round(position.y * dpr) / dpr,
+      }
     : { position: "fixed", left: 0, top: 0, opacity: 0 };
   const arrowStyles: CSSProperties = { position: "absolute", left: position.arrowX, top: position.arrowY };
   return {

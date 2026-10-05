@@ -501,14 +501,14 @@ describe("floating infrastructure", () => {
     anchor.id = "anchor";
     document.body.append(anchor);
     anchor.getBoundingClientRect = () => ({
-      x: 50,
-      y: 50,
+      x: 50.25,
+      y: 50.25,
       width: 40,
       height: 20,
-      left: 50,
-      top: 50,
-      right: 90,
-      bottom: 70,
+      left: 50.25,
+      top: 50.25,
+      right: 90.25,
+      bottom: 70.25,
       toJSON() {},
     });
     const container = render(
@@ -522,6 +522,8 @@ describe("floating infrastructure", () => {
     expect(positioner.dataset.side).toBe("inline-start");
     expect(positioner.dataset.physical).toBe("right");
     expect(positioner.style.getPropertyValue("--anchor-width")).toBe("40px");
+    expect(Number.parseFloat(positioner.style.left) % 1).toBe(0);
+    expect(Number.parseFloat(positioner.style.top) % 1).toBe(0);
     expect(positioner.style.getPropertyValue("--transform-origin")).not.toBe("");
     const positionedRenders = renders;
     await act(async () => {
