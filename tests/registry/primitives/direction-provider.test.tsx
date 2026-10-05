@@ -8,6 +8,7 @@ test("useDirection reads the nearest DirectionProvider, ltr by default", () => {
   function Show() {
     return <i>{useDirection()}</i>;
   }
+
   const container = render(
     <div>
       <Show />

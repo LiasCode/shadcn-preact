@@ -8,6 +8,7 @@ export function getReactElementRef(element: unknown): Ref<any> | null {
   if (!isValidElement(element)) {
     return null;
   }
+
   const vnode = element as VNode<{ ref?: Ref<any> }>;
   return vnode.props?.ref ?? vnode.ref ?? null;
 }

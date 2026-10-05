@@ -22,15 +22,26 @@ const items = [
 ] as const;
 
 type QuestionnaireItemName = "detail" | "audience";
+
 const questionnaireSchema = {
   safeParse(answers: Record<string, FormDataEntryValue>) {
     const issues: { path: QuestionnaireItemName[]; message: string }[] = [];
-    if (answers.detail !== "summary" && answers.detail !== "complete")
+
+    if (answers.detail !== "summary" && answers.detail !== "complete") {
       issues.push({ path: ["detail"], message: "Choose the response depth." });
-    if (answers.audience !== "team" && answers.audience !== "public")
+    }
+
+    if (answers.audience !== "team" && answers.audience !== "public") {
       issues.push({ path: ["audience"], message: "Choose the audience." });
-    if (answers.audience === "public" && answers.detail === "summary")
-      issues.push({ path: ["detail"], message: "Public answers need enough context. Choose a complete answer." });
+    }
+
+    if (answers.audience === "public" && answers.detail === "summary") {
+      issues.push({
+        path: ["detail"],
+        message: "Public answers need enough context. Choose a complete answer.",
+      });
+    }
+
     return { success: issues.length === 0, data: answers, error: { issues } };
   },
 };
@@ -69,10 +80,13 @@ export function QuestionnaireValidation() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const result = questionnaireSchema.safeParse(Object.fromEntries(new FormData(event.currentTarget)));
+    const result = questionnaireSchema.safeParse(
+      Object.fromEntries(new FormData(event.currentTarget)),
+    );
 
     if (result.success) {
       setErrors({});
+
       toast("Agent response configured", {
         description: `Detail: ${result.data.detail} · Audience: ${result.data.audience}`,
       });
@@ -131,7 +145,9 @@ export function QuestionnaireValidation() {
         <QuestionnaireItem invalid={Boolean(errors.audience)} name="audience" required>
           <CardHeader>
             <QuestionnaireTitle>Who will read the answer?</QuestionnaireTitle>
-            <QuestionnaireDescription>Public answers require complete context.</QuestionnaireDescription>
+            <QuestionnaireDescription>
+              Public answers require complete context.
+            </QuestionnaireDescription>
             <CardAction>
               <ValidationProgress />
             </CardAction>

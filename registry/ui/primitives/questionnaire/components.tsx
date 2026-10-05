@@ -126,7 +126,9 @@ function QuestionnaireItem({
     },
   });
 
-  return <QuestionnaireItemContext.Provider value={context}>{element}</QuestionnaireItemContext.Provider>;
+  return (
+    <QuestionnaireItemContext.Provider value={context}>{element}</QuestionnaireItemContext.Provider>
+  );
 }
 
 function QuestionnaireTitle({ render, ...props }: QuestionnaireTitleProps) {
@@ -144,7 +146,10 @@ function QuestionnaireDescription({ id, render, ...props }: QuestionnaireDescrip
   const generatedId = React.useId();
   const descriptionId = id ?? generatedId;
 
-  React.useLayoutEffect(() => registerDescription(descriptionId), [descriptionId, registerDescription]);
+  React.useLayoutEffect(
+    () => registerDescription(descriptionId),
+    [descriptionId, registerDescription],
+  );
 
   return useRender({
     defaultTagName: "p",
@@ -195,7 +200,9 @@ function QuestionnaireChoice({
   });
 
   return (
-    <QuestionnaireChoiceContext.Provider value={{ inputProps, state }}>{element}</QuestionnaireChoiceContext.Provider>
+    <QuestionnaireChoiceContext.Provider value={{ inputProps, state }}>
+      {element}
+    </QuestionnaireChoiceContext.Provider>
   );
 }
 
@@ -226,7 +233,11 @@ function QuestionnaireChoiceLabel({ render, ...props }: QuestionnaireChoiceLabel
   });
 }
 
-function QuestionnaireChoiceShortcut({ children, render, ...props }: QuestionnaireChoiceShortcutProps) {
+function QuestionnaireChoiceShortcut({
+  children,
+  render,
+  ...props
+}: QuestionnaireChoiceShortcutProps) {
   const { state } = useQuestionnaireChoiceContext("Questionnaire.ChoiceShortcut");
   const shortcutState = { shortcut: state.shortcut };
 
@@ -289,7 +300,9 @@ function QuestionnaireError({ children, id, render, ...props }: QuestionnaireErr
     defaultTagName: "p",
     props: mergeProps<"p">(
       {
-        children: children ?? (required ? "Choose an answer to continue." : "Choose an answer or skip this question."),
+        children:
+          children ??
+          (required ? "Choose an answer to continue." : "Choose an answer or skip this question."),
         hidden: !invalid,
         id: errorId,
         role: invalid ? "alert" : undefined,

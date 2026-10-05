@@ -1,5 +1,6 @@
 import { createContext } from "preact";
 import { useContext } from "preact/hooks";
+
 export type ImageLoadingStatus = "idle" | "loading" | "loaded" | "error";
 
 export interface AvatarRootContextValue {
@@ -11,6 +12,10 @@ export const AvatarRootContext = createContext<AvatarRootContextValue | undefine
 
 export function useAvatarRootContext() {
   const context = useContext(AvatarRootContext);
-  if (!context) throw new Error("Base UI: Avatar parts must be placed within <Avatar.Root>.");
+
+  if (!context) {
+    throw new Error("Base UI: Avatar parts must be placed within <Avatar.Root>.");
+  }
+
   return context;
 }

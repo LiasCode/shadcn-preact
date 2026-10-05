@@ -32,7 +32,11 @@ export function CollapsibleFileTree() {
     },
     {
       name: "hooks",
-      items: [{ name: "use-media-query.ts" }, { name: "use-debounce.ts" }, { name: "use-local-storage.ts" }],
+      items: [
+        { name: "use-media-query.ts" },
+        { name: "use-debounce.ts" },
+        { name: "use-local-storage.ts" },
+      ],
     },
     {
       name: "types",
@@ -69,13 +73,21 @@ export function CollapsibleFileTree() {
             {fileItem.name}
           </CollapsibleTrigger>
           <CollapsibleContent className="mt-1 ml-5 style-lyra:ml-4">
-            <div className="flex flex-col gap-1">{fileItem.items.map((child) => renderItem(child))}</div>
+            <div className="flex flex-col gap-1">
+              {fileItem.items.map((child) => renderItem(child))}
+            </div>
           </CollapsibleContent>
         </Collapsible>
       );
     }
+
     return (
-      <Button key={fileItem.name} variant="link" size="sm" className="w-full justify-start gap-2 text-foreground">
+      <Button
+        key={fileItem.name}
+        variant="link"
+        size="sm"
+        className="w-full justify-start gap-2 text-foreground"
+      >
         <FileIcon />
         <span>{fileItem.name}</span>
       </Button>

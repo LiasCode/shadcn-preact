@@ -1,5 +1,12 @@
 import { Button } from "@registry/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@registry/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@registry/ui/sheet";
 
 export default function SheetNoCloseButton() {
   return (
@@ -9,7 +16,8 @@ export default function SheetNoCloseButton() {
         <SheetHeader>
           <SheetTitle>No Close Button</SheetTitle>
           <SheetDescription>
-            This sheet doesn&apos;t have a close button in the top-right corner. Click outside to close.
+            This sheet doesn&apos;t have a close button in the top-right corner. Click outside to
+            close.
           </SheetDescription>
         </SheetHeader>
       </SheetContent>

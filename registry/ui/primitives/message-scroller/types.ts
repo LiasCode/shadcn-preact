@@ -126,7 +126,10 @@ type MessageScrollerButtonRenderState = {
 };
 
 // Scroll control for the start or end of the transcript.
-type MessageScrollerButtonProps = UseRenderComponentProps<"button", MessageScrollerButtonRenderState> & {
+type MessageScrollerButtonProps = UseRenderComponentProps<
+  "button",
+  MessageScrollerButtonRenderState
+> & {
   // Native scroll behavior when clicked. Defaults to "smooth".
   behavior?: ScrollBehavior;
   // Transcript edge to scroll toward. Defaults to "end".
@@ -147,7 +150,11 @@ type MessageScrollerVisibilityStore = {
   getSnapshot: () => MessageScrollerVisibilityState;
   hasListeners: () => boolean;
   setSnapshot: (nextSnapshot: MessageScrollerVisibilityState) => void;
-  subscribe: (listener: () => void, onFirstSubscribe: () => void, onLastUnsubscribe: () => void) => () => void;
+  subscribe: (
+    listener: () => void,
+    onFirstSubscribe: () => void,
+    onLastUnsubscribe: () => void,
+  ) => () => void;
 };
 
 // Registers (or, with removedElement, unregisters) a MessageScrollerItem node by

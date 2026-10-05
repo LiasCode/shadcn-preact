@@ -1,5 +1,12 @@
 import { Button } from "@registry/ui/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@registry/ui/empty";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@registry/ui/empty";
 import { ArrowUpRightIcon, FolderIcon } from "lucide-preact";
 
 export function EmptyInCard() {
@@ -21,7 +28,12 @@ export function EmptyInCard() {
           </Button>
           <Button variant="outline">Import project</Button>
         </div>
-        <Button variant="link" render={<a href="#" />} className="text-muted-foreground" nativeButton={false}>
+        <Button
+          variant="link"
+          render={<a href="#" />}
+          className="text-muted-foreground"
+          nativeButton={false}
+        >
           Learn more <ArrowUpRightIcon />
         </Button>
       </EmptyContent>

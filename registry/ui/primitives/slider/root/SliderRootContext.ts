@@ -3,6 +3,7 @@ import { useContext } from "preact/hooks";
 
 import type { FieldRootContextValue } from "../../internals/FieldRootContext";
 import type { SliderRootState, SliderRoot } from "./SliderRoot";
+
 export interface SliderContext {
   field: FieldRootContextValue | null;
   positions: Map<number, number>;
@@ -20,13 +21,24 @@ export interface SliderContext {
   locale?: Intl.LocalesArgument;
   setActive(index: number): void;
   setDragging(dragging: boolean): void;
-  change(values: number[], index: number, reason: SliderRoot.ChangeEventReason, event: Event): boolean;
+  change(
+    values: number[],
+    index: number,
+    reason: SliderRoot.ChangeEventReason,
+    event: Event,
+  ): boolean;
   commit(reason: SliderRoot.CommitEventReason, event: Event): void;
   reset(): void;
 }
+
 export const SliderRootContext = createContext<SliderContext | undefined>(undefined);
+
 export function useSliderRootContext() {
   const context = useContext(SliderRootContext);
-  if (!context) throw new Error("Base UI: Slider parts must be used within Slider.Root.");
+
+  if (!context) {
+    throw new Error("Base UI: Slider parts must be used within Slider.Root.");
+  }
+
   return context;
 }

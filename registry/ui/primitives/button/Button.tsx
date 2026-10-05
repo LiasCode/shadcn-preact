@@ -5,7 +5,9 @@ import { useRenderElement } from "../internals/useRenderElement";
 export interface ButtonState {
   disabled: boolean;
 }
-export interface ButtonProps extends NativeButtonProps, Omit<BaseUIComponentProps<"button", ButtonState>, "ref"> {
+
+export interface ButtonProps
+  extends NativeButtonProps, Omit<BaseUIComponentProps<"button", ButtonState>, "ref"> {
   ref?: ElementRef<HTMLElement>;
   focusableWhenDisabled?: boolean;
 }
@@ -21,7 +23,11 @@ export function Button(componentProps: ButtonProps) {
     style: _style,
     ...elementProps
   } = componentProps;
-  const { getButtonProps, buttonRef } = useButton({ disabled, focusableWhenDisabled, native: nativeButton });
+  const { getButtonProps, buttonRef } = useButton({
+    disabled,
+    focusableWhenDisabled,
+    native: nativeButton,
+  });
   return useRenderElement("button", componentProps, {
     state: { disabled },
     ref: [ref ?? null, buttonRef],
@@ -31,5 +37,6 @@ export function Button(componentProps: ButtonProps) {
 
 export declare namespace Button {
   type State = ButtonState;
+
   type Props = ButtonProps;
 }

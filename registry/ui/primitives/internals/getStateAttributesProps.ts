@@ -14,9 +14,11 @@ export function getStateAttributesProps<State extends Record<string, any>>(
 
     if (customMapping && Object.prototype.hasOwnProperty.call(customMapping, key)) {
       const customProps = customMapping[key]?.(value);
+
       if (customProps != null) {
         Object.assign(props, customProps);
       }
+
       continue;
     }
 

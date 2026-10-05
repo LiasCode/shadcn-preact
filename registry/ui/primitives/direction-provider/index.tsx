@@ -15,10 +15,13 @@ export interface DirectionProviderProps {
 export function DirectionProvider(props: DirectionProviderProps) {
   const { direction = "ltr" } = props;
   const contextValue = useMemo(() => ({ direction }), [direction]);
-  return <DirectionContext.Provider value={contextValue}>{props.children}</DirectionContext.Provider>;
+  return (
+    <DirectionContext.Provider value={contextValue}>{props.children}</DirectionContext.Provider>
+  );
 }
 
 export declare namespace DirectionProvider {
   type State = {};
+
   type Props = DirectionProviderProps;
 }

@@ -10,6 +10,7 @@ import { useBaseUiId } from "../internals/useId";
 import { useRegisterFieldControl } from "../internals/useRegisterFieldControl";
 import { useStableCallback } from "../internals/useStableCallback";
 import { RadioGroupContext } from "./RadioGroupContext";
+
 export interface RadioGroupState {
   disabled: boolean;
   readOnly: boolean;
@@ -20,7 +21,11 @@ export interface RadioGroupState {
   filled: boolean;
   focused: boolean;
 }
-export interface RadioGroupProps<Value> extends Omit<BaseUIComponentProps<"div", RadioGroupState>, "value"> {
+
+export interface RadioGroupProps<Value> extends Omit<
+  BaseUIComponentProps<"div", RadioGroupState>,
+  "value"
+> {
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
@@ -31,6 +36,7 @@ export interface RadioGroupProps<Value> extends Omit<BaseUIComponentProps<"div",
   inputRef?: ElementRef<HTMLInputElement>;
   onValueChange?: (value: Value, details: BaseUIChangeEventDetails<"none">) => void;
 }
+
 export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
   const {
     ref,
@@ -54,11 +60,18 @@ export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
   const name = field?.name ?? nameProp;
   const id = useBaseUiId(elementProps.id);
   const controlRef = useRef<HTMLElement | null>(null);
-  const [value, setValue] = useControlled({ controlled: valueProp, default: defaultValue, name: "RadioGroup" });
+  const [value, setValue] = useControlled({
+    controlled: valueProp,
+    default: defaultValue,
+    name: "RadioGroup",
+  });
   const [, forceSync] = useState(0);
   const registeredInput = useRef<HTMLInputElement | null>(null);
   const registerInput = useStableCallback((input: HTMLInputElement | null) => {
-    if (!input || input.disabled) return;
+    if (!input || input.disabled) {
+      return;
+    }
+
     if (
       input.checked ||
       !registeredInput.current ||
@@ -67,19 +80,31 @@ export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
     ) {
       const needsRegistration = !registeredInput.current || !registeredInput.current.isConnected;
       registeredInput.current = input;
-      if (needsRegistration) forceSync((tick) => tick + 1);
-      if (typeof inputRef === "function") inputRef(input);
-      else if (inputRef) inputRef.current = input;
+
+      if (needsRegistration) {
+        forceSync((tick) => tick + 1);
+      }
+
+      if (typeof inputRef === "function") {
+        inputRef(input);
+      } else if (inputRef) {
+        inputRef.current = input;
+      }
     }
   });
   const keyboard = useRef(false);
   const change = useStableCallback((next: unknown, details: BaseUIChangeEventDetails<"none">) => {
     forceSync((tick) => tick + 1);
+
     onValueChange?.(next as Value, details);
-    if (!details.isCanceled) setValue(next as Value);
+
+    if (!details.isCanceled) {
+      setValue(next as Value);
+    }
   });
   const reset = useStableCallback(() => {
     setValue(defaultValue as Value);
+
     forceSync((tick) => tick + 1);
   });
   const getInput = useStableCallback(() => {
@@ -97,10 +122,15 @@ export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
     getInput,
     getFormValue: () => (getInput()?.checked ? (value ?? null) : null),
     focus: () => {
-      const inputs = [...(controlRef.current?.querySelectorAll<HTMLInputElement>('input[type="radio"]') ?? [])];
+      const inputs = [
+        ...(controlRef.current?.querySelectorAll<HTMLInputElement>('input[type="radio"]') ?? []),
+      ];
       const current = getInput();
+
       if (current) {
-        const radios = [...(controlRef.current?.querySelectorAll<HTMLElement>('[role="radio"]') ?? [])];
+        const radios = [
+          ...(controlRef.current?.querySelectorAll<HTMLElement>('[role="radio"]') ?? []),
+        ];
         radios[inputs.indexOf(current)]?.focus();
       }
     },
@@ -151,13 +181,17 @@ export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
               field?.focus(true);
             },
             onBlur(event: FocusEvent) {
-              if (!controlRef.current?.contains(event.relatedTarget as Node | null)) field?.focus(false);
+              if (!controlRef.current?.contains(event.relatedTarget as Node | null)) {
+                field?.focus(false);
+              }
             },
             "aria-required": required || undefined,
             "aria-disabled": disabled || undefined,
             "aria-readonly": readOnly || undefined,
             onKeyDownCapture(event: KeyboardEvent) {
-              if (event.key.startsWith("Arrow")) keyboard.current = true;
+              if (event.key.startsWith("Arrow")) {
+                keyboard.current = true;
+              }
             },
           },
           elementProps,
@@ -166,9 +200,13 @@ export function RadioGroup<Value>(componentProps: RadioGroupProps<Value>) {
     </RadioGroupContext.Provider>
   );
 }
+
 export declare namespace RadioGroup {
   type Props<Value = any> = RadioGroupProps<Value>;
+
   type State = RadioGroupState;
+
   type ChangeEventReason = "none";
+
   type ChangeEventDetails = BaseUIChangeEventDetails<ChangeEventReason>;
 }

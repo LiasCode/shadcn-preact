@@ -6,9 +6,11 @@ import type { BaseUIComponentProps } from "../../internals/types";
 import { useRenderElement } from "../../internals/useRenderElement";
 import { useStableCallback } from "../../internals/useStableCallback";
 import type { FieldControlState } from "../control/FieldControl";
+
 export interface FieldItemProps extends BaseUIComponentProps<"div", FieldControlState> {
   disabled?: boolean;
 }
+
 export function FieldItem(props: FieldItemProps) {
   const {
     ref,
@@ -19,7 +21,11 @@ export function FieldItem(props: FieldItemProps) {
     ...elementProps
   } = props;
   const field = useContext(FieldRootContext);
-  if (!field) throw new Error("Field.Item requires Field.Root.");
+
+  if (!field) {
+    throw new Error("Field.Item requires Field.Root.");
+  }
+
   const state = { ...field.state, disabled: field.state.disabled || ownDisabled };
   const [controlId, setControlId] = useState<string>();
   const [labelId, setLabelId] = useState<string>();
@@ -58,7 +64,9 @@ export function FieldItem(props: FieldItemProps) {
     </LabelableContext.Provider>
   );
 }
+
 export declare namespace FieldItem {
   type Props = FieldItemProps;
+
   type State = FieldControlState;
 }

@@ -132,14 +132,18 @@ export function DropdownMenuComplex() {
           <DropdownMenuLabel>View</DropdownMenuLabel>
           <DropdownMenuCheckboxItem
             checked={notifications.email}
-            onCheckedChange={(checked) => setNotifications({ ...notifications, email: checked === true })}
+            onCheckedChange={(checked) =>
+              setNotifications({ ...notifications, email: checked === true })
+            }
           >
             <EyeIcon />
             Show Sidebar
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
             checked={notifications.sms}
-            onCheckedChange={(checked) => setNotifications({ ...notifications, sms: checked === true })}
+            onCheckedChange={(checked) =>
+              setNotifications({ ...notifications, sms: checked === true })
+            }
           >
             <LayoutIcon />
             Show Status Bar

@@ -21,7 +21,14 @@ function ItemGroup({ className, ...props }: ComponentProps<"div">) {
 }
 
 function ItemSeparator({ className, ...props }: ComponentProps<typeof Separator>) {
-  return <Separator data-slot="item-separator" orientation="horizontal" className={cn("my-2", className)} {...props} />;
+  return (
+    <Separator
+      data-slot="item-separator"
+      orientation="horizontal"
+      className={cn("my-2", className)}
+      {...props}
+    />
+  );
 }
 
 const itemVariants = cva(
@@ -142,7 +149,9 @@ function ItemDescription({ className, ...props }: ComponentProps<"p">) {
 }
 
 function ItemActions({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="item-actions" className={cn("gap-2 flex items-center", className)} {...props} />;
+  return (
+    <div data-slot="item-actions" className={cn("gap-2 flex items-center", className)} {...props} />
+  );
 }
 
 function ItemHeader({ className, ...props }: ComponentProps<"div">) {

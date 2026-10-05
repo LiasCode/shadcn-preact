@@ -1,5 +1,13 @@
 import { Button } from "@registry/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,7 +55,9 @@ const chat = createChat()
   .assistant(
     "MessageScrollerItem fixes that with turn anchoring. Set `scrollAnchor` on the turn that should settle near the top instead of blindly snapping to the document bottom.\n\nIt also leaves a small peek of the previous exchange visible above the anchor, so context isn't lost. The reply starts in view without that disorienting jump you get from a plain overflow container.",
   )
-  .user("And if they've scrolled up to re-read an older answer? I don't want to yank them back down.")
+  .user(
+    "And if they've scrolled up to re-read an older answer? I don't want to yank them back down.",
+  )
   .sleep(1000)
   .assistant(
     "You won't. Auto-scroll only runs when the viewport is already pinned to the bottom, so scrolling up is a deliberate opt-out — their place in the thread stays put even as new tokens keep arriving below.\n\nWhen there is content they haven't seen yet, `MessageScrollerButton` appears at the bottom of the viewport. One tap jumps them back to the newest message and re-engages auto-scroll. Same pattern as Slack or iMessage: quiet when you're caught up, helpful when you're not.",
@@ -114,7 +124,11 @@ export function MessageScrollerDemo() {
                 <MessageScrollerViewport>
                   <MessageScrollerContent aria-busy={isBusy} className="p-(--card-spacing)">
                     {messages.map((message) => (
-                      <MessageAnimated key={message.id} message={message} scrollAnchor={message.role === "user"} />
+                      <MessageAnimated
+                        key={message.id}
+                        message={message}
+                        scrollAnchor={message.role === "user"}
+                      />
                     ))}
                   </MessageScrollerContent>
                 </MessageScrollerViewport>
@@ -126,20 +140,27 @@ export function MessageScrollerDemo() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+
                 if (!nextMessage || isBusy) {
                   return;
                 }
+
                 void sendMessage(nextMessage);
               }}
               className="w-full"
             >
               <InputGroup>
                 <div className="h-14 w-full px-3 py-2.5">
-                  <span className="line-clamp-2 opacity-60 data-[status=ready]:opacity-100" data-status={status}>
+                  <span
+                    className="line-clamp-2 opacity-60 data-[status=ready]:opacity-100"
+                    data-status={status}
+                  >
                     {nextMessage ? (
                       getMessageText(nextMessage)
                     ) : (
-                      <span className="text-muted-foreground">No messages queued. Reset the conversation.</span>
+                      <span className="text-muted-foreground">
+                        No messages queued. Reset the conversation.
+                      </span>
                     )}
                   </span>
                 </div>
@@ -147,7 +168,12 @@ export function MessageScrollerDemo() {
                   <DropdownMenu>
                     <DropdownMenuTrigger
                       render={
-                        <InputGroupButton aria-label="Add files" type="button" size="icon-sm" variant="outline" />
+                        <InputGroupButton
+                          aria-label="Add files"
+                          type="button"
+                          size="icon-sm"
+                          variant="outline"
+                        />
                       }
                     >
                       <PlusIcon />

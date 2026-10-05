@@ -15,6 +15,10 @@ export function VisibleInputOTP({
   const mergedRef = useMergedRefs(input, ref);
   const visible = useDemoVisibility(input);
   return (
-    <InputOTP {...props} ref={mergedRef} pushPasswordManagerStrategy={visible ? pushPasswordManagerStrategy : "none"} />
+    <InputOTP
+      {...props}
+      ref={mergedRef}
+      pushPasswordManagerStrategy={visible ? pushPasswordManagerStrategy : "none"}
+    />
   );
 }

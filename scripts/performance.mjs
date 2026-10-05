@@ -8,14 +8,17 @@ import { showcase } from "../src/modules/showcase/demos/index.ts";
 const samples = 5;
 const components = showcase.map(({ slug, Demo }) => {
   const render = () => renderToString(h(Demo, {}));
+
   render();
   const durations = [];
   let html = "";
+
   for (let index = 0; index < samples; index++) {
     const start = performance.now();
     html = render();
     durations.push(performance.now() - start);
   }
+
   durations.sort((a, b) => a - b);
   return {
     slug,

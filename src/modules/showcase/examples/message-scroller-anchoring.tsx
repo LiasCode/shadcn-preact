@@ -1,5 +1,13 @@
 import { Button } from "@registry/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@registry/ui/empty";
 import {
   MessageScroller,
@@ -76,6 +84,7 @@ export function MessageScrollerAnchoring() {
               disabled={messages.length === 0}
               onClick={() => {
                 setMessages([]);
+
                 setMessageIndex(0);
               }}
             >
@@ -91,7 +100,9 @@ export function MessageScrollerAnchoring() {
                   <MessageCircleDashedIcon />
                 </EmptyMedia>
                 <EmptyTitle>No anchored messages yet</EmptyTitle>
-                <EmptyDescription>Send the first message to see the selected role anchor.</EmptyDescription>
+                <EmptyDescription>
+                  Send the first message to see the selected role anchor.
+                </EmptyDescription>
               </EmptyHeader>
             </Empty>
           ) : (
@@ -124,7 +135,9 @@ export function MessageScrollerAnchoring() {
 
               if (nextValue === "user" || nextValue === "assistant") {
                 setAnchorRole(nextValue);
+
                 setMessages([]);
+
                 setMessageIndex(0);
               }
             }}
@@ -147,6 +160,7 @@ export function MessageScrollerAnchoring() {
               }
 
               setMessages((messages) => [...messages, nextMessage]);
+
               setMessageIndex((index) => index + 1);
             }}
           >

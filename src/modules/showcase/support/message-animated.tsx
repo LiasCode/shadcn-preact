@@ -48,14 +48,22 @@ function MessageAnimated({
         className={`demo-message-enter demo-message-${animationPreset.id}`}
         {...props}
       >
-        <MessageAnimatedRow message={message} assistantVariant={assistantVariant} userVariant={userVariant} />
+        <MessageAnimatedRow
+          message={message}
+          assistantVariant={assistantVariant}
+          userVariant={userVariant}
+        />
       </MotionMessageScrollerItem>
     );
   }
 
   return (
     <MotionMessageScrollerItem messageId={message.id} scrollAnchor={scrollAnchor} {...props}>
-      <MessageAnimatedRow message={message} assistantVariant={assistantVariant} userVariant={userVariant} />
+      <MessageAnimatedRow
+        message={message}
+        assistantVariant={assistantVariant}
+        userVariant={userVariant}
+      />
     </MotionMessageScrollerItem>
   );
 }
@@ -83,7 +91,10 @@ function MessageAnimatedRow({
 
           if (part.type === "reasoning") {
             return (
-              <div key={part.key} className="w-full border-l-2 border-muted-foreground/30 pl-3 text-muted-foreground">
+              <div
+                key={part.key}
+                className="w-full border-l-2 border-muted-foreground/30 pl-3 text-muted-foreground"
+              >
                 <div className="mb-1 flex items-center gap-1.5 text-xs font-medium">
                   <BrainIcon className="size-3.5" />
                   Reasoning
@@ -120,8 +131,17 @@ function getMessageAnimatedContentParts(message: MessageAnimatedMessage) {
   if (message.parts) {
     return message.parts.flatMap((part, index) => {
       const type =
-        part.type === "reasoning" || part.type === "thinking" ? "reasoning" : part.type === "text" ? "text" : null;
-      const text = typeof part.text === "string" ? part.text : typeof part.content === "string" ? part.content : null;
+        part.type === "reasoning" || part.type === "thinking"
+          ? "reasoning"
+          : part.type === "text"
+            ? "text"
+            : null;
+      const text =
+        typeof part.text === "string"
+          ? part.text
+          : typeof part.content === "string"
+            ? part.content
+            : null;
 
       if (!type || text === null) {
         return [];
@@ -137,7 +157,9 @@ function getMessageAnimatedContentParts(message: MessageAnimatedMessage) {
     });
   }
 
-  return typeof message.text === "string" ? [{ key: `${message.id}-text`, text: message.text, type: "text" }] : [];
+  return typeof message.text === "string"
+    ? [{ key: `${message.id}-text`, text: message.text, type: "text" }]
+    : [];
 }
 
 export { MessageAnimated, type MessageAnimatedMessage };

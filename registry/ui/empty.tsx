@@ -18,7 +18,11 @@ function Empty({ className, ...props }: ComponentProps<"div">) {
 
 function EmptyHeader({ className, ...props }: ComponentProps<"div">) {
   return (
-    <div data-slot="empty-header" className={cn("gap-2 flex max-w-sm flex-col items-center", className)} {...props} />
+    <div
+      data-slot="empty-header"
+      className={cn("gap-2 flex max-w-sm flex-col items-center", className)}
+      {...props}
+    />
   );
 }
 
@@ -79,7 +83,10 @@ function EmptyContent({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="empty-content"
-      className={cn("gap-2.5 text-sm flex w-full max-w-sm min-w-0 flex-col items-center text-balance", className)}
+      className={cn(
+        "gap-2.5 text-sm flex w-full max-w-sm min-w-0 flex-col items-center text-balance",
+        className,
+      )}
       {...props}
     />
   );

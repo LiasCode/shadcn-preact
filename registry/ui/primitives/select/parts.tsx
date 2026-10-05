@@ -12,10 +12,19 @@ import {
   type OverlayRootProps,
   popupStateMapping,
 } from "../internals/popups/OverlayContext";
-import { OverlayPortal, OverlayPositioner, OverlayPopup, usePositionContext } from "../internals/popups/OverlayParts";
+import {
+  OverlayPortal,
+  OverlayPositioner,
+  OverlayPopup,
+  usePositionContext,
+} from "../internals/popups/OverlayParts";
 import { OverlayRoot } from "../internals/popups/OverlayRoot";
 import { stringifyAsValue } from "../internals/resolveValueLabel";
-import type { BaseUIComponentProps, NativeButtonProps, NonNativeButtonProps } from "../internals/types";
+import type {
+  BaseUIComponentProps,
+  NativeButtonProps,
+  NonNativeButtonProps,
+} from "../internals/types";
 import { useButton } from "../internals/useButton";
 import { useControlled } from "../internals/useControlled";
 import { useBaseUiId } from "../internals/useId";
@@ -28,6 +37,7 @@ import { useStableCallback } from "../internals/useStableCallback";
 import { visuallyHidden } from "../internals/visuallyHidden";
 export { OverlayPortal as Portal };
 export { Separator } from "../separator";
+
 interface SelectContextValue {
   value: any;
   multiple: boolean;
@@ -45,13 +55,21 @@ interface SelectContextValue {
   setList(node: HTMLElement | null): void;
   placeholder: boolean;
 }
+
 const Context = createContext<SelectContextValue | null>(null);
+
 function useSelect() {
   const c = useContext(Context);
-  if (!c) throw new Error("Base UI: Select parts require Root.");
+
+  if (!c) {
+    throw new Error("Base UI: Select parts require Root.");
+  }
+
   return c;
 }
+
 type ValueType<V, M extends boolean | undefined> = M extends true ? V[] : V;
+
 interface RootProps<V = any, M extends boolean | undefined = false> extends Omit<
   OverlayRootProps,
   "children" | "disabled" | "actionsRef"
@@ -81,6 +99,7 @@ interface RootProps<V = any, M extends boolean | undefined = false> extends Omit
   isItemEqualToValue?: (a: V, b: V) => boolean;
   highlightItemOnHover?: boolean;
 }
+
 export function Root<V = any, M extends boolean | undefined = false>({
   value: controlled,
   defaultValue,
@@ -119,37 +138,61 @@ export function Root<V = any, M extends boolean | undefined = false>({
   const triggerRef = useRef<HTMLElement | null>(null);
   const equal = isItemEqualToValue;
   const options = new Map(labels);
+
   if (Array.isArray(items)) {
     for (const item of items) {
       if ("items" in item) {
-        for (const i of item.items) options.set(i.value, i.label);
-      } else options.set(item.value, item.label);
+        for (const i of item.items) {
+          options.set(i.value, i.label);
+        }
+      } else {
+        options.set(item.value, item.label);
+      }
     }
   } else if (items) {
-    for (const [v, label] of Object.entries(items)) options.set(v, label);
+    for (const [v, label] of Object.entries(items)) {
+      options.set(v, label);
+    }
   }
+
   const register = useStableCallback((v: any, label: ComponentChildren) => {
     setLabels((previous) => {
-      if (previous.get(v) === label) return previous;
+      if (previous.get(v) === label) {
+        return previous;
+      }
+
       const next = new Map(previous);
       next.set(v, label);
       return next;
     });
   });
-  const choose = useStableCallback((v: any, event: Event, reason: "item-press" | "list-navigation" = "item-press") => {
-    if (disabled || readOnly) return false;
-    const next = multiple
-      ? (value as any[]).some((x) => equal(x, v))
-        ? (value as any[]).filter((x) => !equal(x, v))
-        : [...(value as any[]), v]
-      : v;
-    const details = createChangeEventDetails(reason, event, undefined, { preventUnmountOnClose() {} });
-    onValueChange?.(next, details);
-    if (details.isCanceled) return false;
-    setValue(next);
-    return true;
-  });
+  const choose = useStableCallback(
+    (v: any, event: Event, reason: "item-press" | "list-navigation" = "item-press") => {
+      if (disabled || readOnly) {
+        return false;
+      }
+
+      const next = multiple
+        ? (value as any[]).some((x) => equal(x, v))
+          ? (value as any[]).filter((x) => !equal(x, v))
+          : [...(value as any[]), v]
+        : v;
+      const details = createChangeEventDetails(reason, event, undefined, {
+        preventUnmountOnClose() {},
+      });
+      onValueChange?.(next, details);
+
+      if (details.isCanceled) {
+        return false;
+      }
+
+      setValue(next);
+      return true;
+    },
+  );
+
   const stringify = (v: any) => stringifyAsValue(v, itemToStringValue);
+
   const serialized = multiple ? (value as any[]).map(stringify) : [stringify(value)];
   const placeholder = multiple ? (value as any[]).length === 0 : value == null;
   const context: SelectContextValue = {
@@ -172,21 +215,40 @@ export function Root<V = any, M extends boolean | undefined = false>({
   useIsoLayoutEffect(() => {
     const node = input.current,
       owner = node?.form;
-    if (!owner) return;
+
+    if (!owner) {
+      return;
+    }
+
     const reset = (event: Event) => {
       setTimeout(() => {
-        if (event.defaultPrevented) return;
+        if (event.defaultPrevented) {
+          return;
+        }
+
         const next = defaultValue ?? (multiple ? [] : null);
-        const details = createChangeEventDetails("none", event, undefined, { preventUnmountOnClose() {} });
+        const details = createChangeEventDetails("none", event, undefined, {
+          preventUnmountOnClose() {},
+        });
         onValueChange?.(next as any, details);
-        if (!details.isCanceled) setValue(next);
-        const restoredValue = controlled !== undefined ? controlled : details.isCanceled ? value : next;
-        if (node) node.value = stringify(multiple ? restoredValue?.[0] : restoredValue);
+
+        if (!details.isCanceled) {
+          setValue(next);
+        }
+
+        const restoredValue =
+          controlled !== undefined ? controlled : details.isCanceled ? value : next;
+
+        if (node) {
+          node.value = stringify(multiple ? restoredValue?.[0] : restoredValue);
+        }
       });
     };
+
     owner.addEventListener("reset", reset);
     return () => owner.removeEventListener("reset", reset);
   }, [form, defaultValue, controlled, value, multiple, onValueChange, setValue, itemToStringValue]);
+
   useRegisterFieldControl({
     inputRef: input,
     controlRef: triggerRef,
@@ -202,33 +264,55 @@ export function Root<V = any, M extends boolean | undefined = false>({
         initial != null &&
         (Array.isArray(next) && Array.isArray(initial)
           ? next.length === initial.length &&
-            next.every((entry, index) => Object.is(entry, initial[index]) || equal(entry, initial[index]))
+            next.every(
+              (entry, index) => Object.is(entry, initial[index]) || equal(entry, initial[index]),
+            )
           : equal(next as V, initial as V))),
   });
   const previous = useRef(value);
   useIsoLayoutEffect(() => {
-    if (previous.current === value) return;
+    if (previous.current === value) {
+      return;
+    }
+
     previous.current = value;
     const node = input.current;
+
     if (node) {
       node.dispatchEvent(new Event("input", { bubbles: true }));
+
       node.dispatchEvent(new Event("change", { bubbles: true }));
     }
   }, [value]);
   const mapped = itemToStringLabel
-    ? new Map([...context.items].map(([v]) => [v, v == null ? context.items.get(v) : itemToStringLabel(v)]))
+    ? new Map(
+        [...context.items].map(([v]) => [
+          v,
+          v == null ? context.items.get(v) : itemToStringLabel(v),
+        ]),
+      )
     : context.items;
   context.items = mapped;
   return (
     <Context.Provider value={context}>
-      <OverlayRoot kind="select" modal={true} disabled={disabled} actionsRef={actionsRef as any} {...overlay}>
+      <OverlayRoot
+        kind="select"
+        modal={true}
+        disabled={disabled}
+        actionsRef={actionsRef as any}
+        {...overlay}
+      >
         <FieldPopupLifecycle />
         {children}
         <input
           ref={(node) => {
             input.current = node;
-            if (typeof inputRef === "function") inputRef(node);
-            else if (inputRef) inputRef.current = node;
+
+            if (typeof inputRef === "function") {
+              inputRef(node);
+            } else if (inputRef) {
+              inputRef.current = node;
+            }
           }}
           type="text"
           name={multiple ? undefined : name}
@@ -252,10 +336,13 @@ export function Root<V = any, M extends boolean | undefined = false>({
     </Context.Provider>
   );
 }
+
 export namespace Root {
   export type Props<V = any, M extends boolean | undefined = false> = RootProps<V, M>;
+
   export type ChangeEventDetails = OverlayChangeDetails;
 }
+
 interface TriggerState {
   open: boolean;
   readOnly: boolean;
@@ -269,6 +356,7 @@ interface TriggerState {
   filled: boolean;
   focused: boolean;
 }
+
 export function Trigger({
   nativeButton = true,
   disabled: ownDisabled = false,
@@ -296,10 +384,15 @@ export function Trigger({
     filled: field?.state.filled ?? false,
     focused: field?.state.focused ?? false,
   };
+
   const show = (event: Event) => {
-    if (state.disabled || select.readOnly) return;
+    if (state.disabled || select.readOnly) {
+      return;
+    }
+
     ctx.change(true, event, "trigger-press", el.current ?? undefined);
   };
+
   const search = useRef("");
   const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timeout.current), []);
@@ -330,19 +423,26 @@ export function Trigger({
           field?.focus(true);
         },
         onBlur(event: FocusEvent) {
-          if (!ctx.open && !ctx.popupRef.current?.contains(event.relatedTarget as Node | null)) field?.focus(false);
+          if (!ctx.open && !ctx.popupRef.current?.contains(event.relatedTarget as Node | null)) {
+            field?.focus(false);
+          }
         },
         "aria-readonly": select.readOnly || undefined,
         onClick(event: MouseEvent) {
-          if (ctx.open) ctx.change(false, event, "trigger-press");
-          else show(event);
+          if (ctx.open) {
+            ctx.change(false, event, "trigger-press");
+          } else {
+            show(event);
+          }
         },
         onKeyDown(event: KeyboardEvent) {
           if (["ArrowDown", "ArrowUp", "Enter", " "].includes(event.key)) {
             event.preventDefault();
+
             show(event);
-          } else if (ctx.open) navigate(event);
-          else if (
+          } else if (ctx.open) {
+            navigate(event);
+          } else if (
             !state.disabled &&
             !select.readOnly &&
             !select.multiple &&
@@ -362,10 +462,16 @@ export function Trigger({
             const options = [...select.items];
             const selected = options.findIndex(([v]) => select.equal(v, select.value));
             const first = query.length > 1 ? Math.max(selected, 0) : selected + 1;
+
             for (let offset = 0; offset < options.length; offset++) {
               const option = options[(first + offset) % options.length]!;
-              if (typeof option[1] === "string" && option[1].toLocaleLowerCase().startsWith(query)) {
+
+              if (
+                typeof option[1] === "string" &&
+                option[1].toLocaleLowerCase().startsWith(query)
+              ) {
                 event.preventDefault();
+
                 select.choose(option[0], event, "list-navigation");
                 break;
               }
@@ -377,9 +483,11 @@ export function Trigger({
     ],
   });
 }
+
 export namespace Trigger {
   export type Props = Parameters<typeof Trigger>[0];
 }
+
 export function Value({
   placeholder,
   children,
@@ -389,8 +497,11 @@ export function Value({
   children?: ComponentChildren | ((value: any) => ComponentChildren);
 }) {
   const select = useSelect();
+
   const label = (value: any) =>
-    [...select.items].find(([v]) => select.equal(v, value))?.[1] ?? (value == null ? placeholder : String(value));
+    [...select.items].find(([v]) => select.equal(v, value))?.[1] ??
+    (value == null ? placeholder : String(value));
+
   const content =
     typeof children === "function"
       ? children(select.value)
@@ -409,9 +520,11 @@ export function Value({
     props: [{ children: content }, getElementProps(props)],
   });
 }
+
 export namespace Value {
   export type Props = Parameters<typeof Value>[0];
 }
+
 export function Positioner({
   alignItemWithTrigger = true,
   ...props
@@ -423,50 +536,80 @@ export function Positioner({
     </OverlayPositioner>
   );
 }
+
 export namespace Positioner {
   export type Props = Parameters<typeof Positioner>[0];
 }
+
 function ItemAlignment({ enabled }: { enabled: boolean }) {
   const ctx = useOverlayContext(),
     select = useSelect(),
     position = usePositionContext();
   useIsoLayoutEffect(() => {
-    if (!enabled || !ctx.open || !position?.isPositioned) return;
+    if (!enabled || !ctx.open || !position?.isPositioned) {
+      return;
+    }
+
     const openEvent = ctx.floatingContext.dataRef.current.openEvent;
-    if (openEvent && "pointerType" in openEvent && openEvent.pointerType === "touch") return;
+
+    if (openEvent && "pointerType" in openEvent && openEvent.pointerType === "touch") {
+      return;
+    }
+
     const e = position.refs.floating.current,
       trigger = ctx.reference,
       item =
         select.list?.querySelector<HTMLElement>("[aria-selected=true]") ??
         select.list?.querySelector<HTMLElement>("[role=option]");
-    if (!e || !trigger || !item) return;
+
+    if (!e || !trigger || !item) {
+      return;
+    }
+
     const popup = ctx.popupRef.current;
-    if (!popup) return;
+
+    if (!popup) {
+      return;
+    }
+
     const measure = () => {
       const anchor = trigger.getBoundingClientRect(),
         r = item.getBoundingClientRect(),
         p = e.getBoundingClientRect();
       const h = trigger.ownerDocument.defaultView?.innerHeight ?? 0;
-      const minHeight = parseFloat(trigger.ownerDocument.defaultView?.getComputedStyle(e).minHeight ?? "") || 80;
-      if (anchor.top < 20 || anchor.bottom > h - 20 || h < minHeight + 40) return;
+      const minHeight =
+        parseFloat(trigger.ownerDocument.defaultView?.getComputedStyle(e).minHeight ?? "") || 80;
+
+      if (anchor.top < 20 || anchor.bottom > h - 20 || h < minHeight + 40) {
+        return;
+      }
+
       const desired = anchor.top + anchor.height / 2 - (r.top - p.top + r.height / 2);
       const top = Math.max(8, Math.min(Math.max(8, h - p.height - 8), desired));
       e.style.top = `${top}px`;
       e.setAttribute("data-side", "none");
+
       popup.setAttribute("data-side", "none");
       popup.scrollTop += top - desired;
     };
+
     measure();
   }, [ctx.open, position?.isPositioned, enabled, select.list]);
   return null;
 }
+
 export function Popup(props: OverlayPopup.Props) {
   const select = useSelect(),
     ctx = useOverlayContext();
   useEffect(() => {
-    if (!ctx.open) return;
+    if (!ctx.open) {
+      return;
+    }
+
     const win = ctx.popupRef.current?.ownerDocument.defaultView;
+
     const resize = (event: Event) => ctx.change(false, event, "window-resize");
+
     win?.addEventListener("resize", resize);
     return () => win?.removeEventListener("resize", resize);
   }, [ctx.open, ctx.change]);
@@ -493,27 +636,49 @@ export function Popup(props: OverlayPopup.Props) {
       }
       onKeyDown={(event) => {
         props.onKeyDown?.(event);
-        if (event.baseUIHandlerPrevented) return;
-        if (navigate(event)) return;
+
+        if (event.baseUIHandlerPrevented) {
+          return;
+        }
+
+        if (navigate(event)) {
+          return;
+        }
+
         if ((event.key === "Enter" || event.key === " ") && !event.defaultPrevented) {
           event.preventDefault();
+
           (ctx.popupRef.current?.ownerDocument.activeElement as HTMLElement)?.click();
-        } else tabExit(event);
+        } else {
+          tabExit(event);
+        }
       }}
     />
   );
 }
+
 export namespace Popup {
   export type Props = OverlayPopup.Props;
 }
+
 export function List(props: BaseUIComponentProps<"div", {}>) {
   const select = useSelect();
-  return useRenderElement("div", props, { ref: [props.ref ?? null, select.setList], props: getElementProps(props) });
+  return useRenderElement("div", props, {
+    ref: [props.ref ?? null, select.setList],
+    props: getElementProps(props),
+  });
 }
+
 export namespace List {
   export type Props = Parameters<typeof List>[0];
 }
-const ItemContext = createContext({ selected: false, disabled: false, highlighted: false, value: null as any });
+const ItemContext = createContext({
+  selected: false,
+  disabled: false,
+  highlighted: false,
+  value: null as any,
+});
+
 interface ItemProps
   extends
     BaseUIComponentProps<"div", { selected: boolean; disabled: boolean; highlighted: boolean }>,
@@ -522,6 +687,7 @@ interface ItemProps
   label?: string;
   disabled?: boolean;
 }
+
 export function Item({
   value = null,
   label,
@@ -537,11 +703,18 @@ export function Item({
     : select.equal(select.value, value);
   const [highlighted, setHighlighted] = useState(false);
   const el = useRef<HTMLElement | null>(null);
-  const { buttonRef, getButtonProps } = useButton({ native: nativeButton, disabled, focusableWhenDisabled: true });
+  const { buttonRef, getButtonProps } = useButton({
+    native: nativeButton,
+    disabled,
+    focusableWhenDisabled: true,
+  });
   const id = useBaseUiId();
   const setElement = useStableCallback((node: HTMLElement | null) => {
     el.current = node;
-    if (node && label) itemLabels.set(node, label);
+
+    if (node && label) {
+      itemLabels.set(node, label);
+    }
   });
   const state = { selected, disabled, highlighted, value };
   const node = useRenderElement("div", props, {
@@ -561,12 +734,18 @@ export function Item({
           setHighlighted(false);
         },
         onPointerMove(event: PointerEvent) {
-          if (!disabled && select.highlightItemOnHover && event.pointerType !== "touch")
+          if (!disabled && select.highlightItemOnHover && event.pointerType !== "touch") {
             el.current?.focus({ preventScroll: true });
+          }
         },
         onClick(event: MouseEvent) {
-          if (disabled) return;
-          if (select.choose(value, event) && !select.multiple) ctx.change(false, event, "item-press");
+          if (disabled) {
+            return;
+          }
+
+          if (select.choose(value, event) && !select.multiple) {
+            ctx.change(false, event, "item-press");
+          }
         },
       }),
       getElementProps(props),
@@ -575,18 +754,25 @@ export function Item({
   });
   return <ItemContext.Provider value={state}>{node}</ItemContext.Provider>;
 }
+
 export namespace Item {
   export type Props = ItemProps;
 }
+
 export function ItemText(props: BaseUIComponentProps<"span", {}>) {
   const item = useContext(ItemContext),
     select = useSelect();
-  useIsoLayoutEffect(() => select.register(item.value, props.children), [item.value, props.children, select.register]);
+  useIsoLayoutEffect(
+    () => select.register(item.value, props.children),
+    [item.value, props.children, select.register],
+  );
   return useRenderElement("span", props, { ref: props.ref, props: getElementProps(props) });
 }
+
 export namespace ItemText {
   export type Props = Parameters<typeof ItemText>[0];
 }
+
 export function ItemIndicator({
   keepMounted = false,
   ...props
@@ -602,9 +788,11 @@ export function ItemIndicator({
     stateAttributesMapping: { value: () => null } as any,
   });
 }
+
 export namespace ItemIndicator {
   export type Props = Parameters<typeof ItemIndicator>[0];
 }
+
 export function Icon(props: BaseUIComponentProps<"span", { open: boolean }>) {
   const ctx = useOverlayContext();
   return useRenderElement("span", props, {
@@ -614,13 +802,17 @@ export function Icon(props: BaseUIComponentProps<"span", { open: boolean }>) {
     props: [{ "aria-hidden": true }, getElementProps(props)],
   });
 }
+
 export namespace Icon {
   export type Props = Parameters<typeof Icon>[0];
 }
-const GroupContext = createContext<{ id: string | undefined; setId(id: string | undefined): void }>({
-  id: undefined,
-  setId() {},
-});
+const GroupContext = createContext<{ id: string | undefined; setId(id: string | undefined): void }>(
+  {
+    id: undefined,
+    setId() {},
+  },
+);
+
 export function Group(props: BaseUIComponentProps<"div", {}>) {
   const [id, setId] = useState<string>();
   return (
@@ -632,9 +824,11 @@ export function Group(props: BaseUIComponentProps<"div", {}>) {
     </GroupContext.Provider>
   );
 }
+
 export namespace Group {
   export type Props = Parameters<typeof Group>[0];
 }
+
 export function GroupLabel(props: BaseUIComponentProps<"div", {}>) {
   const group = useContext(GroupContext),
     id = useBaseUiId(props.id);
@@ -642,28 +836,48 @@ export function GroupLabel(props: BaseUIComponentProps<"div", {}>) {
     group.setId(id);
     return () => group.setId(undefined);
   }, [id, group.setId]);
-  return useRenderElement("div", props, { ref: props.ref, props: [{ id }, getElementProps(props)] });
+  return useRenderElement("div", props, {
+    ref: props.ref,
+    props: [{ id }, getElementProps(props)],
+  });
 }
+
 export namespace GroupLabel {
   export type Props = Parameters<typeof GroupLabel>[0];
 }
-function ScrollArrow({ direction, ...props }: BaseUIComponentProps<"div", {}> & { direction: number }) {
+
+function ScrollArrow({
+  direction,
+  ...props
+}: BaseUIComponentProps<"div", {}> & { direction: number }) {
   const ctx = useOverlayContext();
   const [visible, setVisible] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
   const stop = useStableCallback(() => clearInterval(timer.current));
   useEffect(() => stop, [stop]);
+
   useIsoLayoutEffect(() => {
     const popup = ctx.popupRef.current;
-    if (!popup) return;
+
+    if (!popup) {
+      return;
+    }
+
     const measure = () =>
-      setVisible(direction < 0 ? popup.scrollTop > 0 : popup.scrollTop + popup.clientHeight < popup.scrollHeight - 1);
+      setVisible(
+        direction < 0
+          ? popup.scrollTop > 0
+          : popup.scrollTop + popup.clientHeight < popup.scrollHeight - 1,
+      );
+
     measure();
+
     popup.addEventListener("scroll", measure);
     const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
     ro?.observe(popup);
     return () => {
       popup.removeEventListener("scroll", measure);
+
       ro?.disconnect();
     };
   }, [ctx.popupRef.current, direction]);
@@ -676,11 +890,15 @@ function ScrollArrow({ direction, ...props }: BaseUIComponentProps<"div", {}> & 
         style: { position: "sticky" },
         onPointerEnter() {
           stop();
-          timer.current = setInterval(() => ctx.popupRef.current?.scrollBy({ top: direction * 10 }), 30);
+          timer.current = setInterval(
+            () => ctx.popupRef.current?.scrollBy({ top: direction * 10 }),
+            30,
+          );
         },
         onPointerLeave: stop,
         onPointerDown(event: PointerEvent) {
           event.preventDefault();
+
           ctx.popupRef.current?.scrollBy({ top: direction * 40 });
         },
       },
@@ -688,15 +906,19 @@ function ScrollArrow({ direction, ...props }: BaseUIComponentProps<"div", {}> & 
     ],
   });
 }
+
 export function ScrollUpArrow(props: BaseUIComponentProps<"div", {}>) {
   return <ScrollArrow direction={-1} {...props} />;
 }
+
 export namespace ScrollUpArrow {
   export type Props = Parameters<typeof ScrollUpArrow>[0];
 }
+
 export function ScrollDownArrow(props: BaseUIComponentProps<"div", {}>) {
   return <ScrollArrow direction={1} {...props} />;
 }
+
 export namespace ScrollDownArrow {
   export type Props = Parameters<typeof ScrollDownArrow>[0];
 }

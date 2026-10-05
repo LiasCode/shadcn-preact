@@ -1,5 +1,12 @@
 import { Field, FieldError, FieldLabel } from "@registry/ui/field";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@registry/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@registry/ui/select";
 
 const items = [
   { label: "Select a fruit", value: null },

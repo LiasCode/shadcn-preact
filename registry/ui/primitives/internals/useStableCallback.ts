@@ -7,7 +7,9 @@ type Callback = (...args: any[]) => any;
  * Preact has no insertion effect, so the latest function is stored during render, as Base UI does when
  * `useInsertionEffect` is unavailable.
  */
-export function useStableCallback<T extends Callback | undefined>(callback: T): T extends Callback ? T : () => void {
+export function useStableCallback<T extends Callback | undefined>(
+  callback: T,
+): T extends Callback ? T : () => void {
   const stable = useRefWithInit(createStableCallback).current;
   stable.callback = callback;
   return stable.trampoline as T extends Callback ? T : () => void;

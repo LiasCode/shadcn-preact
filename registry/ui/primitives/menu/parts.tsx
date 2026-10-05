@@ -41,6 +41,7 @@ import { useTransitionStatus, type TransitionStatus } from "../internals/useTran
 import { MenubarContext, getMenubarMenus } from "../menubar/MenubarContext";
 export { OverlayPortal as Portal, OverlayArrow as Arrow, OverlayBackdrop as Backdrop };
 export { Separator } from "../separator";
+
 interface MenuContextValue {
   overlay: OverlayContextValue;
   parent: MenuContextValue | null;
@@ -51,12 +52,19 @@ interface MenuContextValue {
   children: Map<string, OverlayContextValue>;
   closeSiblings(id: string, event: Event): void;
 }
+
 export const MenuContext = createContext<MenuContextValue | null>(null);
+
 export function useMenuContext() {
   const ctx = useContext(MenuContext);
-  if (!ctx) throw new Error("Base UI: Menu parts must be within Root.");
+
+  if (!ctx) {
+    throw new Error("Base UI: Menu parts must be within Root.");
+  }
+
   return ctx;
 }
+
 export interface MenuRootProps<Payload = unknown> extends Omit<
   OverlayRootProps<Payload>,
   "modal" | "disableHoverablePopup"
@@ -67,6 +75,7 @@ export interface MenuRootProps<Payload = unknown> extends Omit<
   orientation?: "vertical" | "horizontal";
   closeParentOnEsc?: boolean;
 }
+
 export function Root<Payload = unknown>({
   loopFocus = true,
   highlightItemOnHover = true,
@@ -77,7 +86,11 @@ export function Root<Payload = unknown>({
   const parent = useContext(MenuContext);
   const bar = useContext(MenubarContext);
   return (
-    <OverlayRoot kind="menu" modal={props.modal ?? (parent ? false : (bar?.modal ?? true))} {...props}>
+    <OverlayRoot
+      kind="menu"
+      modal={props.modal ?? (parent ? false : (bar?.modal ?? true))}
+      {...props}
+    >
       <MenuBridge
         parent={parent}
         loopFocus={loopFocus}
@@ -90,6 +103,7 @@ export function Root<Payload = unknown>({
     </OverlayRoot>
   );
 }
+
 function MenuBridge({
   children,
   parent,
@@ -110,15 +124,23 @@ function MenuBridge({
   const closeAll = useStableCallback((event: Event) => {
     let node: MenuContextValue | null = context;
     let accepted = true;
+
     while (node) {
-      if (node.overlay.change(false, event, "item-press").isCanceled) accepted = false;
+      if (node.overlay.change(false, event, "item-press").isCanceled) {
+        accepted = false;
+      }
+
       node = node.parent;
     }
+
     return accepted;
   });
   const closeSiblings = useStableCallback((id: string, event: Event) => {
-    for (const [key, child] of submenus.current)
-      if (key !== id && child.open) child.change(false, event, "sibling-open");
+    for (const [key, child] of submenus.current) {
+      if (key !== id && child.open) {
+        child.change(false, event, "sibling-open");
+      }
+    }
   });
   const context: MenuContextValue = {
     overlay,
@@ -131,23 +153,32 @@ function MenuBridge({
     closeSiblings,
   };
   useIsoLayoutEffect(() => {
-    if (!parent) return;
+    if (!parent) {
+      return;
+    }
+
     parent.children.set(overlay.id, overlay);
     return () => {
       parent.children.delete(overlay.id);
     };
   }, [parent?.children, overlay]);
+
   useEffect(() => {
-    if (!parent?.overlay.open && parent && overlay.open) overlay.change(false, new Event("base-ui"), "cancel-open");
+    if (!parent?.overlay.open && parent && overlay.open) {
+      overlay.change(false, new Event("base-ui"), "cancel-open");
+    }
   }, [parent?.overlay.open, overlay.open]);
+
   useEffect(() => {
     if (
       !closeParentOnEsc ||
       !parent ||
       overlay.open ||
       overlay.floatingContext.dataRef.current.closeReason !== "escape-key"
-    )
+    ) {
       return;
+    }
+
     parent.overlay.change(false, new Event("base-ui"), "escape-key");
   }, [overlay.open, closeParentOnEsc]);
   const content =
@@ -156,22 +187,31 @@ function MenuBridge({
       : children;
   return <MenuContext.Provider value={context}>{content}</MenuContext.Provider>;
 }
+
 export namespace Root {
   export type Props<Payload = unknown> = MenuRootProps<Payload>;
+
   export type ChangeEventDetails = OverlayChangeDetails;
+
   export type ChangeEventReason = OverlayReason;
+
   export type Actions = { close(): void; unmount(): void };
 }
+
 export function SubmenuRoot(props: Omit<MenuRootProps, "modal">) {
   return <Root {...props} modal={false} />;
 }
+
 export namespace SubmenuRoot {
   export type Props = Omit<MenuRootProps, "modal">;
+
   export type ChangeEventDetails = OverlayChangeDetails;
 }
+
 export function createHandle<Payload = unknown>() {
   return new PopupHandle<Payload>();
 }
+
 export function Trigger<Payload = unknown>(props: OverlayTriggerProps<Payload>) {
   const [, update] = useState(0);
   useIsoLayoutEffect(() => props.handle?.subscribe(() => update((n) => n + 1)), [props.handle]);
@@ -180,11 +220,15 @@ export function Trigger<Payload = unknown>(props: OverlayTriggerProps<Payload>) 
   const ctx = menu?.overlay ?? props.handle?.context ?? null;
   const element = useRef<HTMLElement | null>(null);
   useIsoLayoutEffect(() => {
-    if (!bar || !ctx || !element.current) return;
+    if (!bar || !ctx || !element.current) {
+      return;
+    }
+
     return bar.register(ctx.id, {
       element: element.current,
       open: ctx.open,
-      change: (open, event) => ctx.change(open, event, "sibling-open", element.current ?? undefined),
+      change: (open, event) =>
+        ctx.change(open, event, "sibling-open", element.current ?? undefined),
     });
   }, [bar?.register, ctx?.id, ctx?.open, ctx?.change]);
   const first = bar
@@ -195,8 +239,12 @@ export function Trigger<Payload = unknown>(props: OverlayTriggerProps<Payload>) 
       {...props}
       ref={(node: HTMLElement | null) => {
         element.current = node;
-        if (typeof props.ref === "function") props.ref(node as HTMLButtonElement);
-        else if (props.ref) props.ref.current = node as HTMLButtonElement;
+
+        if (typeof props.ref === "function") {
+          props.ref(node as HTMLButtonElement);
+        } else if (props.ref) {
+          props.ref.current = node as HTMLButtonElement;
+        }
       }}
       disabled={props.disabled || bar?.disabled || ctx?.disabled}
       aria-haspopup="menu"
@@ -214,28 +262,52 @@ export function Trigger<Payload = unknown>(props: OverlayTriggerProps<Payload>) 
       }
       onFocus={(event) => {
         props.onFocus?.(event);
-        if (!event.baseUIHandlerPrevented && ctx) bar?.setHighlighted(ctx.id);
+
+        if (!event.baseUIHandlerPrevented && ctx) {
+          bar?.setHighlighted(ctx.id);
+        }
       }}
       onPointerEnter={(event) => {
         props.onPointerEnter?.(event);
-        if (event.baseUIHandlerPrevented) return;
-        if (bar && [...bar.menus.values()].some((m) => m.open) && ctx && !props.disabled) bar.switchTo(ctx.id, event);
-        else if (props.openOnHover && ctx)
-          ctx.schedule(true, event, "trigger-hover", props.delay ?? 100, element.current ?? undefined, props.payload);
+
+        if (event.baseUIHandlerPrevented) {
+          return;
+        }
+
+        if (bar && [...bar.menus.values()].some((m) => m.open) && ctx && !props.disabled) {
+          bar.switchTo(ctx.id, event);
+        } else if (props.openOnHover && ctx) {
+          ctx.schedule(
+            true,
+            event,
+            "trigger-hover",
+            props.delay ?? 100,
+            element.current ?? undefined,
+            props.payload,
+          );
+        }
       }}
       onKeyDown={(event) => {
         props.onKeyDown?.(event);
-        if (event.baseUIHandlerPrevented || !ctx || props.disabled) return;
+
+        if (event.baseUIHandlerPrevented || !ctx || props.disabled) {
+          return;
+        }
+
         if (["ArrowDown", "ArrowUp", "Enter", " "].includes(event.key)) {
           event.preventDefault();
+
           bar?.switchTo(ctx.id, event);
+
           ctx.change(true, event, "list-navigation", element.current ?? undefined, props.payload);
           ctx.floatingContext.dataRef.current.openEvent = event;
           queueMicrotask(() => {
             const popup = ctx.popupRef.current;
             const items = popup
               ? [...popup.querySelectorAll<HTMLElement>('[role^="menuitem"]')].filter(
-                  (e) => e.getAttribute("aria-disabled") !== "true" && e.closest("[role=menu]") === popup,
+                  (e) =>
+                    e.getAttribute("aria-disabled") !== "true" &&
+                    e.closest("[role=menu]") === popup,
                 )
               : [];
             (event.key === "ArrowUp" ? items.at(-1) : items[0])?.focus();
@@ -245,15 +317,25 @@ export function Trigger<Payload = unknown>(props: OverlayTriggerProps<Payload>) 
     />
   );
 }
+
 export namespace Trigger {
   export type Props<Payload = unknown> = OverlayTriggerProps<Payload>;
 }
+
 export function Positioner(props: OverlayPositioner.Props) {
-  return <OverlayPositioner side={useMenuContext().parent ? "inline-end" : "bottom"} align="start" {...props} />;
+  return (
+    <OverlayPositioner
+      side={useMenuContext().parent ? "inline-end" : "bottom"}
+      align="start"
+      {...props}
+    />
+  );
 }
+
 export namespace Positioner {
   export type Props = OverlayPositioner.Props;
 }
+
 export interface MenuPopupState {
   open: boolean;
   transitionStatus: TransitionStatus;
@@ -262,21 +344,25 @@ export interface MenuPopupState {
   align: Align;
   instant: "dismiss" | "click" | "group" | "trigger-change" | undefined;
 }
+
 export interface MenuPopupProps extends BaseUIComponentProps<"div", MenuPopupState> {
   finalFocus?: OverlayPopupProps["finalFocus"];
 }
+
 export function Popup(props: MenuPopupProps) {
   const menu = useMenuContext(),
     ctx = menu.overlay,
     position = usePositionContext(),
     bar = useContext(MenubarContext),
     direction = useDirection();
+
   const ownItems = () =>
     ctx.popupRef.current
       ? [...ctx.popupRef.current.querySelectorAll<HTMLElement>('[role^="menuitem"]')].filter(
           (e) => e.closest("[role=menu]") === ctx.popupRef.current,
         )
       : [];
+
   const { navigate, focusEdge } = useListNavigation(ownItems, {
     orientation: menu.orientation,
     loopFocus: menu.loopFocus,
@@ -284,7 +370,11 @@ export function Popup(props: MenuPopupProps) {
   const tabExit = usePopupTabExit(
     () => {
       let root = menu;
-      while (root.parent) root = root.parent;
+
+      while (root.parent) {
+        root = root.parent;
+      }
+
       return root.overlay.reference;
     },
     (event) => menu.closeAll(event),
@@ -314,35 +404,55 @@ export function Popup(props: MenuPopupProps) {
           ctx.cancelTimers();
         },
         onPointerLeave(event: PointerEvent) {
-          if (menu.parent) leave(event);
+          if (menu.parent) {
+            leave(event);
+          }
         },
         onKeyDown(event: KeyboardEvent) {
-          if (navigate(event)) return;
+          if (navigate(event)) {
+            return;
+          }
+
           if (event.key === (direction === "rtl" ? "ArrowRight" : "ArrowLeft") && menu.parent) {
             event.preventDefault();
+
             event.stopPropagation();
+
             ctx.change(false, event, "list-navigation");
+
             ctx.reference?.focus();
             return;
           }
+
           if (bar && ["ArrowLeft", "ArrowRight"].includes(event.key)) {
             const list = getMenubarMenus(bar.menus);
             const i = list.findIndex(([id]) => id === ctx.id);
             const step = (event.key === "ArrowRight") !== (direction === "rtl") ? 1 : -1;
             const next = list[(i + step + list.length) % list.length];
+
             if (next) {
               event.preventDefault();
+
               event.stopPropagation();
+
               next[1].element.focus();
+
               bar.switchTo(next[0], event);
             }
+
             return;
           }
-          if (tabExit(event)) return;
+
+          if (tabExit(event)) {
+            return;
+          }
+
           if ((event.key === "Enter" || event.key === " ") && !event.defaultPrevented) {
             const active = ctx.popupRef.current?.ownerDocument.activeElement as HTMLElement;
+
             if (active && ownItems().includes(active)) {
               event.preventDefault();
+
               active.click();
             }
           }
@@ -358,10 +468,12 @@ export function Popup(props: MenuPopupProps) {
       modal={ctx.modal !== false}
       initialFocus={() => {
         const event = ctx.floatingContext.dataRef.current.openEvent;
+
         if (event?.type === "keydown") {
           queueMicrotask(() => focusEdge((event as KeyboardEvent).key === "ArrowUp"));
           return false;
         }
+
         return ctx.popupRef.current;
       }}
       returnFocus={props.finalFocus}
@@ -372,19 +484,24 @@ export function Popup(props: MenuPopupProps) {
     </FloatingFocusManager>
   );
 }
+
 export namespace Popup {
   export type Props = MenuPopupProps;
+
   export type State = MenuPopupState;
 }
+
 interface ItemState {
   disabled: boolean;
   highlighted: boolean;
 }
+
 export interface ItemProps extends BaseUIComponentProps<"div", ItemState>, NonNativeButtonProps {
   disabled?: boolean;
   label?: string;
   closeOnClick?: boolean;
 }
+
 interface ItemOptions {
   role?: "menuitem" | "menuitemcheckbox" | "menuitemradio";
   checked?: boolean;
@@ -393,17 +510,31 @@ interface ItemOptions {
   menu?: MenuContextValue;
   extra?: Record<string, unknown>;
 }
+
 function useItem(props: ItemProps, options: ItemOptions = {}) {
   const inherited = useMenuContext(),
     menu = options.menu ?? inherited,
     ctx = menu.overlay;
-  const { disabled = ctx.disabled, label, nativeButton = false, closeOnClick = true, ...native } = props;
+  const {
+    disabled = ctx.disabled,
+    label,
+    nativeButton = false,
+    closeOnClick = true,
+    ...native
+  } = props;
   const [highlighted, setHighlighted] = useState(false);
   const el = useRef<HTMLElement | null>(null);
-  const { buttonRef, getButtonProps } = useButton({ native: nativeButton, disabled, focusableWhenDisabled: true });
+  const { buttonRef, getButtonProps } = useButton({
+    native: nativeButton,
+    disabled,
+    focusableWhenDisabled: true,
+  });
   const setElement = useStableCallback((node: HTMLElement | null) => {
     el.current = node;
-    if (node && label) itemLabels.set(node, label);
+
+    if (node && label) {
+      itemLabels.set(node, label);
+    }
   });
   const id = useBaseUiId(native.id);
   const handlers = getButtonProps({
@@ -421,13 +552,22 @@ function useItem(props: ItemProps, options: ItemOptions = {}) {
     onPointerMove(event: PointerEvent) {
       if (event.pointerType !== "touch" && menu.highlightItemOnHover && !disabled) {
         el.current?.focus({ preventScroll: true });
+
         menu.closeSiblings("", event);
       }
     },
     onClick(event: MouseEvent) {
-      if (disabled) return;
-      if (options.select?.(event) === false) return;
-      if (closeOnClick) menu.closeAll(event);
+      if (disabled) {
+        return;
+      }
+
+      if (options.select?.(event) === false) {
+        return;
+      }
+
+      if (closeOnClick) {
+        menu.closeAll(event);
+      }
     },
     ...options.extra,
   });
@@ -451,14 +591,18 @@ function useItem(props: ItemProps, options: ItemOptions = {}) {
     disabled,
   };
 }
+
 export function Item(props: ItemProps) {
   return useItem(props).node;
 }
+
 export namespace Item {
   export type Props = ItemProps;
+
   export type State = ItemState;
 }
 const CheckedContext = createContext({ checked: false, highlighted: false, disabled: false });
+
 export interface CheckboxItemProps
   extends
     Omit<ItemProps, "className" | "style" | "render">,
@@ -467,38 +611,57 @@ export interface CheckboxItemProps
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean, details: OverlayChangeDetails) => void;
 }
+
 export function CheckboxItem({
   checked: controlled,
   defaultChecked = false,
   onCheckedChange,
   ...props
 }: CheckboxItemProps) {
-  const [checked, setChecked] = useControlled({ controlled, default: defaultChecked, name: "Menu.CheckboxItem" });
+  const [checked, setChecked] = useControlled({
+    controlled,
+    default: defaultChecked,
+    name: "Menu.CheckboxItem",
+  });
   const item = useItem({ ...props, closeOnClick: props.closeOnClick ?? false } as ItemProps, {
     role: "menuitemcheckbox",
     checked,
     select(event) {
-      const details = createChangeEventDetails("item-press", event, undefined, { preventUnmountOnClose() {} });
+      const details = createChangeEventDetails("item-press", event, undefined, {
+        preventUnmountOnClose() {},
+      });
       onCheckedChange?.(!checked, details);
-      if (details.isCanceled) return false;
+
+      if (details.isCanceled) {
+        return false;
+      }
+
       setChecked(!checked);
       return true;
     },
   });
   return (
-    <CheckedContext.Provider value={{ checked, highlighted: item.highlighted, disabled: item.disabled }}>
+    <CheckedContext.Provider
+      value={{ checked, highlighted: item.highlighted, disabled: item.disabled }}
+    >
       {item.node}
     </CheckedContext.Provider>
   );
 }
+
 export namespace CheckboxItem {
   export type Props = CheckboxItemProps;
+
   export type ChangeEventDetails = OverlayChangeDetails;
 }
+
 export function CheckboxItemIndicator({
   keepMounted = false,
   ...props
-}: BaseUIComponentProps<"span", ItemState & { checked: boolean; transitionStatus: TransitionStatus }> & {
+}: BaseUIComponentProps<
+  "span",
+  ItemState & { checked: boolean; transitionStatus: TransitionStatus }
+> & {
   keepMounted?: boolean;
 }) {
   const checkedState = useContext(CheckedContext);
@@ -508,7 +671,9 @@ export function CheckboxItemIndicator({
     open: checkedState.checked,
     ref,
     onComplete() {
-      if (!checkedState.checked) setMounted(false);
+      if (!checkedState.checked) {
+        setMounted(false);
+      }
     },
   });
   const state = { ...checkedState, transitionStatus };
@@ -524,20 +689,27 @@ export function CheckboxItemIndicator({
     },
   });
 }
+
 export namespace CheckboxItemIndicator {
   export type Props = Parameters<typeof CheckboxItemIndicator>[0];
 }
-const RadioContext = createContext<{ value: any; disabled: boolean; change(value: any, event: MouseEvent): boolean }>({
+const RadioContext = createContext<{
+  value: any;
+  disabled: boolean;
+  change(value: any, event: MouseEvent): boolean;
+}>({
   value: null,
   disabled: false,
   change: () => false,
 });
+
 export interface RadioGroupProps extends BaseUIComponentProps<"div", { disabled: boolean }> {
   value?: any;
   defaultValue?: any;
   disabled?: boolean;
   onValueChange?: (value: any, details: OverlayChangeDetails) => void;
 }
+
 export function RadioGroup({
   value: controlled,
   defaultValue,
@@ -545,16 +717,26 @@ export function RadioGroup({
   onValueChange,
   ...props
 }: RadioGroupProps) {
-  const [value, setValue] = useControlled({ controlled, default: defaultValue, name: "Menu.RadioGroup" });
+  const [value, setValue] = useControlled({
+    controlled,
+    default: defaultValue,
+    name: "Menu.RadioGroup",
+  });
   return (
     <RadioContext.Provider
       value={{
         value,
         disabled,
         change(next, event) {
-          const details = createChangeEventDetails("item-press", event, undefined, { preventUnmountOnClose() {} });
+          const details = createChangeEventDetails("item-press", event, undefined, {
+            preventUnmountOnClose() {},
+          });
           onValueChange?.(next, details);
-          if (details.isCanceled) return false;
+
+          if (details.isCanceled) {
+            return false;
+          }
+
           setValue(next);
           return true;
         },
@@ -568,23 +750,33 @@ export function RadioGroup({
     </RadioContext.Provider>
   );
 }
+
 export namespace RadioGroup {
   export type Props = RadioGroupProps;
+
   export type ChangeEventDetails = OverlayChangeDetails;
 }
+
 export function RadioItem({ value, ...props }: CheckboxItemProps & { value: any }) {
   const group = useContext(RadioContext);
   const checked = group.value === value;
   const item = useItem(
-    { ...props, disabled: props.disabled || group.disabled, closeOnClick: props.closeOnClick ?? false } as ItemProps,
+    {
+      ...props,
+      disabled: props.disabled || group.disabled,
+      closeOnClick: props.closeOnClick ?? false,
+    } as ItemProps,
     { role: "menuitemradio", checked, select: (event) => group.change(value, event) },
   );
   return (
-    <CheckedContext.Provider value={{ checked, disabled: item.disabled, highlighted: item.highlighted }}>
+    <CheckedContext.Provider
+      value={{ checked, disabled: item.disabled, highlighted: item.highlighted }}
+    >
       {item.node}
     </CheckedContext.Provider>
   );
 }
+
 export namespace RadioItem {
   export type Props = CheckboxItemProps & { value: any };
 }
@@ -592,10 +784,13 @@ export const RadioItemIndicator = CheckboxItemIndicator;
 export namespace RadioItemIndicator {
   export type Props = CheckboxItemIndicator.Props;
 }
-const GroupContext = createContext<{ id: string | undefined; setId(id: string | undefined): void }>({
-  id: undefined,
-  setId() {},
-});
+const GroupContext = createContext<{ id: string | undefined; setId(id: string | undefined): void }>(
+  {
+    id: undefined,
+    setId() {},
+  },
+);
+
 export function Group(props: BaseUIComponentProps<"div", {}>) {
   const [id, setId] = useState<string>();
   return (
@@ -607,9 +802,11 @@ export function Group(props: BaseUIComponentProps<"div", {}>) {
     </GroupContext.Provider>
   );
 }
+
 export namespace Group {
   export type Props = Parameters<typeof Group>[0];
 }
+
 export function GroupLabel(props: BaseUIComponentProps<"div", {}>) {
   const group = useContext(GroupContext);
   const id = useBaseUiId(props.id);
@@ -617,11 +814,16 @@ export function GroupLabel(props: BaseUIComponentProps<"div", {}>) {
     group.setId(id);
     return () => group.setId(undefined);
   }, [id, group.setId]);
-  return useRenderElement("div", props, { ref: props.ref, props: [{ id }, getElementProps(props)] });
+  return useRenderElement("div", props, {
+    ref: props.ref,
+    props: [{ id }, getElementProps(props)],
+  });
 }
+
 export namespace GroupLabel {
   export type Props = Parameters<typeof GroupLabel>[0];
 }
+
 export interface SubmenuTriggerProps
   extends
     Omit<ItemProps, "className" | "style" | "render">,
@@ -630,7 +832,13 @@ export interface SubmenuTriggerProps
   closeDelay?: number;
   openOnHover?: boolean;
 }
-export function SubmenuTrigger({ delay = 100, closeDelay = 0, openOnHover = true, ...props }: SubmenuTriggerProps) {
+
+export function SubmenuTrigger({
+  delay = 100,
+  closeDelay = 0,
+  openOnHover = true,
+  ...props
+}: SubmenuTriggerProps) {
   const menu = useMenuContext(),
     ctx = menu.overlay,
     direction = useDirection();
@@ -639,14 +847,24 @@ export function SubmenuTrigger({ delay = 100, closeDelay = 0, openOnHover = true
   const ref = useStableCallback((e: HTMLElement | null) => {
     el.current = e;
     ctx.setReference(e);
-    if (typeof props.ref === "function") props.ref(e as HTMLDivElement);
-    else if (props.ref) props.ref.current = e as HTMLDivElement;
+
+    if (typeof props.ref === "function") {
+      props.ref(e as HTMLDivElement);
+    } else if (props.ref) {
+      props.ref.current = e as HTMLDivElement;
+    }
   });
+
   const open = (event: Event) => {
-    if (props.disabled) return;
+    if (props.disabled) {
+      return;
+    }
+
     menu.parent?.closeSiblings(ctx.id, event);
+
     ctx.change(true, event, "list-navigation", el.current ?? undefined);
   };
+
   return useItem({ ...props, ref, closeOnClick: false } as ItemProps, {
     open: ctx.open,
     menu: menu.parent ?? menu,
@@ -658,10 +876,17 @@ export function SubmenuTrigger({ delay = 100, closeDelay = 0, openOnHover = true
       "data-open": ctx.open ? "" : undefined,
       "data-popup-open": ctx.open ? "" : undefined,
       onPointerMove(event: PointerEvent) {
-        if (event.pointerType === "touch" || props.disabled) return;
+        if (event.pointerType === "touch" || props.disabled) {
+          return;
+        }
+
         el.current?.focus({ preventScroll: true });
+
         menu.parent?.closeSiblings(ctx.id, event);
-        if (openOnHover) ctx.schedule(true, event, "trigger-hover", delay, el.current ?? undefined);
+
+        if (openOnHover) {
+          ctx.schedule(true, event, "trigger-hover", delay, el.current ?? undefined);
+        }
       },
       onPointerLeave: leave,
       onClick: open,
@@ -672,13 +897,16 @@ export function SubmenuTrigger({ delay = 100, closeDelay = 0, openOnHover = true
           event.key === " "
         ) {
           event.preventDefault();
+
           event.stopPropagation();
+
           open(event);
         }
       },
     },
   }).node;
 }
+
 export namespace SubmenuTrigger {
   export type Props = SubmenuTriggerProps;
 }

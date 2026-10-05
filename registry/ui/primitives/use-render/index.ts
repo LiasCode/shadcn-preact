@@ -24,7 +24,11 @@ export type UseRenderComponentProps<
   render?: VNode<any> | ComponentRenderFn<RenderFunctionProps, State> | undefined;
 };
 
-export interface UseRenderParameters<State, RenderedElementType extends Element, Enabled extends boolean | undefined> {
+export interface UseRenderParameters<
+  State,
+  RenderedElementType extends Element,
+  Enabled extends boolean | undefined,
+> {
   /** The element, or a function that returns one, to override the default element. */
   render?: UseRenderRenderProp<State> | undefined;
   /** The ref to apply to the rendered element. */
@@ -44,7 +48,9 @@ export interface UseRenderParameters<State, RenderedElementType extends Element,
   defaultTagName?: keyof JSX.IntrinsicElements | undefined;
 }
 
-export type UseRenderReturnValue<Enabled extends boolean | undefined> = Enabled extends false ? null : VNode<any>;
+export type UseRenderReturnValue<Enabled extends boolean | undefined> = Enabled extends false
+  ? null
+  : VNode<any>;
 
 export interface UseRenderState {}
 
@@ -53,7 +59,9 @@ export function useRender<
   State extends Record<string, unknown>,
   RenderedElementType extends Element,
   Enabled extends boolean | undefined = undefined,
->(params: useRender.Parameters<State, RenderedElementType, Enabled>): useRender.ReturnValue<Enabled> {
+>(
+  params: useRender.Parameters<State, RenderedElementType, Enabled>,
+): useRender.ReturnValue<Enabled> {
   return useRenderElement<State>(
     params.defaultTagName ?? "div",
     params as never,
@@ -63,17 +71,22 @@ export function useRender<
 
 export declare namespace useRender {
   type State = UseRenderState;
+
   type RenderProp<TState = Record<string, unknown>> = UseRenderRenderProp<TState>;
+
   type ElementProps<T extends ElementType> = UseRenderElementProps<T>;
-  type ComponentProps<T extends ElementType, TState = {}, RenderFunctionProps = HTMLProps> = UseRenderComponentProps<
-    T,
-    TState,
-    RenderFunctionProps
-  >;
+
+  type ComponentProps<
+    T extends ElementType,
+    TState = {},
+    RenderFunctionProps = HTMLProps,
+  > = UseRenderComponentProps<T, TState, RenderFunctionProps>;
+
   type Parameters<
     TState,
     RenderedElementType extends Element,
     Enabled extends boolean | undefined,
   > = UseRenderParameters<TState, RenderedElementType, Enabled>;
+
   type ReturnValue<Enabled extends boolean | undefined> = UseRenderReturnValue<Enabled>;
 }

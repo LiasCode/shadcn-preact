@@ -1,5 +1,10 @@
 import { Field, FieldGroup, FieldLabel } from "@registry/ui/field";
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@registry/ui/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@registry/ui/input-group";
 import { CopyIcon, TrashIcon } from "lucide-preact";
 
 export function InputGroupWithButtons() {

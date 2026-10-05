@@ -7,4 +7,5 @@ export interface ToggleGroupContextValue {
   disabled: boolean;
   setGroupValue(value: string, pressed: boolean, details: BaseUIChangeEventDetails<"none">): void;
 }
+
 export const ToggleGroupContext = createContext<ToggleGroupContextValue | undefined>(undefined);

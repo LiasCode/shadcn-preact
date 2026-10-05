@@ -7,7 +7,9 @@ export default function InputGroupButtonGroup() {
   return (
     <div className="grid w-full max-w-sm gap-6">
       <ButtonGroup>
-        <ButtonGroupText render={<Label htmlFor="input-group-button-group-url" />}>https://</ButtonGroupText>
+        <ButtonGroupText render={<Label htmlFor="input-group-button-group-url" />}>
+          https://
+        </ButtonGroupText>
         <InputGroup>
           <InputGroupInput id="input-group-button-group-url" />
           <InputGroupAddon align="inline-end">

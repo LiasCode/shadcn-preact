@@ -9,13 +9,16 @@ import type { AccordionItemState } from "../item/AccordionItem";
 import { useAccordionItemContext } from "../item/AccordionItemContext";
 import { accordionStateAttributesMapping } from "../item/stateAttributesMapping";
 import { useAccordionRootContext } from "../root/AccordionRootContext";
+
 export interface AccordionPanelState extends AccordionItemState {
   transitionStatus: TransitionStatus;
 }
+
 export interface AccordionPanelProps extends BaseUIComponentProps<"div", AccordionPanelState> {
   keepMounted?: boolean;
   hiddenUntilFound?: boolean;
 }
+
 export function AccordionPanel(componentProps: AccordionPanelProps) {
   const root = useAccordionRootContext();
   const context = useCollapsibleRootContext();
@@ -31,7 +34,10 @@ export function AccordionPanel(componentProps: AccordionPanelProps) {
     ...elementProps
   } = componentProps;
   useIsoLayoutEffect(() => {
-    if (id) context.setPanelIdState(id);
+    if (id) {
+      context.setPanelIdState(id);
+    }
+
     return () => context.setPanelIdState(undefined);
   }, [id, context.setPanelIdState]);
   const panel = useCollapsiblePanel(context, hiddenUntilFound, keepMounted);
@@ -48,8 +54,10 @@ export function AccordionPanel(componentProps: AccordionPanelProps) {
           role: "region",
           "aria-labelledby": item.triggerId,
           style: {
-            "--accordion-panel-height": panel.dimensions.height === undefined ? "auto" : `${panel.dimensions.height}px`,
-            "--accordion-panel-width": panel.dimensions.width === undefined ? "auto" : `${panel.dimensions.width}px`,
+            "--accordion-panel-height":
+              panel.dimensions.height === undefined ? "auto" : `${panel.dimensions.height}px`,
+            "--accordion-panel-width":
+              panel.dimensions.width === undefined ? "auto" : `${panel.dimensions.width}px`,
           },
         },
         elementProps,
@@ -61,7 +69,9 @@ export function AccordionPanel(componentProps: AccordionPanelProps) {
   );
   return panel.shouldRender ? element : null;
 }
+
 export declare namespace AccordionPanel {
   type Props = AccordionPanelProps;
+
   type State = AccordionPanelState;
 }

@@ -1,4 +1,9 @@
-import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@registry/ui/pagination";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@registry/ui/pagination";
 
 export function PaginationSimple() {
   return (

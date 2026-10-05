@@ -15,11 +15,13 @@ function Field({ value }: { value?: string }) {
 test("uncontrolled state follows the setter", () => {
   const container = render(<Field />);
   act(() => setValue("b"));
+
   expect(container.textContent).toBe("b");
 });
 
 test("controlled state ignores the setter", () => {
   const container = render(<Field value="z" />);
   act(() => setValue("y"));
+
   expect(container.textContent).toBe("z");
 });

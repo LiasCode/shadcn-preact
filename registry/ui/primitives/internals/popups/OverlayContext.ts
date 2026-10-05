@@ -5,6 +5,7 @@ import type { BaseUIChangeEventDetails } from "../createBaseUIEventDetails";
 import type { FloatingRootContext } from "../useFloatingRootContext";
 import type { TransitionStatus } from "../useTransitionStatus";
 import type { PopupHandle } from "./PopupHandle";
+
 export type OverlayKind =
   | "dialog"
   | "alert-dialog"
@@ -16,6 +17,7 @@ export type OverlayKind =
   | "select"
   | "combobox"
   | "navigation-menu";
+
 export type OverlayReason =
   | "trigger-press"
   | "close-press"
@@ -37,7 +39,11 @@ export type OverlayReason =
   | "input-press"
   | "clear-press"
   | "chip-remove-press";
-export type OverlayChangeDetails = BaseUIChangeEventDetails<OverlayReason> & { preventUnmountOnClose(): void };
+
+export type OverlayChangeDetails = BaseUIChangeEventDetails<OverlayReason> & {
+  preventUnmountOnClose(): void;
+};
+
 export interface OverlayRootProps<Payload = unknown> {
   open?: boolean;
   defaultOpen?: boolean;
@@ -54,6 +60,7 @@ export interface OverlayRootProps<Payload = unknown> {
   disableHoverablePopup?: boolean;
   "data-slot"?: string;
 }
+
 export interface NestedPopup {
   count?: number;
   kind: OverlayKind;
@@ -62,6 +69,7 @@ export interface NestedPopup {
   swiping: boolean;
   progress: number;
 }
+
 export interface OverlayContextValue {
   kind: OverlayKind;
   open: boolean;
@@ -112,12 +120,19 @@ export interface OverlayContextValue {
   registerNested(id: string, popup: NestedPopup): () => void;
   parent: OverlayContextValue | null;
 }
+
 export const OverlayContext = createContext<OverlayContextValue | null>(null);
+
 export function useOverlayContext(optional = false) {
   const context = useContext(OverlayContext);
-  if (!context && !optional) throw new Error("Base UI: Popup parts must be within their Root.");
+
+  if (!context && !optional) {
+    throw new Error("Base UI: Popup parts must be within their Root.");
+  }
+
   return context!;
 }
+
 export const popupStateMapping = {
   open(value: boolean): Record<string, string> {
     return value ? { "data-open": "" } : { "data-closed": "" };

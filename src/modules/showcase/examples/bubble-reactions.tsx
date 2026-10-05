@@ -24,7 +24,12 @@ export function BubbleReactionsDemo() {
       </Bubble>
       <Bubble variant="default" align="end">
         <BubbleContent>Tests passed on the first try. All 142 of them. Looking good!</BubbleContent>
-        <BubbleReactions side="top" align="start" role="img" aria-label="Reactions: party popper, clapping hands">
+        <BubbleReactions
+          side="top"
+          align="start"
+          role="img"
+          aria-label="Reactions: party popper, clapping hands"
+        >
           <span>🎉</span>
           <span>👏</span>
         </BubbleReactions>
@@ -32,7 +37,11 @@ export function BubbleReactionsDemo() {
       <Bubble variant="destructive">
         <BubbleContent>Are you sure I can run this command?</BubbleContent>
         <BubbleReactions>
-          <Button variant="ghost" size="xs" onClick={() => toast.success("You clicked yes, running command...")}>
+          <Button
+            variant="ghost"
+            size="xs"
+            onClick={() => toast.success("You clicked yes, running command...")}
+          >
             Yes, run it
           </Button>
         </BubbleReactions>

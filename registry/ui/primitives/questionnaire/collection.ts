@@ -1,4 +1,8 @@
-import type { ItemRegistration, QuestionnaireItemDefinition, QuestionnaireShortcutMode } from "./types";
+import type {
+  ItemRegistration,
+  QuestionnaireItemDefinition,
+  QuestionnaireShortcutMode,
+} from "./types";
 import { getShortcutKeys } from "./utils";
 
 type QuestionnaireCollection = {
@@ -21,7 +25,10 @@ function createQuestionnaireCollection(
   };
 }
 
-function getInitialItemName(collection: QuestionnaireCollection | null, defaultItem: string | undefined) {
+function getInitialItemName(
+  collection: QuestionnaireCollection | null,
+  defaultItem: string | undefined,
+) {
   if (!collection) {
     return defaultItem ?? null;
   }
@@ -66,7 +73,10 @@ function getShortcutByChoiceValue(
   return shortcutByChoiceValue;
 }
 
-function getCollectionDefinitionWarnings(collection: QuestionnaireCollection, defaultItem: string | undefined) {
+function getCollectionDefinitionWarnings(
+  collection: QuestionnaireCollection,
+  defaultItem: string | undefined,
+) {
   const warnings: string[] = [];
   const itemNames = new Set<string>();
 
@@ -81,7 +91,9 @@ function getCollectionDefinitionWarnings(collection: QuestionnaireCollection, de
 
     for (const choice of item.choices ?? []) {
       if (choiceValues.has(choice.value)) {
-        warnings.push(`Choice value "${choice.value}" is defined more than once in item "${item.name}".`);
+        warnings.push(
+          `Choice value "${choice.value}" is defined more than once in item "${item.name}".`,
+        );
       }
 
       choiceValues.add(choice.value);
@@ -107,30 +119,40 @@ function getCollectionRegistrationWarnings(
   shortcuts: QuestionnaireShortcutMode | null,
 ) {
   const warnings: string[] = [];
-  const registrationByName = new Map(registrations.map((registration) => [registration.name, registration]));
+  const registrationByName = new Map(
+    registrations.map((registration) => [registration.name, registration]),
+  );
 
   for (const definition of collection.items) {
     const registration = registrationByName.get(definition.name);
 
     if (!registration) {
       if (!definition.disabled) {
-        warnings.push(`Item "${definition.name}" is defined but has no rendered Questionnaire.Item.`);
+        warnings.push(
+          `Item "${definition.name}" is defined but has no rendered Questionnaire.Item.`,
+        );
       }
 
       continue;
     }
 
     if (registration.disabled !== Boolean(definition.disabled)) {
-      warnings.push(`Item "${definition.name}" has different disabled values in Root.items and Questionnaire.Item.`);
+      warnings.push(
+        `Item "${definition.name}" has different disabled values in Root.items and Questionnaire.Item.`,
+      );
     }
 
     if (registration.required !== Boolean(definition.required)) {
-      warnings.push(`Item "${definition.name}" has different required values in Root.items and Questionnaire.Item.`);
+      warnings.push(
+        `Item "${definition.name}" has different required values in Root.items and Questionnaire.Item.`,
+      );
     }
 
     const definedChoices = definition.choices ?? [];
     const definedChoiceByValue = new Map(definedChoices.map((choice) => [choice.value, choice]));
-    const registeredChoiceByValue = new Map(registration.choices.map((choice) => [choice.value, choice]));
+    const registeredChoiceByValue = new Map(
+      registration.choices.map((choice) => [choice.value, choice]),
+    );
 
     for (const choice of definedChoices) {
       const registeredChoice = registeredChoiceByValue.get(choice.value);
@@ -158,15 +180,22 @@ function getCollectionRegistrationWarnings(
         }
       }
 
-      const definedOrder = definedChoices.filter((choice) => !choice.disabled).map((choice) => choice.value);
-      const registeredOrder = registration.choices.filter((choice) => !choice.disabled).map((choice) => choice.value);
+      const definedOrder = definedChoices
+        .filter((choice) => !choice.disabled)
+        .map((choice) => choice.value);
+      const registeredOrder = registration.choices
+        .filter((choice) => !choice.disabled)
+        .map((choice) => choice.value);
 
       const sameChoices =
         definedOrder.length > 0 &&
         definedOrder.length === registeredOrder.length &&
         definedOrder.every((choiceValue) => registeredOrder.includes(choiceValue));
 
-      if (sameChoices && definedOrder.some((choiceValue, index) => choiceValue !== registeredOrder[index])) {
+      if (
+        sameChoices &&
+        definedOrder.some((choiceValue, index) => choiceValue !== registeredOrder[index])
+      ) {
         warnings.push(
           `Choice order for item "${definition.name}" differs between Root.items and the rendered Questionnaire.Choice elements.`,
         );

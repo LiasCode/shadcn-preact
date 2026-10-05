@@ -7,7 +7,11 @@ export default function FieldTextarea() {
       <FieldGroup>
         <Field>
           <FieldLabel htmlFor="field-textarea-feedback">Feedback</FieldLabel>
-          <Textarea id="field-textarea-feedback" placeholder="Your feedback helps us improve..." rows={4} />
+          <Textarea
+            id="field-textarea-feedback"
+            placeholder="Your feedback helps us improve..."
+            rows={4}
+          />
           <FieldDescription>Share your thoughts about our service.</FieldDescription>
         </Field>
       </FieldGroup>

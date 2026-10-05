@@ -14,7 +14,11 @@ export type TransitionStatus = "starting" | "ending" | "idle" | undefined;
  * @param enableIdleState Whether to settle on `idle` instead of `undefined` once opened.
  * @param deferEndingState Whether to set `ending` on the next frame instead of during render.
  */
-export function useTransitionStatus(open: boolean, enableIdleState = false, deferEndingState = false) {
+export function useTransitionStatus(
+  open: boolean,
+  enableIdleState = false,
+  deferEndingState = false,
+) {
   const [transitionStatus, setTransitionStatus] = useState<TransitionStatus>(
     open && enableIdleState ? "idle" : undefined,
   );
@@ -22,6 +26,7 @@ export function useTransitionStatus(open: boolean, enableIdleState = false, defe
 
   if (open && !mounted) {
     setMounted(true);
+
     setTransitionStatus("starting");
   }
 
@@ -42,6 +47,7 @@ export function useTransitionStatus(open: boolean, enableIdleState = false, defe
         AnimationFrame.cancel(frame);
       };
     }
+
     return undefined;
   }, [open, mounted, transitionStatus, deferEndingState]);
 
@@ -49,6 +55,7 @@ export function useTransitionStatus(open: boolean, enableIdleState = false, defe
     if (!open || enableIdleState) {
       return undefined;
     }
+
     const frame = AnimationFrame.request(() => {
       setTransitionStatus(undefined);
     });
@@ -61,9 +68,11 @@ export function useTransitionStatus(open: boolean, enableIdleState = false, defe
     if (!open || !enableIdleState) {
       return undefined;
     }
+
     if (open && mounted && transitionStatus !== "idle") {
       setTransitionStatus("starting");
     }
+
     const frame = AnimationFrame.request(() => {
       setTransitionStatus("idle");
     });

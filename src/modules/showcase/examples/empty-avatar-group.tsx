@@ -1,6 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@registry/ui/avatar";
 import { Button } from "@registry/ui/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@registry/ui/empty";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@registry/ui/empty";
 import { PlusIcon } from "lucide-preact";
 
 export default function EmptyAvatarGroup() {

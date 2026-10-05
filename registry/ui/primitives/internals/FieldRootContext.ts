@@ -9,6 +9,7 @@ export interface FieldValidityData {
   value: unknown;
   initialValue: unknown;
 }
+
 export const emptyValidity = (): FieldValidityData => ({
   state: {
     badInput: false,
@@ -28,9 +29,12 @@ export const emptyValidity = (): FieldValidityData => ({
   value: "",
   initialValue: "",
 });
+
 export const fieldValidityMapping = {
-  valid: (valid: boolean | null) => (valid === null ? null : { [valid ? "data-valid" : "data-invalid"]: "" }),
+  valid: (valid: boolean | null) =>
+    valid === null ? null : { [valid ? "data-valid" : "data-invalid"]: "" },
 };
+
 export interface FieldControlRegistration {
   getValue: () => unknown;
   getFormValue?: () => unknown;
@@ -39,6 +43,7 @@ export interface FieldControlRegistration {
   isFilled?: (value: unknown) => boolean;
   isEqual?: (value: unknown, initialValue: unknown) => boolean;
 }
+
 export function isFieldFilled(value: unknown): boolean {
   return (
     value !== null &&
@@ -48,6 +53,7 @@ export function isFieldFilled(value: unknown): boolean {
     (!Array.isArray(value) || value.length > 0)
   );
 }
+
 export interface FieldRootContextValue {
   state: FieldControlState;
   name?: string;
@@ -67,4 +73,5 @@ export interface FieldRootContextValue {
   focus: (focused: boolean) => void;
   focusControl: () => void;
 }
+
 export const FieldRootContext = createContext<FieldRootContextValue | null>(null);

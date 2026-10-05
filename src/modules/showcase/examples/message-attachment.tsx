@@ -25,14 +25,18 @@ export function MessageAttachmentDemo() {
             </AttachmentMedia>
           </Attachment>
           <Bubble>
-            <BubbleContent>Here&apos;s the image. Can you add it to the PDF? Use it for the cover page.</BubbleContent>
+            <BubbleContent>
+              Here&apos;s the image. Can you add it to the PDF? Use it for the cover page.
+            </BubbleContent>
           </Bubble>
         </MessageContent>
       </Message>
       <Message>
         <MessageContent>
           <Bubble variant="muted">
-            <BubbleContent>Done. Here&apos;s the PDF with the image added as the cover page.</BubbleContent>
+            <BubbleContent>
+              Done. Here&apos;s the PDF with the image added as the cover page.
+            </BubbleContent>
           </Bubble>
           <Attachment>
             <AttachmentMedia>
@@ -43,7 +47,13 @@ export function MessageAttachmentDemo() {
               <AttachmentDescription>PDF · 2.4 MB</AttachmentDescription>
             </AttachmentContent>
             <AttachmentActions>
-              <AttachmentAction type="button" title="Download" aria-label="Download" size="icon-sm" variant="secondary">
+              <AttachmentAction
+                type="button"
+                title="Download"
+                aria-label="Download"
+                size="icon-sm"
+                variant="secondary"
+              >
                 <DownloadIcon />
               </AttachmentAction>
             </AttachmentActions>

@@ -5,8 +5,10 @@ import { useRenderElement } from "../../internals/useRenderElement";
 import type { CollapsibleRootState } from "../root/CollapsibleRoot";
 import { useCollapsibleRootContext } from "../root/CollapsibleRootContext";
 import { triggerOpenStateMapping } from "../root/stateAttributesMapping";
+
 export interface CollapsibleTriggerProps
   extends NativeButtonProps, BaseUIComponentProps<"button", CollapsibleRootState> {}
+
 export function CollapsibleTrigger(componentProps: CollapsibleTriggerProps) {
   const context = useCollapsibleRootContext();
   const {
@@ -18,7 +20,11 @@ export function CollapsibleTrigger(componentProps: CollapsibleTriggerProps) {
     style: _style,
     ...elementProps
   } = componentProps;
-  const { getButtonProps, buttonRef } = useButton({ disabled, native: nativeButton, focusableWhenDisabled: true });
+  const { getButtonProps, buttonRef } = useButton({
+    disabled,
+    native: nativeButton,
+    focusableWhenDisabled: true,
+  });
   return useRenderElement("button", componentProps, {
     state: context.state,
     ref: [ref ?? null, buttonRef],
@@ -34,7 +40,9 @@ export function CollapsibleTrigger(componentProps: CollapsibleTriggerProps) {
     stateAttributesMapping: { ...triggerOpenStateMapping, ...transitionStatusMapping },
   });
 }
+
 export declare namespace CollapsibleTrigger {
   type Props = CollapsibleTriggerProps;
+
   type State = CollapsibleRootState;
 }

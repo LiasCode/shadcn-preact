@@ -6,7 +6,10 @@ import { useIsoLayoutEffect } from "../../internals/useIsoLayoutEffect";
 import { useRenderElement } from "../../internals/useRenderElement";
 import type { AccordionItemState } from "../item/AccordionItem";
 import { useAccordionItemContext } from "../item/AccordionItemContext";
-export interface AccordionTriggerProps extends NativeButtonProps, BaseUIComponentProps<"button", AccordionItemState> {}
+
+export interface AccordionTriggerProps
+  extends NativeButtonProps, BaseUIComponentProps<"button", AccordionItemState> {}
+
 export function AccordionTrigger(componentProps: AccordionTriggerProps) {
   const context = useCollapsibleRootContext();
   const item = useAccordionItemContext();
@@ -21,9 +24,16 @@ export function AccordionTrigger(componentProps: AccordionTriggerProps) {
     ...elementProps
   } = componentProps;
   const disabled = disabledProp || context.disabled;
-  const { getButtonProps, buttonRef } = useButton({ disabled, native: nativeButton, focusableWhenDisabled: true });
+  const { getButtonProps, buttonRef } = useButton({
+    disabled,
+    native: nativeButton,
+    focusableWhenDisabled: true,
+  });
   useIsoLayoutEffect(() => {
-    if (id) item.setTriggerId(id);
+    if (id) {
+      item.setTriggerId(id);
+    }
+
     return () => item.setTriggerId(undefined);
   }, [id, item.setTriggerId]);
   return useRenderElement("button", componentProps, {
@@ -42,7 +52,9 @@ export function AccordionTrigger(componentProps: AccordionTriggerProps) {
     stateAttributesMapping: triggerOpenStateMapping,
   });
 }
+
 export declare namespace AccordionTrigger {
   type Props = AccordionTriggerProps;
+
   type State = AccordionItemState;
 }

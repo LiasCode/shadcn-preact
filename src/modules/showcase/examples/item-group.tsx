@@ -1,6 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@registry/ui/avatar";
 import { Button } from "@registry/ui/button";
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@registry/ui/item";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from "@registry/ui/item";
 import { PlusIcon } from "lucide-preact";
 
 const people = [

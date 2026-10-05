@@ -1,6 +1,14 @@
 import { Bubble, BubbleContent } from "@registry/ui/bubble";
 import { Button } from "@registry/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import { Marker, MarkerContent } from "@registry/ui/marker";
 import { Message, MessageContent } from "@registry/ui/message";
 import {
@@ -68,6 +76,7 @@ export function MessageScrollerLoadHistory() {
                       disabled={visibleCount === INITIAL_VISIBLE_COUNT}
                       onClick={() => {
                         setVisibleCount(INITIAL_VISIBLE_COUNT);
+
                         setDemoKey((key) => key + 1);
                       }}
                     />
@@ -126,6 +135,7 @@ export function MessageScrollerLoadHistory() {
               disabled={!canLoadHistory}
               onClick={() => {
                 setVisibleCount(history.length);
+
                 toast("History loaded", {
                   description: "Scroll up to see earlier messages.",
                 });
@@ -135,7 +145,9 @@ export function MessageScrollerLoadHistory() {
             >
               {canLoadHistory ? "Load History" : "History Loaded"}
             </Button>
-            <p className="text-xs text-muted-foreground">Restore earlier messages while keeping your place.</p>
+            <p className="text-xs text-muted-foreground">
+              Restore earlier messages while keeping your place.
+            </p>
           </CardFooter>
         </Card>
         <div className="mx-auto max-w-sm px-0.5 text-center text-xs text-balance text-muted-foreground">

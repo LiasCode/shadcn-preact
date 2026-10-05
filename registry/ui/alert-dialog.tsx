@@ -90,7 +90,10 @@ function AlertDialogMedia({ className, ...props }: ComponentProps<"div">) {
   );
 }
 
-function AlertDialogTitle({ className, ...props }: ComponentProps<typeof AlertDialogPrimitive.Title>) {
+function AlertDialogTitle({
+  className,
+  ...props
+}: ComponentProps<typeof AlertDialogPrimitive.Title>) {
   return (
     <AlertDialogPrimitive.Title
       data-slot="alert-dialog-title"
@@ -103,7 +106,10 @@ function AlertDialogTitle({ className, ...props }: ComponentProps<typeof AlertDi
   );
 }
 
-function AlertDialogDescription({ className, ...props }: ComponentProps<typeof AlertDialogPrimitive.Description>) {
+function AlertDialogDescription({
+  className,
+  ...props
+}: ComponentProps<typeof AlertDialogPrimitive.Description>) {
   return (
     <AlertDialogPrimitive.Description
       data-slot="alert-dialog-description"

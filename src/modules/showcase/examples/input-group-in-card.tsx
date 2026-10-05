@@ -1,5 +1,12 @@
 import { Button } from "@registry/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@registry/ui/field";
 import {
   InputGroup,
@@ -22,7 +29,11 @@ export function InputGroupInCard() {
           <Field>
             <FieldLabel htmlFor="input-group-in-card-email-input">Email Address</FieldLabel>
             <InputGroup>
-              <InputGroupInput id="input-group-in-card-email-input" type="email" placeholder="you@example.com" />
+              <InputGroupInput
+                id="input-group-in-card-email-input"
+                type="email"
+                placeholder="you@example.com"
+              />
               <InputGroupAddon align="inline-end">
                 <MailIcon />
               </InputGroupAddon>
@@ -41,7 +52,9 @@ export function InputGroupInCard() {
             </InputGroup>
           </Field>
           <Field>
-            <FieldLabel htmlFor="input-group-in-card-feedback-textarea">Feedback & Comments</FieldLabel>
+            <FieldLabel htmlFor="input-group-in-card-feedback-textarea">
+              Feedback & Comments
+            </FieldLabel>
             <InputGroup>
               <InputGroupTextarea
                 id="input-group-in-card-feedback-textarea"

@@ -154,7 +154,12 @@ function useMessageScrollerController({
       modeRef.current !== "anchored-to-message"
     ) {
       modeRef.current = "following-bottom";
-    } else if (modeRef.current === "following-bottom" && scrollable.end && scrolledUp && !autoscrollingRef.current) {
+    } else if (
+      modeRef.current === "following-bottom" &&
+      scrollable.end &&
+      scrolledUp &&
+      !autoscrollingRef.current
+    ) {
       modeRef.current = "free-scrolling";
     }
   }, []);
@@ -174,14 +179,19 @@ function useMessageScrollerController({
     // end would strobe the scroll button once per chunk. Reconcile runs on the
     // raw geometry first, so a commit that releases follow still publishes the
     // gap it released over.
-    const publishedState = modeRef.current === "following-bottom" ? { ...nextState, end: false } : nextState;
+    const publishedState =
+      modeRef.current === "following-bottom" ? { ...nextState, end: false } : nextState;
 
     writeStateAttributes(publishedState);
+
     stateStore.setSnapshot(publishedState);
   }, [reconcileFollowMode, stateStore, writeStateAttributes]);
 
   const scheduleStateCommit = React.useCallback(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
+
     if (stateFrameRef.current !== null) {
       return;
     }
@@ -193,7 +203,10 @@ function useMessageScrollerController({
   }, [commitScrollState]);
 
   const scheduleVisibilitySync = React.useCallback(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
+
     if (!visibilityStore.hasListeners()) {
       return;
     }
@@ -262,6 +275,7 @@ function useMessageScrollerController({
     viewport.scrollTop += delta;
     anchor.viewportTop = getElementViewportTop(anchor.element, viewport);
     scheduleStateCommit();
+
     scheduleVisibilitySync();
 
     return true;
@@ -295,7 +309,10 @@ function useMessageScrollerController({
       return;
     }
 
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
+
     pendingScrollFrameRef.current = window.requestAnimationFrame(() => {
       pendingScrollFrameRef.current = null;
 
@@ -306,7 +323,11 @@ function useMessageScrollerController({
   }, [capturePrependAnchor, flushPendingScrollToMessage]);
 
   const applyDefaultScrollPosition = React.useCallback(() => {
-    if (!defaultScrollPosition || defaultScrollPositionAppliedRef.current || itemCountRef.current === 0) {
+    if (
+      !defaultScrollPosition ||
+      defaultScrollPositionAppliedRef.current ||
+      itemCountRef.current === 0
+    ) {
       return false;
     }
 
@@ -316,7 +337,9 @@ function useMessageScrollerController({
       const content = contentRef.current;
       const viewport = viewportRef.current;
       const anchor =
-        content && viewport ? getLastScrollAnchor(getMessageScrollerItems(content, spacerRef.current)) : null;
+        content && viewport
+          ? getLastScrollAnchor(getMessageScrollerItems(content, spacerRef.current))
+          : null;
 
       if (!content || !viewport || !anchor) {
         handled = scrollToEnd({ behavior: "auto" });
@@ -337,7 +360,9 @@ function useMessageScrollerController({
       }
     } else {
       handled =
-        defaultScrollPosition === "end" ? scrollToEnd({ behavior: "auto" }) : scrollToStart({ behavior: "auto" });
+        defaultScrollPosition === "end"
+          ? scrollToEnd({ behavior: "auto" })
+          : scrollToStart({ behavior: "auto" });
     }
 
     if (!handled) {
@@ -382,6 +407,7 @@ function useMessageScrollerController({
         }
 
         commitScrollState();
+
         scheduleVisibilitySync();
         return;
       }
@@ -414,6 +440,7 @@ function useMessageScrollerController({
           }
 
           scrollToElement(anchor, { align: "start" }, { keepPreviousPeek: true });
+
           handledScrollAnchorsRef.current.add(anchor);
           return;
         }
@@ -424,6 +451,7 @@ function useMessageScrollerController({
 
         if (anchor) {
           scrollToElement(anchor, { align: "start" }, { keepPreviousPeek: true });
+
           handledScrollAnchorsRef.current.add(anchor);
           return;
         }
@@ -435,11 +463,13 @@ function useMessageScrollerController({
         scrollToEnd({ behavior: "auto" });
       } else {
         commitScrollState();
+
         scheduleVisibilitySync();
       }
     };
 
     reconcileScrollPosition();
+
     capturePrependAnchor();
   }, [
     applyDefaultScrollPosition,
@@ -478,6 +508,7 @@ function useMessageScrollerController({
     }
 
     scheduleStateCommit();
+
     scheduleVisibilitySync();
   }, [reanchorToAnchoredMessage, scheduleStateCommit, scheduleVisibilitySync, scrollToEnd]);
 
@@ -527,11 +558,15 @@ function useMessageScrollerController({
     messageElementsRef.current.forEach((element) => {
       visibilityObserverRef.current?.observe(element);
     });
+
     scheduleVisibilitySync();
   }, [scheduleVisibilitySync, visibilityStore]);
 
   const unobserveVisibility = React.useCallback(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
+
     if (visibilityFrameRef.current !== null) {
       window.cancelAnimationFrame(visibilityFrameRef.current);
       visibilityFrameRef.current = null;
@@ -540,6 +575,7 @@ function useMessageScrollerController({
     visibilityObserverRef.current?.disconnect();
     visibilityObserverRef.current = null;
     visibleMessageIdsRef.current.clear();
+
     visibilityStore.setSnapshot(EMPTY_MESSAGE_SCROLLER_VISIBILITY_STATE);
   }, [visibilityStore]);
 
@@ -547,7 +583,9 @@ function useMessageScrollerController({
     (messageId, element, removedElement) => {
       if (element) {
         messageElementsRef.current.set(messageId, element);
+
         visibilityObserverRef.current?.observe(element);
+
         scheduleVisibilitySync();
 
         if (pendingScrollToMessageRef.current?.messageId === messageId) {
@@ -559,8 +597,11 @@ function useMessageScrollerController({
 
       if (removedElement && messageElementsRef.current.get(messageId) === removedElement) {
         messageElementsRef.current.delete(messageId);
+
         visibleMessageIdsRef.current.delete(messageId);
+
         visibilityObserverRef.current?.unobserve(removedElement);
+
         scheduleVisibilitySync();
       }
     },
@@ -599,7 +640,9 @@ function useMessageScrollerController({
 
   const syncAfterScroll = React.useCallback(() => {
     commitScrollState();
+
     scheduleVisibilitySync();
+
     capturePrependAnchor();
   }, [capturePrependAnchor, commitScrollState, scheduleVisibilitySync]);
 
@@ -656,7 +699,9 @@ function useMessageScrollerController({
 
   React.useEffect(() => {
     return () => {
-      if (typeof window === "undefined") return;
+      if (typeof window === "undefined") {
+        return;
+      }
       // Reset every ref after cancelling. StrictMode replays effects on the same
       // refs (unmount then remount), so a frame id left non-null here makes the
       // scheduler on remount think a frame is still pending and never reschedule.

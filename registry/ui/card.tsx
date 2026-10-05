@@ -1,7 +1,11 @@
 import { cn } from "./lib/utils";
 import type { ComponentProps } from "./primitives/internals/types";
 
-function Card({ className, size = "default", ...props }: ComponentProps<"div"> & { size?: "default" | "sm" }) {
+function Card({
+  className,
+  size = "default",
+  ...props
+}: ComponentProps<"div"> & { size?: "default" | "sm" }) {
   return (
     <div
       data-slot="card"
@@ -32,14 +36,23 @@ function CardTitle({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("text-base leading-snug font-medium group-data-[size=sm]/card:text-sm cn-font-heading", className)}
+      className={cn(
+        "text-base leading-snug font-medium group-data-[size=sm]/card:text-sm cn-font-heading",
+        className,
+      )}
       {...props}
     />
   );
 }
 
 function CardDescription({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="card-description" className={cn("text-muted-foreground text-sm", className)} {...props} />;
+  return (
+    <div
+      data-slot="card-description"
+      className={cn("text-muted-foreground text-sm", className)}
+      {...props}
+    />
+  );
 }
 
 function CardAction({ className, ...props }: ComponentProps<"div">) {
@@ -53,14 +66,19 @@ function CardAction({ className, ...props }: ComponentProps<"div">) {
 }
 
 function CardContent({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="card-content" className={cn("px-(--card-spacing)", className)} {...props} />;
+  return (
+    <div data-slot="card-content" className={cn("px-(--card-spacing)", className)} {...props} />
+  );
 }
 
 function CardFooter({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="card-footer"
-      className={cn("bg-muted/50 rounded-b-xl border-t p-(--card-spacing) flex items-center", className)}
+      className={cn(
+        "bg-muted/50 rounded-b-xl border-t p-(--card-spacing) flex items-center",
+        className,
+      )}
       {...props}
     />
   );

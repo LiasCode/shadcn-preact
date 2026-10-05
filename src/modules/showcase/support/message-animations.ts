@@ -120,6 +120,7 @@ const ANIMATIONS = [
 }[];
 
 type MessageAnimationPreset = (typeof ANIMATIONS)[number];
+
 type MessageAnimationId = MessageAnimationPreset["id"];
 
 const MESSAGE_ANIMATIONS = ANIMATIONS.reduce(

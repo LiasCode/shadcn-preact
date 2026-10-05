@@ -9,6 +9,7 @@ import type { FieldControlState } from "../control/FieldControl";
 export interface FieldLabelProps extends BaseUIComponentProps<"label", FieldControlState> {
   nativeLabel?: boolean;
 }
+
 export function FieldLabel(props: FieldLabelProps) {
   const {
     ref,
@@ -20,7 +21,11 @@ export function FieldLabel(props: FieldLabelProps) {
     ...elementProps
   } = props;
   const field = useFieldLabelScope();
-  if (!field) throw new Error("Field.Label requires Field.Root.");
+
+  if (!field) {
+    throw new Error("Field.Label requires Field.Root.");
+  }
+
   const id = useBaseUiId(idProp);
   useIsoLayoutEffect(() => field.label(id), [field.label, id]);
   return useRenderElement("label", props, {
@@ -32,12 +37,17 @@ export function FieldLabel(props: FieldLabelProps) {
         htmlFor: nativeLabel ? field.controlId : undefined,
         onClick(event: MouseEvent) {
           const control =
-            typeof window !== "undefined" && field.controlId ? document.getElementById(field.controlId) : null;
+            typeof window !== "undefined" && field.controlId
+              ? document.getElementById(field.controlId)
+              : null;
+
           if (
-            (!nativeLabel || (control && !["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(control.tagName))) &&
+            (!nativeLabel ||
+              (control && !["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(control.tagName))) &&
             !field.state.disabled
           ) {
             event.preventDefault();
+
             field.focusControl();
           }
         },
@@ -47,7 +57,9 @@ export function FieldLabel(props: FieldLabelProps) {
     stateAttributesMapping: fieldValidityMapping,
   });
 }
+
 export declare namespace FieldLabel {
   type Props = FieldLabelProps;
+
   type State = FieldControlState;
 }

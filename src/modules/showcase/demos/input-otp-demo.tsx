@@ -7,6 +7,7 @@ import { InputOTPFourDigits as Example5 } from "../examples/input-otp-four-digit
 import { InputOTPInvalid as Example6 } from "../examples/input-otp-invalid";
 import { InputOTPPattern as Example7 } from "../examples/input-otp-pattern";
 import Example8 from "../examples/input-otp-separator";
+
 export function InputOtpDemo() {
   return (
     <div className="relative flex w-full min-w-0 flex-wrap items-start gap-8">

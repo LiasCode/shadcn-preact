@@ -77,7 +77,12 @@ function MenubarContent({
   );
 }
 
-function MenubarItem({ className, inset, variant = "default", ...props }: ComponentProps<typeof DropdownMenuItem>) {
+function MenubarItem({
+  className,
+  inset,
+  variant = "default",
+  ...props
+}: ComponentProps<typeof DropdownMenuItem>) {
   return (
     <DropdownMenuItem
       data-slot="menubar-item"

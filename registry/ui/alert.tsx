@@ -19,8 +19,19 @@ const alertVariants = cva(
   },
 );
 
-function Alert({ className, variant, ...props }: ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
-  return <div data-slot="alert" role="alert" className={cn(alertVariants({ variant }), className)} {...props} />;
+function Alert({
+  className,
+  variant,
+  ...props
+}: ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
+  return (
+    <div
+      data-slot="alert"
+      role="alert"
+      className={cn(alertVariants({ variant }), className)}
+      {...props}
+    />
+  );
 }
 
 function AlertTitle({ className, ...props }: ComponentProps<"div">) {
@@ -50,7 +61,9 @@ function AlertDescription({ className, ...props }: ComponentProps<"div">) {
 }
 
 function AlertAction({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="alert-action" className={cn("absolute top-2 right-2", className)} {...props} />;
+  return (
+    <div data-slot="alert-action" className={cn("absolute top-2 right-2", className)} {...props} />
+  );
 }
 
 export { Alert, AlertTitle, AlertDescription, AlertAction };

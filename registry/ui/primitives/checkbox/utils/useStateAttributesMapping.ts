@@ -1,4 +1,5 @@
 import type { CheckboxRootState } from "../root/CheckboxRoot";
+
 export function useStateAttributesMapping(state: Pick<CheckboxRootState, "indeterminate">) {
   return {
     checked: (value: boolean): Record<string, string> =>

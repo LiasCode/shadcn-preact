@@ -34,11 +34,19 @@ type WithPreventBaseUIHandler<T> = T extends (event: infer E) => any
 export type WithBaseUIEvent<T> = { [K in keyof T]: WithPreventBaseUIHandler<T[K]> };
 
 type Unsignal<T> = T extends { value: infer V; peek(): unknown } ? V : T;
+
 type UnionKeys<T> = T extends unknown ? keyof T : never;
-type UnionValue<T, K extends PropertyKey> = T extends unknown ? (K extends keyof T ? T[K] : never) : never;
+
+type UnionValue<T, K extends PropertyKey> = T extends unknown
+  ? K extends keyof T
+    ? T[K]
+    : never
+  : never;
+
 type BivariantCallback<T> = T extends (instance: infer V) => infer R
   ? { bivarianceHack(instance: V): R }["bivarianceHack"]
   : T;
+
 type NativeProps<P> = {
   [K in UnionKeys<P>]?: K extends "ref"
     ? BivariantCallback<UnionValue<P, K>>
@@ -50,7 +58,9 @@ type NativeProps<P> = {
 export type ComponentProps<T extends ElementType> = T extends keyof JSX.IntrinsicElements
   ? NativeProps<PreactComponentProps<T>>
   : PreactComponentProps<T>;
+
 type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
+
 export type ElementRef<T> =
   | { bivarianceHack(instance: T | null): void | (() => void) }["bivarianceHack"]
   | { current: T | null }
@@ -62,7 +72,11 @@ export type ElementType = keyof JSX.IntrinsicElements | ComponentType<any>;
  * Props shared by all Base UI components: `className` and `style` may be functions of the component's state, and
  * `render` replaces or composes the rendered element.
  */
-export type BaseUIComponentProps<T extends ElementType, State, RenderFunctionProps = HTMLProps> = DistributiveOmit<
+export type BaseUIComponentProps<
+  T extends ElementType,
+  State,
+  RenderFunctionProps = HTMLProps,
+> = DistributiveOmit<
   WithBaseUIEvent<ComponentProps<T>>,
   "className" | "class" | "color" | "defaultValue" | "defaultChecked" | "style"
 > & {

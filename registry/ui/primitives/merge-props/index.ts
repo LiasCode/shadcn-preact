@@ -4,8 +4,14 @@ import { mergeObjects } from "../internals/mergeObjects";
 import type { BaseUIEvent, ElementType, WithBaseUIEvent } from "../internals/types";
 
 type PropsOf<T extends ElementType> = WithBaseUIEvent<ComponentProps<T>>;
-type InputProps<T extends ElementType> = PropsOf<T> | ((otherProps: PropsOf<T>) => PropsOf<T>) | undefined;
+
+type InputProps<T extends ElementType> =
+  | PropsOf<T>
+  | ((otherProps: PropsOf<T>) => PropsOf<T>)
+  | undefined;
+
 type AnyProps = Record<string, any>;
+
 type Handler = (...args: unknown[]) => unknown;
 
 const EMPTY_PROPS: AnyProps = {};
@@ -33,10 +39,23 @@ export function mergeProps<T extends ElementType>(
   }
 
   let merged = createInitialMergedProps(a);
-  if (b) merged = mergeInto(merged, b);
-  if (c) merged = mergeInto(merged, c);
-  if (d) merged = mergeInto(merged, d);
-  if (e) merged = mergeInto(merged, e);
+
+  if (b) {
+    merged = mergeInto(merged, b);
+  }
+
+  if (c) {
+    merged = mergeInto(merged, c);
+  }
+
+  if (d) {
+    merged = mergeInto(merged, d);
+  }
+
+  if (e) {
+    merged = mergeInto(merged, e);
+  }
+
   return merged as PropsOf<T>;
 }
 
@@ -45,14 +64,17 @@ export function mergePropsN<T extends ElementType>(props: InputProps<T>[]): Prop
   if (props.length === 0) {
     return EMPTY_PROPS as PropsOf<T>;
   }
+
   if (props.length === 1) {
     return createInitialMergedProps(props[0]) as PropsOf<T>;
   }
 
   let merged = createInitialMergedProps(props[0]);
+
   for (let i = 1; i < props.length; i += 1) {
     merged = mergeInto(merged, props[i]);
   }
+
   return merged as PropsOf<T>;
 }
 
@@ -60,6 +82,7 @@ function createInitialMergedProps(inputProps: unknown): AnyProps {
   if (isPropsGetter(inputProps)) {
     return { ...resolvePropsGetter(inputProps, EMPTY_PROPS) };
   }
+
   return copyInitialProps(inputProps as AnyProps | undefined);
 }
 
@@ -67,17 +90,21 @@ function mergeInto(merged: AnyProps, inputProps: unknown): AnyProps {
   if (isPropsGetter(inputProps)) {
     return resolvePropsGetter(inputProps, merged);
   }
+
   return mutablyMergeInto(merged, inputProps as AnyProps | undefined);
 }
 
 function copyInitialProps(inputProps: AnyProps | undefined): AnyProps {
   const copiedProps: AnyProps = { ...inputProps };
+
   for (const propName in copiedProps) {
     const propValue = copiedProps[propName];
+
     if (isEventHandler(propName, propValue)) {
       copiedProps[propName] = wrapEventHandler(propValue);
     }
   }
+
   return copiedProps;
 }
 
@@ -89,6 +116,7 @@ function mutablyMergeInto(mergedProps: AnyProps, externalProps: AnyProps | undef
 
   for (const propName in externalProps) {
     const externalPropValue = externalProps[propName];
+
     switch (propName) {
       case "style":
         mergedProps[propName] = mergeObjects(mergedProps.style, externalPropValue);
@@ -129,6 +157,7 @@ function resolvePropsGetter(inputProps: unknown, previousProps: AnyProps): AnyPr
   if (isPropsGetter(inputProps)) {
     return inputProps(previousProps);
   }
+
   return (inputProps as AnyProps | undefined) ?? EMPTY_PROPS;
 }
 
@@ -136,18 +165,22 @@ function mergeEventHandlers(ourHandler: Handler | undefined, theirHandler: Handl
   if (!theirHandler) {
     return ourHandler;
   }
+
   if (!ourHandler) {
     return wrapEventHandler(theirHandler);
   }
 
   return (...args: unknown[]) => {
     const event = args[0];
+
     if (isPreventableEvent(event)) {
       makeEventPreventable(event);
       const result = theirHandler(...args);
+
       if (!event.baseUIHandlerPrevented) {
         ourHandler(...args);
       }
+
       return result;
     }
 
@@ -161,11 +194,14 @@ function wrapEventHandler(handler: Handler | undefined) {
   if (!handler) {
     return handler;
   }
+
   return (...args: unknown[]) => {
     const event = args[0];
+
     if (isPreventableEvent(event)) {
       makeEventPreventable(event);
     }
+
     return handler(...args);
   };
 }
@@ -178,13 +214,18 @@ export function makeEventPreventable<T extends Event>(event: T): BaseUIEvent<T> 
   return baseUIEvent;
 }
 
-export function mergeClassNames(ourClassName: string | undefined, theirClassName: string | undefined) {
+export function mergeClassNames(
+  ourClassName: string | undefined,
+  theirClassName: string | undefined,
+) {
   if (theirClassName) {
     if (ourClassName) {
       return theirClassName + " " + ourClassName;
     }
+
     return theirClassName;
   }
+
   return ourClassName;
 }
 

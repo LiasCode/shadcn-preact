@@ -32,10 +32,17 @@ export function QuestionnaireMultiple() {
   }
 
   return (
-    <Questionnaire className="mx-auto max-w-md" items={items} shortcuts="letters" onSubmit={handleSubmit}>
+    <Questionnaire
+      className="mx-auto max-w-md"
+      items={items}
+      shortcuts="letters"
+      onSubmit={handleSubmit}
+    >
       <QuestionnaireItem name="context" multiple required>
         <QuestionnaireTitle>What context should the agent inspect?</QuestionnaireTitle>
-        <QuestionnaireDescription>Select every source that may affect the implementation.</QuestionnaireDescription>
+        <QuestionnaireDescription>
+          Select every source that may affect the implementation.
+        </QuestionnaireDescription>
         <QuestionnaireChoices>
           <QuestionnaireChoice value="source">Relevant source files</QuestionnaireChoice>
           <QuestionnaireChoice value="tests">Existing tests</QuestionnaireChoice>

@@ -1,6 +1,10 @@
 import { useContext, useRef } from "preact/hooks";
 
-import { FieldRootContext, fieldValidityMapping, type FieldValidityData } from "../../internals/FieldRootContext";
+import {
+  FieldRootContext,
+  fieldValidityMapping,
+  type FieldValidityData,
+} from "../../internals/FieldRootContext";
 import { useFieldLabelScope } from "../../internals/LabelableContext";
 import type { BaseUIComponentProps } from "../../internals/types";
 import { useBaseUiId } from "../../internals/useId";
@@ -11,29 +15,52 @@ import { useTransitionStatus, type TransitionStatus } from "../../internals/useT
 import type { FieldControlState } from "../control/FieldControl";
 
 export type FieldErrorState = FieldControlState & { transitionStatus: TransitionStatus };
+
 export interface FieldErrorProps extends BaseUIComponentProps<"div", FieldErrorState> {
   match?: boolean | keyof FieldValidityData["state"];
 }
+
 export function FieldError(props: FieldErrorProps) {
-  const { ref, id: idProp, match, render: _render, className: _className, style: _style, ...elementProps } = props;
+  const {
+    ref,
+    id: idProp,
+    match,
+    render: _render,
+    className: _className,
+    style: _style,
+    ...elementProps
+  } = props;
   const field = useContext(FieldRootContext);
-  if (!field) throw new Error("Field.Error requires Field.Root.");
+
+  if (!field) {
+    throw new Error("Field.Error requires Field.Root.");
+  }
+
   const scope = useFieldLabelScope()!;
   const id = useBaseUiId(idProp);
   const open =
     match === true ||
     (!scope.state.disabled &&
-      (typeof match === "string" ? Boolean(field.validity.state[match]) : field.state.valid === false));
+      (typeof match === "string"
+        ? Boolean(field.validity.state[match])
+        : field.state.valid === false));
   const { mounted, setMounted, transitionStatus } = useTransitionStatus(open);
   const errorRef = useRef<HTMLElement | null>(null);
   const lastMessage = useRef<ReturnType<typeof ErrorMessage>>(null);
-  if (open) lastMessage.current = ErrorMessage(field.validity.errors, field.validity.error);
+
+  if (open) {
+    lastMessage.current = ErrorMessage(field.validity.errors, field.validity.error);
+  }
+
   useIsoLayoutEffect(() => (open ? scope.message(id) : undefined), [open, scope.message, id]);
+
   useOpenChangeComplete({
     open,
     ref: errorRef,
     onComplete: () => {
-      if (!open) setMounted(false);
+      if (!open) {
+        setMounted(false);
+      }
     },
   });
   return useRenderElement("div", props, {
@@ -52,8 +79,9 @@ export function FieldError(props: FieldErrorProps) {
     },
   });
 }
+
 function ErrorMessage(errors: string[], error: string) {
-  if (errors.length > 1)
+  if (errors.length > 1) {
     return (
       <ul>
         {errors.map((message) => (
@@ -61,9 +89,13 @@ function ErrorMessage(errors: string[], error: string) {
         ))}
       </ul>
     );
+  }
+
   return errors[0] ?? error;
 }
+
 export declare namespace FieldError {
   type Props = FieldErrorProps;
+
   type State = FieldErrorState;
 }

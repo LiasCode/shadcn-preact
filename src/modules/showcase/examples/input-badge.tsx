@@ -11,7 +11,11 @@ export function InputBadge() {
           Beta
         </Badge>
       </FieldLabel>
-      <Input id="input-badge-input-badge" type="url" placeholder="https://api.example.com/webhook" />
+      <Input
+        id="input-badge-input-badge"
+        type="url"
+        placeholder="https://api.example.com/webhook"
+      />
     </Field>
   );
 }

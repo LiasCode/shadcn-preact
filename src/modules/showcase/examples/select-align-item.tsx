@@ -1,5 +1,12 @@
 import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel } from "@registry/ui/field";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@registry/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@registry/ui/select";
 import { Switch } from "@registry/ui/switch";
 import * as React from "preact/compat";
 

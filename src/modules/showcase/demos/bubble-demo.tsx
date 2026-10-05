@@ -23,6 +23,7 @@ const examples = [
   ["Tooltip", Example8],
   ["Variants", Example9],
 ] as const;
+
 export function BubbleDemo() {
   const [selected, setSelected] = useState(2);
   const [, Example] = examples[selected]!;

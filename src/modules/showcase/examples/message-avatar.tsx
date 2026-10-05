@@ -45,8 +45,8 @@ export function MessageAvatarDemo() {
             </Bubble>
             <Bubble variant="muted">
               <BubbleContent>
-                Something went wrong with the build. The libraries are not installed correctly. Try running the build
-                again.
+                Something went wrong with the build. The libraries are not installed correctly. Try
+                running the build again.
               </BubbleContent>
             </Bubble>
           </BubbleGroup>

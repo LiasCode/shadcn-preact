@@ -9,6 +9,7 @@ import { ComboxboxInputGroup as Example7 } from "../examples/combobox-input-grou
 import { ComboboxInvalid as Example8 } from "../examples/combobox-invalid";
 import { ComboboxMultiple as Example9 } from "../examples/combobox-multiple";
 import { ComboboxPopup as Example10 } from "../examples/combobox-popup";
+
 export function ComboboxDemo() {
   return (
     <div className="relative flex w-full min-w-0 flex-wrap items-start gap-8">

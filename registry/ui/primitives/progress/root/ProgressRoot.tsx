@@ -4,9 +4,14 @@ import { formatNumberValue } from "../../internals/formatNumber";
 import type { BaseUIComponentProps } from "../../internals/types";
 import { useRenderElement } from "../../internals/useRenderElement";
 import { visuallyHidden } from "../../internals/visuallyHidden";
-import { ProgressRootContext, type ProgressRootState, type ProgressStatus } from "./ProgressRootContext";
+import {
+  ProgressRootContext,
+  type ProgressRootState,
+  type ProgressStatus,
+} from "./ProgressRootContext";
 import { progressStateAttributesMapping } from "./stateAttributesMapping";
 export type { ProgressRootState, ProgressStatus } from "./ProgressRootContext";
+
 export interface ProgressRootProps extends BaseUIComponentProps<"div", ProgressRootState> {
   format?: Intl.NumberFormatOptions;
   getAriaValueText?: (formattedValue: string | null, value: number | null) => string;
@@ -15,9 +20,11 @@ export interface ProgressRootProps extends BaseUIComponentProps<"div", ProgressR
   min?: number;
   value: number | null;
 }
+
 function getDefaultAriaValueText(formattedValue: string | null, value: number | null) {
   return value == null ? "indeterminate progress" : formattedValue || `${value}%`;
 }
+
 export function ProgressRoot(componentProps: ProgressRootProps) {
   const {
     ref,
@@ -69,9 +76,13 @@ export function ProgressRoot(componentProps: ProgressRootProps) {
     ],
     stateAttributesMapping: progressStateAttributesMapping,
   });
-  return <ProgressRootContext.Provider value={contextValue}>{element}</ProgressRootContext.Provider>;
+  return (
+    <ProgressRootContext.Provider value={contextValue}>{element}</ProgressRootContext.Provider>
+  );
 }
+
 export declare namespace ProgressRoot {
   type Props = ProgressRootProps;
+
   type State = ProgressRootState;
 }

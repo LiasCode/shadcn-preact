@@ -1,5 +1,12 @@
 import { Bubble, BubbleContent } from "@registry/ui/bubble";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import { Message, MessageContent } from "@registry/ui/message";
 import {
   MessageScroller,
@@ -71,6 +78,7 @@ export function MessageScrollerOpeningPosition() {
             onValueChange={(value) => {
               if (value === "start" || value === "end" || value === "last-anchor") {
                 setPosition(value);
+
                 setPositionKey((key) => key + 1);
               }
             }}
@@ -134,7 +142,11 @@ function OpeningPositionScroller({
             const isUserMessage = message.role === "user";
 
             return (
-              <MessageScrollerItem key={message.id} messageId={message.id} scrollAnchor={isUserMessage}>
+              <MessageScrollerItem
+                key={message.id}
+                messageId={message.id}
+                scrollAnchor={isUserMessage}
+              >
                 <Message align={isUserMessage ? "end" : "start"}>
                   <MessageContent>
                     <Bubble variant={isUserMessage ? "muted" : "ghost"}>

@@ -4,15 +4,20 @@ export class PopupHandle<Payload = unknown> {
   context: OverlayContextValue | null = null;
   triggers = new Map<string, { element: HTMLElement; payload: Payload | undefined }>();
   listeners = new Set<() => void>();
+
   subscribe(listener: () => void) {
     this.listeners.add(listener);
     return () => {
       this.listeners.delete(listener);
     };
   }
+
   notify() {
-    for (const listener of this.listeners) listener();
+    for (const listener of this.listeners) {
+      listener();
+    }
   }
+
   change(
     open: boolean,
     event: Event,

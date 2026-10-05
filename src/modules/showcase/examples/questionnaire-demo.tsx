@@ -109,11 +109,16 @@ export function QuestionnaireDemo() {
             {question.choices.map((choice) => (
               <QuestionnaireChoice key={choice.value} value={choice.value}>
                 <span className="font-medium">{choice.label}</span>
-                {"description" in choice ? <span className="text-muted-foreground">{choice.description}</span> : null}
+                {"description" in choice ? (
+                  <span className="text-muted-foreground">{choice.description}</span>
+                ) : null}
               </QuestionnaireChoice>
             ))}
             {"input" in question ? (
-              <QuestionnaireInput aria-label={question.input.label} placeholder={question.input.placeholder} />
+              <QuestionnaireInput
+                aria-label={question.input.label}
+                placeholder={question.input.placeholder}
+              />
             ) : null}
           </QuestionnaireChoices>
           <QuestionnaireError />

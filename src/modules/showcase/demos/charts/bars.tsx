@@ -1,5 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@registry/ui/card";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@registry/ui/chart";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@registry/ui/chart";
 import { useMemo, useState } from "preact/hooks";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 

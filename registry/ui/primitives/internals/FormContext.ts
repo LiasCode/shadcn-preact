@@ -1,6 +1,7 @@
 import { createContext } from "preact";
 
 export type ValidationMode = "onSubmit" | "onBlur" | "onChange";
+
 export interface RegisteredField {
   name?: string;
   getValue: () => unknown;
@@ -8,6 +9,7 @@ export interface RegisteredField {
   isInvalid: () => boolean;
   focus: () => void;
 }
+
 export interface FormContextValue {
   fields: Map<symbol, RegisteredField>;
   submitted: { current: boolean };
@@ -15,4 +17,5 @@ export interface FormContextValue {
   errors: Record<string, string | string[]>;
   clearError: (name: string) => void;
 }
+
 export const FormContext = createContext<FormContextValue | null>(null);

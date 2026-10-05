@@ -13,7 +13,10 @@ export function useCompositeListItem() {
     setElement(node);
   });
   useIsoLayoutEffect(() => {
-    if (element) return context.register(element);
+    if (element) {
+      return context.register(element);
+    }
+
     return undefined;
   }, [context.register, element]);
   return { ref, elementRef, index: context.elements.indexOf(element!) };

@@ -10,7 +10,14 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@registry/ui/command";
-import { CalculatorIcon, CalendarIcon, CreditCardIcon, SettingsIcon, SmileIcon, UserIcon } from "lucide-preact";
+import {
+  CalculatorIcon,
+  CalendarIcon,
+  CreditCardIcon,
+  SettingsIcon,
+  SmileIcon,
+  UserIcon,
+} from "lucide-preact";
 import * as React from "preact/compat";
 
 export function CommandWithGroups() {

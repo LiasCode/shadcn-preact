@@ -16,10 +16,15 @@ export function InputGroupTextareaExamples() {
         <FieldLabel htmlFor="input-group-textarea-examples-textarea-header-footer-12">
           Default Textarea (No Input Group)
         </FieldLabel>
-        <Textarea id="input-group-textarea-examples-textarea-header-footer-12" placeholder="Enter your text here..." />
+        <Textarea
+          id="input-group-textarea-examples-textarea-header-footer-12"
+          placeholder="Enter your text here..."
+        />
       </Field>
       <Field>
-        <FieldLabel htmlFor="input-group-textarea-examples-textarea-header-footer-13">Input Group</FieldLabel>
+        <FieldLabel htmlFor="input-group-textarea-examples-textarea-header-footer-13">
+          Input Group
+        </FieldLabel>
         <InputGroup>
           <InputGroupTextarea
             id="input-group-textarea-examples-textarea-header-footer-13"
@@ -29,7 +34,9 @@ export function InputGroupTextareaExamples() {
         <FieldDescription>This is a description of the input group.</FieldDescription>
       </Field>
       <Field data-invalid="true">
-        <FieldLabel htmlFor="input-group-textarea-examples-textarea-header-footer-14">Invalid</FieldLabel>
+        <FieldLabel htmlFor="input-group-textarea-examples-textarea-header-footer-14">
+          Invalid
+        </FieldLabel>
         <InputGroup>
           <InputGroupTextarea
             id="input-group-textarea-examples-textarea-header-footer-14"
@@ -40,7 +47,9 @@ export function InputGroupTextareaExamples() {
         <FieldDescription>This is a description of the input group.</FieldDescription>
       </Field>
       <Field data-disabled="true">
-        <FieldLabel htmlFor="input-group-textarea-examples-textarea-header-footer-15">Disabled</FieldLabel>
+        <FieldLabel htmlFor="input-group-textarea-examples-textarea-header-footer-15">
+          Disabled
+        </FieldLabel>
         <InputGroup>
           <InputGroupTextarea
             id="input-group-textarea-examples-textarea-header-footer-15"
@@ -51,7 +60,9 @@ export function InputGroupTextareaExamples() {
         <FieldDescription>This is a description of the input group.</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel htmlFor="input-group-textarea-examples-prompt-31">Addon (block-start)</FieldLabel>
+        <FieldLabel htmlFor="input-group-textarea-examples-prompt-31">
+          Addon (block-start)
+        </FieldLabel>
         <InputGroup>
           <InputGroupTextarea id="input-group-textarea-examples-prompt-31" />
           <InputGroupAddon align="block-start">
@@ -62,7 +73,9 @@ export function InputGroupTextareaExamples() {
         <FieldDescription>This is a description of the input group.</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel htmlFor="input-group-textarea-examples-textarea-header-footer-30">Addon (block-end)</FieldLabel>
+        <FieldLabel htmlFor="input-group-textarea-examples-textarea-header-footer-30">
+          Addon (block-end)
+        </FieldLabel>
         <InputGroup>
           <InputGroupTextarea
             id="input-group-textarea-examples-textarea-header-footer-30"
@@ -78,7 +91,9 @@ export function InputGroupTextareaExamples() {
         </InputGroup>
       </Field>
       <Field>
-        <FieldLabel htmlFor="input-group-textarea-examples-textarea-comment-31">Addon (Buttons)</FieldLabel>
+        <FieldLabel htmlFor="input-group-textarea-examples-textarea-comment-31">
+          Addon (Buttons)
+        </FieldLabel>
         <InputGroup>
           <InputGroupTextarea
             id="input-group-textarea-examples-textarea-comment-31"
@@ -96,7 +111,9 @@ export function InputGroupTextareaExamples() {
         </InputGroup>
       </Field>
       <Field>
-        <FieldLabel htmlFor="input-group-textarea-examples-textarea-code-32">Code Editor</FieldLabel>
+        <FieldLabel htmlFor="input-group-textarea-examples-textarea-code-32">
+          Code Editor
+        </FieldLabel>
         <InputGroup>
           <InputGroupTextarea
             id="input-group-textarea-examples-textarea-code-32"

@@ -4,6 +4,7 @@ import type { UseRenderComponentProps } from "../internals/ShadcnUseRender";
 import type { ComponentProps } from "../internals/types";
 
 type QuestionnaireItemStatus = "unanswered" | "answered" | "skipped";
+
 type QuestionnaireShortcutMode = "letters" | "numbers";
 
 type QuestionnaireChoiceDefinition = {
@@ -55,13 +56,19 @@ type QuestionnaireItemProps = Omit<ComponentProps<"fieldset">, "name" | "value">
 };
 
 type QuestionnaireTitleProps = UseRenderComponentProps<"legend">;
+
 type QuestionnaireDescriptionProps = UseRenderComponentProps<"p">;
+
 type QuestionnaireChoicesState = {
   shortcuts: QuestionnaireShortcutMode | null;
 };
 
 type QuestionnaireChoicesProps = UseRenderComponentProps<"div", QuestionnaireChoicesState>;
-type QuestionnaireErrorProps = UseRenderComponentProps<"p", Pick<QuestionnaireItemState, "invalid">>;
+
+type QuestionnaireErrorProps = UseRenderComponentProps<
+  "p",
+  Pick<QuestionnaireItemState, "invalid">
+>;
 
 type QuestionnaireChoiceState = {
   checked: boolean;
@@ -76,7 +83,10 @@ type QuestionnaireChoiceContextValue = {
   state: QuestionnaireChoiceState;
 };
 
-type QuestionnaireChoiceProps = Omit<UseRenderComponentProps<"label", QuestionnaireChoiceState>, "onChange"> & {
+type QuestionnaireChoiceProps = Omit<
+  UseRenderComponentProps<"label", QuestionnaireChoiceState>,
+  "onChange"
+> & {
   checked?: boolean;
   defaultChecked?: boolean;
   disabled?: boolean;
@@ -93,7 +103,10 @@ type QuestionnaireChoiceLabelProps = UseRenderComponentProps<"span">;
 
 type QuestionnaireChoiceShortcutState = Pick<QuestionnaireChoiceState, "shortcut">;
 
-type QuestionnaireChoiceShortcutProps = UseRenderComponentProps<"span", QuestionnaireChoiceShortcutState>;
+type QuestionnaireChoiceShortcutProps = UseRenderComponentProps<
+  "span",
+  QuestionnaireChoiceShortcutState
+>;
 
 type QuestionnaireInputState = {
   disabled: boolean;

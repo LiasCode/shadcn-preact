@@ -101,9 +101,11 @@ function createFixture(options: {
   const spacer = document.createElement("div");
 
   viewport.appendChild(content);
+
   content.appendChild(spacer);
 
   setRect(viewport, { top: viewportTop, height: options.viewportHeight });
+
   setClientHeight(viewport, options.viewportHeight);
   viewport.scrollTop = scrollTop;
 
@@ -130,6 +132,7 @@ function createFixture(options: {
     // Item rects are in client coordinates: viewport-relative top shifted by the
     // viewport's own top so getElementTop adds back scrollTop correctly.
     setRect(element, { top: viewportTop + item.top, height: item.height });
+
     content.insertBefore(element, spacer);
 
     return element;

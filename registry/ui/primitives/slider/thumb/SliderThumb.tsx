@@ -17,6 +17,7 @@ import { useSliderRootContext } from "../root/SliderRootContext";
 import { sliderStateAttributesMapping } from "../root/stateAttributesMapping";
 import { roundValueToStep, getDecimalPrecision } from "../utils/roundValueToStep";
 import { script } from "./prehydrationScript.min";
+
 export interface SliderThumbProps extends Omit<
   BaseUIComponentProps<"div", SliderRootState>,
   "onBlur" | "onFocus" | "onKeyDown"
@@ -30,6 +31,7 @@ export interface SliderThumbProps extends Omit<
   onFocus?: HTMLAttributes<HTMLInputElement>["onFocus"];
   onKeyDown?: HTMLAttributes<HTMLInputElement>["onKeyDown"];
 }
+
 export function SliderThumb(componentProps: SliderThumbProps) {
   const {
     ref,
@@ -71,46 +73,79 @@ export function SliderThumb(componentProps: SliderThumbProps) {
   const vertical = orientation === "vertical";
   const update = useStableCallback(() => {
     const thumb = thumbRef.current;
-    if (!thumb || index < 0 || context.alignment === "center") return;
+
+    if (!thumb || index < 0 || context.alignment === "center") {
+      return;
+    }
+
     const control = context.controlRef.current;
-    if (!control) return;
-    const thumbSize = vertical ? thumb.getBoundingClientRect().height : thumb.getBoundingClientRect().width;
-    const controlSize = vertical ? control.getBoundingClientRect().height : control.getBoundingClientRect().width;
+
+    if (!control) {
+      return;
+    }
+
+    const thumbSize = vertical
+      ? thumb.getBoundingClientRect().height
+      : thumb.getBoundingClientRect().width;
+    const controlSize = vertical
+      ? control.getBoundingClientRect().height
+      : control.getBoundingClientRect().width;
     const percent = ((value - min) / (max - min)) * 100;
-    const position = ((thumbSize / 2 + ((controlSize - thumbSize) * percent) / 100) / controlSize) * 100;
+    const position =
+      ((thumbSize / 2 + ((controlSize - thumbSize) * percent) / 100) / controlSize) * 100;
     context.setPosition(index, Number.isFinite(position) ? position : undefined);
   });
   useIsoLayoutEffect(() => {
     const thumb = thumbRef.current;
-    if (!thumb || index < 0) return undefined;
+
+    if (!thumb || index < 0) {
+      return undefined;
+    }
+
     context.thumbs.current.set(index, thumb);
     const input = inputRef.current;
     setLabelledBy(
       [...(input?.labels ?? [])]
         .map((label, i) => {
-          if (!label.id) label.id = `${id}-label-${i}`;
+          if (!label.id) {
+            label.id = `${id}-label-${i}`;
+          }
+
           return label.id;
         })
         .join(" ") || undefined,
     );
     const observer =
-      typeof window !== "undefined" && typeof ResizeObserver === "function" && context.alignment !== "center"
+      typeof window !== "undefined" &&
+      typeof ResizeObserver === "function" &&
+      context.alignment !== "center"
         ? new ResizeObserver(update)
         : undefined;
     observer?.observe(thumb);
-    if (context.controlRef.current) observer?.observe(context.controlRef.current);
+
+    if (context.controlRef.current) {
+      observer?.observe(context.controlRef.current);
+    }
+
     const ownerForm = input?.form;
+
     const reset = (event: Event) =>
       setTimeout(() => {
-        if (!event.defaultPrevented) context.reset();
+        if (!event.defaultPrevented) {
+          context.reset();
+        }
       });
+
     ownerForm?.addEventListener("reset", reset);
     return () => {
       context.thumbs.current.delete(index);
+
       observer?.disconnect();
+
       ownerForm?.removeEventListener("reset", reset);
     };
   }, [index, context.thumbs, context.reset, id, context.alignment, context.controlRef, update]);
+
   useIsoLayoutEffect(() => {
     update();
   }, [value, min, max, vertical, index, context.alignment, update]);
@@ -119,7 +154,12 @@ export function SliderThumb(componentProps: SliderThumbProps) {
   const inset = context.alignment !== "center";
   const style: CSSProperties = {
     position: "absolute",
-    ...(inset ? { "--position": `${position ?? 0}%`, visibility: position === undefined ? "hidden" : undefined } : {}),
+    ...(inset
+      ? {
+          "--position": `${position ?? 0}%`,
+          visibility: position === undefined ? "hidden" : undefined,
+        }
+      : {}),
     [vertical ? "bottom" : "insetInlineStart"]: inset ? "var(--position)" : `${percent}%`,
     [vertical ? "left" : "top"]: "50%",
     translate: `${vertical || direction !== "rtl" ? -50 : 50}% ${vertical ? 50 : -50}%`,
@@ -152,7 +192,12 @@ export function SliderThumb(componentProps: SliderThumbProps) {
       "aria-orientation": orientation,
       "aria-valuenow": value,
       "aria-valuetext": valueText,
-      style: { ...visuallyHidden, width: "100%", height: "100%", writingMode: vertical ? "vertical-lr" : undefined },
+      style: {
+        ...visuallyHidden,
+        width: "100%",
+        height: "100%",
+        writingMode: vertical ? "vertical-lr" : undefined,
+      },
       tabIndex,
       onFocus() {
         context.setActive(index);
@@ -162,16 +207,35 @@ export function SliderThumb(componentProps: SliderThumbProps) {
       },
       onInput(event) {
         const next = [...context.valuesRef.current];
-        next[index] = clamp(event.currentTarget.valueAsNumber, values[index - 1] ?? min, values[index + 1] ?? max);
-        if (next.some((entry, i) => i > 0 && entry - next[i - 1]! < step * minStepsBetweenValues - 1e-7)) return;
-        if (context.change(next, index, "input-change", event)) context.commit("input-change", event);
+        next[index] = clamp(
+          event.currentTarget.valueAsNumber,
+          values[index - 1] ?? min,
+          values[index + 1] ?? max,
+        );
+
+        if (
+          next.some(
+            (entry, i) => i > 0 && entry - next[i - 1]! < step * minStepsBetweenValues - 1e-7,
+          )
+        ) {
+          return;
+        }
+
+        if (context.change(next, index, "input-change", event)) {
+          context.commit("input-change", event);
+        }
+
         event.currentTarget.value = String(context.valuesRef.current[index] ?? value);
       },
       onKeyDown(event) {
-        if (disabled || event.defaultPrevented) return;
+        if (disabled || event.defaultPrevented) {
+          return;
+        }
+
         const increment = event.shiftKey ? context.largeStep : step;
         const rounded = roundValueToStep(value, step, min);
         let nextValue: number;
+
         switch (event.key) {
           case "ArrowUp":
             nextValue = rounded + increment;
@@ -192,25 +256,45 @@ export function SliderThumb(componentProps: SliderThumbProps) {
             nextValue = rounded - context.largeStep;
             break;
           case "Home":
-            nextValue = (values[index - 1] ?? min - step * minStepsBetweenValues) + step * minStepsBetweenValues;
+            nextValue =
+              (values[index - 1] ?? min - step * minStepsBetweenValues) +
+              step * minStepsBetweenValues;
             break;
           case "End":
-            nextValue = (values[index + 1] ?? max + step * minStepsBetweenValues) - step * minStepsBetweenValues;
+            nextValue =
+              (values[index + 1] ?? max + step * minStepsBetweenValues) -
+              step * minStepsBetweenValues;
             break;
           default:
             return;
         }
+
         nextValue = Number(
           nextValue.toFixed(
-            Math.max(getDecimalPrecision(value), getDecimalPrecision(increment), getDecimalPrecision(min)),
+            Math.max(
+              getDecimalPrecision(value),
+              getDecimalPrecision(increment),
+              getDecimalPrecision(min),
+            ),
           ),
         );
         const next = [...context.valuesRef.current];
         next[index] = clamp(nextValue, values[index - 1] ?? min, values[index + 1] ?? max);
         event.preventDefault();
+
         event.stopPropagation();
-        if (next.some((entry, i) => i > 0 && entry - next[i - 1]! < step * minStepsBetweenValues - 1e-7)) return;
-        if (context.change(next, index, "keyboard", event)) context.commit("keyboard", event);
+
+        if (
+          next.some(
+            (entry, i) => i > 0 && entry - next[i - 1]! < step * minStepsBetweenValues - 1e-7,
+          )
+        ) {
+          return;
+        }
+
+        if (context.change(next, index, "keyboard", event)) {
+          context.commit("keyboard", event);
+        }
       },
     },
     { onFocus, onBlur, onKeyDown } as never,
@@ -238,7 +322,9 @@ export function SliderThumb(componentProps: SliderThumbProps) {
     stateAttributesMapping: sliderStateAttributesMapping,
   });
 }
+
 export declare namespace SliderThumb {
   type Props = SliderThumbProps;
+
   type State = SliderRootState;
 }

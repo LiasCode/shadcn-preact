@@ -12,7 +12,9 @@ export function PopoverBasic() {
   return (
     <>
       <Popover>
-        <PopoverTrigger render={<Button variant="outline" className="w-fit" />}>Open Popover</PopoverTrigger>
+        <PopoverTrigger render={<Button variant="outline" className="w-fit" />}>
+          Open Popover
+        </PopoverTrigger>
         <PopoverContent align="start">
           <PopoverHeader>
             <PopoverTitle>Dimensions</PopoverTitle>

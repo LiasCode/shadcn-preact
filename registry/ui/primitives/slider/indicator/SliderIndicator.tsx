@@ -5,9 +5,17 @@ import { useRenderElement } from "../../internals/useRenderElement";
 import type { SliderRootState } from "../root/SliderRoot";
 import { useSliderRootContext } from "../root/SliderRootContext";
 import { sliderStateAttributesMapping } from "../root/stateAttributesMapping";
+
 export type SliderIndicatorProps = BaseUIComponentProps<"div", SliderRootState>;
+
 export function SliderIndicator(componentProps: SliderIndicatorProps) {
-  const { ref, render: _render, className: _className, style: _style, ...elementProps } = componentProps;
+  const {
+    ref,
+    render: _render,
+    className: _className,
+    style: _style,
+    ...elementProps
+  } = componentProps;
   const context = useSliderRootContext();
   const { min, max, values, orientation } = context.state;
   const vertical = orientation === "vertical";
@@ -27,7 +35,11 @@ export function SliderIndicator(componentProps: SliderIndicatorProps) {
           visibility: start === undefined || (range && end === undefined) ? "hidden" : undefined,
         }
       : {}),
-    [vertical ? "bottom" : "insetInlineStart"]: range ? (inset ? "var(--start-position)" : `${start}%`) : 0,
+    [vertical ? "bottom" : "insetInlineStart"]: range
+      ? inset
+        ? "var(--start-position)"
+        : `${start}%`
+      : 0,
     [vertical ? "height" : "width"]: inset
       ? range
         ? "var(--relative-size)"
@@ -37,11 +49,16 @@ export function SliderIndicator(componentProps: SliderIndicatorProps) {
   return useRenderElement("div", componentProps, {
     state: context.state,
     ref,
-    props: [{ style, "data-base-ui-slider-indicator": context.alignment === "edge" ? "" : undefined }, elementProps],
+    props: [
+      { style, "data-base-ui-slider-indicator": context.alignment === "edge" ? "" : undefined },
+      elementProps,
+    ],
     stateAttributesMapping: sliderStateAttributesMapping,
   });
 }
+
 export declare namespace SliderIndicator {
   type Props = SliderIndicatorProps;
+
   type State = SliderRootState;
 }

@@ -35,6 +35,7 @@ export function useButton(parameters: UseButtonParameters = {}) {
   });
   const updateDisabled = useCallback(() => {
     const element = elementRef.current;
+
     if (
       isButtonElement(element) &&
       composite &&
@@ -48,7 +49,8 @@ export function useButton(parameters: UseButtonParameters = {}) {
   useIsoLayoutEffect(updateDisabled, [updateDisabled]);
   const getButtonProps = useCallback(
     (externalProps: HTMLProps<HTMLElement> = {}) => {
-      const { onClick, onMouseDown, onKeyDown, onKeyUp, onPointerDown, ...otherExternalProps } = externalProps;
+      const { onClick, onMouseDown, onKeyDown, onKeyUp, onPointerDown, ...otherExternalProps } =
+        externalProps;
       return mergeProps<"button">(
         {
           onClick(event) {
@@ -56,23 +58,35 @@ export function useButton(parameters: UseButtonParameters = {}) {
               event.preventDefault();
               return;
             }
+
             onClick?.(event);
           },
           onMouseDown(event) {
-            if (!disabled) onMouseDown?.(event);
+            if (!disabled) {
+              onMouseDown?.(event);
+            }
           },
           onPointerDown(event) {
             if (disabled) {
               event.preventDefault();
               return;
             }
+
             onPointerDown?.(event);
           },
           onKeyDown(event) {
-            if (disabled) return;
+            if (disabled) {
+              return;
+            }
+
             makeEventPreventable(event);
+
             onKeyDown?.(event);
-            if (event.baseUIHandlerPrevented) return;
+
+            if (event.baseUIHandlerPrevented) {
+              return;
+            }
+
             const isCurrentTarget = event.target === event.currentTarget;
             const currentTarget = event.currentTarget;
             const isButton = isButtonElement(currentTarget);
@@ -81,28 +95,48 @@ export function useButton(parameters: UseButtonParameters = {}) {
             const isEnterKey = event.key === "Enter";
             const isSpaceKey = event.key === " ";
             const role = currentTarget.getAttribute("role");
-            const isTextNavigationRole = role?.startsWith("menuitem") || role === "option" || role === "gridcell";
+            const isTextNavigationRole =
+              role?.startsWith("menuitem") || role === "option" || role === "gridcell";
+
             if (isCurrentTarget && composite && isSpaceKey) {
-              if (event.defaultPrevented && isTextNavigationRole) return;
+              if (event.defaultPrevented && isTextNavigationRole) {
+                return;
+              }
+
               event.preventDefault();
+
               if (isLink || (isNativeButton && isButton)) {
                 currentTarget.click();
+
                 event.preventBaseUIHandler();
               } else if (shouldClick) {
                 onClick?.(event as never);
+
                 event.preventBaseUIHandler();
               }
+
               return;
             }
+
             if (shouldClick && !isNativeButton) {
-              if (isSpaceKey || isEnterKey) event.preventDefault();
-              if (isEnterKey) onClick?.(event as never);
+              if (isSpaceKey || isEnterKey) {
+                event.preventDefault();
+              }
+
+              if (isEnterKey) {
+                onClick?.(event as never);
+              }
             }
           },
           onKeyUp(event) {
-            if (disabled) return;
+            if (disabled) {
+              return;
+            }
+
             makeEventPreventable(event);
+
             onKeyUp?.(event);
+
             if (
               event.target === event.currentTarget &&
               isNativeButton &&
@@ -113,9 +147,19 @@ export function useButton(parameters: UseButtonParameters = {}) {
               event.preventDefault();
               return;
             }
-            if (event.baseUIHandlerPrevented) return;
-            if (event.target === event.currentTarget && !isNativeButton && !composite && event.key === " ")
+
+            if (event.baseUIHandlerPrevented) {
+              return;
+            }
+
+            if (
+              event.target === event.currentTarget &&
+              !isNativeButton &&
+              !composite &&
+              event.key === " "
+            ) {
               onClick?.(event as never);
+            }
           },
         },
         isNativeButton ? { type: "button" } : { role: "button" },
@@ -135,6 +179,7 @@ export function useButton(parameters: UseButtonParameters = {}) {
 function isButtonElement(element: HTMLElement | null): element is HTMLButtonElement {
   return element?.tagName === "BUTTON";
 }
+
 function isValidLinkElement(element: HTMLElement) {
   return element.tagName === "A" && Boolean((element as HTMLAnchorElement).href);
 }

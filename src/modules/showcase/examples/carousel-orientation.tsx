@@ -1,5 +1,11 @@
 import { Card, CardContent } from "@registry/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@registry/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@registry/ui/carousel";
 
 export default function CarouselOrientation() {
   return (

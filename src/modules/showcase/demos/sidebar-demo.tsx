@@ -27,6 +27,7 @@ const examples = [
   Example10,
   Example11,
 ];
+
 export function SidebarDemo() {
   const [selected, setSelected] = useState(0);
   const Example = examples[selected]!;

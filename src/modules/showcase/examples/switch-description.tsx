@@ -6,7 +6,9 @@ export function SwitchDescription() {
     <Field orientation="horizontal" className="max-w-sm">
       <FieldContent>
         <FieldLabel htmlFor="switch-description-switch-focus-mode">Share across devices</FieldLabel>
-        <FieldDescription>Focus is shared across devices, and turns off when you leave the app.</FieldDescription>
+        <FieldDescription>
+          Focus is shared across devices, and turns off when you leave the app.
+        </FieldDescription>
       </FieldContent>
       <Switch id="switch-description-switch-focus-mode" />
     </Field>

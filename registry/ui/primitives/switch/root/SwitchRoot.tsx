@@ -4,15 +4,21 @@ import { useCheckable, type CheckableParameters } from "../../internals/useCheck
 import { useRenderElement } from "../../internals/useRenderElement";
 import { stateAttributesMapping } from "../stateAttributesMapping";
 import { SwitchRootContext } from "./SwitchRootContext";
+
 export type SwitchRootState = Omit<CheckboxRootState, "indeterminate">;
+
 export interface SwitchRootProps
   extends
     NonNativeButtonProps,
     Omit<CheckableParameters, "indeterminate">,
-    Omit<BaseUIComponentProps<"span", SwitchRootState>, "onChange" | "value" | "ref" | keyof CheckableParameters> {
+    Omit<
+      BaseUIComponentProps<"span", SwitchRootState>,
+      "onChange" | "value" | "ref" | keyof CheckableParameters
+    > {
   ref?: ElementRef<HTMLElement>;
   uncheckedValue?: string;
 }
+
 export function SwitchRoot(componentProps: SwitchRootProps) {
   const {
     ref,
@@ -53,15 +59,25 @@ export function SwitchRoot(componentProps: SwitchRootProps) {
     <SwitchRootContext.Provider value={state}>
       {element}
       {!state.checked && inputProps.name && uncheckedValue !== undefined && (
-        <input type="hidden" name={inputProps.name} form={form} value={uncheckedValue} disabled={state.disabled} />
+        <input
+          type="hidden"
+          name={inputProps.name}
+          form={form}
+          value={uncheckedValue}
+          disabled={state.disabled}
+        />
       )}
       <input {...inputProps} />
     </SwitchRootContext.Provider>
   );
 }
+
 export declare namespace SwitchRoot {
   type Props = SwitchRootProps;
+
   type State = SwitchRootState;
+
   type ChangeEventReason = "none";
+
   type ChangeEventDetails = Parameters<NonNullable<CheckableParameters["onCheckedChange"]>>[1];
 }

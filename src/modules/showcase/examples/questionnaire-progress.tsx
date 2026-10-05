@@ -33,7 +33,12 @@ export function QuestionnaireProgressExample() {
   }
 
   return (
-    <Questionnaire className="mx-auto max-w-md" defaultItem="scope" items={items} onSubmit={handleSubmit}>
+    <Questionnaire
+      className="mx-auto max-w-md"
+      defaultItem="scope"
+      items={items}
+      onSubmit={handleSubmit}
+    >
       <QuestionnaireProgress
         className="w-full"
         render={(props, state) => (

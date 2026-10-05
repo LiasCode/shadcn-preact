@@ -13,9 +13,11 @@ function change(input: HTMLInputElement, value: string) {
   input.value = value;
   fire(input, new Event("input", { bubbles: true }));
 }
+
 function blur(input: HTMLInputElement) {
   fire(input, new FocusEvent("focusout", { bubbles: true }));
 }
+
 function submit(form: HTMLFormElement) {
   fire(form, new Event("submit", { bubbles: true, cancelable: true }));
 }
@@ -31,10 +33,15 @@ test("untouched required fields defer missing-value errors on blur, but submissi
   );
   const input = root.querySelector("input")!;
   blur(input);
+
   expect(input.hasAttribute("data-valid")).toBe(true);
+
   expect(input.hasAttribute("aria-invalid")).toBe(false);
+
   submit(root.querySelector("form")!);
+
   expect(input.getAttribute("aria-invalid")).toBe("true");
+
   expect(document.activeElement).toBe(input);
 });
 
@@ -46,9 +53,13 @@ test("returning to the initial empty value retains interaction history for requi
   );
   const input = root.querySelector("input")!;
   change(input, "edited");
+
   change(input, "");
+
   expect(input.hasAttribute("data-dirty")).toBe(false);
+
   blur(input);
+
   expect(input.hasAttribute("data-invalid")).toBe(true);
 });
 
@@ -63,11 +74,17 @@ for (const validationMode of ["onBlur", "onSubmit"] as const) {
     );
     const input = root.querySelector("input")!;
     act(() => actions.current!.validate());
+
     expect(input.hasAttribute("data-invalid")).toBe(true);
+
     change(input, "partial");
+
     expect(input.validity.typeMismatch).toBe(true);
+
     expect(input.hasAttribute("data-valid")).toBe(true);
+
     act(() => actions.current!.validate());
+
     expect(input.hasAttribute("data-invalid")).toBe(true);
   });
 }
@@ -88,13 +105,21 @@ test("editing clears custom errors onBlur without calling the validator until th
   );
   const input = root.querySelector("input")!;
   change(input, "taken");
+
   blur(input);
+
   expect(input.validationMessage).toBe("Taken");
+
   change(input, "available");
+
   expect(input.validationMessage).toBe("");
+
   expect(input.hasAttribute("data-valid")).toBe(true);
+
   expect(calls).toEqual(["taken"]);
+
   blur(input);
+
   expect(calls).toEqual(["taken", "available"]);
 });
 
@@ -120,11 +145,17 @@ test("onChange runs custom validation even with native errors and exposes native
   );
   const input = root.querySelector("input")!;
   change(input, "partial");
+
   expect(received).toBe("partial");
+
   expect(input.hasAttribute("data-invalid")).toBe(true);
+
   expect(errors).toEqual([input.validationMessage]);
+
   change(input, "valid@example.com");
+
   expect(input.hasAttribute("data-valid")).toBe(true);
+
   expect(errors).toEqual([]);
 });
 
@@ -150,7 +181,9 @@ test("native constraints take priority over custom validation outside onChange",
   );
   const input = root.querySelector("input")!;
   blur(input);
+
   expect(calls).toBe(0);
+
   expect(errors).toEqual([input.validationMessage]);
 });
 
@@ -174,13 +207,21 @@ test("thenable validation discards stale results and accepts the current result"
   );
   const input = root.querySelector("input")!;
   change(input, "old");
+
   await settle();
+
   change(input, "new");
+
   await settle();
+
   await act(async () => pending.get("old")!("Stale"));
+
   expect(input.hasAttribute("data-invalid")).toBe(false);
+
   await act(async () => pending.get("new")!("Current"));
+
   expect(input.hasAttribute("data-invalid")).toBe(true);
+
   expect(input.validationMessage).toBe("Current");
 });
 
@@ -201,10 +242,15 @@ test("a submit flushes pending debounce and cancels its scheduled repeat", async
     </Form>,
   );
   change(root.querySelector("input")!, "new");
+
   expect(calls).toEqual([]);
+
   submit(root.querySelector("form")!);
+
   expect(calls).toEqual(["new"]);
+
   await settle(60);
+
   expect(calls).toEqual(["new"]);
 });
 
@@ -225,14 +271,19 @@ test("boolean false values honor debounce rather than treating unfilled as empty
     </Field.Root>,
   );
   act(() => root.querySelector<HTMLElement>("[role=checkbox]")!.click());
+
   expect(calls).toEqual([]);
+
   await settle(35);
+
   expect(calls).toEqual([false]);
 });
 
 test("disabled fields expose neither valid nor invalid state, and ignore late validation", async () => {
   let disable = () => {};
+
   let resolve: (value: string | null) => void = () => {};
+
   function Subject() {
     const [disabled, setDisabled] = useState(false);
     disable = () => setDisabled(true);
@@ -250,13 +301,19 @@ test("disabled fields expose neither valid nor invalid state, and ignore late va
       </Field.Root>
     );
   }
+
   const root = render(<Subject />);
   const input = root.querySelector("input")!;
   change(input, "pending");
+
   act(disable);
+
   await act(async () => resolve("Late"));
+
   expect(input.hasAttribute("data-invalid")).toBe(false);
+
   expect(input.hasAttribute("data-valid")).toBe(false);
+
   expect(input.validationMessage).toBe("");
 });
 
@@ -269,15 +326,23 @@ test("controlled dirty=false suppresses required-on-blur noise but imperative va
   );
   const input = root.querySelector("input")!;
   change(input, "edited");
+
   change(input, "");
+
   blur(input);
+
   expect(input.hasAttribute("data-invalid")).toBe(false);
+
   act(() => actions.current!.validate());
+
   expect(input.hasAttribute("data-invalid")).toBe(true);
+
   expect(input.hasAttribute("data-dirty")).toBe(false);
 });
+
 test("reset reads the latest controlled dirty flag when deciding whether to validate required on blur", async () => {
   let markDirty = () => {};
+
   function Subject() {
     const [dirty, setDirty] = useState(false);
     markDirty = () => setDirty(true);
@@ -289,12 +354,17 @@ test("reset reads the latest controlled dirty flag when deciding whether to vali
       </Form>
     );
   }
+
   const root = render(<Subject />);
   act(markDirty);
+
   act(() => root.querySelector("form")!.reset());
+
   await settle();
   const input = root.querySelector("input")!;
   blur(input);
+
   expect(input.hasAttribute("data-dirty")).toBe(true);
+
   expect(input.hasAttribute("data-invalid")).toBe(true);
 });

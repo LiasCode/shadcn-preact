@@ -1,5 +1,12 @@
 import { Button } from "@registry/ui/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@registry/ui/empty";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@registry/ui/empty";
 import { CloudIcon } from "lucide-preact";
 
 export default function EmptyOutline() {
@@ -10,7 +17,9 @@ export default function EmptyOutline() {
           <CloudIcon />
         </EmptyMedia>
         <EmptyTitle>Cloud Storage Empty</EmptyTitle>
-        <EmptyDescription>Upload files to your cloud storage to access them anywhere.</EmptyDescription>
+        <EmptyDescription>
+          Upload files to your cloud storage to access them anywhere.
+        </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <Button variant="outline" size="sm">

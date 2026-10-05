@@ -16,17 +16,33 @@ export default function CarouselPlugin() {
   const visible = React.useRef(false);
   const [api, setApi] = React.useState<CarouselApi>();
   React.useEffect(() => {
-    if (!api || !root.current || typeof window === "undefined" || typeof IntersectionObserver === "undefined") return;
+    if (
+      !api ||
+      !root.current ||
+      typeof window === "undefined" ||
+      typeof IntersectionObserver === "undefined"
+    ) {
+      return;
+    }
+
     let resume = plugin.current.isPlaying();
     const observer = new IntersectionObserver(([entry]) => {
       const next = entry?.isIntersecting ?? false;
+
       if (next === visible.current) {
-        if (!next) plugin.current.stop();
+        if (!next) {
+          plugin.current.stop();
+        }
+
         return;
       }
+
       visible.current = next;
+
       if (next) {
-        if (resume && !root.current?.matches(":hover")) plugin.current.play();
+        if (resume && !root.current?.matches(":hover")) {
+          plugin.current.play();
+        }
       } else {
         resume = plugin.current.isPlaying();
         plugin.current.stop();
@@ -44,7 +60,9 @@ export default function CarouselPlugin() {
       className="w-full max-w-[10rem] sm:max-w-xs"
       onMouseEnter={plugin.current.stop}
       onMouseLeave={() => {
-        if (visible.current || typeof IntersectionObserver === "undefined") plugin.current.reset();
+        if (visible.current || typeof IntersectionObserver === "undefined") {
+          plugin.current.reset();
+        }
       }}
     >
       <CarouselContent>

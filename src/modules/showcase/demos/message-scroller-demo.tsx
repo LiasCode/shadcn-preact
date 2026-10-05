@@ -27,6 +27,7 @@ const examples = [
   ["Streaming", Example10],
   ["Visibility", Example11],
 ] as const;
+
 export function MessageScrollerDemo() {
   const [selected, setSelected] = useState(3);
   const [, Example] = examples[selected]!;

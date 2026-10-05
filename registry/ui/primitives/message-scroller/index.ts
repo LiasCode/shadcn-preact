@@ -16,7 +16,11 @@ export const MessageScroller = {
   Button,
 };
 
-export { useMessageScroller, useMessageScrollerScrollable, useMessageScrollerVisibility } from "./components";
+export {
+  useMessageScroller,
+  useMessageScrollerScrollable,
+  useMessageScrollerVisibility,
+} from "./components";
 
 export type {
   MessageScrollerDefaultScrollPosition,

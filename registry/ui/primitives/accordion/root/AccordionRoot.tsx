@@ -6,11 +6,13 @@ import { useControlled } from "../../internals/useControlled";
 import { useRenderElement } from "../../internals/useRenderElement";
 import { useStableCallback } from "../../internals/useStableCallback";
 import { AccordionRootContext } from "./AccordionRootContext";
+
 export interface AccordionRootState<Value = any> {
   value: Value[];
   disabled: boolean;
   orientation: Orientation;
 }
+
 export interface AccordionRootProps<Value> extends Omit<
   BaseUIComponentProps<"div", AccordionRootState<Value>>,
   "value"
@@ -23,8 +25,12 @@ export interface AccordionRootProps<Value> extends Omit<
   loopFocus?: boolean;
   hiddenUntilFound?: boolean;
   keepMounted?: boolean;
-  onValueChange?: (value: Value[], details: BaseUIChangeEventDetails<"trigger-press" | "none">) => void;
+  onValueChange?: (
+    value: Value[],
+    details: BaseUIChangeEventDetails<"trigger-press" | "none">,
+  ) => void;
 }
+
 export function AccordionRoot<Value>(componentProps: AccordionRootProps<Value>) {
   const {
     ref,
@@ -42,7 +48,11 @@ export function AccordionRoot<Value>(componentProps: AccordionRootProps<Value>) 
     style: _style,
     ...elementProps
   } = componentProps;
-  const [value, setValue] = useControlled({ controlled: valueProp, default: defaultValue, name: "Accordion" });
+  const [value, setValue] = useControlled({
+    controlled: valueProp,
+    default: defaultValue,
+    name: "Accordion",
+  });
   const direction = useDirection();
   const handleValueChange = useStableCallback(
     (item: unknown, open: boolean, details: BaseUIChangeEventDetails<"trigger-press" | "none">) => {
@@ -54,7 +64,10 @@ export function AccordionRoot<Value>(componentProps: AccordionRootProps<Value>) 
           ? []
           : [item as Value];
       onValueChange?.(next, details);
-      if (!details.isCanceled) setValue(next);
+
+      if (!details.isCanceled) {
+        setValue(next);
+      }
     },
   );
   const state = { value, disabled, orientation };
@@ -65,15 +78,22 @@ export function AccordionRoot<Value>(componentProps: AccordionRootProps<Value>) 
     stateAttributesMapping: { value: () => null },
   });
   return (
-    <AccordionRootContext.Provider value={{ state, hiddenUntilFound, keepMounted, handleValueChange }}>
+    <AccordionRootContext.Provider
+      value={{ state, hiddenUntilFound, keepMounted, handleValueChange }}
+    >
       <CompositeList>{element}</CompositeList>
     </AccordionRootContext.Provider>
   );
 }
+
 export declare namespace AccordionRoot {
   type Props<Value = any> = AccordionRootProps<Value>;
+
   type State<Value = any> = AccordionRootState<Value>;
+
   type Value<T = any> = T[];
+
   type ChangeEventReason = "trigger-press" | "none";
+
   type ChangeEventDetails = BaseUIChangeEventDetails<ChangeEventReason>;
 }

@@ -40,6 +40,7 @@ export function QuestionnaireDialog() {
     const formData = new FormData(event.currentTarget);
 
     setOpen(false);
+
     toast("Clarification sent", {
       description: `Scope: ${formData.get("scope") ?? "None"} · Verification: ${formData.get("tests") ?? "None"}`,
     });
@@ -53,7 +54,9 @@ export function QuestionnaireDialog() {
           <QuestionnaireItem name="scope" required>
             <DialogHeader>
               <QuestionnaireProgress />
-              <QuestionnaireTitle render={<DialogTitle />}>Which files are in scope?</QuestionnaireTitle>
+              <QuestionnaireTitle render={<DialogTitle />}>
+                Which files are in scope?
+              </QuestionnaireTitle>
               <QuestionnaireDescription render={<DialogDescription />}>
                 Choose how broadly the agent can update the workspace.
               </QuestionnaireDescription>
@@ -61,7 +64,9 @@ export function QuestionnaireDialog() {
             <QuestionnaireChoices>
               <QuestionnaireChoice value="component">Component only</QuestionnaireChoice>
               <QuestionnaireChoice value="feature">Complete feature directory</QuestionnaireChoice>
-              <QuestionnaireChoice value="workspace">Any related workspace file</QuestionnaireChoice>
+              <QuestionnaireChoice value="workspace">
+                Any related workspace file
+              </QuestionnaireChoice>
             </QuestionnaireChoices>
             <QuestionnaireError />
           </QuestionnaireItem>
@@ -69,7 +74,9 @@ export function QuestionnaireDialog() {
           <QuestionnaireItem name="tests" required>
             <DialogHeader>
               <QuestionnaireProgress />
-              <QuestionnaireTitle render={<DialogTitle />}>How much verification is needed?</QuestionnaireTitle>
+              <QuestionnaireTitle render={<DialogTitle />}>
+                How much verification is needed?
+              </QuestionnaireTitle>
               <QuestionnaireDescription render={<DialogDescription />}>
                 Choose the checks the agent should run before handoff.
               </QuestionnaireDescription>

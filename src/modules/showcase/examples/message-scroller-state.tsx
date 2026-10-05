@@ -38,7 +38,11 @@ export function MessageScrollerState() {
             <MessageScrollerViewport>
               <MessageScrollerContent className="gap-4 p-4 pt-12">
                 {messages.map((message) => (
-                  <MessageScrollerItem key={message.id} messageId={message.id} scrollAnchor={message.role === "user"}>
+                  <MessageScrollerItem
+                    key={message.id}
+                    messageId={message.id}
+                    scrollAnchor={message.role === "user"}
+                  >
                     <Message align={message.role === "user" ? "end" : "start"}>
                       <MessageContent>
                         <Bubble variant={message.role === "user" ? "default" : "muted"}>

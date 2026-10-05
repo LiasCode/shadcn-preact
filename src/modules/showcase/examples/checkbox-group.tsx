@@ -1,5 +1,12 @@
 import { Checkbox } from "@registry/ui/checkbox";
-import { Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@registry/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from "@registry/ui/field";
 
 export function CheckboxGroup() {
   return (
@@ -13,7 +20,10 @@ export function CheckboxGroup() {
             name="finder-pref-9k2-hard-disks-ljj-checkbox"
             defaultChecked
           />
-          <FieldLabel htmlFor="checkbox-group-finder-pref-9k2-hard-disks-ljj-checkbox" className="font-normal">
+          <FieldLabel
+            htmlFor="checkbox-group-finder-pref-9k2-hard-disks-ljj-checkbox"
+            className="font-normal"
+          >
             Hard disks
           </FieldLabel>
         </Field>
@@ -23,7 +33,10 @@ export function CheckboxGroup() {
             name="finder-pref-9k2-external-disks-1yg-checkbox"
             defaultChecked
           />
-          <FieldLabel htmlFor="checkbox-group-finder-pref-9k2-external-disks-1yg-checkbox" className="font-normal">
+          <FieldLabel
+            htmlFor="checkbox-group-finder-pref-9k2-external-disks-1yg-checkbox"
+            className="font-normal"
+          >
             External disks
           </FieldLabel>
         </Field>
@@ -32,7 +45,10 @@ export function CheckboxGroup() {
             id="checkbox-group-finder-pref-9k2-cds-dvds-fzt-checkbox"
             name="finder-pref-9k2-cds-dvds-fzt-checkbox"
           />
-          <FieldLabel htmlFor="checkbox-group-finder-pref-9k2-cds-dvds-fzt-checkbox" className="font-normal">
+          <FieldLabel
+            htmlFor="checkbox-group-finder-pref-9k2-cds-dvds-fzt-checkbox"
+            className="font-normal"
+          >
             CDs, DVDs, and iPods
           </FieldLabel>
         </Field>
@@ -41,7 +57,10 @@ export function CheckboxGroup() {
             id="checkbox-group-finder-pref-9k2-connected-servers-6l2-checkbox"
             name="finder-pref-9k2-connected-servers-6l2-checkbox"
           />
-          <FieldLabel htmlFor="checkbox-group-finder-pref-9k2-connected-servers-6l2-checkbox" className="font-normal">
+          <FieldLabel
+            htmlFor="checkbox-group-finder-pref-9k2-connected-servers-6l2-checkbox"
+            className="font-normal"
+          >
             Connected servers
           </FieldLabel>
         </Field>

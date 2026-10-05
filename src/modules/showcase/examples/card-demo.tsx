@@ -1,5 +1,13 @@
 import { Button } from "@registry/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import { Input } from "@registry/ui/input";
 import { Label } from "@registry/ui/label";
 
@@ -23,7 +31,10 @@ export default function CardDemo() {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="card-demo-password">Password</Label>
-                <a href="#" className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                <a
+                  href="#"
+                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                >
                   Forgot your password?
                 </a>
               </div>

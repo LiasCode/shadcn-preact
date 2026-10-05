@@ -24,10 +24,14 @@ export {
   SubmenuTrigger,
   Separator,
 } from "../menu/parts";
-const Context = createContext<{ anchor: VirtualElement | null; setAnchor(anchor: VirtualElement): void }>({
+const Context = createContext<{
+  anchor: VirtualElement | null;
+  setAnchor(anchor: VirtualElement): void;
+}>({
   anchor: null,
   setAnchor() {},
 });
+
 export function Root(props: Omit<Menu.Root.Props, "modal">) {
   const [anchor, setAnchor] = useState<VirtualElement | null>(null);
   return (
@@ -36,18 +40,28 @@ export function Root(props: Omit<Menu.Root.Props, "modal">) {
     </Context.Provider>
   );
 }
+
 export namespace Root {
   export type Props = Omit<Menu.Root.Props, "modal">;
+
   export type ChangeEventDetails = Menu.Root.ChangeEventDetails;
 }
+
 export function Positioner(props: Menu.Positioner.Props) {
   const context = useContext(Context),
     menu = useMenuContext();
-  return <Menu.Positioner {...props} anchor={props.anchor ?? (menu.parent ? undefined : context.anchor)} />;
+  return (
+    <Menu.Positioner
+      {...props}
+      anchor={props.anchor ?? (menu.parent ? undefined : context.anchor)}
+    />
+  );
 }
+
 export namespace Positioner {
   export type Props = Menu.Positioner.Props;
 }
+
 export function Trigger(props: BaseUIComponentProps<"div", { open: boolean }>) {
   const context = useContext(Context),
     menu = useMenuContext(),
@@ -57,10 +71,16 @@ export function Trigger(props: BaseUIComponentProps<"div", { open: boolean }>) {
   const element = useRef<HTMLElement | null>(null);
   const cancel = useStableCallback(() => clearTimeout(timer.current));
   useEffect(() => cancel, [cancel]);
+
   const show = (event: MouseEvent | PointerEvent | KeyboardEvent) => {
     cancel();
-    if (ctx.disabled) return;
+
+    if (ctx.disabled) {
+      return;
+    }
+
     event.preventDefault();
+
     event.stopPropagation();
     const rect = element.current?.getBoundingClientRect();
     const x = "clientX" in event ? event.clientX : (rect?.left ?? 0),
@@ -81,8 +101,10 @@ export function Trigger(props: BaseUIComponentProps<"div", { open: boolean }>) {
         },
       }),
     });
+
     ctx.change(true, event, "trigger-press", element.current ?? undefined);
   };
+
   return useRenderElement("div", props, {
     state: { open: ctx.open },
     ref: [props.ref ?? null, element, ctx.setReference],
@@ -94,15 +116,22 @@ export function Trigger(props: BaseUIComponentProps<"div", { open: boolean }>) {
         "aria-controls": ctx.mounted ? ctx.popupId : undefined,
         onContextMenu: show,
         onKeyDown(event: KeyboardEvent) {
-          if (event.key === "ContextMenu" || (event.key === "F10" && event.shiftKey)) show(event);
+          if (event.key === "ContextMenu" || (event.key === "F10" && event.shiftKey)) {
+            show(event);
+          }
         },
         onPointerDown(event: PointerEvent) {
-          if (event.pointerType !== "touch") return;
+          if (event.pointerType !== "touch") {
+            return;
+          }
+
           point.current = { x: event.clientX, y: event.clientY };
           timer.current = setTimeout(() => show(event), 700);
         },
         onPointerMove(event: PointerEvent) {
-          if (Math.hypot(event.clientX - point.current.x, event.clientY - point.current.y) > 10) cancel();
+          if (Math.hypot(event.clientX - point.current.x, event.clientY - point.current.y) > 10) {
+            cancel();
+          }
         },
         onPointerUp: cancel,
         onPointerCancel: cancel,
@@ -111,6 +140,7 @@ export function Trigger(props: BaseUIComponentProps<"div", { open: boolean }>) {
     ],
   });
 }
+
 export namespace Trigger {
   export type Props = Parameters<typeof Trigger>[0];
 }

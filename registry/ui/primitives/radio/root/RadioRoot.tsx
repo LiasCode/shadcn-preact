@@ -15,11 +15,15 @@ import type { RadioGroupState } from "../../radio-group/RadioGroup";
 import { RadioGroupContext } from "../../radio-group/RadioGroupContext";
 import { stateAttributesMapping } from "../utils/stateAttributesMapping";
 import { RadioRootContext } from "./RadioRootContext";
+
 export interface RadioRootState extends RadioGroupState {
   checked: boolean;
 }
+
 export interface RadioRootProps<Value>
-  extends NonNativeButtonProps, Omit<BaseUIComponentProps<"span", RadioRootState>, "value" | "ref"> {
+  extends
+    NonNativeButtonProps,
+    Omit<BaseUIComponentProps<"span", RadioRootState>, "value" | "ref"> {
   value: Value;
   disabled?: boolean;
   readOnly?: boolean;
@@ -27,6 +31,7 @@ export interface RadioRootProps<Value>
   inputRef?: ElementRef<HTMLInputElement>;
   ref?: ElementRef<HTMLElement>;
 }
+
 export function RadioRoot<Value>(componentProps: RadioRootProps<Value>) {
   const {
     ref,
@@ -54,26 +59,43 @@ export function RadioRoot<Value>(componentProps: RadioRootProps<Value>) {
   const id = useBaseUiId();
   const hiddenId = !nativeButton && idProp ? idProp : `${id}-input`;
   const item = useItemControl(hiddenId, radioRef);
-  const disabled = disabledProp || group?.disabled || fieldset?.disabled || item?.state.disabled || false;
-  const { getButtonProps, buttonRef } = useButton({ disabled, native: nativeButton, composite: false });
+  const disabled =
+    disabledProp || group?.disabled || fieldset?.disabled || item?.state.disabled || false;
+  const { getButtonProps, buttonRef } = useButton({
+    disabled,
+    native: nativeButton,
+    composite: false,
+  });
   useIsoLayoutEffect(() => {
     const input = inputRef.current;
-    if (!input) return undefined;
+
+    if (!input) {
+      return undefined;
+    }
+
     input.checked = checked;
     group?.registerInput(input);
+
     setLabelledBy(
       [...(input.labels ?? [])]
         .map((label, index) => {
-          if (!label.id) label.id = `${id}-label-${index}`;
+          if (!label.id) {
+            label.id = `${id}-label-${index}`;
+          }
+
           return label.id;
         })
         .join(" ") || undefined,
     );
     const ownerForm = input.form;
+
     const reset = (event: Event) =>
       setTimeout(() => {
-        if (!event.defaultPrevented) group?.reset();
+        if (!event.defaultPrevented) {
+          group?.reset();
+        }
       });
+
     ownerForm?.addEventListener("reset", reset);
     return () => ownerForm?.removeEventListener("reset", reset);
   }, [checked, id, idProp, group?.reset, group?.registerInput, disabled]);
@@ -99,11 +121,17 @@ export function RadioRoot<Value>(componentProps: RadioRootProps<Value>) {
       "data-composite-item-active": checked ? "" : undefined,
       id: nativeButton ? idProp : id,
       onKeyDown(event: KeyboardEvent) {
-        if (event.key === "Enter") event.preventDefault();
+        if (event.key === "Enter") {
+          event.preventDefault();
+        }
       },
       onClick(event: Event) {
-        if (disabled || readOnly || event.defaultPrevented) return;
+        if (disabled || readOnly || event.defaultPrevented) {
+          return;
+        }
+
         event.preventDefault();
+
         inputRef.current?.click();
       },
       onFocus() {
@@ -156,21 +184,28 @@ export function RadioRoot<Value>(componentProps: RadioRootProps<Value>) {
         readOnly={readOnly}
         onChange={(event) => {
           const input = event.currentTarget;
+
           if (disabled || readOnly || event.defaultPrevented) {
             input.checked = checked;
             group?.registerInput(input);
             return;
           }
+
           const details = createChangeEventDetails("none", event);
           group?.setValue(value, details);
-          if (details.isCanceled) input.checked = checked;
+
+          if (details.isCanceled) {
+            input.checked = checked;
+          }
         }}
         onFocus={() => radioRef.current?.focus()}
       />
     </RadioRootContext.Provider>
   );
 }
+
 export declare namespace RadioRoot {
   type Props<Value = any> = RadioRootProps<Value>;
+
   type State = RadioRootState;
 }

@@ -13,9 +13,14 @@ export function CodeBlock({ code }: { code: string }) {
         aria-label="Copy code"
         className="absolute top-2 right-2"
         onClick={async () => {
-          if (typeof navigator === "undefined" || !navigator.clipboard) return;
+          if (typeof navigator === "undefined" || !navigator.clipboard) {
+            return;
+          }
+
           await navigator.clipboard.writeText(code);
+
           setCopied(true);
+
           window.setTimeout(() => setCopied(false), 1200);
         }}
       >

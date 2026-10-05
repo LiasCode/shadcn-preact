@@ -14,6 +14,7 @@ describe("mergeProps", () => {
       { onClick: () => calls.push("theirs") },
     );
     fire(render(<button onClick={merged.onClick} />).firstElementChild!, click());
+
     expect(calls).toEqual(["theirs", "ours"]);
   });
 
@@ -24,11 +25,13 @@ describe("mergeProps", () => {
       {
         onClick: (event) => {
           calls.push("theirs");
+
           event.preventBaseUIHandler();
         },
       },
     );
     fire(render(<button onClick={merged.onClick} />).firstElementChild!, click());
+
     expect(calls).toEqual(["theirs"]);
   });
 
@@ -38,11 +41,15 @@ describe("mergeProps", () => {
       { className: "b", style: { color: "blue" } as any },
     );
     expect(merged.className).toBe("b a");
+
     expect(merged.style).toEqual({ color: "blue", top: 1 });
   });
 
   test("other props are overwritten by the rightmost value", () => {
-    expect(mergeProps<"div">({ id: "a", title: "t" }, { id: "b" }) as any).toEqual({ id: "b", title: "t" });
+    expect(mergeProps<"div">({ id: "a", title: "t" }, { id: "b" }) as any).toEqual({
+      id: "b",
+      title: "t",
+    });
   });
 
   test("a props getter receives the props merged so far", () => {
@@ -54,6 +61,9 @@ describe("mergeProps", () => {
   });
 
   test("mergePropsN merges any number of sets", () => {
-    expect(mergePropsN<"div">([{ id: "a" }, { title: "t" }, { id: "c" }]) as any).toEqual({ id: "c", title: "t" });
+    expect(mergePropsN<"div">([{ id: "a" }, { title: "t" }, { id: "c" }]) as any).toEqual({
+      id: "c",
+      title: "t",
+    });
   });
 });

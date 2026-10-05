@@ -15,7 +15,10 @@ export function InputGroupBlockStart() {
       <Field>
         <FieldLabel htmlFor="input-group-block-start-block-start-input">Input</FieldLabel>
         <InputGroup className="h-auto">
-          <InputGroupInput id="input-group-block-start-block-start-input" placeholder="Enter your name" />
+          <InputGroupInput
+            id="input-group-block-start-block-start-input"
+            placeholder="Enter your name"
+          />
           <InputGroupAddon align="block-start">
             <InputGroupText>Full Name</InputGroupText>
           </InputGroupAddon>

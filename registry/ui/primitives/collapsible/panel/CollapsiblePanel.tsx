@@ -6,10 +6,12 @@ import type { CollapsibleRootState } from "../root/CollapsibleRoot";
 import { useCollapsibleRootContext } from "../root/CollapsibleRootContext";
 import { collapsibleStateAttributesMapping } from "../root/stateAttributesMapping";
 import { useCollapsiblePanel } from "./useCollapsiblePanel";
+
 export interface CollapsiblePanelProps extends BaseUIComponentProps<"div", CollapsibleRootState> {
   hiddenUntilFound?: boolean;
   keepMounted?: boolean;
 }
+
 export function CollapsiblePanel(componentProps: CollapsiblePanelProps) {
   const {
     ref,
@@ -23,7 +25,10 @@ export function CollapsiblePanel(componentProps: CollapsiblePanelProps) {
   } = componentProps;
   const context = useCollapsibleRootContext();
   useIsoLayoutEffect(() => {
-    if (id) context.setPanelIdState(id);
+    if (id) {
+      context.setPanelIdState(id);
+    }
+
     return () => context.setPanelIdState(undefined);
   }, [id, context.setPanelIdState]);
   const panel = useCollapsiblePanel(context, hiddenUntilFound, keepMounted);
@@ -39,7 +44,8 @@ export function CollapsiblePanel(componentProps: CollapsiblePanelProps) {
           style: {
             "--collapsible-panel-height":
               panel.dimensions.height === undefined ? "auto" : `${panel.dimensions.height}px`,
-            "--collapsible-panel-width": panel.dimensions.width === undefined ? "auto" : `${panel.dimensions.width}px`,
+            "--collapsible-panel-width":
+              panel.dimensions.width === undefined ? "auto" : `${panel.dimensions.width}px`,
           },
         },
         elementProps,
@@ -51,7 +57,9 @@ export function CollapsiblePanel(componentProps: CollapsiblePanelProps) {
   );
   return panel.shouldRender ? element : null;
 }
+
 export declare namespace CollapsiblePanel {
   type Props = CollapsiblePanelProps;
+
   type State = CollapsibleRootState;
 }

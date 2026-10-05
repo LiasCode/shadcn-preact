@@ -48,7 +48,11 @@ function useQuestionnaireInput({
     () => registerAnswerSelection(answerId, initialDefaultFilledRef.current),
     [answerId, registerAnswerSelection],
   );
-  React.useLayoutEffect(() => setAnswerDefault(answerId, defaultFilled), [defaultFilled, answerId, setAnswerDefault]);
+
+  React.useLayoutEffect(
+    () => setAnswerDefault(answerId, defaultFilled),
+    [defaultFilled, answerId, setAnswerDefault],
+  );
 
   React.useLayoutEffect(() => {
     const input = inputRef.current;
@@ -96,10 +100,13 @@ function useQuestionnaireInput({
 
   function handleChange(event: TargetedEvent<HTMLInputElement, Event>) {
     const input = event.currentTarget;
-    if (controlled)
+
+    if (controlled) {
       queueMicrotask(() => {
         input.value = String(valueRef.current ?? "");
       });
+    }
+
     onChange?.(event);
 
     if (event.defaultPrevented) {
@@ -113,6 +120,7 @@ function useQuestionnaireInput({
     }
 
     setUncontrolledFilled(nextFilled);
+
     setAnswerSelectionFromInteraction(answerId, nextFilled);
   }
 

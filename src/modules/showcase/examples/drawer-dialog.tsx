@@ -34,7 +34,9 @@ export function DrawerDialogDemo() {
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Edit profile</DialogTitle>
-            <DialogDescription>Make changes to your profile here. Click save when you&apos;re done.</DialogDescription>
+            <DialogDescription>
+              Make changes to your profile here. Click save when you&apos;re done.
+            </DialogDescription>
           </DialogHeader>
           <ProfileForm />
         </DialogContent>
@@ -48,7 +50,9 @@ export function DrawerDialogDemo() {
       <DrawerContent>
         <DrawerHeader className="text-left">
           <DrawerTitle>Edit profile</DrawerTitle>
-          <DrawerDescription>Make changes to your profile here. Click save when you&apos;re done.</DrawerDescription>
+          <DrawerDescription>
+            Make changes to your profile here. Click save when you&apos;re done.
+          </DrawerDescription>
         </DrawerHeader>
         <ProfileForm className="p-4" />
       </DrawerContent>

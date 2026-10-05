@@ -1,5 +1,12 @@
 import { Button } from "@registry/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import { ChevronRightIcon } from "lucide-preact";
 
 export function CardSmall() {

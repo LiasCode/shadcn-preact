@@ -56,7 +56,10 @@ function CommandInput({ className, ...props }: ComponentProps<typeof CommandPrim
       <InputGroup className="bg-input/30 border-input/30 h-8! rounded-lg! shadow-none! *:data-[slot=input-group-addon]:pl-2!">
         <CommandPrimitive.Input
           data-slot="command-input"
-          className={cn("w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50", className)}
+          className={cn(
+            "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+            className,
+          )}
           {...props}
         />
         <InputGroupAddon>
@@ -71,7 +74,10 @@ function CommandList({ className, ...props }: ComponentProps<typeof CommandPrimi
   return (
     <CommandPrimitive.List
       data-slot="command-list"
-      className={cn("no-scrollbar max-h-72 scroll-py-1 outline-none overflow-x-hidden overflow-y-auto", className)}
+      className={cn(
+        "no-scrollbar max-h-72 scroll-py-1 outline-none overflow-x-hidden overflow-y-auto",
+        className,
+      )}
       {...props}
     />
   );
@@ -100,7 +106,10 @@ function CommandGroup({ className, ...props }: ComponentProps<typeof CommandPrim
   );
 }
 
-function CommandSeparator({ className, ...props }: ComponentProps<typeof CommandPrimitive.Separator>) {
+function CommandSeparator({
+  className,
+  ...props
+}: ComponentProps<typeof CommandPrimitive.Separator>) {
   return (
     <CommandPrimitive.Separator
       data-slot="command-separator"
@@ -110,7 +119,11 @@ function CommandSeparator({ className, ...props }: ComponentProps<typeof Command
   );
 }
 
-function CommandItem({ className, children, ...props }: ComponentProps<typeof CommandPrimitive.Item>) {
+function CommandItem({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof CommandPrimitive.Item>) {
   return (
     <CommandPrimitive.Item
       data-slot="command-item"

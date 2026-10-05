@@ -18,11 +18,17 @@ test("progress connects its label, formats its value, and sizes its indicator", 
   const label = root.querySelector('[role="presentation"]')!;
   const indicator = root.querySelector("#indicator") as HTMLElement;
   expect(root.getAttribute("role")).toBe("progressbar");
+
   expect(root.getAttribute("aria-labelledby")).toBe(label.id);
+
   expect(root.getAttribute("aria-valuenow")).toBe("75");
+
   expect(root.getAttribute("aria-valuetext")).toBe("75%");
+
   expect(root.hasAttribute("data-progressing")).toBe(true);
+
   expect(indicator.style.width).toBe("50%");
+
   expect(root.querySelector('[aria-hidden="true"]')?.textContent).toBe("75%");
 });
 
@@ -35,9 +41,13 @@ test("indeterminate progress omits the numeric value and passes its state to the
   );
   const root = container.firstElementChild!;
   expect(root.hasAttribute("data-indeterminate")).toBe(true);
+
   expect(root.hasAttribute("aria-valuenow")).toBe(false);
+
   expect(root.getAttribute("aria-valuetext")).toBe("indeterminate progress");
+
   expect(root.querySelector('[aria-hidden="true"]')?.textContent).toBe("indeterminate:null");
+
   expect((root.querySelector("div") as HTMLElement).style.width).toBe("");
 });
 
@@ -48,5 +58,6 @@ test("complete progress exposes complete state on each part", () => {
     </Progress.Root>,
   ).firstElementChild!;
   expect(root.hasAttribute("data-complete")).toBe(true);
+
   expect(root.querySelector("div")!.hasAttribute("data-complete")).toBe(true);
 });

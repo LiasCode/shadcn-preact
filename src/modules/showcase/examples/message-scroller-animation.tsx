@@ -1,5 +1,13 @@
 import { Button } from "@registry/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@registry/ui/empty";
 import {
   MessageScroller,
@@ -8,7 +16,14 @@ import {
   MessageScrollerProvider,
   MessageScrollerViewport,
 } from "@registry/ui/message-scroller";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@registry/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@registry/ui/select";
 import { ArrowUpIcon, MessageCircleDashedIcon, RotateCwIcon } from "lucide-preact";
 import * as React from "preact/compat";
 
@@ -76,7 +91,9 @@ export function MessageScrollerAnimation() {
                   <MessageCircleDashedIcon />
                 </EmptyMedia>
                 <EmptyTitle>No Messages Yet</EmptyTitle>
-                <EmptyDescription>Click the button below to send the first message.</EmptyDescription>
+                <EmptyDescription>
+                  Click the button below to send the first message.
+                </EmptyDescription>
               </EmptyHeader>
             </Empty>
           ) : (

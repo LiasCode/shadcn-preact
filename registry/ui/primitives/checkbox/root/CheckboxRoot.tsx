@@ -16,15 +16,20 @@ export interface CheckboxRootState {
   filled: boolean;
   focused: boolean;
 }
+
 export interface CheckboxRootProps
   extends
     NonNativeButtonProps,
     CheckableParameters,
-    Omit<BaseUIComponentProps<"span", CheckboxRootState>, "onChange" | "value" | "ref" | keyof CheckableParameters> {
+    Omit<
+      BaseUIComponentProps<"span", CheckboxRootState>,
+      "onChange" | "value" | "ref" | keyof CheckableParameters
+    > {
   ref?: ElementRef<HTMLElement>;
   parent?: boolean;
   uncheckedValue?: string;
 }
+
 export function CheckboxRoot(componentProps: CheckboxRootProps) {
   const {
     ref,
@@ -62,15 +67,25 @@ export function CheckboxRoot(componentProps: CheckboxRootProps) {
     <CheckboxRootContext.Provider value={state}>
       {element}
       {!state.checked && inputProps.name && !parent && uncheckedValue !== undefined && (
-        <input type="hidden" name={inputProps.name} form={form} value={uncheckedValue} disabled={state.disabled} />
+        <input
+          type="hidden"
+          name={inputProps.name}
+          form={form}
+          value={uncheckedValue}
+          disabled={state.disabled}
+        />
       )}
       <input {...inputProps} name={parent ? undefined : inputProps.name} />
     </CheckboxRootContext.Provider>
   );
 }
+
 export declare namespace CheckboxRoot {
   type Props = CheckboxRootProps;
+
   type State = CheckboxRootState;
+
   type ChangeEventReason = "none";
+
   type ChangeEventDetails = Parameters<NonNullable<CheckableParameters["onCheckedChange"]>>[1];
 }

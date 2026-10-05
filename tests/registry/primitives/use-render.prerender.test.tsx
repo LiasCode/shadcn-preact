@@ -49,7 +49,11 @@ import {
   QuestionnaireItem,
   QuestionnaireProgress,
 } from "../../../registry/ui/questionnaire";
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "../../../registry/ui/resizable";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "../../../registry/ui/resizable";
 import { SidebarProvider, Sidebar, SidebarContent } from "../../../registry/ui/sidebar";
 import { Toaster as SonnerToaster } from "../../../registry/ui/sonner";
 import { Toaster } from "../../../registry/ui/toast";
@@ -59,6 +63,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../../../registry/ui/to
 beforeAll(async () => {
   await GlobalRegistrator.unregister();
 });
+
 afterAll(() => {
   GlobalRegistrator.register({ url: "http://localhost/" });
 });
@@ -74,7 +79,11 @@ function Badge({ className, render: renderProp, ...props }: any) {
 
 test("useRender renders to a string without a document", () => {
   expect(typeof document).toBe("undefined");
-  expect(renderToString(<Badge className="x">Hi</Badge>)).toBe('<span data-slot="badge" class="b x">Hi</span>');
+
+  expect(renderToString(<Badge className="x">Hi</Badge>)).toBe(
+    '<span data-slot="badge" class="b x">Hi</span>',
+  );
+
   expect(renderToString(<Badge render={<a href="/a" />}>A</Badge>)).toBe(
     '<a href="/a" data-slot="badge" class="b">A</a>',
   );
@@ -109,14 +118,23 @@ test("state primitives prerender without browser globals", () => {
     </>,
   );
   expect(markup).toContain('aria-pressed="true"');
+
   expect(markup).toContain('role="tabpanel"');
+
   expect(markup).toContain('aria-expanded="true"');
+
   expect(markup).toContain('value="20"');
+
   expect(markup).toContain('value="40"');
 });
+
 function FloatingSubject() {
-  const context = useFloatingRootContext({ open: true, elements: { reference: null, floating: null } });
+  const context = useFloatingRootContext({
+    open: true,
+    elements: { reference: null, floating: null },
+  });
   useDismiss(context);
+
   useScrollLock(true);
   const position = useAnchorPositioning({ mounted: true });
   return (
@@ -130,13 +148,17 @@ function FloatingSubject() {
     </>
   );
 }
+
 test("floating infrastructure prerenders without browser globals or portal content", () => {
   expect(typeof window).toBe("undefined");
   const markup = renderToString(<FloatingSubject />);
   expect(markup).toContain("positioner");
+
   expect(markup).toContain("opacity:0");
+
   expect(markup).not.toContain("popup");
 });
+
 test("overlay wrappers prerender triggers without browser globals", () => {
   expect(typeof window).toBe("undefined");
   const markup = renderToString(
@@ -164,8 +186,11 @@ test("overlay wrappers prerender triggers without browser globals", () => {
     </>,
   );
   expect(markup).toContain('data-slot="dialog-trigger"');
+
   expect(markup).toContain('data-slot="drawer-trigger"');
+
   expect(markup).not.toContain('data-slot="dialog-content"');
+
   expect(markup).not.toContain('data-slot="tooltip-content"');
 });
 
@@ -203,12 +228,18 @@ test("menu, selection, navigation and scroll primitives prerender without browse
     </>,
   );
   expect(markup).toContain("Apple");
+
   expect(markup).toContain('name="fruit"');
+
   expect(markup).toContain("Scroll content");
+
   expect(markup).not.toContain("Hidden menu");
+
   expect(markup).not.toContain("Hidden list");
+
   expect(markup).not.toContain("Hidden content");
 });
+
 test("phase 7 components and their compatibility libraries prerender without browser globals", () => {
   const html = renderToString(
     <>
@@ -216,7 +247,10 @@ test("phase 7 components and their compatibility libraries prerender without bro
       <ChartContainer config={{ count: { label: "Count", color: "red" } }}>
         <div />
       </ChartContainer>
-      <Combobox.Root items={[{ value: "1", label: "One" }]} itemToStringValue={(value) => value.value}>
+      <Combobox.Root
+        items={[{ value: "1", label: "One" }]}
+        itemToStringValue={(value) => value.value}
+      >
         <Combobox.Input />
         <Combobox.Trigger>Open</Combobox.Trigger>
       </Combobox.Root>
@@ -251,10 +285,15 @@ test("phase 7 components and their compatibility libraries prerender without bro
     </>,
   );
   expect(html).toContain('data-slot="calendar"');
+
   expect(html).toContain('data-slot="command"');
+
   expect(html).toContain('data-slot="resizable-panel"');
+
   expect(html).toContain('data-slot="input-otp"');
+
   expect(html).toContain('role="combobox"');
+
   expect(html).toContain("Navigation");
 });
 
@@ -280,10 +319,14 @@ test("phase 8 primitives prerender without browser globals", () => {
     </>,
   );
   expect(markup).toContain('role="log"');
+
   expect(markup).toContain('data-message-id="m1"');
+
   expect(markup).toContain('aria-valuemax="1"');
+
   expect(markup).toContain('data-shortcut="A"');
 });
+
 test("Field and Form prerender without browser globals", () => {
   expect(typeof window).toBe("undefined");
   const html = renderToString(
@@ -298,9 +341,12 @@ test("Field and Form prerender without browser globals", () => {
     </Form>,
   );
   expect(html).toContain('name="email"');
+
   expect(html).toContain('aria-invalid="true"');
+
   expect(html).toContain("Taken");
 });
+
 test("checkable Field/Form controls prerender without browser globals", () => {
   expect(typeof window).toBe("undefined");
   const html = renderToString(
@@ -320,10 +366,14 @@ test("checkable Field/Form controls prerender without browser globals", () => {
     </Form>,
   );
   expect(html).toContain('name="terms"');
+
   expect(html).toContain('name="updates"');
+
   expect(html).toContain('name="plan"');
+
   expect(html).toContain('role="radiogroup"');
 });
+
 test("selection and Slider field providers prerender without browser globals", () => {
   expect(typeof window).toBe("undefined");
   const html = renderToString(
@@ -349,9 +399,12 @@ test("selection and Slider field providers prerender without browser globals", (
     </Form>,
   );
   expect(html).toContain('name="choice"');
+
   expect(html).toContain('name="city"');
+
   expect(html).toContain('name="budget"');
 });
+
 test("Field.Item and Fieldset prerender without browser globals", () => {
   expect(typeof window).toBe("undefined");
   const html = renderToString(
@@ -369,7 +422,10 @@ test("Field.Item and Fieldset prerender without browser globals", () => {
     </Fieldset.Root>,
   );
   expect(html).toContain("Preferences");
+
   expect(html).toContain("Basic");
+
   expect(html).toContain("data-disabled");
+
   expect(html).toContain('name="plan"');
 });

@@ -8,7 +8,14 @@ import {
   AttachmentTitle,
 } from "@registry/ui/attachment";
 import { Spinner } from "@registry/ui/spinner";
-import { CheckIcon, ClockIcon, FileTextIcon, FileWarningIcon, RefreshCwIcon, XIcon } from "lucide-preact";
+import {
+  CheckIcon,
+  ClockIcon,
+  FileTextIcon,
+  FileWarningIcon,
+  RefreshCwIcon,
+  XIcon,
+} from "lucide-preact";
 
 export function AttachmentStates() {
   return (

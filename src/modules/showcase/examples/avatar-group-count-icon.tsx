@@ -1,4 +1,10 @@
-import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@registry/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarImage,
+} from "@registry/ui/avatar";
 import { PlusIcon } from "lucide-preact";
 
 export function AvatarGroupCountIconExample() {

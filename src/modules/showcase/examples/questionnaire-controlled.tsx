@@ -46,7 +46,13 @@ export function QuestionnaireControlled() {
         Current checkpoint: {itemLabels[item]}
       </p>
 
-      <Questionnaire className="mt-auto" item={item} items={items} onItemChange={setItem} onSubmit={handleSubmit}>
+      <Questionnaire
+        className="mt-auto"
+        item={item}
+        items={items}
+        onItemChange={setItem}
+        onSubmit={handleSubmit}
+      >
         <QuestionnaireProgress />
 
         <QuestionnaireItem name="scope" required>
@@ -77,7 +83,9 @@ export function QuestionnaireControlled() {
           <QuestionnaireChoices>
             <QuestionnaireChoice value="summary">Concise summary</QuestionnaireChoice>
             <QuestionnaireChoice value="diff">Summary with changed files</QuestionnaireChoice>
-            <QuestionnaireChoice value="handoff">Detailed implementation handoff</QuestionnaireChoice>
+            <QuestionnaireChoice value="handoff">
+              Detailed implementation handoff
+            </QuestionnaireChoice>
           </QuestionnaireChoices>
           <QuestionnaireError />
         </QuestionnaireItem>

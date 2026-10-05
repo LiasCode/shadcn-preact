@@ -1,6 +1,14 @@
 import { Bubble, BubbleContent } from "@registry/ui/bubble";
 import { Button } from "@registry/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import { Marker, MarkerContent } from "@registry/ui/marker";
 import { Message, MessageContent, MessageHeader } from "@registry/ui/message";
 import {
@@ -92,7 +100,8 @@ export function MessageScrollerGroupChat() {
           <CardHeader className="gap-1 border-b">
             <CardTitle>Group Chat</CardTitle>
             <CardDescription>
-              A group chat with several participants and an assistant. The Marker is marked as a turn.
+              A group chat with several participants and an assistant. The Marker is marked as a
+              turn.
             </CardDescription>
             <CardAction>
               <Tooltip>
@@ -106,6 +115,7 @@ export function MessageScrollerGroupChat() {
                       disabled={rockyTurn === "idle"}
                       onClick={() => {
                         setRockyTurn("idle");
+
                         setDemoKey((key) => key + 1);
                       }}
                     />
@@ -128,7 +138,11 @@ export function MessageScrollerGroupChat() {
                       item.type === "message" ? (
                         <GroupChatMessage key={item.id} item={item} />
                       ) : (
-                        <GroupChatMarker key={item.id} item={item} scrollAnchor={item.scrollAnchor} />
+                        <GroupChatMarker
+                          key={item.id}
+                          item={item}
+                          scrollAnchor={item.scrollAnchor}
+                        />
                       ),
                     )}
                   </MessageScrollerContent>
@@ -155,7 +169,8 @@ export function MessageScrollerGroupChat() {
           </CardFooter>
         </Card>
         <div className="mx-auto max-w-sm px-0.5 text-center text-xs text-balance text-muted-foreground">
-          When a user joins, a marker is created. scrollAnchor on the marker marks it as the next turn
+          When a user joins, a marker is created. scrollAnchor on the marker marks it as the next
+          turn
         </div>
       </div>
     </MessageScrollerProvider>

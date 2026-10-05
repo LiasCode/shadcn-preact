@@ -38,14 +38,25 @@ test("Field.Item associates each radio with its own label and description", () =
     radios = root.querySelectorAll<HTMLElement>("[role=radio]"),
     inputs = root.querySelectorAll("input");
   expect(labels[1]!.htmlFor).toBe(inputs[0]!.id);
+
   expect(labels[2]!.htmlFor).toBe(inputs[1]!.id);
+
   expect(radios[0]!.getAttribute("aria-labelledby")).toBe(labels[1]!.id);
+
   expect(radios[1]!.getAttribute("aria-labelledby")).toBe(labels[2]!.id);
+
   expect(radios[0]!.getAttribute("aria-describedby")).toBe(descriptions[1]!.id);
+
   expect(radios[1]!.getAttribute("aria-describedby")).toBe(descriptions[2]!.id);
-  expect(root.querySelector("[role=radiogroup]")!.getAttribute("aria-labelledby")).toBe(labels[0]!.id);
+
+  expect(root.querySelector("[role=radiogroup]")!.getAttribute("aria-labelledby")).toBe(
+    labels[0]!.id,
+  );
+
   act(() => labels[2]!.click());
+
   expect(inputs[1]!.checked).toBe(true);
+
   expect(inputs[0]!.checked).toBe(false);
 });
 
@@ -68,14 +79,19 @@ test("disabled Field.Item excludes a radio from keyboard and native form selecti
   );
   const inputs = root.querySelectorAll("input");
   expect(inputs[0]!.disabled).toBe(true);
+
   act(() => root.querySelectorAll("label")[0]!.click());
+
   expect(inputs[0]!.checked).toBe(false);
+
   act(() => root.querySelectorAll("label")[1]!.click());
+
   expect(new FormData(root.querySelector("form")!).get("plan")).toBe("enabled");
 });
 
 test("item label scopes are removed cleanly and do not leak into a nested Field.Root", () => {
   let hide: () => void = () => {};
+
   function Subject() {
     const [visible, setVisible] = useState(true);
     hide = () => setVisible(false);
@@ -100,17 +116,21 @@ test("item label scopes are removed cleanly and do not leak into a nested Field.
       </Field.Root>
     );
   }
+
   const root = render(<Subject />);
   act(hide);
   const radio = root.querySelector("[role=radio]")!,
     labels = root.querySelectorAll("label");
   expect(radio.getAttribute("aria-labelledby")).toBe(labels[0]!.id);
+
   expect(labels[1]!.htmlFor).toBe(root.querySelector("input:not([type=radio])")!.id);
 });
 
 test("Fieldset inherits disabled state through nesting and excludes field values", () => {
   let enable: () => void = () => {};
+
   let values: unknown;
+
   function Subject() {
     const [disabled, setDisabled] = useState(true);
     enable = () => setDisabled(false);
@@ -159,17 +179,28 @@ test("Fieldset inherits disabled state through nesting and excludes field values
       </Form>
     );
   }
+
   const root = render(<Subject />);
   const form = root.querySelector("form")!;
-  for (const input of root.querySelectorAll("input")) expect(input.disabled).toBe(true);
+
+  for (const input of root.querySelectorAll("input")) {
+    expect(input.disabled).toBe(true);
+  }
+
   for (const control of root.querySelectorAll<HTMLElement>(
     "[role=checkbox],[role=switch],[role=radio],[role=combobox]",
-  ))
+  )) {
     expect(control.hasAttribute("data-disabled")).toBe(true);
+  }
+
   fire(form, new Event("submit", { bubbles: true, cancelable: true }));
+
   expect(values).toEqual({});
+
   act(enable);
+
   fire(form, new Event("submit", { bubbles: true, cancelable: true }));
+
   expect(values).toEqual({
     name: "initial",
     terms: false,
@@ -195,9 +226,16 @@ test("Fieldset legend labels a group and explicit group labels take precedence",
   );
   const legend = root.querySelector("fieldset")!.firstElementChild!;
   expect(legend.tagName).toBe("DIV");
+
   expect(root.querySelector("fieldset")!.getAttribute("aria-labelledby")).toBe(legend.id);
-  expect(root.querySelectorAll("[role=radiogroup]")[0]!.getAttribute("aria-labelledby")).toBe(legend.id);
-  expect(root.querySelectorAll("[role=radiogroup]")[1]!.getAttribute("aria-labelledby")).toBe("external");
+
+  expect(root.querySelectorAll("[role=radiogroup]")[0]!.getAttribute("aria-labelledby")).toBe(
+    legend.id,
+  );
+
+  expect(root.querySelectorAll("[role=radiogroup]")[1]!.getAttribute("aria-labelledby")).toBe(
+    "external",
+  );
 });
 
 test("Fieldset disables standalone controls and preserves explicit disabled children when enabled", () => {
@@ -219,9 +257,14 @@ test("Fieldset disables standalone controls and preserves explicit disabled chil
       </Slider.Root>
     </Fieldset.Root>,
   );
-  for (const input of root.querySelectorAll("input")) expect(input.disabled).toBe(true);
+
+  for (const input of root.querySelectorAll("input")) {
+    expect(input.disabled).toBe(true);
+  }
+
   expect(root.firstElementChild!.tagName).toBe("DIV");
 });
+
 test("Field.Item associates checkable labels without overwriting the outer Field label", () => {
   const root = render(
     <Field.Root>
@@ -237,14 +280,19 @@ test("Field.Item associates checkable labels without overwriting the outer Field
     input = root.querySelector("input")!,
     control = root.querySelector<HTMLElement>("[role=checkbox]")!;
   expect(labels[1]!.htmlFor).toBe(input.id);
+
   expect(control.getAttribute("aria-labelledby")).toBe(labels[1]!.id);
+
   expect(control.getAttribute("aria-describedby")).toBe(root.querySelector("p")!.id);
+
   act(() => labels[1]!.click());
+
   expect(control.getAttribute("aria-checked")).toBe("true");
 });
 
 test("removing a Fieldset legend clears its association and an explicitly disabled child stays disabled", () => {
   let hide: () => void = () => {};
+
   function Subject() {
     const [shown, setShown] = useState(true);
     hide = () => setShown(false);
@@ -256,9 +304,13 @@ test("removing a Fieldset legend clears its association and an explicitly disabl
       </Fieldset.Root>
     );
   }
+
   const root = render(<Subject />);
   act(hide);
+
   expect(root.querySelector("fieldset")!.hasAttribute("aria-labelledby")).toBe(false);
+
   expect(root.querySelectorAll("input")[0]!.disabled).toBe(true);
+
   expect(root.querySelectorAll("input")[1]!.disabled).toBe(false);
 });

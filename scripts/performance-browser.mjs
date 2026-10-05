@@ -8,7 +8,9 @@ const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
 const cdp = await page.context().newCDPSession(page);
 await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+
 await cdp.send("Performance.enable");
+
 await page.addInitScript(() => {
   window.sample = { long: [], frames: [], styles: 0, rects: 0, observers: 0, observerMs: 0 };
   const style = window.getComputedStyle;
@@ -32,15 +34,19 @@ await page.addInitScript(() => {
       });
     }
   };
-  new PerformanceObserver((list) => window.sample.long.push(...list.getEntries().map((e) => e.duration))).observe({
+  new PerformanceObserver((list) =>
+    window.sample.long.push(...list.getEntries().map((e) => e.duration)),
+  ).observe({
     type: "longtask",
   });
   let last = performance.now();
+
   function frame(t) {
     window.sample.frames.push(t - last);
     last = t;
     requestAnimationFrame(frame);
   }
+
   requestAnimationFrame(frame);
   window.resetSample = () =>
     (window.sample = { long: [], frames: [], styles: 0, rects: 0, observers: 0, observerMs: 0 });
@@ -58,17 +64,24 @@ await page.addInitScript(() => {
 const base = process.env.PERFORMANCE_URL ?? "http://localhost:4173";
 const start = Date.now();
 await page.goto(base + "/components");
+
 await page.locator("[data-containment-ready]").waitFor({ state: "attached" });
+
 await page.waitForTimeout(1600);
 const load = {
   elapsedMs: Date.now() - start,
   ...(await page.evaluate(() => window.readSample())),
   nodes: await page.locator("*").count(),
 };
+
 const metrics = async () =>
-  Object.fromEntries((await cdp.send("Performance.getMetrics")).metrics.map((m) => [m.name, m.value]));
+  Object.fromEntries(
+    (await cdp.send("Performance.getMetrics")).metrics.map((m) => [m.name, m.value]),
+  );
+
 const idleBefore = await metrics();
 await page.evaluate(() => window.resetSample());
+
 await page.waitForTimeout(2000);
 const idleAfter = await metrics();
 const idle = {
@@ -77,23 +90,40 @@ const idle = {
 };
 const slugs = await page.locator("section[id]").evaluateAll((es) => es.map((e) => e.id));
 const rows = [];
-const popup = new Set(["alert-dialog", "dialog", "drawer", "dropdown-menu", "menubar", "popover", "select", "sheet"]);
+const popup = new Set([
+  "alert-dialog",
+  "dialog",
+  "drawer",
+  "dropdown-menu",
+  "menubar",
+  "popover",
+  "select",
+  "sheet",
+]);
+
 for (const slug of slugs) {
   const section = page.locator("#" + slug);
   await page.mouse.move(1400, 850);
+
   await page.evaluate(() => window.resetSample());
+
   await section.scrollIntoViewIfNeeded();
+
   await page.waitForTimeout(250);
   const reveal = await page.evaluate(() => window.readSample());
   await page.evaluate(() => window.resetSample());
   let action = "presentation";
   let error = null;
+
   try {
     const button = section.locator("button:enabled:visible").first();
+
     if (popup.has(slug)) {
       action = "open + Escape";
       await button.click();
+
       await page.waitForTimeout(220);
+
       await page.keyboard.press("Escape");
     } else if (
       [
@@ -110,7 +140,9 @@ for (const slug of slugs) {
     ) {
       action = "activate";
       await button.click();
-    } else if (["input", "input-group", "field", "combobox", "command", "input-otp"].includes(slug)) {
+    } else if (
+      ["input", "input-group", "field", "combobox", "command", "input-otp"].includes(slug)
+    ) {
       action = "type";
       await section
         .locator(
@@ -118,6 +150,7 @@ for (const slug of slugs) {
         )
         .first()
         .fill(slug === "input-otp" ? "123456" : "a");
+
       await page.keyboard.press("Escape");
     } else if (["checkbox", "switch"].includes(slug)) {
       action = "activate";
@@ -149,14 +182,22 @@ for (const slug of slugs) {
     } else if (slug === "context-menu") {
       action = "contextmenu";
       await section.locator("[data-slot=context-menu-trigger]").first().click({ button: "right" });
+
       await page.waitForTimeout(220);
+
       await page.keyboard.press("Escape");
     } else if (["hover-card", "tooltip", "navigation-menu"].includes(slug)) {
       action = "hover";
-      const target = slug === "navigation-menu" ? button : section.locator(`[data-slot=${slug}-trigger]`).first();
+      const target =
+        slug === "navigation-menu"
+          ? button
+          : section.locator(`[data-slot=${slug}-trigger]`).first();
       await target.hover();
+
       await page.waitForTimeout(650);
+
       await page.keyboard.press("Escape");
+
       await page.mouse.move(1400, 850);
     } else if (slug === "chart") {
       action = "hover chart";
@@ -164,22 +205,43 @@ for (const slug of slugs) {
     } else if (["toast", "sonner"].includes(slug)) {
       action = "notify";
       await button.click();
+
       await page.waitForTimeout(250);
+
       await page
         .locator("[data-slot=toast-close]:visible,[data-sonner-toast] [data-close-button]:visible")
         .evaluateAll((es) => es.forEach((e) => e.click()));
     }
+
     await page.waitForTimeout(300);
   } catch (e) {
     error = e.message.split("\n")[0];
   }
+
   const interaction = await page.evaluate(() => window.readSample());
-  const row = { slug, action, error, domNodes: await section.locator("*").count(), reveal, interaction };
+  const row = {
+    slug,
+    action,
+    error,
+    domNodes: await section.locator("*").count(),
+    reveal,
+    interaction,
+  };
   rows.push(row);
-  console.log(slug, action, error ?? "", interaction.maxTaskMs + "ms", interaction.styles + " styles");
+
+  console.log(
+    slug,
+    action,
+    error ?? "",
+    interaction.maxTaskMs + "ms",
+    interaction.styles + " styles",
+  );
 }
+
 await page.mouse.move(1400, 850);
+
 await page.keyboard.press("Escape");
+
 await page.waitForTimeout(1200);
 const result = {
   capturedAt: new Date().toISOString(),
@@ -194,6 +256,11 @@ writeFileSync(
   process.env.PERFORMANCE_OUTPUT ?? "/tmp/shadcn-preact-performance-browser.json",
   JSON.stringify(result, null, 2),
 );
+
 console.log("summary", JSON.stringify({ load, idle, errors, failed: rows.filter((r) => r.error) }));
+
 await browser.close();
-if (errors.length || rows.some((row) => row.error)) process.exitCode = 1;
+
+if (errors.length || rows.some((row) => row.error)) {
+  process.exitCode = 1;
+}

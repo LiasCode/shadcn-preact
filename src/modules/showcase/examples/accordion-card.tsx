@@ -1,4 +1,9 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@registry/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@registry/ui/accordion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@registry/ui/card";
 
 const items = [
@@ -27,7 +32,9 @@ export default function AccordionCard() {
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Subscription & Billing</CardTitle>
-        <CardDescription>Common questions about your account, plans, payments and cancellations.</CardDescription>
+        <CardDescription>
+          Common questions about your account, plans, payments and cancellations.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Accordion defaultValue={["plans"]}>

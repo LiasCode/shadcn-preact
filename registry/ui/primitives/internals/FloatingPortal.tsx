@@ -11,16 +11,20 @@ interface FocusHandlers {
   first: () => void;
   last: () => void;
 }
+
 interface PortalContextValue {
   portalNode: HTMLElement | null;
   beforeOutsideRef: RefObject<HTMLSpanElement | null>;
   afterOutsideRef: RefObject<HTMLSpanElement | null>;
   setFocusHandlers: (handlers: FocusHandlers | null) => void;
 }
+
 const PortalContext = createContext<PortalContextValue | null>(null);
+
 export function usePortalContext() {
   return useContext(PortalContext);
 }
+
 export interface FloatingPortalProps extends BaseUIComponentProps<"div", {}> {
   container?: HTMLElement | ShadowRoot | null | RefObject<HTMLElement | ShadowRoot | null>;
 }
@@ -33,9 +37,15 @@ export function FloatingPortal(props: FloatingPortalProps) {
   const [handlers, setFocusHandlers] = useState<FocusHandlers | null>(null);
   const beforeOutsideRef = useRef<HTMLSpanElement | null>(null);
   const afterOutsideRef = useRef<HTMLSpanElement | null>(null);
-  const context = useMemo(() => ({ portalNode: node, beforeOutsideRef, afterOutsideRef, setFocusHandlers }), [node]);
+  const context = useMemo(
+    () => ({ portalNode: node, beforeOutsideRef, afterOutsideRef, setFocusHandlers }),
+    [node],
+  );
   useIsoLayoutEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
+
     setTarget(
       container === undefined
         ? parent
@@ -51,10 +61,18 @@ export function FloatingPortal(props: FloatingPortalProps) {
     props: {
       ...elementProps,
       "data-base-ui-portal": "",
-      children: <PortalContext.Provider value={context}>{children as ComponentChildren}</PortalContext.Provider>,
+      children: (
+        <PortalContext.Provider value={context}>
+          {children as ComponentChildren}
+        </PortalContext.Provider>
+      ),
     },
   });
-  if (!target) return null;
+
+  if (!target) {
+    return null;
+  }
+
   return (
     <>
       {handlers && <FocusGuard ref={beforeOutsideRef} onFocus={handlers.first} />}
@@ -63,7 +81,9 @@ export function FloatingPortal(props: FloatingPortalProps) {
     </>
   );
 }
+
 export namespace FloatingPortal {
   export type Props = FloatingPortalProps;
+
   export type State = {};
 }

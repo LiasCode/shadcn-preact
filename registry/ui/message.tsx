@@ -2,10 +2,20 @@ import { cn } from "./lib/utils";
 import type { ComponentProps } from "./primitives/internals/types";
 
 function MessageGroup({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="message-group" className={cn("gap-2 flex min-w-0 flex-col", className)} {...props} />;
+  return (
+    <div
+      data-slot="message-group"
+      className={cn("gap-2 flex min-w-0 flex-col", className)}
+      {...props}
+    />
+  );
 }
 
-function Message({ className, align = "start", ...props }: ComponentProps<"div"> & { align?: "start" | "end" }) {
+function Message({
+  className,
+  align = "start",
+  ...props
+}: ComponentProps<"div"> & { align?: "start" | "end" }) {
   return (
     <div
       data-slot="message"

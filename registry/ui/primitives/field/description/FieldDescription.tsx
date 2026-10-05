@@ -7,10 +7,22 @@ import { useRenderElement } from "../../internals/useRenderElement";
 import type { FieldControlState } from "../control/FieldControl";
 
 export type FieldDescriptionProps = BaseUIComponentProps<"p", FieldControlState>;
+
 export function FieldDescription(props: FieldDescriptionProps) {
-  const { ref, id: idProp, render: _render, className: _className, style: _style, ...elementProps } = props;
+  const {
+    ref,
+    id: idProp,
+    render: _render,
+    className: _className,
+    style: _style,
+    ...elementProps
+  } = props;
   const field = useFieldLabelScope();
-  if (!field) throw new Error("Field.Description requires Field.Root.");
+
+  if (!field) {
+    throw new Error("Field.Description requires Field.Root.");
+  }
+
   const id = useBaseUiId(idProp);
   useIsoLayoutEffect(() => field.message(id), [field.message, id]);
   return useRenderElement("p", props, {
@@ -20,7 +32,9 @@ export function FieldDescription(props: FieldDescriptionProps) {
     stateAttributesMapping: fieldValidityMapping,
   });
 }
+
 export declare namespace FieldDescription {
   type Props = FieldDescriptionProps;
+
   type State = FieldControlState;
 }

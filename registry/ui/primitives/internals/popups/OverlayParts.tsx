@@ -19,6 +19,7 @@ import { useStableCallback } from "../useStableCallback";
 import type { TransitionStatus } from "../useTransitionStatus";
 import { getElementProps } from "./getElementProps";
 import { useOverlayContext, popupStateMapping } from "./OverlayContext";
+
 export interface PopupState {
   open: boolean;
   transitionStatus: TransitionStatus;
@@ -27,10 +28,13 @@ export interface PopupState {
   side?: string;
   align?: string;
 }
+
 const PositionContext = createContext<UseAnchorPositioningReturnValue | null>(null);
+
 export function usePositionContext() {
   return useContext(PositionContext);
 }
+
 const mapping = {
   ...popupStateMapping,
   ...transitionStatusMapping,
@@ -38,20 +42,25 @@ const mapping = {
     return value ? { "data-nested-dialog-open": "" } : null;
   },
 };
+
 export interface OverlayPortalProps extends FloatingPortalProps {
   keepMounted?: boolean;
 }
+
 export function OverlayPortal({ keepMounted = false, ...props }: OverlayPortalProps) {
   const context = useOverlayContext();
   return context.mounted || keepMounted ? <FloatingPortal {...props} /> : null;
 }
+
 export namespace OverlayPortal {
   export type Props = OverlayPortalProps;
 }
+
 export interface OverlayPopupProps extends BaseUIComponentProps<"div", PopupState> {
   initialFocus?: FloatingFocusManagerProps["initialFocus"];
   finalFocus?: FloatingFocusManagerProps["returnFocus"];
 }
+
 export function OverlayPopup(props: OverlayPopupProps) {
   const { ref, initialFocus, finalFocus, ...elementProps } = props;
   const context = useOverlayContext();
@@ -92,24 +101,37 @@ export function OverlayPopup(props: OverlayPopupProps) {
         hidden: !context.mounted,
         inert: !context.open ? "" : undefined,
         style: {
-          "--nested-dialogs": [...context.nestedPopups.values()].filter((popup) => popup.open).length,
-          "--transform-origin": position?.refs.floating.current?.style.getPropertyValue("--transform-origin"),
+          "--nested-dialogs": [...context.nestedPopups.values()].filter((popup) => popup.open)
+            .length,
+          "--transform-origin":
+            position?.refs.floating.current?.style.getPropertyValue("--transform-origin"),
         },
         onPointerEnter() {
-          if (hover && !context.disableHoverablePopup) context.cancelTimers();
+          if (hover && !context.disableHoverablePopup) {
+            context.cancelTimers();
+          }
         },
         onPointerLeave(event: PointerEvent) {
-          if (hover && !context.disableHoverablePopup) hoverLeave(event);
+          if (hover && !context.disableHoverablePopup) {
+            hoverLeave(event);
+          }
         },
         onKeyDown(event: KeyboardEvent) {
-          if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key))
+          if (
+            ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)
+          ) {
             event.stopPropagation();
+          }
         },
       },
       getElementProps(elementProps),
     ],
   });
-  if (hover) return node;
+
+  if (hover) {
+    return node;
+  }
+
   return (
     <FloatingFocusManager
       context={context.floatingContext}
@@ -117,7 +139,9 @@ export function OverlayPopup(props: OverlayPopupProps) {
       modal={context.modal !== false}
       outsideElementsInert={context.modal === true}
       referenceInside={context.kind === "combobox"}
-      initialFocus={initialFocus ?? ((type) => (type === "touch" ? context.popupRef.current : true))}
+      initialFocus={
+        initialFocus ?? ((type) => (type === "touch" ? context.popupRef.current : true))
+      }
       returnFocus={finalFocus}
       restoreFocus="popup"
       closeOnFocusOut={!context.disablePointerDismissal}
@@ -127,10 +151,13 @@ export function OverlayPopup(props: OverlayPopupProps) {
     </FloatingFocusManager>
   );
 }
+
 export namespace OverlayPopup {
   export type Props = OverlayPopupProps;
+
   export type State = PopupState;
 }
+
 export function OverlayBackdrop(props: BaseUIComponentProps<"div", PopupState>) {
   const context = useOverlayContext();
   const state = {
@@ -144,16 +171,25 @@ export function OverlayBackdrop(props: BaseUIComponentProps<"div", PopupState>) 
     ref: [props.ref ?? null, context.setBackdrop],
     stateAttributesMapping: mapping,
     props: [
-      { role: "presentation", hidden: !context.mounted, style: { pointerEvents: context.open ? undefined : "none" } },
+      {
+        role: "presentation",
+        hidden: !context.mounted,
+        style: { pointerEvents: context.open ? undefined : "none" },
+      },
       getElementProps(props),
     ],
   });
 }
+
 export namespace OverlayBackdrop {
   export type Props = BaseUIComponentProps<"div", PopupState>;
+
   export type State = PopupState;
 }
-export interface OverlayCloseProps extends BaseUIComponentProps<"button", { disabled: boolean }>, NativeButtonProps {}
+
+export interface OverlayCloseProps
+  extends BaseUIComponentProps<"button", { disabled: boolean }>, NativeButtonProps {}
+
 export function OverlayClose(props: OverlayCloseProps) {
   const { nativeButton = true, disabled = false, ref, ...elementProps } = props;
   const context = useOverlayContext();
@@ -171,9 +207,11 @@ export function OverlayClose(props: OverlayCloseProps) {
     ],
   });
 }
+
 export namespace OverlayClose {
   export type Props = OverlayCloseProps;
 }
+
 export function OverlayTitle(props: BaseUIComponentProps<"h2", {}>) {
   const context = useOverlayContext();
   const id = useBaseUiId(props.id);
@@ -181,11 +219,16 @@ export function OverlayTitle(props: BaseUIComponentProps<"h2", {}>) {
     context.setTitleId(id);
     return () => context.setTitleId(undefined);
   }, [id, context.setTitleId]);
-  return useRenderElement("h2", props, { ref: props.ref, props: { ...getElementProps(props), id } });
+  return useRenderElement("h2", props, {
+    ref: props.ref,
+    props: { ...getElementProps(props), id },
+  });
 }
+
 export namespace OverlayTitle {
   export type Props = BaseUIComponentProps<"h2", {}>;
 }
+
 export function OverlayDescription(props: BaseUIComponentProps<"p", {}>) {
   const context = useOverlayContext();
   const id = useBaseUiId(props.id);
@@ -195,13 +238,19 @@ export function OverlayDescription(props: BaseUIComponentProps<"p", {}>) {
   }, [id, context.setDescriptionId]);
   return useRenderElement("p", props, { ref: props.ref, props: { ...getElementProps(props), id } });
 }
+
 export namespace OverlayDescription {
   export type Props = BaseUIComponentProps<"p", {}>;
 }
+
 export interface OverlayPositionerProps
   extends
-    BaseUIComponentProps<"div", { open: boolean; side: string; align: string; anchorHidden: boolean }>,
+    BaseUIComponentProps<
+      "div",
+      { open: boolean; side: string; align: string; anchorHidden: boolean }
+    >,
     UseAnchorPositioningSharedParameters {}
+
 export function OverlayPositioner(props: OverlayPositionerProps) {
   const {
     anchor,
@@ -238,14 +287,23 @@ export function OverlayPositioner(props: OverlayPositionerProps) {
     disableAnchorTracking,
   });
   const node = useRenderElement("div", props, {
-    state: { open: context.open, side: position.side, align: position.align, anchorHidden: position.anchorHidden },
+    state: {
+      open: context.open,
+      side: position.side,
+      align: position.align,
+      anchorHidden: position.anchorHidden,
+    },
     ref: [ref ?? null, position.refs.setFloating],
     props: [
       {
         role: "presentation",
         hidden: !context.mounted,
         style: { ...position.positionerStyles, pointerEvents: context.open ? undefined : "none" },
-        children: <PositionContext.Provider value={position}>{children as ComponentChildren}</PositionContext.Provider>,
+        children: (
+          <PositionContext.Provider value={position}>
+            {children as ComponentChildren}
+          </PositionContext.Provider>
+        ),
       },
       getElementProps(elementProps),
     ],
@@ -258,18 +316,26 @@ export function OverlayPositioner(props: OverlayPositionerProps) {
   });
   return node;
 }
+
 export namespace OverlayPositioner {
   export type Props = OverlayPositionerProps;
 }
+
 export function OverlayArrow(
-  props: BaseUIComponentProps<"div", { open: boolean; side: string; align: string; uncentered: boolean }>,
+  props: BaseUIComponentProps<
+    "div",
+    { open: boolean; side: string; align: string; uncentered: boolean }
+  >,
 ) {
   const context = useOverlayContext();
   const position = usePositionContext();
   const arrow = useRef<Element | null>(null);
   const setArrow = useStableCallback((element: Element | null) => {
     arrow.current = element;
-    if (position) position.arrowRef.current = element;
+
+    if (position) {
+      position.arrowRef.current = element;
+    }
   });
   useIsoLayoutEffect(() => {
     void position?.update();
@@ -286,6 +352,7 @@ export function OverlayArrow(
     stateAttributesMapping: popupStateMapping,
   });
 }
+
 export namespace OverlayArrow {
   export type Props = Parameters<typeof OverlayArrow>[0];
 }

@@ -36,21 +36,30 @@ export function AvatarImage(componentProps: AvatarImageProps) {
   const isVisible = imageLoadingStatus === "loaded";
   const { mounted, transitionStatus, setMounted } = useTransitionStatus(isVisible);
   const imageRef = useRef<HTMLImageElement | null>(null);
+
   const handleStatus = useStableCallback((status: ImageLoadingStatus) => {
     onLoadingStatusChange?.(status);
+
     setImageLoadingStatus(status);
   });
   useIsoLayoutEffect(() => {
-    if (imageLoadingStatus !== "idle") handleStatus(imageLoadingStatus);
+    if (imageLoadingStatus !== "idle") {
+      handleStatus(imageLoadingStatus);
+    }
   }, [imageLoadingStatus, handleStatus]);
+
   useIsoLayoutEffect(() => () => setImageLoadingStatus("idle"), [setImageLoadingStatus]);
+
   useOpenChangeComplete({
     open: isVisible,
     ref: imageRef,
     onComplete() {
-      if (!isVisible) setMounted(false);
+      if (!isVisible) {
+        setMounted(false);
+      }
     },
   });
+
   return useRenderElement("img", componentProps, {
     state: { imageLoadingStatus, transitionStatus },
     ref: [ref ?? null, imageRef],
@@ -62,5 +71,6 @@ export function AvatarImage(componentProps: AvatarImageProps) {
 
 export declare namespace AvatarImage {
   type Props = AvatarImageProps;
+
   type State = AvatarImageState;
 }

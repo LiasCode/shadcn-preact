@@ -130,7 +130,12 @@ function AttachmentActions({ className, ...props }: ComponentProps<"div">) {
   );
 }
 
-function AttachmentAction({ className, variant, size = "icon-xs", ...props }: ComponentProps<typeof Button>) {
+function AttachmentAction({
+  className,
+  variant,
+  size = "icon-xs",
+  ...props
+}: ComponentProps<typeof Button>) {
   return (
     <Button
       data-slot="attachment-action"
@@ -142,7 +147,12 @@ function AttachmentAction({ className, variant, size = "icon-xs", ...props }: Co
   );
 }
 
-function AttachmentTrigger({ className, render, type, ...props }: useRender.ComponentProps<"button">) {
+function AttachmentTrigger({
+  className,
+  render,
+  type,
+  ...props
+}: useRender.ComponentProps<"button">) {
   return useRender({
     defaultTagName: "button",
     props: mergeProps<"button">(

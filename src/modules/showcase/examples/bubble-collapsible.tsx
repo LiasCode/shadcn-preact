@@ -30,9 +30,14 @@ export function BubbleCollapsible() {
           <Collapsible open={open} onOpenChange={setOpen}>
             <div>{open || !isLong ? text : preview}</div>
             {isLong ? (
-              <CollapsibleTrigger render={<Button variant="link" className="gap-1 p-0 text-muted-foreground" />}>
+              <CollapsibleTrigger
+                render={<Button variant="link" className="gap-1 p-0 text-muted-foreground" />}
+              >
                 {open ? "Show less" : "Show more"}
-                <ChevronDownIcon data-icon="inline-end" className="group-data-panel-open/button:rotate-180" />
+                <ChevronDownIcon
+                  data-icon="inline-end"
+                  className="group-data-panel-open/button:rotate-180"
+                />
               </CollapsibleTrigger>
             ) : null}
           </Collapsible>

@@ -1,4 +1,10 @@
-import { CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from "lucide-preact";
+import {
+  CircleCheckIcon,
+  InfoIcon,
+  TriangleAlertIcon,
+  OctagonXIcon,
+  Loader2Icon,
+} from "lucide-preact";
 import type * as React from "preact/compat";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 

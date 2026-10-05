@@ -25,6 +25,7 @@ export function useOpenChangeComplete(parameters: UseOpenChangeCompleteParameter
     if (!enabled) {
       return undefined;
     }
+
     const abortController = new AbortController();
     runOnceAnimationsFinish(onComplete, abortController.signal);
     return () => {

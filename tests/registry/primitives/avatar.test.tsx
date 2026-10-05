@@ -9,20 +9,32 @@ test("avatar keeps the fallback while loading and switches to the loaded image",
   const image = document.createElement("img");
   const restoreImage = mockImages(() => image);
   const statuses: string[] = [];
+
   try {
     const container = render(
       <Avatar.Root>
-        <Avatar.Image src="/avatar.png" alt="Profile" onLoadingStatusChange={(status) => statuses.push(status)} />
+        <Avatar.Image
+          src="/avatar.png"
+          alt="Profile"
+          onLoadingStatusChange={(status) => statuses.push(status)}
+        />
         <Avatar.Fallback>AB</Avatar.Fallback>
       </Avatar.Root>,
     );
     expect(container.textContent).toBe("AB");
+
     expect(container.querySelector("img")).toBeNull();
+
     fire(image, new Event("load"));
+
     await settle();
+
     expect(container.querySelector("img")?.getAttribute("src")).toBe("/avatar.png");
+
     expect(container.querySelector("img")?.getAttribute("alt")).toBe("Profile");
+
     expect(container.textContent).toBe("");
+
     expect(statuses).toEqual(["loading", "loaded"]);
   } finally {
     restoreImage();
@@ -33,16 +45,23 @@ test("avatar shows the fallback when the image fails", () => {
   const image = document.createElement("img");
   const restoreImage = mockImages(() => image);
   const statuses: string[] = [];
+
   try {
     const container = render(
       <Avatar.Root>
-        <Avatar.Image src="/missing.png" onLoadingStatusChange={(status) => statuses.push(status)} />
+        <Avatar.Image
+          src="/missing.png"
+          onLoadingStatusChange={(status) => statuses.push(status)}
+        />
         <Avatar.Fallback>AB</Avatar.Fallback>
       </Avatar.Root>,
     );
     fire(image, new Event("error"));
+
     expect(statuses).toEqual(["loading", "error"]);
+
     expect(container.textContent).toBe("AB");
+
     expect(container.querySelector("img")).toBeNull();
   } finally {
     restoreImage();
@@ -56,7 +75,9 @@ test("a delayed fallback appears only after its delay", async () => {
     </Avatar.Root>,
   );
   expect(container.textContent).toBe("");
+
   await settle(40);
+
   expect(container.textContent).toBe("AB");
 });
 
@@ -67,10 +88,13 @@ test("late load events from an old source cannot replace the current fallback", 
     images.push(image);
     return image;
   });
+
   try {
     // Changing the component's source tears down the old preloader.
     const source = { current: "/first.png" };
+
     let rerender: () => void = () => {};
+
     function Subject() {
       const [, setVersion] = useState(0);
       rerender = () => setVersion((version) => version + 1);
@@ -81,12 +105,17 @@ test("late load events from an old source cannot replace the current fallback", 
         </Avatar.Root>
       );
     }
+
     const container = render(<Subject />);
     source.current = "/second.png";
     act(rerender);
+
     expect(images.length).toBe(2);
+
     fire(images[0]!, new Event("load"));
+
     expect(container.querySelector("img")).toBeNull();
+
     expect(container.textContent).toBe("AB");
   } finally {
     restoreImage();

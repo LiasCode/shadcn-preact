@@ -13,11 +13,16 @@ export function FieldItemScopes() {
       <Button variant="outline" onClick={() => setDisabled((value) => !value)}>
         {disabled ? "Enable contact options" : "Disable contact options"}
       </Button>
-      <Form className="flex flex-col gap-4" onFormSubmit={(values) => setSubmitted(JSON.stringify(values))}>
+      <Form
+        className="flex flex-col gap-4"
+        onFormSubmit={(values) => setSubmitted(JSON.stringify(values))}
+      >
         <Fieldset.Root disabled={disabled} className="flex flex-col gap-4 rounded-lg border p-4">
           <Fieldset.Legend className="text-sm font-medium">Contact preferences</Fieldset.Legend>
           <Field.Root name="contact">
-            <Field.Label className="mb-3 block text-sm font-medium">Preferred contact method</Field.Label>
+            <Field.Label className="mb-3 block text-sm font-medium">
+              Preferred contact method
+            </Field.Label>
             <RadioGroup required>
               <Field.Item className="flex items-start gap-2">
                 <RadioGroupItem value="email" className="mt-1" />
@@ -32,7 +37,9 @@ export function FieldItemScopes() {
                 <RadioGroupItem value="phone" className="mt-1" />
                 <div>
                   <Field.Label className="text-sm font-medium">Phone contact</Field.Label>
-                  <Field.Description className="text-sm text-muted-foreground">Request a callback.</Field.Description>
+                  <Field.Description className="text-sm text-muted-foreground">
+                    Request a callback.
+                  </Field.Description>
                 </div>
               </Field.Item>
               <Field.Item disabled className="flex items-start gap-2 opacity-50">

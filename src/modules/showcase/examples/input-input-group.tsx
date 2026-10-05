@@ -1,5 +1,10 @@
 import { Field, FieldLabel } from "@registry/ui/field";
-import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@registry/ui/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+} from "@registry/ui/input-group";
 import { InfoIcon } from "lucide-preact";
 
 export function InputInputGroup() {

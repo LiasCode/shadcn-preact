@@ -3,12 +3,15 @@ import { useContext, useMemo, useState } from "preact/hooks";
 import { FieldsetRootContext } from "../../internals/FieldsetRootContext";
 import type { BaseUIComponentProps } from "../../internals/types";
 import { useRenderElement } from "../../internals/useRenderElement";
+
 export interface FieldsetRootState {
   disabled: boolean;
 }
+
 export interface FieldsetRootProps extends BaseUIComponentProps<"fieldset", FieldsetRootState> {
   disabled?: boolean;
 }
+
 export function FieldsetRoot(props: FieldsetRootProps) {
   const {
     ref,
@@ -29,7 +32,9 @@ export function FieldsetRoot(props: FieldsetRootProps) {
   });
   return <FieldsetRootContext.Provider value={context}>{element}</FieldsetRootContext.Provider>;
 }
+
 export declare namespace FieldsetRoot {
   type Props = FieldsetRootProps;
+
   type State = FieldsetRootState;
 }

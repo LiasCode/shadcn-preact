@@ -18,6 +18,7 @@ import { useRenderElement } from "../../internals/useRenderElement";
 import { useStableCallback } from "../../internals/useStableCallback";
 import { SliderRootContext } from "./SliderRootContext";
 import { sliderStateAttributesMapping } from "./stateAttributesMapping";
+
 export interface SliderRootState {
   activeThumbIndex: number;
   disabled: boolean;
@@ -34,6 +35,7 @@ export interface SliderRootState {
   filled: boolean;
   focused: boolean;
 }
+
 export interface SliderRootProps<Value extends number | readonly number[]> extends Omit<
   BaseUIComponentProps<"div", SliderRootState>,
   "value"
@@ -53,10 +55,19 @@ export interface SliderRootProps<Value extends number | readonly number[]> exten
   locale?: Intl.LocalesArgument;
   thumbAlignment?: "center" | "edge" | "edge-client-only";
   thumbCollisionBehavior?: "push" | "swap" | "none";
-  onValueChange?: (value: Value extends number ? number : Value, details: SliderRoot.ChangeEventDetails) => void;
-  onValueCommitted?: (value: Value extends number ? number : Value, details: SliderRoot.CommitEventDetails) => void;
+  onValueChange?: (
+    value: Value extends number ? number : Value,
+    details: SliderRoot.ChangeEventDetails,
+  ) => void;
+  onValueCommitted?: (
+    value: Value extends number ? number : Value,
+    details: SliderRoot.CommitEventDetails,
+  ) => void;
 }
-export function SliderRoot<Value extends number | readonly number[]>(componentProps: SliderRootProps<Value>) {
+
+export function SliderRoot<Value extends number | readonly number[]>(
+  componentProps: SliderRootProps<Value>,
+) {
   const {
     ref,
     value: valueProp,
@@ -102,10 +113,18 @@ export function SliderRoot<Value extends number | readonly number[]>(componentPr
   const [positions, setPositions] = useState(new Map<number, number>());
   const setPosition = useStableCallback((index: number, position: number | undefined) => {
     setPositions((prev) => {
-      if (prev.get(index) === position) return prev;
+      if (prev.get(index) === position) {
+        return prev;
+      }
+
       const next = new Map(prev);
-      if (position === undefined) next.delete(index);
-      else next.set(index, position);
+
+      if (position === undefined) {
+        next.delete(index);
+      } else {
+        next.set(index, position);
+      }
+
       return next;
     });
   });
@@ -116,33 +135,58 @@ export function SliderRoot<Value extends number | readonly number[]>(componentPr
   const changedValue = useRef<number[] | null>(null);
   const change = useStableCallback(
     (next: number[], index: number, reason: SliderRoot.ChangeEventReason, event: Event) => {
-      if (disabled || next.some(Number.isNaN) || next.every((entry, i) => entry === valuesRef.current[i])) return false;
+      if (
+        disabled ||
+        next.some(Number.isNaN) ||
+        next.every((entry, i) => entry === valuesRef.current[i])
+      ) {
+        return false;
+      }
+
       const newValue = range ? next : next[0]!;
-      const details = createChangeEventDetails(reason, event, undefined, { activeThumbIndex: index });
+      const details = createChangeEventDetails(reason, event, undefined, {
+        activeThumbIndex: index,
+      });
       const EventConstructor = event.constructor as typeof Event;
       const clonedEvent = new EventConstructor(event.type, event);
-      Object.defineProperty(clonedEvent, "target", { value: { value: newValue, name }, writable: true });
+      Object.defineProperty(clonedEvent, "target", {
+        value: { value: newValue, name },
+        writable: true,
+      });
       details.event = clonedEvent;
       onValueChange?.(newValue as Value extends number ? number : Value, details);
+
       if (details.isCanceled) {
         forceSync((tick) => tick + 1);
         return false;
       }
+
       valuesRef.current = next;
       changedValue.current = next;
       setValue(newValue);
-      if (valueProp !== undefined) forceSync((tick) => tick + 1);
+
+      if (valueProp !== undefined) {
+        forceSync((tick) => tick + 1);
+      }
+
       return true;
     },
   );
   const commit = useStableCallback((reason: SliderRoot.CommitEventReason, event: Event) => {
-    if (!changedValue.current) return;
+    if (!changedValue.current) {
+      return;
+    }
+
     const next = range ? changedValue.current : changedValue.current[0]!;
-    onValueCommitted?.(next as Value extends number ? number : Value, createGenericEventDetails(reason, event));
+    onValueCommitted?.(
+      next as Value extends number ? number : Value,
+      createGenericEventDetails(reason, event),
+    );
     changedValue.current = null;
   });
   const reset = useStableCallback(() => {
     setValue(defaultValue ?? min);
+
     forceSync((tick) => tick + 1);
   });
   useRegisterFieldControl({
@@ -153,12 +197,15 @@ export function SliderRoot<Value extends number | readonly number[]>(componentPr
     disabled,
     value,
     getInput: () => {
-      const inputs = [...(rootRef.current?.querySelectorAll<HTMLInputElement>('input[type="range"]') ?? [])].filter(
-        (input) => !input.disabled,
-      );
+      const inputs = [
+        ...(rootRef.current?.querySelectorAll<HTMLInputElement>('input[type="range"]') ?? []),
+      ].filter((input) => !input.disabled);
       return inputs.find((input) => !input.validity.valid) ?? inputs[0] ?? null;
     },
-    focus: () => rootRef.current?.querySelector<HTMLInputElement>('input[type="range"]:not(:disabled)')?.focus(),
+    focus: () =>
+      rootRef.current
+        ?.querySelector<HTMLInputElement>('input[type="range"]:not(:disabled)')
+        ?.focus(),
     isFilled: () => false,
   });
   const state = {
@@ -190,7 +237,9 @@ export function SliderRoot<Value extends number | readonly number[]>(componentPr
           field?.focus(true);
         },
         onBlur(event: FocusEvent) {
-          if (!rootRef.current?.contains(event.relatedTarget as Node | null)) field?.focus(false);
+          if (!rootRef.current?.contains(event.relatedTarget as Node | null)) {
+            field?.focus(false);
+          }
         },
       },
       elementProps,
@@ -225,11 +274,21 @@ export function SliderRoot<Value extends number | readonly number[]>(componentPr
     </SliderRootContext.Provider>
   );
 }
+
 export declare namespace SliderRoot {
-  type Props<Value extends number | readonly number[] = number | readonly number[]> = SliderRootProps<Value>;
+  type Props<Value extends number | readonly number[] = number | readonly number[]> =
+    SliderRootProps<Value>;
+
   type State = SliderRootState;
+
   type ChangeEventReason = "input-change" | "track-press" | "drag" | "keyboard" | "none";
-  type ChangeEventDetails = BaseUIChangeEventDetails<ChangeEventReason, { activeThumbIndex: number }>;
+
+  type ChangeEventDetails = BaseUIChangeEventDetails<
+    ChangeEventReason,
+    { activeThumbIndex: number }
+  >;
+
   type CommitEventReason = ChangeEventReason;
+
   type CommitEventDetails = BaseUIGenericEventDetails<CommitEventReason>;
 }

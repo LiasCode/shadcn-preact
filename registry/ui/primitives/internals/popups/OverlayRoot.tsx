@@ -23,20 +23,31 @@ import { PopupHandle } from "./PopupHandle";
 
 export function OverlayRoot<Payload>(props: OverlayRootProps<Payload> & { kind: OverlayKind }) {
   const tree = useFloatingTree();
-  if (!tree)
+
+  if (!tree) {
     return (
       <FloatingTree>
         <OverlayRootInner {...props} />
       </FloatingTree>
     );
+  }
+
   return <OverlayRootInner {...props} />;
 }
-function OverlayRootInner<Payload>({ kind, ...props }: OverlayRootProps<Payload> & { kind: OverlayKind }) {
+
+function OverlayRootInner<Payload>({
+  kind,
+  ...props
+}: OverlayRootProps<Payload> & { kind: OverlayKind }) {
   const parent = useOverlayContext(true) ?? null;
   const dialog = kind === "dialog" || kind === "alert-dialog" || kind === "drawer";
   const modal = kind === "alert-dialog" ? true : (props.modal ?? dialog);
   const id = useFloatingNodeId();
-  const [open, setOpen] = useControlled({ controlled: props.open, default: props.defaultOpen ?? false, name: kind });
+  const [open, setOpen] = useControlled({
+    controlled: props.open,
+    default: props.defaultOpen ?? false,
+    name: kind,
+  });
   const { mounted, setMounted, transitionStatus } = useTransitionStatus(open);
   const [reference, setReference] = useState<HTMLElement | null>(null);
   const [popup, setPopup] = useState<HTMLElement | null>(null);
@@ -62,6 +73,7 @@ function OverlayRootInner<Payload>({ kind, ...props }: OverlayRootProps<Payload>
   const hoverCleanup = useRef<(() => void) | null>(null);
   const cancelTimers = useStableCallback(() => {
     clearTimeout(timer.current);
+
     hoverCleanup.current?.();
     hoverCleanup.current = null;
   });
@@ -81,28 +93,48 @@ function OverlayRootInner<Payload>({ kind, ...props }: OverlayRootProps<Payload>
         },
       });
       props.onOpenChange?.(next, details);
+
       if (!details.isCanceled) {
         preventUnmount.current = !next && prevented;
+
         if (next && trigger) {
           setReference(trigger);
+
           setTriggerId(trigger.id);
+
           setPayload(triggerPayload as Payload);
         }
+
         setOpen(next);
-        if (next) floatingContext.dataRef.current.openEvent = event;
-        else {
+
+        if (next) {
+          floatingContext.dataRef.current.openEvent = event;
+        } else {
           floatingContext.dataRef.current.closeEvent = event;
-          floatingContext.dataRef.current.closeReason = reason as typeof floatingContext.dataRef.current.closeReason;
+          floatingContext.dataRef.current.closeReason =
+            reason as typeof floatingContext.dataRef.current.closeReason;
         }
       }
+
       return details;
     },
   );
   const schedule = useStableCallback(
-    (next: boolean, event: Event, reason: OverlayReason, delay: number, trigger?: HTMLElement, payload?: unknown) => {
+    (
+      next: boolean,
+      event: Event,
+      reason: OverlayReason,
+      delay: number,
+      trigger?: HTMLElement,
+      payload?: unknown,
+    ) => {
       cancelTimers();
-      if (delay <= 0) change(next, event, reason, trigger, payload);
-      else timer.current = setTimeout(() => change(next, event, reason, trigger, payload), delay);
+
+      if (delay <= 0) {
+        change(next, event, reason, trigger, payload);
+      } else {
+        timer.current = setTimeout(() => change(next, event, reason, trigger, payload), delay);
+      }
     },
   );
   const floatingContext = useFloatingRootContext({
@@ -111,8 +143,14 @@ function OverlayRootInner<Payload>({ kind, ...props }: OverlayRootProps<Payload>
     elements: { reference, floating: popup },
     onOpenChange(next, details) {
       const result = change(next, details.event, details.reason);
-      if (result.isCanceled) details.cancel();
-      if (result.isPropagationAllowed) details.allowPropagation();
+
+      if (result.isCanceled) {
+        details.cancel();
+      }
+
+      if (result.isPropagationAllowed) {
+        details.allowPropagation();
+      }
     },
   });
   useDismiss(floatingContext, {
@@ -121,14 +159,19 @@ function OverlayRootInner<Payload>({ kind, ...props }: OverlayRootProps<Payload>
     outsidePressEvent: "intentional",
     bubbles: { escapeKey: false, outsidePress: !dialog },
   });
+
   useScrollLock(modal === true && mounted, reference);
+
   useOpenChangeComplete({
     open,
     ref: popupRef,
     enabled: mounted && Boolean(popup),
     onComplete() {
       props.onOpenChangeComplete?.(open);
-      if (!open && !preventUnmount.current) setMounted(false);
+
+      if (!open && !preventUnmount.current) {
+        setMounted(false);
+      }
     },
   });
   const registerNested = useStableCallback((childId: string, child: NestedPopup) => {
@@ -145,20 +188,28 @@ function OverlayRootInner<Payload>({ kind, ...props }: OverlayRootProps<Payload>
       });
   });
   useIsoLayoutEffect(
-    () => parent?.registerNested(id, { kind, open: mounted, height: 0, swiping: false, progress: 0 }),
+    () =>
+      parent?.registerNested(id, { kind, open: mounted, height: 0, swiping: false, progress: 0 }),
     [parent?.registerNested, id, kind, mounted],
   );
+
   useIsoLayoutEffect(() => {
     if (activeTriggerId) {
       const trigger = handle.triggers.get(activeTriggerId);
+
       if (trigger) {
         setReference(trigger.element);
+
         setPayload(trigger.payload);
       }
     }
   }, [activeTriggerId, handle, mounted]);
+
   useIsoLayoutEffect(() => {
-    if (!props.actionsRef) return undefined;
+    if (!props.actionsRef) {
+      return undefined;
+    }
+
     props.actionsRef.current = {
       close: () => change(false, new Event("base-ui"), "imperative-action"),
       unmount: () => {
@@ -167,9 +218,12 @@ function OverlayRootInner<Payload>({ kind, ...props }: OverlayRootProps<Payload>
       },
     };
     return () => {
-      if (props.actionsRef) props.actionsRef.current = null;
+      if (props.actionsRef) {
+        props.actionsRef.current = null;
+      }
     };
   }, [props.actionsRef, change, setMounted]);
+
   useEffect(() => cancelTimers, [cancelTimers]);
   const context = useMemo(
     () => ({
@@ -241,6 +295,7 @@ function OverlayRootInner<Payload>({ kind, ...props }: OverlayRootProps<Payload>
     handle.context = context;
     handle.notify();
   });
+
   useIsoLayoutEffect(
     () => () => {
       handle.context = null;

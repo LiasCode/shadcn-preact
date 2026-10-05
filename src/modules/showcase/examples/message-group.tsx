@@ -23,7 +23,9 @@ export function MessageGroupDemo() {
           </MessageAvatar>
           <MessageContent>
             <Bubble variant="muted">
-              <BubbleContent>The component and example JSON now live under the UI registry.</BubbleContent>
+              <BubbleContent>
+                The component and example JSON now live under the UI registry.
+              </BubbleContent>
             </Bubble>
           </MessageContent>
         </Message>

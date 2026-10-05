@@ -1,4 +1,10 @@
-import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@registry/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarImage,
+} from "@registry/ui/avatar";
 
 export function AvatarGroupCountExample() {
   return (

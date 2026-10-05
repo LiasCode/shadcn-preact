@@ -1,4 +1,9 @@
-import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@registry/ui/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+} from "@registry/ui/input-group";
 import { Spinner } from "@registry/ui/spinner";
 import { LoaderIcon } from "lucide-preact";
 

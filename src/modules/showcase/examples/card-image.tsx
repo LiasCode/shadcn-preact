@@ -1,6 +1,13 @@
 import { Badge } from "@registry/ui/badge";
 import { Button } from "@registry/ui/button";
-import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 
 export function CardImage() {
   return (
@@ -16,7 +23,9 @@ export function CardImage() {
           <Badge variant="secondary">Featured</Badge>
         </CardAction>
         <CardTitle>Design systems meetup</CardTitle>
-        <CardDescription>A practical talk on component APIs, accessibility, and shipping faster.</CardDescription>
+        <CardDescription>
+          A practical talk on component APIs, accessibility, and shipping faster.
+        </CardDescription>
       </CardHeader>
       <CardFooter>
         <Button className="w-full">View Event</Button>

@@ -8,7 +8,9 @@ export default function SeparatorDemo() {
         <div className="text-muted-foreground">The Foundation for your Design System</div>
       </div>
       <Separator />
-      <div>A set of beautifully designed components that you can customize, extend, and build on.</div>
+      <div>
+        A set of beautifully designed components that you can customize, extend, and build on.
+      </div>
     </div>
   );
 }

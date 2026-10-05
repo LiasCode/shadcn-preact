@@ -4,7 +4,10 @@ import { useRenderElement } from "../../useRenderElement";
 import { useCompositeListItem } from "../list/useCompositeListItem";
 import { useCompositeRootContext } from "../root/CompositeRootContext";
 
-export interface CompositeItemProps<State extends Record<string, any>> extends BaseUIComponentProps<"div", State> {
+export interface CompositeItemProps<State extends Record<string, any>> extends BaseUIComponentProps<
+  "div",
+  State
+> {
   tag?: string;
   state?: State;
   props?: Record<string, any>[];
@@ -12,7 +15,10 @@ export interface CompositeItemProps<State extends Record<string, any>> extends B
   stateAttributesMapping?: StateAttributesMapping<State>;
   metadata?: { disabled?: boolean; focusableWhenDisabled?: boolean };
 }
-export function CompositeItem<State extends Record<string, any>>(componentProps: CompositeItemProps<State>) {
+
+export function CompositeItem<State extends Record<string, any>>(
+  componentProps: CompositeItemProps<State>,
+) {
   const {
     tag = "div",
     state = {} as State,
@@ -35,17 +41,21 @@ export function CompositeItem<State extends Record<string, any>>(componentProps:
       {
         tabIndex: context.highlightedIndex === index ? 0 : -1,
         onFocus() {
-          if (index !== -1) context.onHighlightedIndexChange(index);
+          if (index !== -1) {
+            context.onHighlightedIndexChange(index);
+          }
         },
         onMouseMove() {
           const node = elementRef.current;
+
           if (
             context.highlightItemOnHover &&
             node &&
             !node.hasAttribute("disabled") &&
             node.getAttribute("aria-disabled") !== "true"
-          )
+          ) {
             node.focus();
+          }
         },
       },
       ...props,

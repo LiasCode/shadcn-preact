@@ -35,18 +35,22 @@ class Scheduler {
     this.nextId += 1;
     this.callbacks.push(fn);
     this.callbacksCount += 1;
+
     if (!this.isScheduled) {
       requestAnimationFrame(this.tick);
       this.isScheduled = true;
     }
+
     return id;
   }
 
   cancel(id: number) {
     const index = id - this.startId;
+
     if (index < 0 || index >= this.callbacks.length) {
       return;
     }
+
     this.callbacks[index] = null;
     this.callbacksCount -= 1;
   }

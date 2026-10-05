@@ -1,4 +1,8 @@
-import type { AnswerControlRegistration, ItemRegistration, QuestionnaireShortcutMode } from "./types";
+import type {
+  AnswerControlRegistration,
+  ItemRegistration,
+  QuestionnaireShortcutMode,
+} from "./types";
 
 function hasInputValue(value: unknown) {
   if (Array.isArray(value)) {
@@ -80,7 +84,10 @@ function compareItemOrder(firstItem: ItemRegistration, secondItem: ItemRegistrat
   return 0;
 }
 
-function compareAnswerOrder(firstAnswer: AnswerControlRegistration, secondAnswer: AnswerControlRegistration) {
+function compareAnswerOrder(
+  firstAnswer: AnswerControlRegistration,
+  secondAnswer: AnswerControlRegistration,
+) {
   if (firstAnswer.element === secondAnswer.element) {
     return 0;
   }

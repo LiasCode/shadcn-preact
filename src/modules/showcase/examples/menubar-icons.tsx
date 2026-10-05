@@ -8,7 +8,14 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@registry/ui/menubar";
-import { FileIcon, FolderIcon, HelpCircleIcon, SaveIcon, SettingsIcon, TrashIcon } from "lucide-preact";
+import {
+  FileIcon,
+  FolderIcon,
+  HelpCircleIcon,
+  SaveIcon,
+  SettingsIcon,
+  TrashIcon,
+} from "lucide-preact";
 
 export function MenubarIcons() {
   return (

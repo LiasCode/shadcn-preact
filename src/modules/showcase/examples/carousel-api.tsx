@@ -20,6 +20,7 @@ export default function CarouselDApiDemo() {
     }
 
     setCount(api.scrollSnapList().length);
+
     setCurrent(api.selectedScrollSnap() + 1);
 
     api.on("select", () => {

@@ -54,7 +54,11 @@ function useQuestionnaireChoice({
     () => registerAnswerSelection(answerId, initialDefaultCheckedRef.current),
     [answerId, registerAnswerSelection],
   );
-  React.useLayoutEffect(() => setAnswerDefault(answerId, defaultChecked), [answerId, defaultChecked, setAnswerDefault]);
+
+  React.useLayoutEffect(
+    () => setAnswerDefault(answerId, defaultChecked),
+    [answerId, defaultChecked, setAnswerDefault],
+  );
 
   React.useLayoutEffect(() => {
     if (!inputElement) {
@@ -92,7 +96,10 @@ function useQuestionnaireChoice({
   }, [checked, controlled, controlledChecked, defaultChecked, inputElement, resetVersion]);
 
   React.useLayoutEffect(() => {
-    if (!controlled || !inputElement) return;
+    if (!controlled || !inputElement) {
+      return;
+    }
+
     controlledChoiceRestorers.set(inputElement, () => {
       inputElement.checked = checkedRef.current;
     });
@@ -105,16 +112,25 @@ function useQuestionnaireChoice({
     const input = event.currentTarget;
     // Preact does not restore a controlled native input when its owner declines a change.
     onChange?.(event);
-    if (controlled)
+
+    if (controlled) {
       queueMicrotask(() => {
         controlledChoiceRestorers.get(input)?.();
-        if (input.type !== "radio") return;
-        const siblings = input.closest("fieldset")?.querySelectorAll<HTMLInputElement>('input[type="radio"]');
+
+        if (input.type !== "radio") {
+          return;
+        }
+
+        const siblings = input
+          .closest("fieldset")
+          ?.querySelectorAll<HTMLInputElement>('input[type="radio"]');
         siblings?.forEach((sibling) => {
-          if (sibling !== input && sibling.name === input.name && sibling.form === input.form)
+          if (sibling !== input && sibling.name === input.name && sibling.form === input.form) {
             controlledChoiceRestorers.get(sibling)?.();
+          }
         });
       });
+    }
 
     if (event.defaultPrevented) {
       return;

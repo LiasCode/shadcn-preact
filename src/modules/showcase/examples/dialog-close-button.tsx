@@ -26,7 +26,11 @@ export function DialogCloseButton() {
             <Label htmlFor="dialog-close-button-link" className="sr-only">
               Link
             </Label>
-            <Input id="dialog-close-button-link" defaultValue="https://ui.shadcn.com/docs/installation" readOnly />
+            <Input
+              id="dialog-close-button-link"
+              defaultValue="https://ui.shadcn.com/docs/installation"
+              readOnly
+            />
           </div>
         </div>
         <DialogFooter className="sm:justify-start">

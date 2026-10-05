@@ -1,4 +1,9 @@
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@registry/ui/chart";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@registry/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 const chartData = [

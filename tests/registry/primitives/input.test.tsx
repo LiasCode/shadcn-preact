@@ -22,9 +22,13 @@ test("uncontrolled input reports native input events and keeps its value", () =>
   element.value = "after";
   const event = new Event("input", { bubbles: true });
   fire(element, event);
+
   expect(reported).toBe("after");
+
   expect(nativeEvent).toBe(event);
+
   expect(element.value).toBe("after");
+
   expect(element.id.startsWith("base-ui-")).toBe(true);
 });
 
@@ -33,9 +37,11 @@ test("controlled input updates from onValueChange", () => {
     const [value, setValue] = useState("first");
     return <Input value={value} onValueChange={setValue} />;
   }
+
   const element = render(<Subject />).firstElementChild as HTMLInputElement;
   element.value = "second";
   fire(element, new Event("input", { bubbles: true }));
+
   expect(element.value).toBe("second");
 });
 
@@ -45,6 +51,7 @@ test("a user input handler can prevent the internal value callback", () => {
     <Input onValueChange={() => calls++} onInput={(event) => event.preventBaseUIHandler()} />,
   ).firstElementChild!;
   fire(element, new Event("input", { bubbles: true }));
+
   expect(calls).toBe(0);
 });
 
@@ -55,10 +62,12 @@ test("onChange runs on input before the value callback and can prevent it", () =
       onValueChange={() => calls.push("value")}
       onChange={(event) => {
         calls.push("change");
+
         event.preventBaseUIHandler();
       }}
     />,
   ).firstElementChild!;
   fire(element, new Event("input", { bubbles: true }));
+
   expect(calls).toEqual(["change"]);
 });

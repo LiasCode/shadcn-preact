@@ -15,6 +15,7 @@ const examples = [
   ["States", Example4],
   ["Trigger", Example5],
 ] as const;
+
 export function AttachmentDemo() {
   const [selected, setSelected] = useState(0);
   const [, Example] = examples[selected]!;

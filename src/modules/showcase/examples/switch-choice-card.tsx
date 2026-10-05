@@ -1,4 +1,11 @@
-import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldTitle } from "@registry/ui/field";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldTitle,
+} from "@registry/ui/field";
 import { Switch } from "@registry/ui/switch";
 
 export function SwitchChoiceCard() {
@@ -8,7 +15,9 @@ export function SwitchChoiceCard() {
         <Field orientation="horizontal">
           <FieldContent>
             <FieldTitle>Share across devices</FieldTitle>
-            <FieldDescription>Focus is shared across devices, and turns off when you leave the app.</FieldDescription>
+            <FieldDescription>
+              Focus is shared across devices, and turns off when you leave the app.
+            </FieldDescription>
           </FieldContent>
           <Switch id="switch-choice-card-switch-share" />
         </Field>
@@ -17,7 +26,9 @@ export function SwitchChoiceCard() {
         <Field orientation="horizontal">
           <FieldContent>
             <FieldTitle>Enable notifications</FieldTitle>
-            <FieldDescription>Receive notifications when focus mode is enabled or disabled.</FieldDescription>
+            <FieldDescription>
+              Receive notifications when focus mode is enabled or disabled.
+            </FieldDescription>
           </FieldContent>
           <Switch id="switch-choice-card-switch-notifications" defaultChecked />
         </Field>

@@ -40,7 +40,10 @@ function useRender<TElement extends ElementType, TState extends RenderState = Re
   state = {} as TState,
   stateAttributesMapping,
 }: UseRenderOptions<TElement, TState>) {
-  const elementProps = mergeProps<TElement>(getStateAttributes(state, stateAttributesMapping), props);
+  const elementProps = mergeProps<TElement>(
+    getStateAttributes(state, stateAttributesMapping),
+    props,
+  );
 
   if (!render) {
     return React.createElement(defaultTagName, elementProps);
@@ -96,8 +99,15 @@ function mergeProps<TElement extends ElementType>(
           ...(value as React.CSSProperties | undefined),
         };
       } else if (key === "ref") {
-        result[key] = composeRefs(current as React.Ref<unknown> | undefined, value as React.Ref<unknown> | undefined);
-      } else if (isEventHandler(key) && typeof current === "function" && typeof value === "function") {
+        result[key] = composeRefs(
+          current as React.Ref<unknown> | undefined,
+          value as React.Ref<unknown> | undefined,
+        );
+      } else if (
+        isEventHandler(key) &&
+        typeof current === "function" &&
+        typeof value === "function"
+      ) {
         result[key] = composeEventHandlers(value as EventHandler, current as EventHandler);
       } else {
         result[key] = value;
@@ -108,7 +118,10 @@ function mergeProps<TElement extends ElementType>(
   return result as ComponentProps<TElement>;
 }
 
-function getStateAttributes<TState extends RenderState>(state: TState, mapping?: StateAttributesMapping<TState>) {
+function getStateAttributes<TState extends RenderState>(
+  state: TState,
+  mapping?: StateAttributesMapping<TState>,
+) {
   const props: Record<string, unknown> = {};
 
   for (const key of Object.keys(state) as Array<keyof TState>) {
@@ -153,7 +166,9 @@ function isEventHandler(key: string) {
   return /^on[A-Z]/.test(key);
 }
 
-function composeRefs<T>(...refs: Array<React.Ref<T> | undefined>): ((value: T | null) => void) | undefined {
+function composeRefs<T>(
+  ...refs: Array<React.Ref<T> | undefined>
+): ((value: T | null) => void) | undefined {
   const validRefs = refs.filter(Boolean);
 
   if (validRefs.length === 0) {

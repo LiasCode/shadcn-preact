@@ -4,13 +4,16 @@ import type { TransitionStatus } from "../../internals/useTransitionStatus";
 import { CollapsibleRootContext } from "./CollapsibleRootContext";
 import { collapsibleStateAttributesMapping } from "./stateAttributesMapping";
 import { useCollapsibleRoot, type UseCollapsibleRootParameters } from "./useCollapsibleRoot";
+
 export interface CollapsibleRootState {
   open: boolean;
   disabled: boolean;
   transitionStatus: TransitionStatus;
 }
+
 export interface CollapsibleRootProps
   extends BaseUIComponentProps<"div", CollapsibleRootState>, UseCollapsibleRootParameters {}
+
 export function CollapsibleRoot(componentProps: CollapsibleRootProps) {
   const {
     ref,
@@ -41,9 +44,15 @@ export function CollapsibleRoot(componentProps: CollapsibleRootProps) {
     </CollapsibleRootContext.Provider>
   );
 }
+
 export declare namespace CollapsibleRoot {
   type Props = CollapsibleRootProps;
+
   type State = CollapsibleRootState;
+
   type ChangeEventReason = "trigger-press" | "none";
-  type ChangeEventDetails = Parameters<NonNullable<UseCollapsibleRootParameters["onOpenChange"]>>[1];
+
+  type ChangeEventDetails = Parameters<
+    NonNullable<UseCollapsibleRootParameters["onOpenChange"]>
+  >[1];
 }

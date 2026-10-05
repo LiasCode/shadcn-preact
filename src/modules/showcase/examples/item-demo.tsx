@@ -1,5 +1,12 @@
 import { Button } from "@registry/ui/button";
-import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@registry/ui/item";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@registry/ui/item";
 import { BadgeCheckIcon, ChevronRightIcon } from "lucide-preact";
 
 export function ItemDemo() {

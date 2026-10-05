@@ -9,6 +9,7 @@ GlobalRegistrator.register({ url: "http://localhost/" });
 
 afterEach(() => {
   cleanup();
+
   if (typeof document !== "undefined") {
     document.body.innerHTML = "";
   }

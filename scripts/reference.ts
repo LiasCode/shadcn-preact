@@ -5,13 +5,23 @@ import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 
-import { componentNames, exampleNames, referenceComponent, referenceExample, STYLE } from "./upstream";
+import {
+  componentNames,
+  exampleNames,
+  referenceComponent,
+  referenceExample,
+  STYLE,
+} from "./upstream";
 
 const { values } = parseArgs({ options: { out: { type: "string" } } });
-const outDir = resolve(values.out ?? join(import.meta.dirname, "../.cache/shadcn-reference", `base-${STYLE}`));
+const outDir = resolve(
+  values.out ?? join(import.meta.dirname, "../.cache/shadcn-reference", `base-${STYLE}`),
+);
 
 rmSync(outDir, { recursive: true, force: true });
+
 mkdirSync(join(outDir, "ui"), { recursive: true });
+
 mkdirSync(join(outDir, "examples"), { recursive: true });
 
 for (const name of componentNames()) {

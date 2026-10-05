@@ -26,7 +26,10 @@ export default function AppSidebar() {
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>Projects</SidebarGroupLabel>
-            <SidebarGroupAction title="Add Project" onClick={() => toast("You clicked the group action!")}>
+            <SidebarGroupAction
+              title="Add Project"
+              onClick={() => toast("You clicked the group action!")}
+            >
               <PlusIcon /> <span className="sr-only">Add Project</span>
             </SidebarGroupAction>
             <SidebarGroupContent>

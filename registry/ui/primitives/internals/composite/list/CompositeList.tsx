@@ -8,7 +8,9 @@ interface ListContext {
   elements: HTMLElement[];
   register(element: HTMLElement): () => void;
 }
+
 const CompositeListContext = createContext<ListContext | undefined>(undefined);
+
 export function CompositeList({
   children,
   onMapChange,
@@ -23,31 +25,50 @@ export function CompositeList({
       .filter((node) => node.isConnected)
       .sort((a, b) => (a.compareDocumentPosition(b) & 4 ? -1 : 1));
     setElements((prev) =>
-      next.length === prev.length && next.every((node, index) => node === prev[index]) ? prev : next,
+      next.length === prev.length && next.every((node, index) => node === prev[index])
+        ? prev
+        : next,
     );
   });
   const register = useStableCallback((element: HTMLElement) => {
     nodes.current.add(element);
+
     sort();
     return () => {
       nodes.current.delete(element);
+
       sort();
     };
   });
   const notify = useStableCallback(onMapChange);
   useIsoLayoutEffect(() => {
     notify(elements);
-    if (typeof window === "undefined" || typeof MutationObserver !== "function") return undefined;
+
+    if (typeof window === "undefined" || typeof MutationObserver !== "function") {
+      return undefined;
+    }
+
     const observer = new MutationObserver(sort);
     elements.forEach((node) => {
-      if (node.parentElement) observer.observe(node.parentElement, { childList: true });
+      if (node.parentElement) {
+        observer.observe(node.parentElement, { childList: true });
+      }
     });
     return () => observer.disconnect();
   }, [elements, sort, notify]);
-  return <CompositeListContext.Provider value={{ elements, register }}>{children}</CompositeListContext.Provider>;
+  return (
+    <CompositeListContext.Provider value={{ elements, register }}>
+      {children}
+    </CompositeListContext.Provider>
+  );
 }
+
 export function useCompositeListContext() {
   const context = useContext(CompositeListContext);
-  if (!context) throw new Error("Base UI: List items must be used within CompositeList.");
+
+  if (!context) {
+    throw new Error("Base UI: List items must be used within CompositeList.");
+  }
+
   return context;
 }

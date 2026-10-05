@@ -6,7 +6,13 @@ import { mergeProps } from "./primitives/merge-props";
 import { useRender } from "./primitives/use-render";
 
 function BubbleGroup({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="bubble-group" className={cn("gap-2 flex min-w-0 flex-col", className)} {...props} />;
+  return (
+    <div
+      data-slot="bubble-group"
+      className={cn("gap-2 flex min-w-0 flex-col", className)}
+      {...props}
+    />
+  );
 }
 
 const bubbleVariants = cva(

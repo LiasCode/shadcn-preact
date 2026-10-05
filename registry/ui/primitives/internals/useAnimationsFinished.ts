@@ -28,6 +28,7 @@ export function useAnimationsFinished(
     frame.cancel();
 
     const element = resolveRef(elementOrRef);
+
     if (element == null) {
       return;
     }
@@ -44,17 +45,26 @@ export function useAnimationsFinished(
     function exec() {
       Promise.all(element!.getAnimations().map((animation) => animation.finished))
         .then(() => {
-          if (!signal?.aborted) done();
+          if (!signal?.aborted) {
+            done();
+          }
         })
         .catch(() => {
           if (treatAbortedAsFinished) {
-            if (!signal?.aborted) done();
+            if (!signal?.aborted) {
+              done();
+            }
+
             return;
           }
+
           const currentAnimations = element!.getAnimations();
+
           if (
             !signal?.aborted &&
-            currentAnimations.some((animation) => animation.pending || animation.playState !== "finished")
+            currentAnimations.some(
+              (animation) => animation.pending || animation.playState !== "finished",
+            )
           ) {
             // Another animation started after the cancelled one; wait for it too.
             exec();
@@ -74,10 +84,15 @@ export function useAnimationsFinished(
       const attributeObserver = new MutationObserver(() => {
         if (!element.hasAttribute(startingStyleAttribute)) {
           attributeObserver.disconnect();
+
           exec();
         }
       });
-      attributeObserver.observe(element, { attributes: true, attributeFilter: [startingStyleAttribute] });
+      attributeObserver.observe(element, {
+        attributes: true,
+        attributeFilter: [startingStyleAttribute],
+      });
+
       signal?.addEventListener("abort", () => attributeObserver.disconnect(), { once: true });
       return;
     }

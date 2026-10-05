@@ -1,9 +1,17 @@
 import * as React from "preact/compat";
 
-import { getElementScrollTop, getElementViewportTop, getMaxScrollTop, getTailSpacerHeight } from "./geometry";
+import {
+  getElementScrollTop,
+  getElementViewportTop,
+  getMaxScrollTop,
+  getTailSpacerHeight,
+} from "./geometry";
 import { AUTOSCROLLING_CLEAR_DELAY, SCROLL_POSITION_EPSILON } from "./types";
 import type { MessageScrollerScrollOptions } from "./types";
-import { markDefaultScrollPositionApplied, type MessageScrollerRefs } from "./use-message-scroller-refs";
+import {
+  markDefaultScrollPositionApplied,
+  type MessageScrollerRefs,
+} from "./use-message-scroller-refs";
 
 // Imperative scroll primitives, split from the controller so the move mechanics
 // live apart from the policy that decides when to run them. Each command resolves
@@ -40,7 +48,10 @@ function useMessageScrollerCommands({
 
   const setAutoScrolling = React.useCallback(
     (autoscrolling: boolean) => {
-      if (typeof window === "undefined") return;
+      if (typeof window === "undefined") {
+        return;
+      }
+
       if (autoscrollingTimeoutRef.current !== null) {
         window.clearTimeout(autoscrollingTimeoutRef.current);
         autoscrollingTimeoutRef.current = null;
@@ -114,6 +125,7 @@ function useMessageScrollerCommands({
         top: nextScrollTop,
         behavior,
       });
+
       scheduleStateCommit();
     },
     [commitScrollState, scheduleStateCommit, setAutoScrolling],
@@ -129,6 +141,7 @@ function useMessageScrollerCommands({
       streamingTurnRef.current = null;
       modeRef.current = "free-scrolling";
       scrollToPosition(0, { behavior });
+
       scheduleVisibilitySync();
 
       return true;
@@ -151,6 +164,7 @@ function useMessageScrollerCommands({
         autoscrolling: true,
         behavior,
       });
+
       scheduleVisibilitySync();
 
       return true;
@@ -161,7 +175,11 @@ function useMessageScrollerCommands({
   const scrollToElement = React.useCallback(
     (
       element: HTMLElement,
-      { align = "start", behavior = "auto", scrollMargin = scrollMarginRef.current }: MessageScrollerScrollOptions = {},
+      {
+        align = "start",
+        behavior = "auto",
+        scrollMargin = scrollMarginRef.current,
+      }: MessageScrollerScrollOptions = {},
       {
         keepPreviousPeek = false,
       }: {
@@ -178,7 +196,9 @@ function useMessageScrollerCommands({
       const scrollTop = getElementScrollTop({
         align,
         element,
-        scrollMargin: keepPreviousPeek ? scrollMargin + scrollPreviousItemPeekRef.current : scrollMargin,
+        scrollMargin: keepPreviousPeek
+          ? scrollMargin + scrollPreviousItemPeekRef.current
+          : scrollMargin,
         spacer: spacerRef.current,
         viewport,
       });
@@ -204,6 +224,7 @@ function useMessageScrollerCommands({
       streamingTurnRef.current = keepPreviousPeek ? element : null;
 
       scrollToPosition(scrollTop, { behavior });
+
       scheduleVisibilitySync();
 
       return true;

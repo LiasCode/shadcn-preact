@@ -20,10 +20,17 @@ export function DropdownMenuCheckboxes() {
       <DropdownMenuContent className="w-40">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-          <DropdownMenuCheckboxItem checked={showStatusBar ?? false} onCheckedChange={setShowStatusBar}>
+          <DropdownMenuCheckboxItem
+            checked={showStatusBar ?? false}
+            onCheckedChange={setShowStatusBar}
+          >
             Status Bar
           </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem checked={showActivityBar} onCheckedChange={setShowActivityBar} disabled>
+          <DropdownMenuCheckboxItem
+            checked={showActivityBar}
+            onCheckedChange={setShowActivityBar}
+            disabled
+          >
             Activity Bar
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem checked={showPanel} onCheckedChange={setShowPanel}>

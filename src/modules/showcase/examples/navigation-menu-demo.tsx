@@ -14,7 +14,8 @@ const components: { title: string; href: string; description: string }[] = [
   {
     title: "Alert Dialog",
     href: "/components",
-    description: "A modal dialog that interrupts the user with important content and expects a response.",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
     title: "Hover Card",
@@ -35,7 +36,8 @@ const components: { title: string; href: string; description: string }[] = [
   {
     title: "Tabs",
     href: "/components",
-    description: "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+    description:
+      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
   },
   {
     title: "Tooltip",

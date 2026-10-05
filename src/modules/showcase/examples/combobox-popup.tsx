@@ -67,7 +67,9 @@ export function ComboboxPopup() {
   return (
     <>
       <Combobox items={countries} defaultValue={countries[0]}>
-        <ComboboxTrigger render={<Button variant="outline" className="w-64 justify-between font-normal" />}>
+        <ComboboxTrigger
+          render={<Button variant="outline" className="w-64 justify-between font-normal" />}
+        >
           <ComboboxValue />
         </ComboboxTrigger>
         <ComboboxContent>

@@ -55,9 +55,15 @@ export function QuestionnaireNavigationState() {
     >
       <QuestionnaireProgress />
 
-      <QuestionnaireItem name="permission" required onStatusChange={(status) => setStatus("permission", status)}>
+      <QuestionnaireItem
+        name="permission"
+        required
+        onStatusChange={(status) => setStatus("permission", status)}
+      >
         <QuestionnaireTitle>What may the agent modify?</QuestionnaireTitle>
-        <QuestionnaireDescription>Next is intentionally disabled until an answer is selected.</QuestionnaireDescription>
+        <QuestionnaireDescription>
+          Next is intentionally disabled until an answer is selected.
+        </QuestionnaireDescription>
         <QuestionnaireChoices>
           <QuestionnaireChoice value="files">Project files</QuestionnaireChoice>
           <QuestionnaireChoice value="tests">Project files and tests</QuestionnaireChoice>
@@ -66,7 +72,11 @@ export function QuestionnaireNavigationState() {
         <QuestionnaireError />
       </QuestionnaireItem>
 
-      <QuestionnaireItem name="verification" required onStatusChange={(status) => setStatus("verification", status)}>
+      <QuestionnaireItem
+        name="verification"
+        required
+        onStatusChange={(status) => setStatus("verification", status)}
+      >
         <QuestionnaireTitle>What must pass before completion?</QuestionnaireTitle>
         <QuestionnaireChoices>
           <QuestionnaireChoice value="tests">Tests</QuestionnaireChoice>
@@ -78,7 +88,11 @@ export function QuestionnaireNavigationState() {
 
       <QuestionnaireActions>
         <QuestionnairePrevious />
-        <QuestionnaireNext className="data-[status=unanswered]:opacity-50" disabled={unanswered} variant="secondary">
+        <QuestionnaireNext
+          className="data-[status=unanswered]:opacity-50"
+          disabled={unanswered}
+          variant="secondary"
+        >
           Next
         </QuestionnaireNext>
         <QuestionnaireSubmit disabled={unanswered}>Save permissions</QuestionnaireSubmit>

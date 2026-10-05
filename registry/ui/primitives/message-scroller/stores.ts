@@ -24,7 +24,11 @@ function createExternalStore<T>(initialSnapshot: T, isEqual: (a: T, b: T) => boo
       snapshot = nextSnapshot;
       listeners.forEach((listener) => listener());
     },
-    subscribe: (listener: () => void, onFirstSubscribe?: () => void, onLastUnsubscribe?: () => void) => {
+    subscribe: (
+      listener: () => void,
+      onFirstSubscribe?: () => void,
+      onLastUnsubscribe?: () => void,
+    ) => {
       const wasEmpty = listeners.size === 0;
 
       listeners.add(listener);
@@ -44,7 +48,10 @@ function createExternalStore<T>(initialSnapshot: T, isEqual: (a: T, b: T) => boo
   };
 }
 
-function createMessageScrollerStore<T>(initialSnapshot: T, isEqual: (a: T, b: T) => boolean): MessageScrollerStore<T> {
+function createMessageScrollerStore<T>(
+  initialSnapshot: T,
+  isEqual: (a: T, b: T) => boolean,
+): MessageScrollerStore<T> {
   return createExternalStore(initialSnapshot, isEqual);
 }
 
@@ -56,7 +63,10 @@ function areScrollStatesEqual(current: MessageScrollerScrollable, next: MessageS
   return current.start === next.start && current.end === next.end;
 }
 
-function areVisibilityStatesEqual(current: MessageScrollerVisibilityState, next: MessageScrollerVisibilityState) {
+function areVisibilityStatesEqual(
+  current: MessageScrollerVisibilityState,
+  next: MessageScrollerVisibilityState,
+) {
   if (current.currentAnchorId !== next.currentAnchorId) {
     return false;
   }
@@ -65,7 +75,9 @@ function areVisibilityStatesEqual(current: MessageScrollerVisibilityState, next:
     return false;
   }
 
-  return current.visibleMessageIds.every((messageId, index) => messageId === next.visibleMessageIds[index]);
+  return current.visibleMessageIds.every(
+    (messageId, index) => messageId === next.visibleMessageIds[index],
+  );
 }
 
 export {

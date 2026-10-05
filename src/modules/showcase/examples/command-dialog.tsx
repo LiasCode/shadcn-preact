@@ -16,10 +16,14 @@ export function CommandDialogDemo() {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
+
     const down = (e: KeyboardEvent) => {
       if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
+
         setOpen((open) => !open);
       }
     };

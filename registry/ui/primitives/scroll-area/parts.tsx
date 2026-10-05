@@ -8,6 +8,7 @@ import { useBaseUiId } from "../internals/useId";
 import { useIsoLayoutEffect } from "../internals/useIsoLayoutEffect";
 import { useRenderElement } from "../internals/useRenderElement";
 import { useStableCallback } from "../internals/useStableCallback";
+
 interface ScrollAreaState {
   scrolling: boolean;
   hasOverflowX: boolean;
@@ -18,6 +19,7 @@ interface ScrollAreaState {
   overflowYEnd: boolean;
   cornerHidden: boolean;
 }
+
 interface Metrics {
   width: number;
   height: number;
@@ -32,6 +34,7 @@ interface Metrics {
   cornerWidth: number;
   cornerHeight: number;
 }
+
 const empty: Metrics = {
   width: 0,
   height: 0,
@@ -46,6 +49,7 @@ const empty: Metrics = {
   cornerWidth: 0,
   cornerHeight: 0,
 };
+
 interface ContextValue {
   state: ScrollAreaState;
   metrics: Metrics;
@@ -60,13 +64,20 @@ interface ContextValue {
   rtl: boolean;
   id: string;
 }
+
 const Context = createContext<ContextValue | null>(null);
 const BarContext = createContext<"horizontal" | "vertical">("vertical");
+
 function useArea() {
   const c = useContext(Context);
-  if (!c) throw new Error("Base UI: ScrollArea parts require Root.");
+
+  if (!c) {
+    throw new Error("Base UI: ScrollArea parts require Root.");
+  }
+
   return c;
 }
+
 const mapping = {
   hasOverflowX: (v: boolean) => (v ? { "data-has-overflow-x": "" } : null),
   hasOverflowY: (v: boolean) => (v ? { "data-has-overflow-y": "" } : null),
@@ -80,6 +91,7 @@ const mapping = {
     "data-orientation": v,
   }),
 };
+
 export function Root({
   overflowEdgeThreshold = 0,
   ...props
@@ -95,11 +107,19 @@ export function Root({
   const rtl = useDirection() === "rtl",
     id = useBaseUiId(props.id);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
   const threshold = (key: "xStart" | "xEnd" | "yStart" | "yEnd") =>
-    typeof overflowEdgeThreshold === "number" ? overflowEdgeThreshold : (overflowEdgeThreshold[key] ?? 0);
+    typeof overflowEdgeThreshold === "number"
+      ? overflowEdgeThreshold
+      : (overflowEdgeThreshold[key] ?? 0);
+
   const measure = useStableCallback(() => {
     const e = viewport.current;
-    if (!e) return;
+
+    if (!e) {
+      return;
+    }
+
     const next = {
       ...empty,
       width: e.clientWidth,
@@ -113,8 +133,12 @@ export function Root({
       overflowY = next.contentHeight > next.height;
     next.cornerWidth = overflowX && overflowY ? (y.current?.offsetWidth ?? 0) : 0;
     next.cornerHeight = overflowX && overflowY ? (x.current?.offsetHeight ?? 0) : 0;
+
     const extent = (bar: HTMLElement | null, horizontal: boolean, fallback: number) => {
-      if (!bar) return fallback;
+      if (!bar) {
+        return fallback;
+      }
+
       const s = bar.ownerDocument.defaultView?.getComputedStyle(bar);
       return Math.max(
         0,
@@ -123,28 +147,44 @@ export function Root({
           (parseFloat(horizontal ? (s?.paddingRight ?? "0") : (s?.paddingBottom ?? "0")) || 0),
       );
     };
+
     next.trackX = extent(x.current, true, next.width - next.cornerWidth);
     next.trackY = extent(y.current, false, next.height - next.cornerHeight);
-    next.thumbX = Math.min(next.trackX, Math.max(16, (next.trackX * next.width) / (next.contentWidth || 1)));
-    next.thumbY = Math.min(next.trackY, Math.max(16, (next.trackY * next.height) / (next.contentHeight || 1)));
-    setMetrics((previous) =>
-      Object.keys(next).every((key) => previous[key as keyof Metrics] === next[key as keyof Metrics]) ? previous : next,
+    next.thumbX = Math.min(
+      next.trackX,
+      Math.max(16, (next.trackX * next.width) / (next.contentWidth || 1)),
     );
+    next.thumbY = Math.min(
+      next.trackY,
+      Math.max(16, (next.trackY * next.height) / (next.contentHeight || 1)),
+    );
+    setMetrics((previous) =>
+      Object.keys(next).every(
+        (key) => previous[key as keyof Metrics] === next[key as keyof Metrics],
+      )
+        ? previous
+        : next,
+    );
+
     for (const [key, value] of Object.entries({
       "x-start": next.x,
       "x-end": Math.max(0, next.contentWidth - next.width - next.x),
       "y-start": next.y,
       "y-end": Math.max(0, next.contentHeight - next.height - next.y),
-    }))
+    })) {
       e.style.setProperty(`--scroll-area-overflow-${key}`, `${value}px`);
+    }
   });
   const scroll = useStableCallback(() => {
     measure();
+
     setScrolling(true);
+
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setScrolling(false), 150);
   });
   useEffect(() => () => clearTimeout(timer.current), []);
+
   useIsoLayoutEffect(() => {
     measure();
   }, [rtl, overflowEdgeThreshold]);
@@ -181,15 +221,20 @@ export function Root({
     ],
   });
   return (
-    <Context.Provider value={{ state, metrics, refs: { viewport, x, y }, measure, scroll, hovering, rtl, id }}>
+    <Context.Provider
+      value={{ state, metrics, refs: { viewport, x, y }, measure, scroll, hovering, rtl, id }}
+    >
       {node}
     </Context.Provider>
   );
 }
+
 export namespace Root {
   export type Props = Parameters<typeof Root>[0];
+
   export type State = ScrollAreaState;
 }
+
 export function Viewport(props: BaseUIComponentProps<"div", ScrollAreaState>) {
   const ctx = useArea();
   const setElement = useStableCallback((e: HTMLElement | null) => {
@@ -198,29 +243,39 @@ export function Viewport(props: BaseUIComponentProps<"div", ScrollAreaState>) {
   });
   useIsoLayoutEffect(() => {
     const e = ctx.refs.viewport.current;
-    if (!e) return;
+
+    if (!e) {
+      return;
+    }
+
     const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(ctx.measure) : null;
     ro?.observe(e);
     const observed = new Set<Element>();
+
     const observeChildren = () => {
       for (const child of observed) {
         if (child.parentElement !== e) {
           ro?.unobserve(child);
+
           observed.delete(child);
         }
       }
+
       for (const child of e.children) {
         if (!observed.has(child)) {
           ro?.observe(child);
+
           observed.add(child);
         }
       }
     };
+
     observeChildren();
     const mo =
       typeof MutationObserver !== "undefined"
         ? new MutationObserver(() => {
             observeChildren();
+
             ctx.measure();
           })
         : null;
@@ -229,7 +284,9 @@ export function Viewport(props: BaseUIComponentProps<"div", ScrollAreaState>) {
     win?.addEventListener("resize", ctx.measure);
     return () => {
       ro?.disconnect();
+
       mo?.disconnect();
+
       win?.removeEventListener("resize", ctx.measure);
     };
   }, [ctx.measure]);
@@ -255,20 +312,32 @@ export function Viewport(props: BaseUIComponentProps<"div", ScrollAreaState>) {
     </>
   );
 }
+
 export namespace Viewport {
   export type Props = Parameters<typeof Viewport>[0];
 }
+
 function scrollTo(ctx: ContextValue, horizontal: boolean, position: number) {
   const e = ctx.refs.viewport.current;
-  if (!e) return;
+
+  if (!e) {
+    return;
+  }
+
   const max = horizontal
     ? ctx.metrics.contentWidth - ctx.metrics.width
     : ctx.metrics.contentHeight - ctx.metrics.height;
   const value = Math.max(0, Math.min(max, position));
-  if (horizontal) e.scrollLeft = ctx.rtl ? -value : value;
-  else e.scrollTop = value;
+
+  if (horizontal) {
+    e.scrollLeft = ctx.rtl ? -value : value;
+  } else {
+    e.scrollTop = value;
+  }
+
   ctx.scroll();
 }
+
 function startScrollDrag(ctx: ContextValue, horizontal: boolean, event: PointerEvent) {
   const target = event.currentTarget as HTMLElement;
   const doc = target.ownerDocument;
@@ -278,44 +347,68 @@ function startScrollDrag(ctx: ContextValue, horizontal: boolean, event: PointerE
   const max = horizontal
     ? ctx.metrics.contentWidth - ctx.metrics.width
     : ctx.metrics.contentHeight - ctx.metrics.height;
-  const travel = horizontal ? ctx.metrics.trackX - ctx.metrics.thumbX : ctx.metrics.trackY - ctx.metrics.thumbY;
+  const travel = horizontal
+    ? ctx.metrics.trackX - ctx.metrics.thumbX
+    : ctx.metrics.trackY - ctx.metrics.thumbY;
+
   try {
     target.setPointerCapture?.(event.pointerId);
   } catch {
     /* The pointer may already be released. */
   }
+
   const move = (next: PointerEvent) => {
-    if (next.pointerId !== event.pointerId) return;
+    if (next.pointerId !== event.pointerId) {
+      return;
+    }
+
     scrollTo(
       ctx,
       horizontal,
       position +
-        (((horizontal ? next.clientX : next.clientY) - start) * (horizontal && ctx.rtl ? -1 : 1) * max) / (travel || 1),
+        (((horizontal ? next.clientX : next.clientY) - start) *
+          (horizontal && ctx.rtl ? -1 : 1) *
+          max) /
+          (travel || 1),
     );
   };
+
   const end = (next: PointerEvent) => {
-    if (next.pointerId === event.pointerId) cleanup();
+    if (next.pointerId === event.pointerId) {
+      cleanup();
+    }
   };
+
   const cleanup = () => {
     doc.removeEventListener("pointermove", move);
+
     doc.removeEventListener("pointerup", end);
+
     doc.removeEventListener("pointercancel", end);
+
     try {
       target.releasePointerCapture?.(event.pointerId);
     } catch {
       /* Capture may have been lost. */
     }
   };
+
   doc.addEventListener("pointermove", move);
+
   doc.addEventListener("pointerup", end);
+
   doc.addEventListener("pointercancel", end);
   return cleanup;
 }
+
 export function Scrollbar({
   orientation = "vertical",
   keepMounted = false,
   ...props
-}: BaseUIComponentProps<"div", ScrollAreaState & { hovering: boolean; orientation: "vertical" | "horizontal" }> & {
+}: BaseUIComponentProps<
+  "div",
+  ScrollAreaState & { hovering: boolean; orientation: "vertical" | "horizontal" }
+> & {
   orientation?: "vertical" | "horizontal";
   keepMounted?: boolean;
 }) {
@@ -331,24 +424,38 @@ export function Scrollbar({
   const visible = horizontal ? ctx.state.hasOverflowX : ctx.state.hasOverflowY;
   useIsoLayoutEffect(() => {
     const e = ref.current;
-    if (!e) return;
+
+    if (!e) {
+      return;
+    }
+
     const onWheel = (event: WheelEvent) => {
-      if (event.ctrlKey) return;
+      if (event.ctrlKey) {
+        return;
+      }
+
       const delta = horizontal ? event.deltaX : event.deltaY,
         max = horizontal
           ? ctx.metrics.contentWidth - ctx.metrics.width
           : ctx.metrics.contentHeight - ctx.metrics.height;
       const position = horizontal ? ctx.metrics.x : ctx.metrics.y;
       const change = horizontal && ctx.rtl ? -delta : delta;
-      if ((position <= 0 && change < 0) || (position >= max && change > 0) || !delta) return;
+
+      if ((position <= 0 && change < 0) || (position >= max && change > 0) || !delta) {
+        return;
+      }
+
       event.preventDefault();
+
       scrollTo(ctx, horizontal, position + change);
     };
+
     e.addEventListener("wheel", onWheel, { passive: false });
     const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(ctx.measure) : null;
     ro?.observe(e);
     return () => {
       e.removeEventListener("wheel", onWheel);
+
       ro?.disconnect();
     };
   }, [visible, horizontal, ctx.metrics, ctx.measure]);
@@ -381,17 +488,25 @@ export function Scrollbar({
               }),
         },
         onPointerDown(event: PointerEvent) {
-          if (event.button !== 0 || event.target !== ref.current) return;
+          if (event.button !== 0 || event.target !== ref.current) {
+            return;
+          }
+
           event.preventDefault();
           const r = ref.current!.getBoundingClientRect(),
             s = ref.current!.ownerDocument.defaultView?.getComputedStyle(ref.current!);
-          const padding = parseFloat(horizontal ? (s?.paddingLeft ?? "0") : (s?.paddingTop ?? "0")) || 0,
+          const padding =
+              parseFloat(horizontal ? (s?.paddingLeft ?? "0") : (s?.paddingTop ?? "0")) || 0,
             track = horizontal ? ctx.metrics.trackX : ctx.metrics.trackY,
             thumb = horizontal ? ctx.metrics.thumbX : ctx.metrics.thumbY;
           let ratio =
             ((horizontal ? event.clientX - r.left : event.clientY - r.top) - padding - thumb / 2) /
             (track - thumb || 1);
-          if (horizontal && ctx.rtl) ratio = 1 - ratio;
+
+          if (horizontal && ctx.rtl) {
+            ratio = 1 - ratio;
+          }
+
           scrollTo(
             ctx,
             horizontal,
@@ -400,6 +515,7 @@ export function Scrollbar({
                 ? ctx.metrics.contentWidth - ctx.metrics.width
                 : ctx.metrics.contentHeight - ctx.metrics.height),
           );
+
           cleanup.current?.();
           cleanup.current = startScrollDrag(ctx, horizontal, event);
         },
@@ -409,11 +525,16 @@ export function Scrollbar({
   });
   return <BarContext.Provider value={orientation}>{node}</BarContext.Provider>;
 }
+
 export namespace Scrollbar {
   export type Props = Parameters<typeof Scrollbar>[0];
 }
+
 export function Thumb(
-  props: BaseUIComponentProps<"div", { scrolling: boolean; orientation: "vertical" | "horizontal" }>,
+  props: BaseUIComponentProps<
+    "div",
+    { scrolling: boolean; orientation: "vertical" | "horizontal" }
+  >,
 ) {
   const ctx = useArea(),
     orientation = useContext(BarContext),
@@ -423,7 +544,9 @@ export function Thumb(
   const max = horizontal
     ? ctx.metrics.contentWidth - ctx.metrics.width
     : ctx.metrics.contentHeight - ctx.metrics.height;
-  const travel = horizontal ? ctx.metrics.trackX - ctx.metrics.thumbX : ctx.metrics.trackY - ctx.metrics.thumbY;
+  const travel = horizontal
+    ? ctx.metrics.trackX - ctx.metrics.thumbX
+    : ctx.metrics.trackY - ctx.metrics.thumbY;
   const offset = (travel * (horizontal ? ctx.metrics.x : ctx.metrics.y)) / (max || 1);
   return useRenderElement("div", props, {
     state: { scrolling: ctx.state.scrolling, orientation },
@@ -433,14 +556,25 @@ export function Thumb(
       {
         style: {
           ...(horizontal
-            ? { width: "var(--scroll-area-thumb-width)", transform: `translate3d(${ctx.rtl ? -offset : offset}px,0,0)` }
-            : { height: "var(--scroll-area-thumb-height)", transform: `translate3d(0,${offset}px,0)` }),
+            ? {
+                width: "var(--scroll-area-thumb-width)",
+                transform: `translate3d(${ctx.rtl ? -offset : offset}px,0,0)`,
+              }
+            : {
+                height: "var(--scroll-area-thumb-height)",
+                transform: `translate3d(0,${offset}px,0)`,
+              }),
           flexShrink: 0,
         },
         onPointerDown(event: PointerEvent) {
-          if (event.button !== 0) return;
+          if (event.button !== 0) {
+            return;
+          }
+
           event.preventDefault();
+
           event.stopPropagation();
+
           cleanup.current?.();
           cleanup.current = startScrollDrag(ctx, horizontal, event);
         },
@@ -449,9 +583,11 @@ export function Thumb(
     ],
   });
 }
+
 export namespace Thumb {
   export type Props = Parameters<typeof Thumb>[0];
 }
+
 export function Corner(props: BaseUIComponentProps<"div", {}>) {
   const ctx = useArea();
   return useRenderElement("div", props, {
@@ -471,6 +607,7 @@ export function Corner(props: BaseUIComponentProps<"div", {}>) {
     ],
   });
 }
+
 export namespace Corner {
   export type Props = Parameters<typeof Corner>[0];
 }

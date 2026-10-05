@@ -63,7 +63,11 @@ export function MessageScrollerVisibility() {
                       const text = getMessageText(message);
 
                       return (
-                        <MessageScrollerItem key={message.id} messageId={message.id} scrollAnchor={isUserMessage}>
+                        <MessageScrollerItem
+                          key={message.id}
+                          messageId={message.id}
+                          scrollAnchor={isUserMessage}
+                        >
                           <Message align={isUserMessage ? "end" : "start"}>
                             <MessageContent>
                               <Bubble variant={isUserMessage ? "muted" : "ghost"}>

@@ -14,6 +14,7 @@ function inline(text: string): ComponentChild[] {
     ),
   );
 }
+
 export function Markdown({ children }: { children: string }) {
   return (
     <div data-slot="markdown" className="w-full min-w-0 space-y-3">
@@ -22,7 +23,8 @@ export function Markdown({ children }: { children: string }) {
         .split(/\n\s*\n/)
         .map((paragraph, index) => {
           const lines = paragraph.split("\n");
-          if (lines.every((line) => /^\d+\. /.test(line)))
+
+          if (lines.every((line) => /^\d+\. /.test(line))) {
             return (
               <ol key={index} className="list-decimal space-y-1 pl-5">
                 {lines.map((line, i) => (
@@ -30,6 +32,8 @@ export function Markdown({ children }: { children: string }) {
                 ))}
               </ol>
             );
+          }
+
           return <p key={index}>{inline(paragraph)}</p>;
         })}
     </div>

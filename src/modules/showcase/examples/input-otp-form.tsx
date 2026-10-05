@@ -1,5 +1,12 @@
 import { Button } from "@registry/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import { Field, FieldDescription, FieldLabel } from "@registry/ui/field";
 import { InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@registry/ui/input-otp";
 import { RefreshCwIcon } from "lucide-preact";
@@ -12,7 +19,8 @@ export function InputOTPForm() {
       <CardHeader>
         <CardTitle>Verify your login</CardTitle>
         <CardDescription>
-          Enter the verification code we sent to your email address: <span className="font-medium">m@example.com</span>.
+          Enter the verification code we sent to your email address:{" "}
+          <span className="font-medium">m@example.com</span>.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -49,7 +57,10 @@ export function InputOTPForm() {
           </Button>
           <div className="text-sm text-muted-foreground">
             Having trouble signing in?{" "}
-            <a href="#" className="underline underline-offset-4 transition-colors hover:text-primary">
+            <a
+              href="#"
+              className="underline underline-offset-4 transition-colors hover:text-primary"
+            >
               Contact support
             </a>
           </div>

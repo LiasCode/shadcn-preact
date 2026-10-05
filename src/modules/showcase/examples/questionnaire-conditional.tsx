@@ -41,17 +41,32 @@ export function QuestionnaireConditional() {
   }
 
   return (
-    <Questionnaire className="mx-auto max-w-md" defaultItem="runtime" items={items} onSubmit={handleSubmit}>
+    <Questionnaire
+      className="mx-auto max-w-md"
+      defaultItem="runtime"
+      items={items}
+      onSubmit={handleSubmit}
+    >
       <QuestionnaireProgress />
 
       <QuestionnaireItem name="runtime" required>
         <QuestionnaireTitle>Where should the agent run?</QuestionnaireTitle>
-        <QuestionnaireDescription>Cloud runs add an environment question to this flow.</QuestionnaireDescription>
+        <QuestionnaireDescription>
+          Cloud runs add an environment question to this flow.
+        </QuestionnaireDescription>
         <QuestionnaireChoices>
-          <QuestionnaireChoice checked={runtime === "local"} value="local" onChange={() => setRuntime("local")}>
+          <QuestionnaireChoice
+            checked={runtime === "local"}
+            value="local"
+            onChange={() => setRuntime("local")}
+          >
             Local workspace
           </QuestionnaireChoice>
-          <QuestionnaireChoice checked={runtime === "cloud"} value="cloud" onChange={() => setRuntime("cloud")}>
+          <QuestionnaireChoice
+            checked={runtime === "cloud"}
+            value="cloud"
+            onChange={() => setRuntime("cloud")}
+          >
             Cloud workspace
           </QuestionnaireChoice>
         </QuestionnaireChoices>

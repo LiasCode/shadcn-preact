@@ -1,4 +1,9 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@registry/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@registry/ui/accordion";
 
 const items = [
   {
@@ -25,7 +30,11 @@ export default function AccordionBorders() {
   return (
     <Accordion className="max-w-lg rounded-lg border" defaultValue={["billing"]}>
       {items.map((item) => (
-        <AccordionItem key={item.value} value={item.value} className="border-b px-4 last:border-b-0">
+        <AccordionItem
+          key={item.value}
+          value={item.value}
+          className="border-b px-4 last:border-b-0"
+        >
           <AccordionTrigger>{item.trigger}</AccordionTrigger>
           <AccordionContent>{item.content}</AccordionContent>
         </AccordionItem>

@@ -1,6 +1,13 @@
 import { Bubble, BubbleContent } from "@registry/ui/bubble";
 import { Button } from "@registry/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,9 +30,12 @@ import {
 import { createChat, getMessageText } from "../support/chat";
 
 const chat = createChat()
-  .user("We're seeing activation dip after workspace creation. Can you help me find the likely step?", {
-    id: "command-activation",
-  })
+  .user(
+    "We're seeing activation dip after workspace creation. Can you help me find the likely step?",
+    {
+      id: "command-activation",
+    },
+  )
   .assistant(
     "The sharpest drop is between creating the workspace and inviting the first teammate.\n\nWorkspace creation is still healthy, but the invite step is where users pause. That suggests the product is asking for collaboration before the user has enough confidence in the workspace.",
   )
@@ -72,7 +82,11 @@ export function MessageScrollerCommands() {
                     const text = getMessageText(message);
 
                     return (
-                      <MessageScrollerItem key={message.id} messageId={message.id} scrollAnchor={isUserMessage}>
+                      <MessageScrollerItem
+                        key={message.id}
+                        messageId={message.id}
+                        scrollAnchor={isUserMessage}
+                      >
                         <Message align={isUserMessage ? "end" : "start"}>
                           <MessageContent>
                             <Bubble variant={isUserMessage ? "muted" : "ghost"}>
@@ -112,7 +126,9 @@ function CommandMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button type="button" variant="secondary" />}>Jump to...</DropdownMenuTrigger>
+      <DropdownMenuTrigger render={<Button type="button" variant="secondary" />}>
+        Jump to...
+      </DropdownMenuTrigger>
       <DropdownMenuContent align="end" side="bottom" className="w-64">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Conversations</DropdownMenuLabel>

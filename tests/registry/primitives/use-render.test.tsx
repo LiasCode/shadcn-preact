@@ -22,10 +22,15 @@ describe("useRender", () => {
       </Badge>,
     ).firstElementChild!;
     expect(el.tagName).toBe("SPAN");
+
     expect(el.getAttribute("data-slot")).toBe("badge");
+
     expect(el.getAttribute("data-variant")).toBe("secondary");
+
     expect(el.className).toBe("badge extra");
+
     expect(el.id).toBe("b");
+
     expect(el.textContent).toBe("Hi");
   });
 
@@ -38,21 +43,31 @@ describe("useRender", () => {
       </Badge>,
     ).firstElementChild!;
     expect(el.tagName).toBe("A");
+
     expect(el.getAttribute("href")).toBe("#go");
+
     expect(el.getAttribute("data-slot")).toBe("badge");
+
     expect(el.className.split(" ").sort()).toEqual(["badge", "link", "x"]);
+
     expect(outer.current).toBe(el);
+
     expect(inner.current).toBe(el as HTMLAnchorElement);
   });
 
   test("calls a render function with the props and the state", () => {
     const el = render(
-      <Badge variant="outline" render={(props: any, state: any) => <button {...props} data-v={state.variant} />}>
+      <Badge
+        variant="outline"
+        render={(props: any, state: any) => <button {...props} data-v={state.variant} />}
+      >
         B
       </Badge>,
     ).firstElementChild!;
     expect(el.tagName).toBe("BUTTON");
+
     expect(el.getAttribute("data-v")).toBe("outline");
+
     expect(el.className).toBe("badge");
   });
 
@@ -60,12 +75,19 @@ describe("useRender", () => {
     function Open(props: any) {
       return useRender({ ...props, state: { open: true } });
     }
+
     const el = render(
-      <Open className={(state: any) => (state.open ? "is-open" : "")} style={() => ({ color: "red" })} />,
+      <Open
+        className={(state: any) => (state.open ? "is-open" : "")}
+        style={() => ({ color: "red" })}
+      />,
     ).firstElementChild as HTMLElement;
     expect(el.tagName).toBe("DIV");
+
     expect(el.className).toBe("is-open");
+
     expect(el.hasAttribute("data-open")).toBe(true);
+
     expect(el.style.color).toBe("red");
   });
 
@@ -73,6 +95,7 @@ describe("useRender", () => {
     function Btn() {
       return useRender({ defaultTagName: "button" });
     }
+
     expect(render(<Btn />).firstElementChild!.getAttribute("type")).toBe("button");
   });
 
@@ -80,6 +103,7 @@ describe("useRender", () => {
     function Off() {
       return useRender({ enabled: false });
     }
+
     expect(render(<Off />).innerHTML).toBe("");
   });
 });

@@ -1,4 +1,11 @@
-import { Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@registry/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from "@registry/ui/field";
 import { Input } from "@registry/ui/input";
 
 export function FieldFieldset() {

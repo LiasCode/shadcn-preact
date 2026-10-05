@@ -40,9 +40,11 @@ export function useRenderElement<State extends Record<string, any>>(
 ): VNode<any> | null {
   const renderProp = componentProps.render;
   const outProps = useRenderElementProps(componentProps, params);
+
   if (params.enabled === false) {
     return null;
   }
+
   const state = params.state ?? (EMPTY_OBJECT as unknown as State);
   return evaluateRenderProp(element, renderProp, outProps, state);
 }
@@ -52,15 +54,25 @@ function useRenderElementProps<State extends Record<string, any>>(
   params: UseRenderElementParameters<State>,
 ): AnyProps {
   const { className: classNameProp, style: styleProp, render: renderProp } = componentProps;
-  const { state = EMPTY_OBJECT as unknown as State, ref, props, stateAttributesMapping, enabled = true } = params;
+  const {
+    state = EMPTY_OBJECT as unknown as State,
+    ref,
+    props,
+    stateAttributesMapping,
+    enabled = true,
+  } = params;
 
   const className = enabled ? resolveClassName(classNameProp, state) : undefined;
   const style = enabled ? resolveStyle(styleProp as never, state) : undefined;
-  const stateProps = enabled ? getStateAttributesProps(state, stateAttributesMapping) : EMPTY_OBJECT;
+  const stateProps = enabled
+    ? getStateAttributesProps(state, stateAttributesMapping)
+    : EMPTY_OBJECT;
   const resolvedProps = enabled && props ? resolveRenderFunctionProps(props) : undefined;
 
   // Always a fresh object when enabled, so the ref, className, and style can be set on it.
-  const outProps: AnyProps = enabled ? (mergeObjects(stateProps, resolvedProps) ?? {}) : EMPTY_OBJECT;
+  const outProps: AnyProps = enabled
+    ? (mergeObjects(stateProps, resolvedProps) ?? {})
+    : EMPTY_OBJECT;
 
   // The same single hook runs on every branch. Refs are not used while prerendering.
   if (typeof document !== "undefined") {
@@ -80,6 +92,7 @@ function useRenderElementProps<State extends Record<string, any>>(
   if (className !== undefined) {
     outProps.className = mergeClassNames(outProps.className, className);
   }
+
   if (style !== undefined) {
     outProps.style = mergeObjects(outProps.style, style);
   }
@@ -91,6 +104,7 @@ function resolveRenderFunctionProps(props: AnyProps | AnyProps[]): AnyProps {
   if (Array.isArray(props)) {
     return mergePropsN(props as never[]);
   }
+
   return mergeProps(undefined, props as never);
 }
 
@@ -104,12 +118,17 @@ function evaluateRenderProp<State>(
     if (typeof render === "function") {
       return render(props, state);
     }
+
     if (!isValidElement(render)) {
       throw new Error(
         "Base UI: The `render` prop was provided an invalid element. It is cloned with props to replace the default element.",
       );
     }
-    const mergedProps = mergeProps(props as never, (render as VNode<AnyProps>).props as never) as AnyProps;
+
+    const mergedProps = mergeProps(
+      props as never,
+      (render as VNode<AnyProps>).props as never,
+    ) as AnyProps;
     mergedProps.ref = props.ref;
     return cloneElement(render, mergedProps);
   }
@@ -125,8 +144,10 @@ function renderTag(tag: string, props: AnyProps): VNode<any> {
   if (tag === "button") {
     return createElement("button", { type: "button", ...props, key: props.key });
   }
+
   if (tag === "img") {
     return createElement("img", { alt: "", ...props, key: props.key });
   }
+
   return createElement(tag, props);
 }

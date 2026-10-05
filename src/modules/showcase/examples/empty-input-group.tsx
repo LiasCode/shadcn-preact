@@ -9,7 +9,8 @@ export default function EmptyInputGroup() {
       <EmptyHeader>
         <EmptyTitle>404 - Not Found</EmptyTitle>
         <EmptyDescription>
-          The page you&apos;re looking for doesn&apos;t exist. Try searching for what you need below.
+          The page you&apos;re looking for doesn&apos;t exist. Try searching for what you need
+          below.
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>

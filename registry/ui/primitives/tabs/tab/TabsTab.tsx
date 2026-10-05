@@ -10,13 +10,17 @@ import { useTabsListContext } from "../list/TabsListContext";
 import { tabsStateAttributesMapping } from "../root/stateAttributesMapping";
 import type { TabsRootState } from "../root/TabsRoot";
 import { useTabsRootContext } from "../root/TabsRootContext";
+
 export interface TabsTabState extends TabsRootState {
   active: boolean;
   disabled: boolean;
 }
-export interface TabsTabProps extends NativeButtonProps, Omit<BaseUIComponentProps<"button", TabsTabState>, "value"> {
+
+export interface TabsTabProps
+  extends NativeButtonProps, Omit<BaseUIComponentProps<"button", TabsTabState>, "value"> {
   value: any;
 }
+
 export function TabsTab(componentProps: TabsTabProps) {
   const {
     ref,
@@ -35,15 +39,30 @@ export function TabsTab(componentProps: TabsTabProps) {
   const elementRef = useRef<HTMLElement | null>(null);
   const id = useBaseUiId(idProp);
   const active = value === root.value;
-  const { getButtonProps, buttonRef } = useButton({ disabled, native: nativeButton, focusableWhenDisabled: true });
+  const { getButtonProps, buttonRef } = useButton({
+    disabled,
+    native: nativeButton,
+    focusableWhenDisabled: true,
+  });
   useIsoLayoutEffect(() => {
-    if (elementRef.current) return root.registerTab({ element: elementRef.current, value, id, disabled });
+    if (elementRef.current) {
+      return root.registerTab({ element: elementRef.current, value, id, disabled });
+    }
+
     return undefined;
   }, [value, id, disabled, root.registerTab]);
+
   useIsoLayoutEffect(() => {
-    if (!active || disabled || index < 0 || list.highlightedIndex === index) return;
+    if (!active || disabled || index < 0 || list.highlightedIndex === index) {
+      return;
+    }
+
     const element = list.element.current;
-    if (element && element.contains(element.ownerDocument.activeElement)) return;
+
+    if (element && element.contains(element.ownerDocument.activeElement)) {
+      return;
+    }
+
     list.setHighlightedIndex(index);
   }, [active, disabled, index, list.highlightedIndex, list.setHighlightedIndex, list.element]);
   const state = { ...root.state, active, disabled };
@@ -60,10 +79,14 @@ export function TabsTab(componentProps: TabsTabProps) {
         "aria-controls": root.panels.get(value),
         "data-composite-item-active": active ? "" : undefined,
         onClick(event: Event) {
-          if (!active && !disabled) root.change(value, event);
+          if (!active && !disabled) {
+            root.change(value, event);
+          }
         },
         onFocus(event: Event) {
-          if (list.activateOnFocus && !active && !disabled) root.change(value, event);
+          if (list.activateOnFocus && !active && !disabled) {
+            root.change(value, event);
+          }
         },
       },
       elementProps,
@@ -71,9 +94,13 @@ export function TabsTab(componentProps: TabsTabProps) {
     ],
   });
 }
+
 export declare namespace TabsTab {
   type Props = TabsTabProps;
+
   type State = TabsTabState;
+
   type Value = any;
+
   type ActivationDirection = import("../root/TabsRoot").ActivationDirection;
 }

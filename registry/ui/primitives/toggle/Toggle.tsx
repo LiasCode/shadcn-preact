@@ -1,7 +1,10 @@
 import { useContext } from "preact/hooks";
 
 import { CompositeItem } from "../internals/composite/item/CompositeItem";
-import { createChangeEventDetails, type BaseUIChangeEventDetails } from "../internals/createBaseUIEventDetails";
+import {
+  createChangeEventDetails,
+  type BaseUIChangeEventDetails,
+} from "../internals/createBaseUIEventDetails";
 import type { BaseUIComponentProps, NativeButtonProps } from "../internals/types";
 import { useButton } from "../internals/useButton";
 import { useControlled } from "../internals/useControlled";
@@ -13,6 +16,7 @@ export interface ToggleState {
   pressed: boolean;
   disabled: boolean;
 }
+
 export interface ToggleProps<Value extends string>
   extends NativeButtonProps, Omit<BaseUIComponentProps<"button", ToggleState>, "value"> {
   pressed?: boolean;
@@ -20,6 +24,7 @@ export interface ToggleProps<Value extends string>
   onPressedChange?: (pressed: boolean, details: BaseUIChangeEventDetails<"none">) => void;
   value?: Value;
 }
+
 export function Toggle<Value extends string>(componentProps: ToggleProps<Value>) {
   const {
     ref,
@@ -52,9 +57,16 @@ export function Toggle<Value extends string>(componentProps: ToggleProps<Value>)
       onClick(event: Event) {
         const details = createChangeEventDetails("none", event);
         onPressedChange?.(!pressed, details);
-        if (details.isCanceled) return;
+
+        if (details.isCanceled) {
+          return;
+        }
+
         group?.setGroupValue(value, !pressed, details);
-        if (!details.isCanceled) setPressed(!pressed);
+
+        if (!details.isCanceled) {
+          setPressed(!pressed);
+        }
       },
     },
     elementProps,
@@ -66,7 +78,8 @@ export function Toggle<Value extends string>(componentProps: ToggleProps<Value>)
     ref: [ref ?? null, buttonRef],
     props,
   });
-  if (group)
+
+  if (group) {
     return (
       <CompositeItem
         render={componentProps.render}
@@ -78,11 +91,17 @@ export function Toggle<Value extends string>(componentProps: ToggleProps<Value>)
         props={props}
       />
     );
+  }
+
   return element;
 }
+
 export declare namespace Toggle {
   type Props<Value extends string = string> = ToggleProps<Value>;
+
   type State = ToggleState;
+
   type ChangeEventReason = "none";
+
   type ChangeEventDetails = BaseUIChangeEventDetails<ChangeEventReason>;
 }

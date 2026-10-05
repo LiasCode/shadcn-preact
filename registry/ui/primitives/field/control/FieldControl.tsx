@@ -21,11 +21,16 @@ export interface FieldControlState {
   filled: boolean;
   focused: boolean;
 }
-export interface FieldControlProps extends Omit<BaseUIComponentProps<"input", FieldControlState>, "ref"> {
+
+export interface FieldControlProps extends Omit<
+  BaseUIComponentProps<"input", FieldControlState>,
+  "ref"
+> {
   ref?: ElementRef<HTMLElement>;
   onValueChange?: (value: string, eventDetails: BaseUIChangeEventDetails<"none">) => void;
   defaultValue?: ComponentProps<"input">["value"];
 }
+
 export function FieldControl(componentProps: FieldControlProps) {
   const {
     ref,
@@ -46,20 +51,26 @@ export function FieldControl(componentProps: FieldControlProps) {
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
   const fieldset = useContext(FieldsetRootContext);
   const item = useItemControl(id, inputRef);
-  const disabled = field?.state.disabled || fieldset?.disabled || item?.state.disabled || disabledProp;
+  const disabled =
+    field?.state.disabled || fieldset?.disabled || item?.state.disabled || disabledProp;
   const register = field?.register;
   useIsoLayoutEffect(() => {
-    if (!register || !inputRef.current || disabled) return;
+    if (!register || !inputRef.current || disabled) {
+      return;
+    }
+
     return register(inputRef.current, id, elementProps.name);
   }, [register, disabled, id, elementProps.name]);
+
   useIsoLayoutEffect(() => {
     if (
       value !== undefined &&
       inputRef.current &&
       field?.controlId === id &&
       String(value) !== String(field.validity.value)
-    )
+    ) {
       field.change(String(value));
+    }
   }, [value, field]);
   const state: FieldControlState = field
     ? { ...field.state, disabled }
@@ -93,10 +104,14 @@ export function FieldControl(componentProps: FieldControlProps) {
           const details = createChangeEventDetails("none", event);
           const next = event.currentTarget.value;
           onValueChange?.(next, details);
+
           if (details.isCanceled) {
-            event.currentTarget.value = String(value ?? field?.validity.value ?? defaultValue ?? "");
+            event.currentTarget.value = String(
+              value ?? field?.validity.value ?? defaultValue ?? "",
+            );
             return;
           }
+
           field?.change(next);
         },
       },
@@ -109,9 +124,13 @@ export function FieldControl(componentProps: FieldControlProps) {
     stateAttributesMapping: field ? fieldValidityMapping : { valid: () => null },
   });
 }
+
 export declare namespace FieldControl {
   type State = FieldControlState;
+
   type Props = FieldControlProps;
+
   type ChangeEventReason = "none";
+
   type ChangeEventDetails = BaseUIChangeEventDetails<ChangeEventReason>;
 }

@@ -8,7 +8,10 @@ import { useState } from "preact/hooks";
 export function FieldValidation() {
   const [submitted, setSubmitted] = useState("");
   return (
-    <Form className="flex w-full max-w-sm flex-col gap-4" onFormSubmit={(values) => setSubmitted(String(values.email))}>
+    <Form
+      className="flex w-full max-w-sm flex-col gap-4"
+      onFormSubmit={(values) => setSubmitted(String(values.email))}
+    >
       <Field.Root name="email" render={<FieldLayout />}>
         <Field.Label className="text-sm font-medium">Email for updates</Field.Label>
         <Field.Description className="text-sm text-muted-foreground">

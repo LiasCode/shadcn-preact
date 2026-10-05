@@ -11,14 +11,17 @@ import { useTransitionStatus, type TransitionStatus } from "../../internals/useT
 import { tabsStateAttributesMapping } from "../root/stateAttributesMapping";
 import type { TabsRootState } from "../root/TabsRoot";
 import { useTabsRootContext } from "../root/TabsRootContext";
+
 export interface TabsPanelState extends TabsRootState {
   hidden: boolean;
   transitionStatus: TransitionStatus;
 }
+
 export interface TabsPanelProps extends Omit<BaseUIComponentProps<"div", TabsPanelState>, "value"> {
   value: any;
   keepMounted?: boolean;
 }
+
 export function TabsPanel(componentProps: TabsPanelProps) {
   const {
     ref,
@@ -40,11 +43,17 @@ export function TabsPanel(componentProps: TabsPanelProps) {
     open,
     ref: elementRef,
     onComplete() {
-      if (!open) setMounted(false);
+      if (!open) {
+        setMounted(false);
+      }
     },
   });
+
   useIsoLayoutEffect(() => {
-    if (mounted || keepMounted) return root.registerPanel(value, id);
+    if (mounted || keepMounted) {
+      return root.registerPanel(value, id);
+    }
+
     return undefined;
   }, [mounted, keepMounted, value, id, root.registerPanel]);
   const state = { ...root.state, hidden: !mounted, transitionStatus };
@@ -67,7 +76,9 @@ export function TabsPanel(componentProps: TabsPanelProps) {
   });
   return keepMounted || mounted ? element : null;
 }
+
 export declare namespace TabsPanel {
   type Props = TabsPanelProps;
+
   type State = TabsPanelState;
 }

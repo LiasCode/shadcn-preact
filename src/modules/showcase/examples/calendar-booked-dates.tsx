@@ -3,8 +3,13 @@ import { Card, CardContent } from "@registry/ui/card";
 import * as React from "preact/compat";
 
 export function CalendarBookedDates() {
-  const [date, setDate] = React.useState<Date | undefined>(new Date(new Date().getFullYear(), 0, 6));
-  const bookedDates = Array.from({ length: 15 }, (_, i) => new Date(new Date().getFullYear(), 0, 12 + i));
+  const [date, setDate] = React.useState<Date | undefined>(
+    new Date(new Date().getFullYear(), 0, 6),
+  );
+  const bookedDates = Array.from(
+    { length: 15 },
+    (_, i) => new Date(new Date().getFullYear(), 0, 12 + i),
+  );
 
   return (
     <Card className="mx-auto w-fit p-0">

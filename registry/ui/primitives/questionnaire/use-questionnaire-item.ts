@@ -43,10 +43,20 @@ function useQuestionnaireItem({
   ref,
   required = false,
 }: UseQuestionnaireItemParameters) {
-  const { activeItemName, domVersion, first, itemDefinitionByName, last, nativeValidation, registerItem, shortcuts } =
-    useQuestionnaireContext("Questionnaire.Item");
+  const {
+    activeItemName,
+    domVersion,
+    first,
+    itemDefinitionByName,
+    last,
+    nativeValidation,
+    registerItem,
+    shortcuts,
+  } = useQuestionnaireContext("Questionnaire.Item");
   const [element, setElement] = React.useState<HTMLFieldSetElement | null>(null);
-  const [answerControlRegistrations, setAnswerControlRegistrations] = React.useState<AnswerControlRegistration[]>([]);
+  const [answerControlRegistrations, setAnswerControlRegistrations] = React.useState<
+    AnswerControlRegistration[]
+  >([]);
   const [validationAttempted, setValidationAttempted] = React.useState(false);
   const [selectedAnswerIds, setSelectedAnswerIds] = React.useState<string[]>([]);
   const [skipped, setSkipped] = React.useState(false);
@@ -67,10 +77,15 @@ function useQuestionnaireItem({
     [answerControls],
   );
   const answered = answers.some((answer) => selectedAnswerIds.includes(answer.id));
-  const status: QuestionnaireItemStatus = skipped ? "skipped" : answered ? "answered" : "unanswered";
+  const status: QuestionnaireItemStatus = skipped
+    ? "skipped"
+    : answered
+      ? "answered"
+      : "unanswered";
   const intentionallySkipped = status === "skipped" && !required;
   const valid = disabled || intentionallySkipped || (!externallyInvalid && status === "answered");
-  const invalid = !disabled && !intentionallySkipped && (externallyInvalid || (validationAttempted && !valid));
+  const invalid =
+    !disabled && !intentionallySkipped && (externallyInvalid || (validationAttempted && !valid));
   const hasInputAnswer = answers.some((answer) => answer.type === "input");
   const previousStatusRef = React.useRef(status);
   const itemDefinition = itemDefinitionByName?.get(name);
@@ -86,14 +101,17 @@ function useQuestionnaireItem({
     const keys = getShortcutKeys(shortcuts);
     const shortcutAnswers = answers.filter((answer) => answer.type === "choice");
 
-    return new Map(shortcutAnswers.slice(0, keys.length).map((answer, index) => [answer.id, keys[index]!]));
+    return new Map(
+      shortcutAnswers.slice(0, keys.length).map((answer, index) => [answer.id, keys[index]!]),
+    );
   }, [answers, shortcutByChoiceValue, shortcuts]);
 
   const registerAnswerControl = React.useCallback((registration: AnswerControlRegistration) => {
     setAnswerControlRegistrations((currentRegistrations) => [
       ...currentRegistrations.filter(
         (currentRegistration) =>
-          currentRegistration.element !== registration.element && currentRegistration.id !== registration.id,
+          currentRegistration.element !== registration.element &&
+          currentRegistration.id !== registration.id,
       ),
       registration,
     ]);
@@ -126,7 +144,9 @@ function useQuestionnaireItem({
           return [answerId];
         }
 
-        return currentAnswerIds.includes(answerId) ? currentAnswerIds : [...currentAnswerIds, answerId];
+        return currentAnswerIds.includes(answerId)
+          ? currentAnswerIds
+          : [...currentAnswerIds, answerId];
       });
     },
     [multiple],
@@ -134,6 +154,7 @@ function useQuestionnaireItem({
   const setAnswerSelectionFromInteraction = React.useCallback(
     (answerId: string, selected: boolean) => {
       setSkipped(false);
+
       updateAnswerSelected(answerId, selected);
     },
     [updateAnswerSelected],
@@ -149,30 +170,37 @@ function useQuestionnaireItem({
     [updateAnswerSelected],
   );
 
-  const registerAnswerSelection = React.useCallback((answerId: string, defaultSelected: boolean) => {
-    if (defaultSelected) {
-      defaultSelectedAnswerIdsRef.current = [
-        ...defaultSelectedAnswerIdsRef.current.filter((currentAnswerId) => currentAnswerId !== answerId),
-        answerId,
-      ];
-      setSelectedAnswerIds((currentAnswerIds) => {
-        if (!multipleRef.current) {
-          return currentAnswerIds.length ? currentAnswerIds : [answerId];
-        }
+  const registerAnswerSelection = React.useCallback(
+    (answerId: string, defaultSelected: boolean) => {
+      if (defaultSelected) {
+        defaultSelectedAnswerIdsRef.current = [
+          ...defaultSelectedAnswerIdsRef.current.filter(
+            (currentAnswerId) => currentAnswerId !== answerId,
+          ),
+          answerId,
+        ];
+        setSelectedAnswerIds((currentAnswerIds) => {
+          if (!multipleRef.current) {
+            return currentAnswerIds.length ? currentAnswerIds : [answerId];
+          }
 
-        return currentAnswerIds.includes(answerId) ? currentAnswerIds : [...currentAnswerIds, answerId];
-      });
-    }
+          return currentAnswerIds.includes(answerId)
+            ? currentAnswerIds
+            : [...currentAnswerIds, answerId];
+        });
+      }
 
-    return () => {
-      defaultSelectedAnswerIdsRef.current = defaultSelectedAnswerIdsRef.current.filter(
-        (currentAnswerId) => currentAnswerId !== answerId,
-      );
-      setSelectedAnswerIds((currentAnswerIds) =>
-        currentAnswerIds.filter((currentAnswerId) => currentAnswerId !== answerId),
-      );
-    };
-  }, []);
+      return () => {
+        defaultSelectedAnswerIdsRef.current = defaultSelectedAnswerIdsRef.current.filter(
+          (currentAnswerId) => currentAnswerId !== answerId,
+        );
+        setSelectedAnswerIds((currentAnswerIds) =>
+          currentAnswerIds.filter((currentAnswerId) => currentAnswerId !== answerId),
+        );
+      };
+    },
+    [],
+  );
   const setAnswerDefault = React.useCallback((answerId: string, defaultSelected: boolean) => {
     if (defaultSelected) {
       defaultSelectedAnswerIdsRef.current = defaultSelectedAnswerIdsRef.current.includes(answerId)
@@ -195,14 +223,18 @@ function useQuestionnaireItem({
 
     return () => {
       setDescriptionIds((currentDescriptionIds) =>
-        currentDescriptionIds.filter((currentDescriptionId) => currentDescriptionId !== registeredDescriptionId),
+        currentDescriptionIds.filter(
+          (currentDescriptionId) => currentDescriptionId !== registeredDescriptionId,
+        ),
       );
     };
   }, []);
 
   const registerError = React.useCallback((registeredErrorId: string) => {
     setErrorIds((currentErrorIds) =>
-      currentErrorIds.includes(registeredErrorId) ? currentErrorIds : [...currentErrorIds, registeredErrorId],
+      currentErrorIds.includes(registeredErrorId)
+        ? currentErrorIds
+        : [...currentErrorIds, registeredErrorId],
     );
 
     return () => {
@@ -224,7 +256,8 @@ function useQuestionnaireItem({
     }
 
     const invalidAnswer = answers.find(
-      (answer) => isAnswerFilled(answer) && answer.element.willValidate && !answer.element.validity.valid,
+      (answer) =>
+        isAnswerFilled(answer) && answer.element.willValidate && !answer.element.validity.valid,
     );
 
     if (!invalidAnswer) {
@@ -232,6 +265,7 @@ function useQuestionnaireItem({
     }
 
     invalidAnswer.element.focus();
+
     invalidAnswer.element.reportValidity();
 
     return false;
@@ -242,7 +276,9 @@ function useQuestionnaireItem({
   }, [element]);
 
   const focusInvalid = React.useCallback(() => {
-    const selectedInput = element?.querySelector<HTMLInputElement>("input[data-filled][name]:not(:disabled)");
+    const selectedInput = element?.querySelector<HTMLInputElement>(
+      "input[data-filled][name]:not(:disabled)",
+    );
     const firstControl = element?.querySelector<HTMLElement>(
       "input:not([type=hidden]):not(:disabled), textarea:not(:disabled)",
     );
@@ -252,10 +288,15 @@ function useQuestionnaireItem({
 
   const reset = React.useCallback(() => {
     setValidationAttempted(false);
+
     setSkipped(false);
+
     setSelectedAnswerIds(
-      multiple ? [...defaultSelectedAnswerIdsRef.current] : defaultSelectedAnswerIdsRef.current.slice(0, 1),
+      multiple
+        ? [...defaultSelectedAnswerIdsRef.current]
+        : defaultSelectedAnswerIdsRef.current.slice(0, 1),
     );
+
     setResetVersion((version) => version + 1);
   }, [multiple]);
 
@@ -265,6 +306,7 @@ function useQuestionnaireItem({
     }
 
     setSelectedAnswerIds([]);
+
     setSkipped(true);
   }, [required]);
 
@@ -294,7 +336,9 @@ function useQuestionnaireItem({
           ([, choiceShortcut]) => choiceShortcut === shortcut,
         )?.[0];
 
-        return answers.find((answer) => answer.type === "choice" && answer.value === choiceValue) ?? null;
+        return (
+          answers.find((answer) => answer.type === "choice" && answer.value === choiceValue) ?? null
+        );
       }
 
       const answerId = Array.from(shortcutByAnswerId.entries()).find(
@@ -320,8 +364,11 @@ function useQuestionnaireItem({
 
       const nextAnswer =
         currentIndex < 0
-          ? (answers.find(isAnswerFilled) ?? (direction === "next" ? answers[0] : answers[answers.length - 1]))
-          : answers[(currentIndex + (direction === "next" ? 1 : -1) + answers.length) % answers.length];
+          ? (answers.find(isAnswerFilled) ??
+            (direction === "next" ? answers[0] : answers[answers.length - 1]))
+          : answers[
+              (currentIndex + (direction === "next" ? 1 : -1) + answers.length) % answers.length
+            ];
 
       if (!nextAnswer || nextAnswer.element === currentElement) {
         return false;
@@ -432,12 +479,14 @@ function useQuestionnaireItem({
   const setItemRef = React.useCallback(
     (nextElement: HTMLFieldSetElement | null) => {
       setElement(nextElement);
+
       composeRefs(ref)?.(nextElement);
     },
     [ref],
   );
   const describedBy =
-    [...descriptionIds, ...(invalid ? errorIds : []), ariaDescribedBy].filter(Boolean).join(" ") || undefined;
+    [...descriptionIds, ...(invalid ? errorIds : []), ariaDescribedBy].filter(Boolean).join(" ") ||
+    undefined;
   const keyShortcuts =
     [
       ariaKeyShortcuts,

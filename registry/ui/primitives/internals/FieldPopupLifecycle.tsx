@@ -10,7 +10,10 @@ export function FieldPopupLifecycle() {
   const overlay = useOverlayContext();
   const previous = useRef(overlay.open);
   useIsoLayoutEffect(() => {
-    if (previous.current && !overlay.open) field?.focus(false);
+    if (previous.current && !overlay.open) {
+      field?.focus(false);
+    }
+
     previous.current = overlay.open;
   }, [overlay.open, field]);
   return null;

@@ -11,7 +11,9 @@ export function BubbleDemo() {
           <BubbleContent>Hey! Want to see chat bubbles?</BubbleContent>
         </Bubble>
         <Bubble variant="muted">
-          <BubbleContent>I can group messages, switch sides, and keep the whole thread easy to scan.</BubbleContent>
+          <BubbleContent>
+            I can group messages, switch sides, and keep the whole thread easy to scan.
+          </BubbleContent>
           <BubbleReactions role="img" aria-label="Reaction: thumbs up">
             <span>👍</span>
           </BubbleReactions>
@@ -21,7 +23,9 @@ export function BubbleDemo() {
         <BubbleContent>Sure. Hit me with your best demo.</BubbleContent>
       </Bubble>
       <Bubble variant="muted">
-        <BubbleContent>Yes. You are reading a demo that is demoing itself. Very meta. Very on-brand.</BubbleContent>
+        <BubbleContent>
+          Yes. You are reading a demo that is demoing itself. Very meta. Very on-brand.
+        </BubbleContent>
         <BubbleReactions role="img" aria-label="Reactions: thumbs up, fire, eyes, and 2 more">
           <span>👍</span>
           <span>🔥</span>

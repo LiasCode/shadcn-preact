@@ -5,7 +5,11 @@ import { useContext, useEffect, useRef, useState } from "preact/hooks";
 import { useDirection } from "../direction-provider";
 import { createChangeEventDetails } from "../internals/createBaseUIEventDetails";
 import { getElementProps } from "../internals/popups/getElementProps";
-import { useOverlayContext, popupStateMapping, type OverlayChangeDetails } from "../internals/popups/OverlayContext";
+import {
+  useOverlayContext,
+  popupStateMapping,
+  type OverlayChangeDetails,
+} from "../internals/popups/OverlayContext";
 import { OverlayPortal, OverlayPositioner, OverlayPopup } from "../internals/popups/OverlayParts";
 import { OverlayRoot } from "../internals/popups/OverlayRoot";
 import { transitionStatusMapping } from "../internals/stateAttributesMapping";
@@ -20,7 +24,9 @@ import { useRenderElement } from "../internals/useRenderElement";
 import { useStableCallback } from "../internals/useStableCallback";
 import { useTransitionStatus } from "../internals/useTransitionStatus";
 export { OverlayPortal as Portal };
+
 type Value = any;
+
 interface ContextValue {
   value: Value;
   change(
@@ -44,14 +50,24 @@ interface ContextValue {
   closeDelay: number;
   orientation: "horizontal" | "vertical";
 }
+
 const Context = createContext<ContextValue | null>(null);
 const ItemContext = createContext<Value>(null);
+
 function useNav() {
   const c = useContext(Context);
-  if (!c) throw new Error("Base UI: NavigationMenu parts require Root.");
+
+  if (!c) {
+    throw new Error("Base UI: NavigationMenu parts require Root.");
+  }
+
   return c;
 }
-interface RootProps<V = any> extends BaseUIComponentProps<"nav", { open: boolean; nested: boolean }> {
+
+interface RootProps<V = any> extends BaseUIComponentProps<
+  "nav",
+  { open: boolean; nested: boolean }
+> {
   value?: V | null;
   defaultValue?: V | null;
   onValueChange?: (value: V | null, details: OverlayChangeDetails) => void;
@@ -61,6 +77,7 @@ interface RootProps<V = any> extends BaseUIComponentProps<"nav", { open: boolean
   closeDelay?: number;
   orientation?: "horizontal" | "vertical";
 }
+
 export function Root<V = any>({
   value: controlled,
   defaultValue = null,
@@ -73,7 +90,11 @@ export function Root<V = any>({
   ...props
 }: RootProps<V>) {
   const parent = useContext(Context);
-  const [value, setValue] = useControlled({ controlled, default: defaultValue, name: "NavigationMenu" });
+  const [value, setValue] = useControlled({
+    controlled,
+    default: defaultValue,
+    name: "NavigationMenu",
+  });
   const [viewport, setViewport] = useState<HTMLElement | null>(null),
     [list, setList] = useState<HTMLElement | null>(null),
     [size, setSize] = useState({ width: 0, height: 0 });
@@ -81,13 +102,23 @@ export function Root<V = any>({
   const triggers = useRef(new Map<Value, HTMLElement>());
   const rtl = useDirection() === "rtl";
   const change = useStableCallback(
-    (next: Value, event: Event, reason: "trigger-press" | "trigger-hover" | "list-navigation" | "link-press") => {
+    (
+      next: Value,
+      event: Event,
+      reason: "trigger-press" | "trigger-hover" | "list-navigation" | "link-press",
+    ) => {
       const details = createChangeEventDetails(reason, event, triggers.current.get(next), {
         preventUnmountOnClose() {},
       });
       onValueChange?.(next, details);
-      if (details.isCanceled) return false;
-      const nodes = [...triggers.current.entries()].sort((a, b) => (a[1].compareDocumentPosition(b[1]) & 4 ? -1 : 1));
+
+      if (details.isCanceled) {
+        return false;
+      }
+
+      const nodes = [...triggers.current.entries()].sort((a, b) =>
+        a[1].compareDocumentPosition(b[1]) & 4 ? -1 : 1,
+      );
       const before = nodes.findIndex(([key]) => key === value),
         after = nodes.findIndex(([key]) => key === next);
       setActivationDirection(
@@ -101,6 +132,7 @@ export function Root<V = any>({
               ? "right"
               : "left",
       );
+
       setValue(next);
       return true;
     },
@@ -132,9 +164,15 @@ export function Root<V = any>({
         open={value != null}
         modal={false}
         onOpenChange={(open, details) => {
-          if (open) return;
+          if (open) {
+            return;
+          }
+
           onValueChange?.(null, details);
-          if (!details.isCanceled) setValue(null);
+
+          if (!details.isCanceled) {
+            setValue(null);
+          }
         }}
         onOpenChangeComplete={onOpenChangeComplete}
         actionsRef={actionsRef as any}
@@ -144,10 +182,13 @@ export function Root<V = any>({
     </Context.Provider>
   );
 }
+
 export namespace Root {
   export type Props<V = any> = RootProps<V>;
+
   export type ChangeEventDetails = OverlayChangeDetails;
 }
+
 export function List(props: BaseUIComponentProps<"ul", {}>) {
   const nav = useNav();
   const { navigate } = useListNavigation(
@@ -164,10 +205,15 @@ export function List(props: BaseUIComponentProps<"ul", {}>) {
     props: [{ onKeyDown: navigate }, getElementProps(props)],
   });
 }
+
 export namespace List {
   export type Props = Parameters<typeof List>[0];
 }
-export function Item({ value: explicit, ...props }: BaseUIComponentProps<"li", {}> & { value?: Value }) {
+
+export function Item({
+  value: explicit,
+  ...props
+}: BaseUIComponentProps<"li", {}> & { value?: Value }) {
   const id = useBaseUiId();
   return (
     <ItemContext.Provider value={explicit ?? id}>
@@ -175,9 +221,11 @@ export function Item({ value: explicit, ...props }: BaseUIComponentProps<"li", {
     </ItemContext.Provider>
   );
 }
+
 export namespace Item {
   export type Props = Parameters<typeof Item>[0];
 }
+
 export function Trigger({
   nativeButton = true,
   ...props
@@ -186,23 +234,44 @@ export function Trigger({
     value = useContext(ItemContext),
     ctx = useOverlayContext(),
     element = useRef<HTMLElement | null>(null);
-  const { buttonRef, getButtonProps } = useButton({ native: nativeButton, disabled: props.disabled });
+  const { buttonRef, getButtonProps } = useButton({
+    native: nativeButton,
+    disabled: props.disabled,
+  });
   const open = nav.value === value;
   const id = useBaseUiId(props.id);
   const setElement = useStableCallback((node: HTMLElement | null) => {
     element.current = node;
-    if (node) nav.triggers.set(value, node);
-    else nav.triggers.delete(value);
+
+    if (node) {
+      nav.triggers.set(value, node);
+    } else {
+      nav.triggers.delete(value);
+    }
   });
   useIsoLayoutEffect(() => {
-    if (open && element.current) ctx.setReference(element.current);
+    if (open && element.current) {
+      ctx.setReference(element.current);
+    }
   }, [open, ctx.setReference]);
+
   const activate = (event: Event, hover = false) => {
-    if (props.disabled) return;
+    if (props.disabled) {
+      return;
+    }
+
     ctx.cancelTimers();
-    if (nav.change(value, event, hover ? "trigger-hover" : "trigger-press"))
-      ctx.change(true, event, hover ? "trigger-hover" : "trigger-press", element.current ?? undefined);
+
+    if (nav.change(value, event, hover ? "trigger-hover" : "trigger-press")) {
+      ctx.change(
+        true,
+        event,
+        hover ? "trigger-hover" : "trigger-press",
+        element.current ?? undefined,
+      );
+    }
   };
+
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
   return useRenderElement("button", props, {
@@ -217,26 +286,44 @@ export function Trigger({
         onClick(event: MouseEvent) {
           if (open) {
             nav.change(null, event, "trigger-press");
+
             ctx.change(false, event, "trigger-press");
-          } else activate(event);
+          } else {
+            activate(event);
+          }
         },
         onPointerEnter(event: PointerEvent) {
-          if (event.pointerType === "touch") return;
+          if (event.pointerType === "touch") {
+            return;
+          }
+
           ctx.cancelTimers();
+
           clearTimeout(timer.current);
-          timer.current = setTimeout(() => activate(event, true), nav.value == null ? nav.delay : 0);
+          timer.current = setTimeout(
+            () => activate(event, true),
+            nav.value == null ? nav.delay : 0,
+          );
         },
         onPointerLeave(event: PointerEvent) {
           clearTimeout(timer.current);
-          if (!ctx.popupRef.current?.contains(event.relatedTarget as Node))
+
+          if (!ctx.popupRef.current?.contains(event.relatedTarget as Node)) {
             ctx.schedule(false, event, "trigger-hover", nav.closeDelay);
+          }
         },
         onKeyDown(event: KeyboardEvent) {
           if (event.key === (nav.orientation === "vertical" ? "ArrowRight" : "ArrowDown")) {
             event.preventDefault();
+
             event.stopPropagation();
+
             activate(event);
-            setTimeout(() => ctx.popupRef.current?.querySelector<HTMLElement>("a,button")?.focus(), 0);
+
+            setTimeout(
+              () => ctx.popupRef.current?.querySelector<HTMLElement>("a,button")?.focus(),
+              0,
+            );
           }
         },
       }),
@@ -244,9 +331,11 @@ export function Trigger({
     ],
   });
 }
+
 export namespace Trigger {
   export type Props = Parameters<typeof Trigger>[0];
 }
+
 export function Content({
   keepMounted = false,
   ...props
@@ -269,21 +358,33 @@ export function Content({
     ref,
     enabled: mounted,
     onComplete() {
-      if (!open) setMounted(false);
+      if (!open) {
+        setMounted(false);
+      }
     },
   });
+
   useIsoLayoutEffect(() => {
     const e = ref.current;
-    if (!open || !e) return;
+
+    if (!open || !e) {
+      return;
+    }
+
     const popup = ctx.popupRef.current;
     const positioner = popup?.parentElement;
-    if (!popup || !positioner) return;
+
+    if (!popup || !positioner) {
+      return;
+    }
+
     const measure = () => {
       const properties = ["--popup-width", "--popup-height"];
       const previous = properties.map((key) => popup.style.getPropertyValue(key));
       const oldWidth = positioner.style.width;
       const oldHeight = positioner.style.height;
       popup.style.setProperty("--popup-width", "auto");
+
       popup.style.setProperty("--popup-height", "auto");
       positioner.style.width = "max-content";
       positioner.style.height = "auto";
@@ -293,9 +394,11 @@ export function Content({
       positioner.style.height = oldHeight;
       nav.setSize((current) => previousSize(current, size));
     };
+
     measure();
     const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
     ro?.observe(e);
+
     ro?.observe(positioner);
     const mo = typeof MutationObserver !== "undefined" ? new MutationObserver(measure) : null;
     mo?.observe(e, { childList: true, subtree: true, characterData: true });
@@ -303,7 +406,9 @@ export function Content({
     win?.addEventListener("resize", measure);
     return () => {
       ro?.disconnect();
+
       mo?.disconnect();
+
       win?.removeEventListener("resize", measure);
     };
   }, [open, nav.viewport]);
@@ -314,7 +419,8 @@ export function Content({
     stateAttributesMapping: {
       ...popupStateMapping,
       ...transitionStatusMapping,
-      activationDirection: (v: ContextValue["direction"]) => (v ? { "data-activation-direction": v } : null),
+      activationDirection: (v: ContextValue["direction"]) =>
+        v ? { "data-activation-direction": v } : null,
     },
     props: [
       {
@@ -323,10 +429,15 @@ export function Content({
         inert: !open ? "" : undefined,
         "aria-labelledby": nav.triggers.get(value)?.id,
         onKeyDown(event: KeyboardEvent) {
-          if (navigate(event)) return;
+          if (navigate(event)) {
+            return;
+          }
+
           if (event.key === "Escape") {
             event.preventDefault();
+
             ctx.change(false, event, "escape-key");
+
             nav.triggers.get(value)?.focus();
           }
         },
@@ -339,12 +450,18 @@ export function Content({
   });
   return nav.viewport && node ? createPortal(node, nav.viewport) : null;
 }
-function previousSize(previous: { width: number; height: number }, next: { width: number; height: number }) {
+
+function previousSize(
+  previous: { width: number; height: number },
+  next: { width: number; height: number },
+) {
   return previous.width === next.width && previous.height === next.height ? previous : next;
 }
+
 export namespace Content {
   export type Props = Parameters<typeof Content>[0];
 }
+
 export function Positioner(props: OverlayPositioner.Props) {
   const nav = useNav();
   return (
@@ -359,9 +476,11 @@ export function Positioner(props: OverlayPositioner.Props) {
     />
   );
 }
+
 export namespace Positioner {
   export type Props = OverlayPositioner.Props;
 }
+
 export function Popup(props: OverlayPopup.Props) {
   const nav = useNav(),
     ctx = useOverlayContext();
@@ -380,22 +499,30 @@ export function Popup(props: OverlayPopup.Props) {
       })}
       onPointerEnter={() => ctx.cancelTimers()}
       onPointerLeave={(event) => {
-        if (!nav.list?.contains(event.relatedTarget as Node))
+        if (!nav.list?.contains(event.relatedTarget as Node)) {
           ctx.schedule(false, event, "trigger-hover", nav.closeDelay);
+        }
       }}
     />
   );
 }
+
 export namespace Popup {
   export type Props = OverlayPopup.Props;
 }
+
 export function Viewport(props: BaseUIComponentProps<"div", {}>) {
   const nav = useNav();
-  return useRenderElement("div", props, { ref: [props.ref ?? null, nav.setViewport], props: getElementProps(props) });
+  return useRenderElement("div", props, {
+    ref: [props.ref ?? null, nav.setViewport],
+    props: getElementProps(props),
+  });
 }
+
 export namespace Viewport {
   export type Props = Parameters<typeof Viewport>[0];
 }
+
 export function Link({
   active = false,
   closeOnClick = true,
@@ -409,16 +536,20 @@ export function Link({
       {
         "aria-current": active ? "page" : undefined,
         onClick(event: MouseEvent) {
-          if (closeOnClick) nav.change(null, event, "link-press");
+          if (closeOnClick) {
+            nav.change(null, event, "link-press");
+          }
         },
       },
       getElementProps(props),
     ],
   });
 }
+
 export namespace Link {
   export type Props = Parameters<typeof Link>[0];
 }
+
 export function Icon(props: BaseUIComponentProps<"span", { open: boolean }>) {
   const nav = useNav();
   return useRenderElement("span", props, {
@@ -428,6 +559,7 @@ export function Icon(props: BaseUIComponentProps<"span", { open: boolean }>) {
     props: [{ "aria-hidden": true }, getElementProps(props)],
   });
 }
+
 export namespace Icon {
   export type Props = Parameters<typeof Icon>[0];
 }

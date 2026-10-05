@@ -69,7 +69,9 @@ function DialogContent({
 }
 
 function DialogHeader({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="dialog-header" className={cn("gap-2 flex flex-col", className)} {...props} />;
+  return (
+    <div data-slot="dialog-header" className={cn("gap-2 flex flex-col", className)} {...props} />
+  );
 }
 
 function DialogFooter({
@@ -90,7 +92,9 @@ function DialogFooter({
       {...props}
     >
       {children}
-      {showCloseButton && <DialogPrimitive.Close render={<Button variant="outline" />}>Close</DialogPrimitive.Close>}
+      {showCloseButton && (
+        <DialogPrimitive.Close render={<Button variant="outline" />}>Close</DialogPrimitive.Close>
+      )}
     </div>
   );
 }

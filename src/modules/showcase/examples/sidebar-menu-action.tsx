@@ -1,4 +1,9 @@
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@registry/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@registry/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +16,14 @@ import {
   SidebarMenuItem,
   SidebarProvider,
 } from "@registry/ui/sidebar";
-import { FrameIcon, LifeBuoyIcon, MapIcon, MoreHorizontalIcon, PieChartIcon, SendIcon } from "lucide-preact";
+import {
+  FrameIcon,
+  LifeBuoyIcon,
+  MapIcon,
+  MoreHorizontalIcon,
+  PieChartIcon,
+  SendIcon,
+} from "lucide-preact";
 
 const projects = [
   {

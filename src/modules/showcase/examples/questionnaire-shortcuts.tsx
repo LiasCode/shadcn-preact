@@ -52,10 +52,17 @@ export function QuestionnaireShortcuts() {
         <NativeSelectOption value="numbers">Numbers</NativeSelectOption>
       </NativeSelect>
 
-      <Questionnaire className="mt-auto" items={items} shortcuts={shortcuts} onSubmit={handleSubmit}>
+      <Questionnaire
+        className="mt-auto"
+        items={items}
+        shortcuts={shortcuts}
+        onSubmit={handleSubmit}
+      >
         <QuestionnaireItem name="action" required>
           <QuestionnaireTitle>What should the agent do next?</QuestionnaireTitle>
-          <QuestionnaireDescription>Use the displayed shortcut or navigate with the keyboard.</QuestionnaireDescription>
+          <QuestionnaireDescription>
+            Use the displayed shortcut or navigate with the keyboard.
+          </QuestionnaireDescription>
           <QuestionnaireChoices>
             <QuestionnaireChoice value="inspect">Inspect the implementation</QuestionnaireChoice>
             <QuestionnaireChoice value="tests">Run the relevant tests</QuestionnaireChoice>

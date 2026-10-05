@@ -22,14 +22,20 @@ export function InputGroupWithKbd() {
           </InputGroupAddon>
         </InputGroup>
         <InputGroup>
-          <InputGroupInput id="input-group-with-kbd-input-search-apps-24" placeholder="Search for Apps..." />
+          <InputGroupInput
+            id="input-group-with-kbd-input-search-apps-24"
+            placeholder="Search for Apps..."
+          />
           <InputGroupAddon align="inline-end">Ask AI</InputGroupAddon>
           <InputGroupAddon align="inline-end">
             <Kbd>Tab</Kbd>
           </InputGroupAddon>
         </InputGroup>
         <InputGroup>
-          <InputGroupInput id="input-group-with-kbd-input-search-type-25" placeholder="Type to search..." />
+          <InputGroupInput
+            id="input-group-with-kbd-input-search-type-25"
+            placeholder="Type to search..."
+          />
           <InputGroupAddon align="inline-start">
             <SparklesIcon />
           </InputGroupAddon>
@@ -54,7 +60,10 @@ export function InputGroupWithKbd() {
         <FieldDescription className="text-green-700">This username is available.</FieldDescription>
       </Field>
       <InputGroup>
-        <InputGroupInput id="input-group-with-kbd-input-search-docs-27" placeholder="Search documentation..." />
+        <InputGroupInput
+          id="input-group-with-kbd-input-search-docs-27"
+          placeholder="Search documentation..."
+        />
         <InputGroupAddon>
           <SearchIcon />
         </InputGroupAddon>
@@ -96,7 +105,11 @@ export function InputGroupWithKbd() {
           Loading (&quot;data-disabled=&quot;true&quot;)
         </FieldLabel>
         <InputGroup>
-          <InputGroupInput id="input-group-with-kbd-input-group-29" disabled defaultValue="shadcn" />
+          <InputGroupInput
+            id="input-group-with-kbd-input-group-29"
+            disabled
+            defaultValue="shadcn"
+          />
           <InputGroupAddon align="inline-end">
             <Spinner />
           </InputGroupAddon>

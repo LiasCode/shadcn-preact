@@ -18,18 +18,29 @@ export interface ToastObject<Data extends object = any> {
   actionProps?: ComponentProps<"button">;
   data?: Data;
 }
-export type AddOptions<D extends object = any> = Omit<ToastObject<D>, "id" | "height" | "limited" | "updateKey"> & {
+
+export type AddOptions<D extends object = any> = Omit<
+  ToastObject<D>,
+  "id" | "height" | "limited" | "updateKey"
+> & {
   id?: string;
 };
+
 export type UpdateOptions<D extends object = any> = Partial<
   Omit<ToastObject<D>, "id" | "height" | "transitionStatus" | "limited" | "updateKey">
 >;
-type PromiseOption<V, D extends object> = string | UpdateOptions<D> | ((value: V) => string | UpdateOptions<D>);
+
+type PromiseOption<V, D extends object> =
+  | string
+  | UpdateOptions<D>
+  | ((value: V) => string | UpdateOptions<D>);
+
 export interface PromiseOptions<V, D extends object = any> {
   loading: string | UpdateOptions<D>;
   success: PromiseOption<V, D>;
   error: PromiseOption<any, D>;
 }
+
 export interface ToastManager<D extends object = any> {
   " subscribe": (listener: (event: ToastManagerEvent) => void) => () => void;
   add<T extends D = D>(options: AddOptions<T>): string;
@@ -37,13 +48,20 @@ export interface ToastManager<D extends object = any> {
   close(id?: string): void;
   promise<V, T extends D = D>(value: Promise<V>, options: PromiseOptions<V, T>): Promise<V>;
 }
+
 export type ToastManagerEvent = { action: "add" | "update" | "close"; options: any };
+
 let nextId = 0;
+
 export function createToastManager<D extends object = any>(): ToastManager<D> {
   const listeners = new Set<(event: ToastManagerEvent) => void>();
+
   const emit = (event: ToastManagerEvent) => {
-    for (const listener of listeners) listener(event);
+    for (const listener of listeners) {
+      listener(event);
+    }
   };
+
   const manager: ToastManager<D> = {
     " subscribe"(listener) {
       listeners.add(listener);
@@ -67,10 +85,16 @@ export function createToastManager<D extends object = any>(): ToastManager<D> {
         const resolved = typeof option === "function" ? option(result) : option;
         return typeof resolved === "string" ? { title: resolved } : resolved;
       };
+
       const id = manager.add({ ...resolve(options.loading), type: "loading", timeout: 0 });
+
       try {
         const result = await value;
-        manager.update(id, { type: "success", timeout: undefined, ...resolve(options.success, result) });
+        manager.update(id, {
+          type: "success",
+          timeout: undefined,
+          ...resolve(options.success, result),
+        });
         return result;
       } catch (error) {
         manager.update(id, { type: "error", timeout: undefined, ...resolve(options.error, error) });

@@ -4,13 +4,25 @@ import { useState } from "preact/hooks";
 import { DirectionProvider } from "../../registry/ui/primitives/direction-provider";
 import { FloatingFocusManager } from "../../registry/ui/primitives/internals/FloatingFocusManager";
 import { FloatingPortal } from "../../registry/ui/primitives/internals/FloatingPortal";
-import { FloatingTree, FloatingNode, useFloatingNodeId } from "../../registry/ui/primitives/internals/FloatingTree";
+import {
+  FloatingTree,
+  FloatingNode,
+  useFloatingNodeId,
+} from "../../registry/ui/primitives/internals/FloatingTree";
 import { useAnchorPositioning } from "../../registry/ui/primitives/internals/useAnchorPositioning";
 import { useDismiss } from "../../registry/ui/primitives/internals/useDismiss";
 import { useFloatingRootContext } from "../../registry/ui/primitives/internals/useFloatingRootContext";
 import { useScrollLock } from "../../registry/ui/primitives/internals/useScrollLock";
 
-function Overlay({ name, modal = false, nested = false }: { name: string; modal?: boolean; nested?: boolean }) {
+function Overlay({
+  name,
+  modal = false,
+  nested = false,
+}: {
+  name: string;
+  modal?: boolean;
+  nested?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [reference, setReference] = useState<HTMLButtonElement | null>(null);
   const [floating, setFloating] = useState<HTMLDivElement | null>(null);
@@ -25,6 +37,7 @@ function Overlay({ name, modal = false, nested = false }: { name: string; modal?
     },
   });
   useDismiss(context, { outsidePressEvent: "intentional" });
+
   useScrollLock(open && modal, reference);
   const position = useAnchorPositioning({
     mounted: open,
@@ -42,9 +55,18 @@ function Overlay({ name, modal = false, nested = false }: { name: string; modal?
       {open && (
         <FloatingPortal>
           {modal && (
-            <div ref={setBackdrop} data-backdrop={name} style={{ position: "fixed", inset: 0, background: "#0005" }} />
+            <div
+              ref={setBackdrop}
+              data-backdrop={name}
+              style={{ position: "fixed", inset: 0, background: "#0005" }}
+            />
           )}
-          <FloatingFocusManager context={context} modal={modal} restoreFocus getInsideElements={() => [backdrop]}>
+          <FloatingFocusManager
+            context={context}
+            modal={modal}
+            restoreFocus
+            getInsideElements={() => [backdrop]}
+          >
             <div
               ref={position.refs.setFloating}
               style={
@@ -86,6 +108,7 @@ function Overlay({ name, modal = false, nested = false }: { name: string; modal?
     </FloatingNode>
   );
 }
+
 function Positioning() {
   const [reference, setReference] = useState<HTMLButtonElement | null>(null);
   const position = useAnchorPositioning({
@@ -98,7 +121,11 @@ function Positioning() {
   });
   return (
     <>
-      <button ref={setReference} id="position-anchor" style={{ position: "fixed", right: 4, bottom: 4 }}>
+      <button
+        ref={setReference}
+        id="position-anchor"
+        style={{ position: "fixed", right: 4, bottom: 4 }}
+      >
         RTL anchor
       </button>
       <FloatingPortal>
@@ -107,7 +134,13 @@ function Positioning() {
           ref={position.refs.setFloating}
           data-physical={position.physicalSide}
           data-logical={position.side}
-          style={{ ...position.positionerStyles, width: 160, height: 80, background: "#eef", border: "1px solid #99c" }}
+          style={{
+            ...position.positionerStyles,
+            width: 160,
+            height: 80,
+            background: "#eef",
+            border: "1px solid #99c",
+          }}
         >
           RTL / collision
         </div>
@@ -115,11 +148,13 @@ function Positioning() {
     </>
   );
 }
+
 if (typeof window !== "undefined") {
   const style = window.document.createElement("style");
   style.textContent =
     "body{font:16px system-ui;margin:32px;min-height:180vh}button,input{font:inherit;padding:8px;margin:4px}label{display:block}h2{font-size:18px}";
   window.document.head.append(style);
+
   render(
     <FloatingTree>
       <h1>Floating infrastructure</h1>

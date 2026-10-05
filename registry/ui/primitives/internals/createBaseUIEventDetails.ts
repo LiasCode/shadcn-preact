@@ -12,9 +12,11 @@ interface ReasonToEventMap {
   missing: Event;
   initial: Event;
 }
+
 export type ReasonToEvent<Reason extends string> = Reason extends keyof ReasonToEventMap
   ? ReasonToEventMap[Reason]
   : Event;
+
 interface ChangeEventDetails<Reason extends string> {
   reason: Reason;
   event: ReasonToEvent<Reason>;
@@ -24,9 +26,12 @@ interface ChangeEventDetails<Reason extends string> {
   readonly isCanceled: boolean;
   readonly isPropagationAllowed: boolean;
 }
-export type BaseUIChangeEventDetails<Reason extends string, Extra extends object = {}> = Reason extends string
-  ? ChangeEventDetails<Reason> & Extra
-  : never;
+
+export type BaseUIChangeEventDetails<
+  Reason extends string,
+  Extra extends object = {},
+> = Reason extends string ? ChangeEventDetails<Reason> & Extra : never;
+
 export function createChangeEventDetails<Reason extends string, Extra extends object = {}>(
   reason: Reason,
   event?: Event,
@@ -54,13 +59,19 @@ export function createChangeEventDetails<Reason extends string, Extra extends ob
     },
   } as BaseUIChangeEventDetails<Reason, Extra>;
 }
-export type BaseUIGenericEventDetails<Reason extends string, Extra extends object = {}> = Reason extends string
-  ? { reason: Reason; event: ReasonToEvent<Reason> } & Extra
-  : never;
+
+export type BaseUIGenericEventDetails<
+  Reason extends string,
+  Extra extends object = {},
+> = Reason extends string ? { reason: Reason; event: ReasonToEvent<Reason> } & Extra : never;
+
 export function createGenericEventDetails<Reason extends string, Extra extends object = {}>(
   reason: Reason,
   event?: Event,
   extra?: Extra,
 ): BaseUIGenericEventDetails<Reason, Extra> {
-  return { reason, event: event ?? new Event("base-ui"), ...extra } as BaseUIGenericEventDetails<Reason, Extra>;
+  return { reason, event: event ?? new Event("base-ui"), ...extra } as BaseUIGenericEventDetails<
+    Reason,
+    Extra
+  >;
 }

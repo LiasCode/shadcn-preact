@@ -1,6 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@registry/ui/avatar";
 import { Button } from "@registry/ui/button";
-import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@registry/ui/item";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@registry/ui/item";
 import { Plus } from "lucide-preact";
 
 export function ItemAvatar() {

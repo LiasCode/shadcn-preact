@@ -10,9 +10,11 @@ export function cleanup() {
   act(() => {
     for (const container of containers) {
       preactRender(null, container);
+
       container.remove();
     }
   });
+
   containers.clear();
 }
 
@@ -20,7 +22,9 @@ export function cleanup() {
 export function render(node: ComponentChild): HTMLElement {
   const container = document.createElement("div");
   document.body.appendChild(container);
+
   containers.add(container);
+
   act(() => {
     preactRender(node, container);
   });

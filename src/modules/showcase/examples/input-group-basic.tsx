@@ -6,7 +6,9 @@ export function InputGroupBasic() {
   return (
     <FieldGroup>
       <Field>
-        <FieldLabel htmlFor="input-group-basic-input-default-01">Default (No Input Group)</FieldLabel>
+        <FieldLabel htmlFor="input-group-basic-input-default-01">
+          Default (No Input Group)
+        </FieldLabel>
         <Input placeholder="Placeholder" id="input-group-basic-input-default-01" />
       </Field>
       <Field>
@@ -18,7 +20,11 @@ export function InputGroupBasic() {
       <Field data-disabled="true">
         <FieldLabel htmlFor="input-group-basic-input-disabled-03">Disabled</FieldLabel>
         <InputGroup>
-          <InputGroupInput id="input-group-basic-input-disabled-03" placeholder="This field is disabled" disabled />
+          <InputGroupInput
+            id="input-group-basic-input-disabled-03"
+            placeholder="This field is disabled"
+            disabled
+          />
         </InputGroup>
       </Field>
       <Field data-invalid="true">

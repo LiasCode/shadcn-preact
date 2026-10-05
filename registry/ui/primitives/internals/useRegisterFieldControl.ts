@@ -24,9 +24,15 @@ export function useRegisterFieldControl(parameters: Parameters) {
   const valueRef = useRef(value);
   valueRef.current = value;
   const getValue = useStableCallback(() => valueRef.current);
-  const getFormValue = useStableCallback(() => (parameters.getFormValue ? parameters.getFormValue() : getValue()));
-  const getInput = useStableCallback(() => (parameters.getInput ? parameters.getInput() : inputRef.current));
-  const focus = useStableCallback(() => (parameters.focus ? parameters.focus() : controlRef.current?.focus()));
+  const getFormValue = useStableCallback(() =>
+    parameters.getFormValue ? parameters.getFormValue() : getValue(),
+  );
+  const getInput = useStableCallback(() =>
+    parameters.getInput ? parameters.getInput() : inputRef.current,
+  );
+  const focus = useStableCallback(() =>
+    parameters.focus ? parameters.focus() : controlRef.current?.focus(),
+  );
   const isFilled = useStableCallback((value: unknown) =>
     parameters.isFilled ? parameters.isFilled(value) : isFieldFilled(value),
   );
@@ -34,15 +40,17 @@ export function useRegisterFieldControl(parameters: Parameters) {
     parameters.isEqual
       ? parameters.isEqual(value, initial)
       : Array.isArray(value) && Array.isArray(initial)
-        ? value.length === initial.length && value.every((entry, index) => Object.is(entry, initial[index]))
+        ? value.length === initial.length &&
+          value.every((entry, index) => Object.is(entry, initial[index]))
         : Object.is(value, initial),
   );
   const register = field?.register;
-  const active = useRef<{ register: typeof register; id: string; name?: string; cleanup: () => void } | undefined>(
-    undefined,
-  );
+  const active = useRef<
+    { register: typeof register; id: string; name?: string; cleanup: () => void } | undefined
+  >(undefined);
   useIsoLayoutEffect(() => {
     const input = getInput();
+
     if (
       active.current &&
       (!register ||
@@ -55,15 +63,24 @@ export function useRegisterFieldControl(parameters: Parameters) {
       active.current.cleanup();
       active.current = undefined;
     }
+
     if (!active.current && register && !disabled && input) {
       active.current = {
         register,
         id,
         name,
-        cleanup: register(input, id, name, { getValue, getFormValue, getInput, focus, isFilled, isEqual }),
+        cleanup: register(input, id, name, {
+          getValue,
+          getFormValue,
+          getInput,
+          focus,
+          isFilled,
+          isEqual,
+        }),
       };
     }
   });
+
   useIsoLayoutEffect(
     () => () => {
       active.current?.cleanup();
@@ -73,9 +90,15 @@ export function useRegisterFieldControl(parameters: Parameters) {
   );
   const previous = useRef(value);
   useIsoLayoutEffect(() => {
-    if (Object.is(previous.current, value)) return;
+    if (Object.is(previous.current, value)) {
+      return;
+    }
+
     previous.current = value;
-    if (!disabled) field?.change(value);
+
+    if (!disabled) {
+      field?.change(value);
+    }
   }, [value, disabled, field]);
   return field;
 }

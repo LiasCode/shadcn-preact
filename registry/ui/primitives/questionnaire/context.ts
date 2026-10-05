@@ -6,7 +6,9 @@ import type {
   QuestionnaireItemContextValue,
 } from "./types";
 
-const QuestionnaireChoiceContext = React.createContext<QuestionnaireChoiceContextValue | null>(null);
+const QuestionnaireChoiceContext = React.createContext<QuestionnaireChoiceContextValue | null>(
+  null,
+);
 const QuestionnaireContext = React.createContext<QuestionnaireContextValue | null>(null);
 const QuestionnaireItemContext = React.createContext<QuestionnaireItemContextValue | null>(null);
 

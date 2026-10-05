@@ -7,7 +7,9 @@ import { basename, join, resolve } from "node:path";
 
 export const STYLE = "nova";
 
-export const shadcnDir = resolve(process.env.SHADCN_DIR ?? join(import.meta.dirname, "../upstream/shadcn"));
+export const shadcnDir = resolve(
+  process.env.SHADCN_DIR ?? join(import.meta.dirname, "../upstream/shadcn"),
+);
 
 if (!existsSync(join(shadcnDir, "apps/v4/registry/bases/base/ui"))) {
   throw new Error(
@@ -25,9 +27,13 @@ export const paths = {
 
 const upstreamRequire = createRequire(join(shadcnDir, "packages/shadcn/package.json"));
 
-const { createStyleMap } = await import(join(shadcnDir, "packages/shadcn/src/styles/create-style-map.ts"));
+const { createStyleMap } = await import(
+  join(shadcnDir, "packages/shadcn/src/styles/create-style-map.ts")
+);
 const { transformStyle } = await import(join(shadcnDir, "packages/shadcn/src/styles/transform.ts"));
-const { transformIcons } = await import(join(shadcnDir, "packages/registry/src/utils/transformers/transform-icons.ts"));
+const { transformIcons } = await import(
+  join(shadcnDir, "packages/registry/src/utils/transformers/transform-icons.ts")
+);
 export const tsMorph = await import(upstreamRequire.resolve("ts-morph"));
 
 const styleMap = createStyleMap(readFileSync(paths.style, "utf8"));
@@ -50,7 +56,10 @@ export function exampleNames(): string[] {
 }
 
 async function resolveIcons(source: string, filename: string): Promise<string> {
-  if (!source.includes("IconPlaceholder")) return source;
+  if (!source.includes("IconPlaceholder")) {
+    return source;
+  }
+
   const sourceFile = iconProject.createSourceFile(filename, source, {
     scriptKind: tsMorph.ScriptKind.TSX,
     overwrite: true,

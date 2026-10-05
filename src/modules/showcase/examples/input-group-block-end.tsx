@@ -24,7 +24,10 @@ export function InputGroupBlockEnd() {
       <Field>
         <FieldLabel htmlFor="input-group-block-end-block-end-textarea">Textarea</FieldLabel>
         <InputGroup>
-          <InputGroupTextarea id="input-group-block-end-block-end-textarea" placeholder="Write a comment..." />
+          <InputGroupTextarea
+            id="input-group-block-end-block-end-textarea"
+            placeholder="Write a comment..."
+          />
           <InputGroupAddon align="block-end">
             <InputGroupText>0/280</InputGroupText>
             <InputGroupButton variant="default" size="sm" className="ml-auto">

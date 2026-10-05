@@ -52,7 +52,13 @@ function SiteHeader() {
             size="icon-sm"
             className="hidden sm:inline-flex"
             nativeButton={false}
-            render={<a href={repositoryUrl} aria-label="Open GitHub repository" title="GitHub repository" />}
+            render={
+              <a
+                href={repositoryUrl}
+                aria-label="Open GitHub repository"
+                title="GitHub repository"
+              />
+            }
           >
             <GitBranchIcon />
           </Button>

@@ -10,6 +10,7 @@ export interface ToggleGroupState {
   multiple: boolean;
   orientation: Orientation;
 }
+
 export interface ToggleGroupProps<Value extends string> extends Omit<
   BaseUIComponentProps<"div", ToggleGroupState>,
   "value"
@@ -22,6 +23,7 @@ export interface ToggleGroupProps<Value extends string> extends Omit<
   loopFocus?: boolean;
   multiple?: boolean;
 }
+
 export function ToggleGroup<Value extends string>(componentProps: ToggleGroupProps<Value>) {
   const {
     ref,
@@ -37,7 +39,11 @@ export function ToggleGroup<Value extends string>(componentProps: ToggleGroupPro
     style: _style,
     ...elementProps
   } = componentProps;
-  const [value, setValue] = useControlled({ controlled: valueProp, default: defaultValue, name: "ToggleGroup" });
+  const [value, setValue] = useControlled({
+    controlled: valueProp,
+    default: defaultValue,
+    name: "ToggleGroup",
+  });
   const setGroupValue = useStableCallback(
     (item: string, pressed: boolean, details: BaseUIChangeEventDetails<"none">) => {
       const next = multiple
@@ -48,7 +54,10 @@ export function ToggleGroup<Value extends string>(componentProps: ToggleGroupPro
           ? [item as Value]
           : [];
       onValueChange?.(next, details);
-      if (!details.isCanceled) setValue(next);
+
+      if (!details.isCanceled) {
+        setValue(next);
+      }
     },
   );
   return (
@@ -68,9 +77,13 @@ export function ToggleGroup<Value extends string>(componentProps: ToggleGroupPro
     </ToggleGroupContext.Provider>
   );
 }
+
 export declare namespace ToggleGroup {
   type Props<Value extends string = string> = ToggleGroupProps<Value>;
+
   type State = ToggleGroupState;
+
   type ChangeEventReason = "none";
+
   type ChangeEventDetails = BaseUIChangeEventDetails<ChangeEventReason>;
 }

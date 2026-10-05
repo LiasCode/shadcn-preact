@@ -1,5 +1,12 @@
 import { Button } from "@registry/ui/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@registry/ui/empty";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@registry/ui/empty";
 import { BellIcon } from "lucide-preact";
 import { RefreshCcwIcon } from "lucide-preact";
 

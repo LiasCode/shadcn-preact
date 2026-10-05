@@ -1,6 +1,10 @@
 import * as React from "preact/compat";
 
-import { areScrollStatesEqual, createMessageScrollerStore, createMessageScrollerVisibilityStore } from "./stores";
+import {
+  areScrollStatesEqual,
+  createMessageScrollerStore,
+  createMessageScrollerVisibilityStore,
+} from "./stores";
 import { EMPTY_MESSAGE_SCROLLER_SCROLLABLE } from "./types";
 import type {
   MessageScrollerDefaultScrollPosition,
@@ -79,7 +83,9 @@ function useMessageScrollerRefs({
   // The scrollTop seen by the previous state commit, so follow-release can tell
   // a reader scrolling up from content growing past the live edge.
   const lastScrollTopRef = React.useRef(0);
-  const modeRef = React.useRef<MessageScrollerMode>(autoScroll ? "following-bottom" : "free-scrolling");
+  const modeRef = React.useRef<MessageScrollerMode>(
+    autoScroll ? "following-bottom" : "free-scrolling",
+  );
   const messageElementsRef = React.useRef(new Map<string, HTMLElement>());
   const pendingScrollToMessageRef = React.useRef<{
     messageId: string;
@@ -121,7 +127,10 @@ function useMessageScrollerRefs({
   }
 
   if (stateStoreRef.current === null) {
-    stateStoreRef.current = createMessageScrollerStore(EMPTY_MESSAGE_SCROLLER_SCROLLABLE, areScrollStatesEqual);
+    stateStoreRef.current = createMessageScrollerStore(
+      EMPTY_MESSAGE_SCROLLER_SCROLLABLE,
+      areScrollStatesEqual,
+    );
   }
 
   if (visibilityStoreRef.current === null) {

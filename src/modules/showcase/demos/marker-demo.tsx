@@ -19,6 +19,7 @@ const examples = [
   ["Status", Example6],
   ["Variants", Example7],
 ] as const;
+
 export function MarkerDemo() {
   const [selected, setSelected] = useState(1);
   const [, Example] = examples[selected]!;

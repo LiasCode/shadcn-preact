@@ -44,11 +44,13 @@ export function CheckboxInTable() {
 
   const handleSelectRow = (id: string, checked: boolean) => {
     const newSelected = new Set(selectedRows);
+
     if (checked) {
       newSelected.add(id);
     } else {
       newSelected.delete(id);
     }
+
     setSelectedRows(newSelected);
   };
 

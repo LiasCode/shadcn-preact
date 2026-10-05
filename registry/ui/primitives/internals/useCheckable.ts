@@ -1,6 +1,9 @@
 import { useContext, useRef, useState } from "preact/hooks";
 
-import { createChangeEventDetails, type BaseUIChangeEventDetails } from "./createBaseUIEventDetails";
+import {
+  createChangeEventDetails,
+  type BaseUIChangeEventDetails,
+} from "./createBaseUIEventDetails";
 import { FieldRootContext } from "./FieldRootContext";
 import { FieldsetRootContext } from "./FieldsetRootContext";
 import { useItemControl } from "./LabelableContext";
@@ -50,54 +53,93 @@ export function useCheckable(parameters: CheckableParameters, role: "checkbox" |
   const fieldset = useContext(FieldsetRootContext);
 
   const name = field?.name ?? nameProp;
-  const [checked, setChecked] = useControlled({ controlled: checkedProp, default: defaultChecked, name: role });
+  const [checked, setChecked] = useControlled({
+    controlled: checkedProp,
+    default: defaultChecked,
+    name: role,
+  });
   const controlRef = useRef<HTMLElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const mergedInputRef = useMergedRefs(inputRef, parameters.inputRef);
   const id = useBaseUiId();
   const hiddenInputId = !nativeButton && idProp ? idProp : `${id}-input`;
   const item = useItemControl(hiddenInputId, controlRef);
-  const disabled = field?.state.disabled || fieldset?.disabled || item?.state.disabled || disabledProp;
+  const disabled =
+    field?.state.disabled || fieldset?.disabled || item?.state.disabled || disabledProp;
   const [labelledBy, setLabelledBy] = useState<string>();
   const { getButtonProps, buttonRef } = useButton({ disabled, native: nativeButton });
   const change = useStableCallback((next: boolean, event: Event) => {
-    if (disabled || readOnly || event.defaultPrevented) return false;
+    if (disabled || readOnly || event.defaultPrevented) {
+      return false;
+    }
+
     const details = createChangeEventDetails("none", event);
     onCheckedChange?.(next, details);
-    if (details.isCanceled) return false;
+
+    if (details.isCanceled) {
+      return false;
+    }
+
     setChecked(next);
     return true;
   });
   useIsoLayoutEffect(() => {
     const input = inputRef.current;
-    if (!input) return undefined;
+
+    if (!input) {
+      return undefined;
+    }
+
     input.indeterminate = indeterminate;
     input.checked = checked;
     const labels = [...(input.labels ?? [])];
     setLabelledBy(
       labels
         .map((label, index) => {
-          if (!label.id) label.id = `${id}-label-${index}`;
+          if (!label.id) {
+            label.id = `${id}-label-${index}`;
+          }
+
           return label.id;
         })
         .join(" ") || undefined,
     );
     return undefined;
   }, [checked, indeterminate, id, idProp]);
+
   useIsoLayoutEffect(() => {
     const ownerForm = inputRef.current?.form;
-    if (!ownerForm) return undefined;
+
+    if (!ownerForm) {
+      return undefined;
+    }
+
     const reset = (event: Event) => {
       setTimeout(() => {
-        if (event.defaultPrevented) return;
+        if (event.defaultPrevented) {
+          return;
+        }
+
         setChecked(defaultChecked);
-        if (inputRef.current) inputRef.current.checked = checkedProp ?? defaultChecked;
+
+        if (inputRef.current) {
+          inputRef.current.checked = checkedProp ?? defaultChecked;
+        }
       });
     };
+
     ownerForm.addEventListener("reset", reset);
     return () => ownerForm.removeEventListener("reset", reset);
   }, [defaultChecked, form, setChecked, checkedProp]);
-  useRegisterFieldControl({ inputRef, controlRef, id: hiddenInputId, name: nameProp, disabled, value: checked });
+
+  useRegisterFieldControl({
+    inputRef,
+    controlRef,
+    id: hiddenInputId,
+    name: nameProp,
+    disabled,
+    value: checked,
+  });
   const state = {
     checked,
     disabled,
@@ -116,7 +158,8 @@ export function useCheckable(parameters: CheckableParameters, role: "checkbox" |
     "aria-checked": indeterminate ? ("mixed" as const) : checked,
     "aria-readonly": readOnly || undefined,
     "aria-required": required || undefined,
-    "aria-labelledby": parameters["aria-labelledby"] ?? item?.labelId ?? field?.labelId ?? labelledBy,
+    "aria-labelledby":
+      parameters["aria-labelledby"] ?? item?.labelId ?? field?.labelId ?? labelledBy,
     "aria-invalid": (field?.state.valid === false && !disabled) || undefined,
     "aria-describedby": (item?.messages ?? field?.messages)?.join(" ") || undefined,
     onFocus() {
@@ -126,20 +169,33 @@ export function useCheckable(parameters: CheckableParameters, role: "checkbox" |
       field?.focus(false);
     },
     onClick(event: Event) {
-      if (readOnly || disabled) return;
+      if (readOnly || disabled) {
+        return;
+      }
+
       event.preventDefault();
+
       inputRef.current?.click();
     },
     ...(role === "checkbox"
       ? {
           onKeyDown(event: KeyboardEvent & { preventBaseUIHandler(): void }) {
-            if (event.key !== "Enter") return;
+            if (event.key !== "Enter") {
+              return;
+            }
+
             event.preventBaseUIHandler();
-            if (event.defaultPrevented) return;
+
+            if (event.defaultPrevented) {
+              return;
+            }
+
             event.preventDefault();
             const ownerForm = inputRef.current?.form;
             queueMicrotask(() => {
-              if (ownerForm) ownerForm.requestSubmit();
+              if (ownerForm) {
+                ownerForm.requestSubmit();
+              }
             });
           },
         }
@@ -154,18 +210,28 @@ export function useCheckable(parameters: CheckableParameters, role: "checkbox" |
     name,
     form,
     id: field || item ? hiddenInputId : nativeButton ? undefined : idProp,
-    ...(role === "checkbox" && field ? { value: value ?? name } : value === undefined ? {} : { value }),
+    ...(role === "checkbox" && field
+      ? { value: value ?? name }
+      : value === undefined
+        ? {}
+        : { value }),
     ref: mergedInputRef,
     style: { ...visuallyHidden, ...(name ? { clipPath: "inset(50%)" } : {}) },
     tabIndex: -1,
     "aria-hidden": true as const,
     onChange(event: Event) {
       const input = inputRef.current;
-      if (!input) return;
+
+      if (!input) {
+        return;
+      }
+
       const next = input.checked;
       const accepted = change(next, event);
       // Controlled and canceled changes must restore the native input as well.
-      if (!accepted || checkedProp !== undefined) input.checked = checked;
+      if (!accepted || checkedProp !== undefined) {
+        input.checked = checked;
+      }
     },
     onFocus() {
       controlRef.current?.focus();

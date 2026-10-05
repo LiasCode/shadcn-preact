@@ -14,12 +14,18 @@ export function BubbleLinkButtonDemo() {
           </BubbleContent>
         </Bubble>
         <Bubble variant="tinted" align="end">
-          <BubbleContent render={<button onClick={() => toast("You clicked help with subscription")} />}>
+          <BubbleContent
+            render={<button onClick={() => toast("You clicked help with subscription")} />}
+          >
             I need help with my subscription
           </BubbleContent>
         </Bubble>
         <Bubble variant="tinted" align="end">
-          <BubbleContent render={<button onClick={() => toast("You clicked something else. Talk to a human.")} />}>
+          <BubbleContent
+            render={
+              <button onClick={() => toast("You clicked something else. Talk to a human.")} />
+            }
+          >
             Something else. Talk to a human.
           </BubbleContent>
         </Bubble>

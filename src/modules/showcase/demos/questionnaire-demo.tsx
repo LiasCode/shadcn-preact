@@ -31,6 +31,7 @@ const examples = [
   ["Skip", Example12],
   ["Validation", Example13],
 ] as const;
+
 export function QuestionnaireDemo() {
   const [selected, setSelected] = useState(4);
   const [, Example] = examples[selected]!;

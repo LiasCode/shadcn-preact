@@ -18,10 +18,15 @@ import {
 import * as React from "preact/compat";
 import { toast } from "sonner";
 
-const items = [{ name: "task", required: true }, { name: "constraints" }, { name: "review", required: true }] as const;
+const items = [
+  { name: "task", required: true },
+  { name: "constraints" },
+  { name: "review", required: true },
+] as const;
 
 export function QuestionnaireSkipExample() {
-  const [constraintStatus, setConstraintStatus] = React.useState<QuestionnaireItemStatus>("unanswered");
+  const [constraintStatus, setConstraintStatus] =
+    React.useState<QuestionnaireItemStatus>("unanswered");
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,12 +47,19 @@ export function QuestionnaireSkipExample() {
   }
 
   return (
-    <Questionnaire className="mx-auto max-w-md" defaultItem="task" items={items} onSubmit={handleSubmit}>
+    <Questionnaire
+      className="mx-auto max-w-md"
+      defaultItem="task"
+      items={items}
+      onSubmit={handleSubmit}
+    >
       <QuestionnaireProgress />
 
       <QuestionnaireItem name="task" required>
         <QuestionnaireTitle>What kind of change is this?</QuestionnaireTitle>
-        <QuestionnaireDescription>Choose the category that best describes the work.</QuestionnaireDescription>
+        <QuestionnaireDescription>
+          Choose the category that best describes the work.
+        </QuestionnaireDescription>
         <QuestionnaireChoices>
           <QuestionnaireChoice value="feature">New feature</QuestionnaireChoice>
           <QuestionnaireChoice value="fix">Bug fix</QuestionnaireChoice>
@@ -58,10 +70,14 @@ export function QuestionnaireSkipExample() {
 
       <QuestionnaireItem name="constraints" onStatusChange={setConstraintStatus}>
         <QuestionnaireTitle>Are there any implementation constraints?</QuestionnaireTitle>
-        <QuestionnaireDescription>Answer if needed, or intentionally skip this question.</QuestionnaireDescription>
+        <QuestionnaireDescription>
+          Answer if needed, or intentionally skip this question.
+        </QuestionnaireDescription>
         <QuestionnaireChoices>
           <QuestionnaireChoice value="no-dependencies">Do not add dependencies</QuestionnaireChoice>
-          <QuestionnaireChoice value="no-migrations">Do not change the database</QuestionnaireChoice>
+          <QuestionnaireChoice value="no-migrations">
+            Do not change the database
+          </QuestionnaireChoice>
           <QuestionnaireChoice value="preserve-api">Preserve the public API</QuestionnaireChoice>
           <QuestionnaireInput
             aria-label="Another implementation constraint"
@@ -72,7 +88,9 @@ export function QuestionnaireSkipExample() {
 
       <QuestionnaireItem name="review" required>
         <QuestionnaireTitle>How should the work be reviewed?</QuestionnaireTitle>
-        <QuestionnaireDescription>Choose the checks the agent should complete before handoff.</QuestionnaireDescription>
+        <QuestionnaireDescription>
+          Choose the checks the agent should complete before handoff.
+        </QuestionnaireDescription>
         <QuestionnaireChoices>
           <QuestionnaireChoice value="tests">Run the test suite</QuestionnaireChoice>
           <QuestionnaireChoice value="diff">Review the final diff</QuestionnaireChoice>

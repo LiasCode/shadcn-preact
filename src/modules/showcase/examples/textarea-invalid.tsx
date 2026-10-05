@@ -5,7 +5,11 @@ export function TextareaInvalid() {
   return (
     <Field data-invalid>
       <FieldLabel htmlFor="textarea-invalid-textarea-invalid">Message</FieldLabel>
-      <Textarea id="textarea-invalid-textarea-invalid" placeholder="Type your message here." aria-invalid />
+      <Textarea
+        id="textarea-invalid-textarea-invalid"
+        placeholder="Type your message here."
+        aria-invalid
+      />
       <FieldDescription>Please enter a valid message.</FieldDescription>
     </Field>
   );

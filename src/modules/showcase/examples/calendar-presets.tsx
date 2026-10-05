@@ -5,7 +5,9 @@ import { addDays } from "date-fns";
 import * as React from "preact/compat";
 
 export function CalendarWithPresets() {
-  const [date, setDate] = React.useState<Date | undefined>(new Date(new Date().getFullYear(), 1, 12));
+  const [date, setDate] = React.useState<Date | undefined>(
+    new Date(new Date().getFullYear(), 1, 12),
+  );
   const [currentMonth, setCurrentMonth] = React.useState<Date>(
     new Date(new Date().getFullYear(), new Date().getMonth(), 1),
   );
@@ -39,6 +41,7 @@ export function CalendarWithPresets() {
             onClick={() => {
               const newDate = addDays(new Date(), preset.value);
               setDate(newDate);
+
               setCurrentMonth(new Date(newDate.getFullYear(), newDate.getMonth(), 1));
             }}
           >

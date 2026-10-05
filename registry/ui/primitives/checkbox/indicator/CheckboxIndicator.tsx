@@ -8,12 +8,18 @@ import { useTransitionStatus, type TransitionStatus } from "../../internals/useT
 import type { CheckboxRootState } from "../root/CheckboxRoot";
 import { useCheckboxRootContext } from "../root/CheckboxRootContext";
 import { useStateAttributesMapping } from "../utils/useStateAttributesMapping";
+
 export interface CheckboxIndicatorState extends CheckboxRootState {
   transitionStatus: TransitionStatus;
 }
-export interface CheckboxIndicatorProps extends BaseUIComponentProps<"span", CheckboxIndicatorState> {
+
+export interface CheckboxIndicatorProps extends BaseUIComponentProps<
+  "span",
+  CheckboxIndicatorState
+> {
   keepMounted?: boolean;
 }
+
 export function CheckboxIndicator(componentProps: CheckboxIndicatorProps) {
   const {
     ref,
@@ -31,7 +37,9 @@ export function CheckboxIndicator(componentProps: CheckboxIndicatorProps) {
     open,
     ref: elementRef,
     onComplete() {
-      if (!open) setMounted(false);
+      if (!open) {
+        setMounted(false);
+      }
     },
   });
   const element = useRenderElement("span", componentProps, {
@@ -42,7 +50,9 @@ export function CheckboxIndicator(componentProps: CheckboxIndicatorProps) {
   });
   return keepMounted || mounted ? element : null;
 }
+
 export declare namespace CheckboxIndicator {
   type Props = CheckboxIndicatorProps;
+
   type State = CheckboxIndicatorState;
 }

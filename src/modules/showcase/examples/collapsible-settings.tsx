@@ -35,13 +35,21 @@ export function CollapsibleSettings() {
                 <FieldLabel htmlFor="collapsible-settings-expanded-radius-x" className="sr-only">
                   Radius X
                 </FieldLabel>
-                <Input id="collapsible-settings-expanded-radius-x" placeholder="0" defaultValue={0} />
+                <Input
+                  id="collapsible-settings-expanded-radius-x"
+                  placeholder="0"
+                  defaultValue={0}
+                />
               </Field>
               <Field>
                 <FieldLabel htmlFor="collapsible-settings-expanded-radius-y" className="sr-only">
                   Radius Y
                 </FieldLabel>
-                <Input id="collapsible-settings-expanded-radius-y" placeholder="0" defaultValue={0} />
+                <Input
+                  id="collapsible-settings-expanded-radius-y"
+                  placeholder="0"
+                  defaultValue={0}
+                />
               </Field>
             </CollapsibleContent>
           </FieldGroup>

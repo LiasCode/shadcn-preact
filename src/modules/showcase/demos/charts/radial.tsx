@@ -1,5 +1,17 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@registry/ui/chart";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@registry/ui/chart";
 import { TrendingUp } from "lucide-preact";
 import { PolarGrid, RadialBar, RadialBarChart } from "recharts";
 
@@ -49,7 +61,10 @@ export function ChartRadialGrid() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-62.5">
           <RadialBarChart data={chartData} innerRadius={30} outerRadius={100}>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel nameKey="browser" />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel nameKey="browser" />}
+            />
             <PolarGrid gridType="circle" />
             <RadialBar dataKey="visitors" />
           </RadialBarChart>
@@ -59,7 +74,9 @@ export function ChartRadialGrid() {
         <div className="flex items-center gap-2 font-medium leading-none">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="text-muted-foreground leading-none">Showing total visitors for the last 6 months</div>
+        <div className="text-muted-foreground leading-none">
+          Showing total visitors for the last 6 months
+        </div>
       </CardFooter>
     </Card>
   );

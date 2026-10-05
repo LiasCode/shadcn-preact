@@ -8,12 +8,15 @@ import { useTransitionStatus, type TransitionStatus } from "../../internals/useT
 import type { RadioRootState } from "../root/RadioRoot";
 import { useRadioRootContext } from "../root/RadioRootContext";
 import { stateAttributesMapping } from "../utils/stateAttributesMapping";
+
 export interface RadioIndicatorState extends RadioRootState {
   transitionStatus: TransitionStatus;
 }
+
 export interface RadioIndicatorProps extends BaseUIComponentProps<"span", RadioIndicatorState> {
   keepMounted?: boolean;
 }
+
 export function RadioIndicator(componentProps: RadioIndicatorProps) {
   const {
     ref,
@@ -31,7 +34,9 @@ export function RadioIndicator(componentProps: RadioIndicatorProps) {
     open,
     ref: elementRef,
     onComplete() {
-      if (!open) setMounted(false);
+      if (!open) {
+        setMounted(false);
+      }
     },
   });
   const element = useRenderElement("span", componentProps, {
@@ -42,7 +47,9 @@ export function RadioIndicator(componentProps: RadioIndicatorProps) {
   });
   return keepMounted || mounted ? element : null;
 }
+
 export declare namespace RadioIndicator {
   type Props = RadioIndicatorProps;
+
   type State = RadioIndicatorState;
 }

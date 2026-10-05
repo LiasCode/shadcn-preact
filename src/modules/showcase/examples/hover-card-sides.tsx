@@ -8,7 +8,11 @@ export function HoverCardSides() {
     <div className="flex flex-wrap justify-center gap-2">
       {HOVER_CARD_SIDES.map((side) => (
         <HoverCard key={side}>
-          <HoverCardTrigger delay={100} closeDelay={100} render={<Button variant="outline" className="capitalize" />}>
+          <HoverCardTrigger
+            delay={100}
+            closeDelay={100}
+            render={<Button variant="outline" className="capitalize" />}
+          >
             {side}
           </HoverCardTrigger>
           <HoverCardContent side={side}>

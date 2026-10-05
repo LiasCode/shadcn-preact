@@ -10,18 +10,22 @@ import { NavigationMenu } from "../../../registry/ui/primitives/navigation-menu"
 import { ScrollArea } from "../../../registry/ui/primitives/scroll-area";
 import { Select } from "../../../registry/ui/primitives/select";
 import { act, fire, render, settle } from "../../utils";
+
 function get(selector: string) {
   return document.querySelector<HTMLElement>(selector)!;
 }
+
 function click(selector: string) {
   act(() => get(selector).click());
 }
+
 function key(value: string, selector?: string) {
   fire(
     selector ? get(selector) : document.activeElement!,
     new KeyboardEvent("keydown", { key: value, bubbles: true, cancelable: true }),
   );
 }
+
 function press(element: Element, type: string, x = 0, y = 0, pointerType = "mouse") {
   fire(
     element,
@@ -36,6 +40,7 @@ function press(element: Element, type: string, x = 0, y = 0, pointerType = "mous
     }),
   );
 }
+
 function Popup({ children }: any) {
   return (
     <Menu.Portal>
@@ -45,6 +50,7 @@ function Popup({ children }: any) {
     </Menu.Portal>
   );
 }
+
 function Basic() {
   return (
     <Menu.Root>
@@ -60,27 +66,47 @@ function Basic() {
     </Menu.Root>
   );
 }
+
 test("menu keyboard opening, disabled skipping, Home/End and repeated-letter typeahead", async () => {
   render(<Basic />);
+
   act(() => get("#open").focus());
+
   key("ArrowDown");
+
   await settle();
+
   expect(document.activeElement?.id).toBe("apple");
+
   expect(get("[role=menu]").getAttribute("aria-labelledby")).toBe("open");
+
   key("ArrowDown");
+
   expect(document.activeElement?.id).toBe("banana");
+
   key("End");
+
   expect(document.activeElement?.id).toBe("blueberry");
+
   key("Home");
+
   key("b");
+
   expect(document.activeElement?.id).toBe("banana");
+
   key("b");
+
   expect(document.activeElement?.id).toBe("blueberry");
+
   key("Enter");
+
   await settle(80);
+
   expect(Boolean(document.querySelector("[role=menu]"))).toBe(false);
+
   expect(document.activeElement?.id).toBe("open");
 });
+
 test("menu item cancellation and disabled items cannot activate", async () => {
   let count = 0;
   render(
@@ -102,14 +128,22 @@ test("menu item cancellation and disabled items cannot activate", async () => {
       </Popup>
     </Menu.Root>,
   );
+
   click("#open");
+
   await settle();
+
   click("#cancel");
+
   expect(Boolean(document.querySelector("[role=menu]"))).toBe(true);
+
   click("#disabled");
+
   expect(count).toBe(2);
+
   expect(Boolean(document.querySelector("[role=menu]"))).toBe(true);
 });
+
 test("menu checkbox toggles once on Enter and retains its menu; canceled changes retain checks", async () => {
   let count = 0;
   render(
@@ -120,7 +154,10 @@ test("menu checkbox toggles once on Enter and retains its menu; canceled changes
           id="check"
           onCheckedChange={(value, details) => {
             count++;
-            if (!value) details.cancel();
+
+            if (!value) {
+              details.cancel();
+            }
           }}
         >
           Check<Menu.CheckboxItemIndicator id="indicator">Y</Menu.CheckboxItemIndicator>
@@ -128,19 +165,32 @@ test("menu checkbox toggles once on Enter and retains its menu; canceled changes
       </Popup>
     </Menu.Root>,
   );
+
   click("#open");
+
   await settle();
+
   act(() => get("#check").focus());
+
   key("Enter");
+
   await settle();
+
   expect(count).toBe(1);
+
   expect(get("#check").getAttribute("aria-checked")).toBe("true");
+
   expect(Boolean(document.querySelector("#indicator"))).toBe(true);
+
   click("#check");
+
   expect(count).toBe(2);
+
   expect(get("#check").getAttribute("aria-checked")).toBe("true");
+
   expect(Boolean(document.querySelector("[role=menu]"))).toBe(true);
 });
+
 test("radio menu selection is controlled and cancelable without closing", async () => {
   function Subject() {
     const [value, setValue] = useState("a");
@@ -151,8 +201,11 @@ test("radio menu selection is controlled and cancelable without closing", async 
           <Menu.RadioGroup
             value={value}
             onValueChange={(v, details) => {
-              if (v === "c") details.cancel();
-              else setValue(v);
+              if (v === "c") {
+                details.cancel();
+              } else {
+                setValue(v);
+              }
             }}
           >
             {["a", "b", "c"].map((v) => (
@@ -165,15 +218,24 @@ test("radio menu selection is controlled and cancelable without closing", async 
       </Menu.Root>
     );
   }
+
   render(<Subject />);
+
   click("#open");
+
   await settle();
+
   click("#b");
+
   expect(get("#b").getAttribute("aria-checked")).toBe("true");
+
   click("#c");
+
   expect(get("#c").getAttribute("aria-checked")).toBe("false");
+
   expect(Boolean(document.querySelector("[role=menu]"))).toBe(true);
 });
+
 function Nested() {
   return (
     <Menu.Root>
@@ -190,42 +252,71 @@ function Nested() {
     </Menu.Root>
   );
 }
+
 test("submenu arrows open/return and item activation closes its ancestors", async () => {
   render(<Nested />);
+
   click("#open");
+
   await settle();
+
   act(() => get("#sub").focus());
+
   key("ArrowRight");
+
   await settle();
+
   expect(document.querySelectorAll("[role=menu]").length).toBe(2);
+
   expect(document.activeElement?.id).toBe("deep");
+
   key("ArrowLeft");
+
   await settle(80);
+
   expect(document.querySelectorAll("[role=menu]").length).toBe(1);
+
   expect(document.activeElement?.id).toBe("sub");
+
   key("ArrowRight");
+
   await settle();
+
   click("#deep");
+
   await settle(80);
+
   expect(document.querySelectorAll("[role=menu]").length).toBe(0);
 });
+
 test("RTL submenu keyboard direction is reversed; Escape closes only the child", async () => {
   render(
     <DirectionProvider direction="rtl">
       <Nested />
     </DirectionProvider>,
   );
+
   click("#open");
+
   await settle();
+
   act(() => get("#sub").focus());
+
   key("ArrowLeft");
+
   await settle();
+
   expect(document.querySelectorAll("[role=menu]").length).toBe(2);
+
   key("Escape");
+
   await settle(80);
+
   expect(document.querySelectorAll("[role=menu]").length).toBe(1);
+
   expect(document.activeElement?.id).toBe("sub");
 });
+
 test("context menus open on keyboard invocation, right click, and cancel touch long press after movement", async () => {
   render(
     <ContextMenu.Root>
@@ -241,22 +332,41 @@ test("context menus open on keyboard invocation, right click, and cancel touch l
       </ContextMenu.Portal>
     </ContextMenu.Root>,
   );
+
   act(() => get("#context").focus());
+
   key("ContextMenu");
+
   await settle();
+
   expect(document.activeElement?.id).toBe("action");
+
   key("Escape");
+
   await settle(80);
-  fire(get("#context"), new MouseEvent("contextmenu", { bubbles: true, cancelable: true, clientX: 120, clientY: 80 }));
+
+  fire(
+    get("#context"),
+    new MouseEvent("contextmenu", { bubbles: true, cancelable: true, clientX: 120, clientY: 80 }),
+  );
+
   await settle();
+
   expect(Boolean(document.querySelector("[role=menu]"))).toBe(true);
+
   key("Escape");
+
   await settle(80);
+
   press(get("#context"), "pointerdown", 10, 10, "touch");
+
   press(get("#context"), "pointermove", 50, 50, "touch");
+
   await settle(730);
+
   expect(Boolean(document.querySelector("[role=menu]"))).toBe(false);
 });
+
 test("menubar keeps one menu open while keyboard navigation switches siblings", async () => {
   render(
     <Menubar>
@@ -270,16 +380,27 @@ test("menubar keeps one menu open while keyboard navigation switches siblings", 
       ))}
     </Menubar>,
   );
+
   act(() => get("#file").focus());
+
   key("ArrowRight");
+
   expect(document.activeElement?.id).toBe("edit");
+
   key("ArrowDown");
+
   await settle();
+
   expect(document.activeElement?.id).toBe("edit-item");
+
   key("ArrowLeft");
+
   await settle(80);
+
   expect(get("#file").getAttribute("aria-expanded")).toBe("true");
+
   expect(get("#edit").getAttribute("aria-expanded")).toBe("false");
+
   expect(document.querySelectorAll("[role=menu][data-open]").length).toBe(1);
 });
 const fruits = [
@@ -287,6 +408,7 @@ const fruits = [
   { value: "b", label: "Banana" },
   { value: "c", label: "Cherry" },
 ];
+
 function SelectParts() {
   return (
     <>
@@ -310,6 +432,7 @@ function SelectParts() {
     </>
   );
 }
+
 test("select labels are present before opening; keyboard selection updates native form data and restores focus", async () => {
   render(
     <form id="form">
@@ -318,35 +441,58 @@ test("select labels are present before opening; keyboard selection updates nativ
       </Select.Root>
     </form>,
   );
+
   expect(get("#select").textContent).toBe("Banana");
+
   expect(new FormData(get("#form") as HTMLFormElement).get("fruit")).toBe("b");
+
   click("#select");
+
   await settle();
+
   expect(get("[role=listbox]").getAttribute("aria-multiselectable")).toBeNull();
+
   expect(document.activeElement?.id).toBe("fruit-b");
+
   key("ArrowDown");
+
   key("Enter");
+
   await settle(80);
+
   expect(get("#select").textContent).toBe("Cherry");
+
   expect(new FormData(get("#form") as HTMLFormElement).get("fruit")).toBe("c");
+
   expect(Boolean(document.querySelector("[role=listbox]"))).toBe(false);
+
   expect(document.activeElement?.id).toBe("select");
 });
+
 test("an empty select opened with the pointer focuses its popup and arrows enter the options", async () => {
   render(
     <Select.Root items={fruits}>
       <SelectParts />
     </Select.Root>,
   );
+
   click("#select");
+
   await settle();
+
   expect(document.activeElement).toBe(get("[role=listbox]"));
+
   key("ArrowDown");
+
   expect(document.activeElement?.id).toBe("fruit-a");
+
   key("Enter");
+
   await settle(80);
+
   expect(get("#select").textContent).toBe("Apple");
 });
+
 test("select cancellation, readonly state and form reset preserve controlled semantics", async () => {
   function Subject() {
     const [readOnly, setReadOnly] = useState(false);
@@ -361,7 +507,9 @@ test("select cancellation, readonly state and form reset preserve controlled sem
           readOnly={readOnly}
           name="fruit"
           onValueChange={(v, d) => {
-            if (v === "c") d.cancel();
+            if (v === "c") {
+              d.cancel();
+            }
           }}
         >
           <SelectParts />
@@ -369,23 +517,40 @@ test("select cancellation, readonly state and form reset preserve controlled sem
       </form>
     );
   }
+
   render(<Subject />);
+
   click("#select");
+
   await settle();
+
   click("#fruit-c");
+
   expect(get("#select").textContent).toBe("Apple");
+
   expect(Boolean(document.querySelector("[role=listbox]"))).toBe(true);
+
   click("#fruit-b");
+
   await settle(80);
+
   expect(get("#select").textContent).toBe("Banana");
+
   act(() => (get("#form") as HTMLFormElement).reset());
+
   await settle();
+
   expect(get("#select").textContent).toBe("Apple");
+
   click("#readonly");
+
   click("#select");
+
   await settle();
+
   expect(Boolean(document.querySelector("[role=listbox]"))).toBe(false);
 });
+
 test("multiple select toggles choices and serializes repeated form fields without closing", async () => {
   render(
     <form id="form">
@@ -394,14 +559,22 @@ test("multiple select toggles choices and serializes repeated form fields withou
       </Select.Root>
     </form>,
   );
+
   click("#select");
+
   await settle();
+
   click("#fruit-b");
+
   expect(new FormData(get("#form") as HTMLFormElement).getAll("fruit")).toEqual(["a", "b"]);
+
   click("#fruit-a");
+
   expect(new FormData(get("#form") as HTMLFormElement).getAll("fruit")).toEqual(["b"]);
+
   expect(get("[role=listbox]").getAttribute("aria-multiselectable")).toBe("true");
 });
+
 test("select uses object equality and serialization callbacks", async () => {
   const values = [{ id: 1 }, { id: 2 }];
   render(
@@ -432,9 +605,12 @@ test("select uses object equality and serialization callbacks", async () => {
       </Select.Root>
     </form>,
   );
+
   expect(get("#select").textContent).toBe("Number 2");
+
   expect(new FormData(get("#form") as HTMLFormElement).get("number")).toBe("2");
 });
+
 function Nav() {
   return (
     <NavigationMenu.Root delay={0}>
@@ -460,35 +636,61 @@ function Nav() {
     </NavigationMenu.Root>
   );
 }
+
 test("navigation menu portals active content, changes panels, and closes on link press", async () => {
   render(<Nav />);
+
   click("#one");
+
   await settle();
+
   expect(Boolean(document.querySelector("#one-link"))).toBe(true);
+
   expect(Boolean(document.querySelector("#two-link"))).toBe(false);
+
   expect(get("#one").getAttribute("aria-expanded")).toBe("true");
+
   click("#two");
+
   await settle(80);
+
   expect(Boolean(document.querySelector("#one-link"))).toBe(false);
+
   expect(Boolean(document.querySelector("#two-link"))).toBe(true);
+
   click("#two-link");
+
   await settle(80);
+
   expect(get("#two").getAttribute("aria-expanded")).toBe("false");
 });
+
 test("navigation menu keyboard enters the active panel and Escape restores its trigger", async () => {
   render(<Nav />);
+
   act(() => get("#one").focus());
+
   key("ArrowDown");
+
   await settle();
+
   expect(document.activeElement?.id).toBe("one-link");
+
   key("Escape");
+
   await settle(80);
+
   expect(document.activeElement?.id).toBe("one");
+
   expect(get("#one").getAttribute("aria-expanded")).toBe("false");
 });
+
 function dimensions(el: HTMLElement, values: Record<string, number>) {
-  for (const [key, value] of Object.entries(values)) Object.defineProperty(el, key, { configurable: true, value });
+  for (const [key, value] of Object.entries(values)) {
+    Object.defineProperty(el, key, { configurable: true, value });
+  }
 }
+
 function Area() {
   return (
     <ScrollArea.Root id="area">
@@ -505,74 +707,127 @@ function Area() {
     </ScrollArea.Root>
   );
 }
+
 test("scroll area releases removed content from resize observation and avoids observing it twice", async () => {
   const observe = spyOn(ResizeObserver.prototype, "observe");
   const unobserve = spyOn(ResizeObserver.prototype, "unobserve");
+
   try {
     render(<Area />);
+
     await settle();
     const viewport = get("#viewport");
     const original = viewport.firstElementChild!;
     observe.mockClear();
     const added = document.createElement("div");
     viewport.append(added);
+
     await settle();
+
     expect(observe.mock.calls.filter(([element]) => element === original)).toHaveLength(0);
+
     expect(observe.mock.calls.filter(([element]) => element === added)).toHaveLength(1);
+
     original.remove();
+
     await settle();
+
     expect(unobserve).toHaveBeenCalledWith(original);
+
     expect(observe.mock.calls.filter(([element]) => element === added)).toHaveLength(1);
   } finally {
     observe.mockRestore();
+
     unobserve.mockRestore();
   }
 });
 
 test("scroll area measures overflow, thumb travel, edge attributes and corner dimensions", async () => {
   render(<Area />);
-  dimensions(get("#viewport"), { clientWidth: 100, clientHeight: 100, scrollWidth: 500, scrollHeight: 500 });
+
+  dimensions(get("#viewport"), {
+    clientWidth: 100,
+    clientHeight: 100,
+    scrollWidth: 500,
+    scrollHeight: 500,
+  });
+
   fire(get("#viewport"), new Event("scroll"));
+
   await settle();
+
   dimensions(get("#vertical"), { clientHeight: 100, offsetWidth: 10 });
+
   dimensions(get("#horizontal"), { clientWidth: 100, offsetHeight: 10 });
+
   fire(get("#viewport"), new Event("scroll"));
+
   await settle();
+
   expect(get("#area").hasAttribute("data-has-overflow-x")).toBe(true);
+
   expect(get("#area").hasAttribute("data-overflow-y-end")).toBe(true);
+
   expect(get("#corner").style.width).toBe("var(--scroll-area-corner-width)");
   get("#viewport").scrollTop = 400;
   fire(get("#viewport"), new Event("scroll"));
+
   await settle();
+
   expect(get("#area").hasAttribute("data-overflow-y-start")).toBe(true);
+
   expect(get("#area").hasAttribute("data-overflow-y-end")).toBe(false);
+
   expect(get("#thumb-y").style.transform).toContain("80px");
 });
+
 test("scrollbar thumb dragging, cancellation cleanup and wheel edge chaining", async () => {
   render(<Area />);
-  dimensions(get("#viewport"), { clientWidth: 100, clientHeight: 100, scrollWidth: 100, scrollHeight: 500 });
+
+  dimensions(get("#viewport"), {
+    clientWidth: 100,
+    clientHeight: 100,
+    scrollWidth: 100,
+    scrollHeight: 500,
+  });
+
   fire(get("#viewport"), new Event("scroll"));
+
   await settle();
+
   dimensions(get("#vertical"), { clientHeight: 100, offsetWidth: 10 });
+
   fire(get("#viewport"), new Event("scroll"));
+
   await settle();
+
   press(get("#thumb-y"), "pointerdown", 0, 0);
+
   press(document.body, "pointermove", 0, 40);
+
   expect(get("#viewport").scrollTop).toBe(200);
+
   press(document.body, "pointercancel", 0, 40);
+
   press(document.body, "pointermove", 0, 60);
+
   expect(get("#viewport").scrollTop).toBe(200);
   const wheel = new WheelEvent("wheel", { deltaY: 20, bubbles: true, cancelable: true });
   fire(get("#vertical"), wheel);
+
   expect(wheel.defaultPrevented).toBe(true);
+
   expect(get("#viewport").scrollTop).toBe(220);
   get("#viewport").scrollTop = 400;
   fire(get("#viewport"), new Event("scroll"));
+
   await settle();
   const edge = new WheelEvent("wheel", { deltaY: 20, bubbles: true, cancelable: true });
   fire(get("#vertical"), edge);
+
   expect(edge.defaultPrevented).toBe(false);
 });
+
 test("select closed typeahead changes values without opening and reports list-navigation", async () => {
   const reasons: string[] = [];
   render(
@@ -580,12 +835,18 @@ test("select closed typeahead changes values without opening and reports list-na
       <SelectParts />
     </Select.Root>,
   );
+
   act(() => get("#select").focus());
+
   key("b");
+
   expect(get("#select").textContent).toBe("Banana");
+
   expect(Boolean(document.querySelector("[role=listbox]"))).toBe(false);
+
   expect(reasons).toEqual(["list-navigation"]);
 });
+
 test("detached menu handles support keyboard opening and payload children", async () => {
   const handle = Menu.createHandle<string>();
   render(
@@ -602,26 +863,49 @@ test("detached menu handles support keyboard opening and payload children", asyn
       </Menu.Root>
     </>,
   );
+
   act(() => get("#detached").focus());
+
   key("ArrowDown");
+
   await settle();
+
   expect(get("#payload").textContent).toBe("Payload");
+
   expect(document.activeElement?.id).toBe("payload");
 });
+
 test("scroll track clicks center the thumb and can continue dragging", async () => {
   render(<Area />);
-  dimensions(get("#viewport"), { clientWidth: 100, clientHeight: 100, scrollWidth: 100, scrollHeight: 500 });
+
+  dimensions(get("#viewport"), {
+    clientWidth: 100,
+    clientHeight: 100,
+    scrollWidth: 100,
+    scrollHeight: 500,
+  });
+
   fire(get("#viewport"), new Event("scroll"));
+
   await settle();
+
   dimensions(get("#vertical"), { clientHeight: 100, offsetWidth: 10 });
+
   fire(get("#viewport"), new Event("scroll"));
+
   await settle();
+
   press(get("#vertical"), "pointerdown", 0, 50);
+
   expect(get("#viewport").scrollTop).toBe(200);
+
   press(document.body, "pointermove", 0, 70);
+
   expect(get("#viewport").scrollTop).toBe(300);
+
   press(document.body, "pointerup", 0, 70);
 });
+
 test("menubar updates its roving tab stop after focusing another trigger", async () => {
   render(
     <Menubar>
@@ -635,11 +919,16 @@ test("menubar updates its roving tab stop after focusing another trigger", async
       ))}
     </Menubar>,
   );
+
   act(() => get("#file").focus());
+
   key("ArrowRight");
+
   expect(get("#file").tabIndex).toBe(-1);
+
   expect(get("#edit").tabIndex).toBe(0);
 });
+
 test("Tab and Shift+Tab leave modal menus in document order", async () => {
   render(
     <>
@@ -648,20 +937,31 @@ test("Tab and Shift+Tab leave modal menus in document order", async () => {
       <button id="after">After</button>
     </>,
   );
+
   click("#open");
+
   await settle();
+
   key("Tab");
+
   await settle(80);
+
   expect(document.activeElement?.id).toBe("after");
+
   click("#open");
+
   await settle();
+
   fire(
     document.activeElement!,
     new KeyboardEvent("keydown", { key: "Tab", shiftKey: true, bubbles: true, cancelable: true }),
   );
+
   await settle(80);
+
   expect(document.activeElement?.id).toBe("before");
 });
+
 test("Tab leaves a modal Select after its trigger", async () => {
   render(
     <>
@@ -671,10 +971,16 @@ test("Tab leaves a modal Select after its trigger", async () => {
       <button id="after">After</button>
     </>,
   );
+
   click("#select");
+
   await settle();
+
   key("Tab");
+
   await settle(80);
+
   expect(document.activeElement?.id).toBe("after");
+
   expect(Boolean(document.querySelector("[role=listbox]"))).toBe(false);
 });

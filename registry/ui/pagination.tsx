@@ -18,7 +18,13 @@ function Pagination({ className, ...props }: ComponentProps<"nav">) {
 }
 
 function PaginationContent({ className, ...props }: ComponentProps<"ul">) {
-  return <ul data-slot="pagination-content" className={cn("gap-0.5 flex items-center", className)} {...props} />;
+  return (
+    <ul
+      data-slot="pagination-content"
+      className={cn("gap-0.5 flex items-center", className)}
+      {...props}
+    />
+  );
 }
 
 function PaginationItem({ ...props }: ComponentProps<"li">) {
@@ -55,7 +61,12 @@ function PaginationPrevious({
   ...props
 }: ComponentProps<typeof PaginationLink> & { text?: string }) {
   return (
-    <PaginationLink aria-label="Go to previous page" size="default" className={cn("pl-1.5!", className)} {...props}>
+    <PaginationLink
+      aria-label="Go to previous page"
+      size="default"
+      className={cn("pl-1.5!", className)}
+      {...props}
+    >
       <ChevronLeftIcon data-icon="inline-start" className="cn-rtl-flip" />
       <span className="hidden sm:block">{text}</span>
     </PaginationLink>
@@ -68,7 +79,12 @@ function PaginationNext({
   ...props
 }: ComponentProps<typeof PaginationLink> & { text?: string }) {
   return (
-    <PaginationLink aria-label="Go to next page" size="default" className={cn("pr-1.5!", className)} {...props}>
+    <PaginationLink
+      aria-label="Go to next page"
+      size="default"
+      className={cn("pr-1.5!", className)}
+      {...props}
+    >
       <span className="hidden sm:block">{text}</span>
       <ChevronRightIcon data-icon="inline-end" className="cn-rtl-flip" />
     </PaginationLink>
@@ -80,7 +96,10 @@ function PaginationEllipsis({ className, ...props }: ComponentProps<"span">) {
     <span
       aria-hidden
       data-slot="pagination-ellipsis"
-      className={cn("size-8 [&_svg:not([class*='size-'])]:size-4 flex items-center justify-center", className)}
+      className={cn(
+        "size-8 [&_svg:not([class*='size-'])]:size-4 flex items-center justify-center",
+        className,
+      )}
       {...props}
     >
       <MoreHorizontalIcon />

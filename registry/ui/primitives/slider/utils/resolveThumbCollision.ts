@@ -10,13 +10,16 @@ export interface ResolveThumbCollisionParams {
   step: number;
   minStepsBetweenValues: number;
 }
+
 export interface ResolveThumbCollisionResult {
   value: number | number[];
   thumbIndex: number;
   didSwap: boolean;
 }
+
 import { clamp } from "../../internals/clamp";
 import { getPushedThumbValues } from "./getPushedThumbValues";
+
 export function resolveThumbCollision({
   behavior,
   values,
@@ -32,6 +35,7 @@ export function resolveThumbCollision({
   const activeValues = currentValues ?? values;
   const baselineValues = initialValues ?? values;
   const range = activeValues.length > 1;
+
   if (!range) {
     return {
       value: nextValue,
@@ -39,7 +43,9 @@ export function resolveThumbCollision({
       didSwap: false,
     };
   }
+
   const minValueDifference = step * minStepsBetweenValues;
+
   switch (behavior) {
     case "swap": {
       const pressedInitialValue = activeValues[pressedIndex]!;
@@ -54,8 +60,11 @@ export function resolveThumbCollision({
       candidateValues[pressedIndex] = pressedValueAfterClamp;
       const movingForward = nextValue > pressedInitialValue;
       const movingBackward = nextValue < pressedInitialValue;
-      const shouldSwapForward = movingForward && nextNeighbor != null && nextValue >= nextNeighbor - epsilon;
-      const shouldSwapBackward = movingBackward && previousNeighbor != null && nextValue <= previousNeighbor + epsilon;
+      const shouldSwapForward =
+        movingForward && nextNeighbor != null && nextValue >= nextNeighbor - epsilon;
+      const shouldSwapBackward =
+        movingBackward && previousNeighbor != null && nextValue <= previousNeighbor + epsilon;
+
       if (!shouldSwapForward && !shouldSwapBackward) {
         return {
           value: candidateValues,
@@ -63,23 +72,29 @@ export function resolveThumbCollision({
           didSwap: false,
         };
       }
+
       const targetIndex = shouldSwapForward ? pressedIndex + 1 : pressedIndex - 1;
       const initialValuesForPush = candidateValues.map((_, index) => {
         if (index === pressedIndex) {
           return pressedValueAfterClamp;
         }
+
         const baseline = baselineValues[index];
+
         if (baseline != null) {
           return baseline;
         }
+
         return activeValues[index]!;
       });
       let nextValueForTarget = nextValue;
+
       if (shouldSwapForward) {
         nextValueForTarget = Math.max(nextValue, candidateValues[targetIndex]!);
       } else {
         nextValueForTarget = Math.min(nextValue, candidateValues[targetIndex]!);
       }
+
       const adjustedValues = getPushedThumbValues({
         values: candidateValues,
         index: targetIndex,
@@ -91,6 +106,7 @@ export function resolveThumbCollision({
         initialValues: initialValuesForPush,
       });
       const neighborIndex = shouldSwapForward ? targetIndex - 1 : targetIndex + 1;
+
       if (neighborIndex >= 0 && neighborIndex < adjustedValues.length) {
         const previousValue = adjustedValues[neighborIndex - 1]!;
         const nextValueAfter = adjustedValues[neighborIndex + 1]!;
@@ -104,6 +120,7 @@ export function resolveThumbCollision({
         const restoredValue = clamp(pressedValueAfterClamp, neighborLowerBound, neighborUpperBound);
         adjustedValues[neighborIndex] = Number(restoredValue.toFixed(12));
       }
+
       return {
         value: adjustedValues,
         thumbIndex: targetIndex,

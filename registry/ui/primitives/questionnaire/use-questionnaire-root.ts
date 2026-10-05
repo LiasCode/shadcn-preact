@@ -15,11 +15,25 @@ import type {
   QuestionnaireRootProps,
   QuestionnaireRootState,
 } from "./types";
-import { compareItemOrder, getShortcutFromKey, isAnswerFilled, isRadioTarget, isTextEntryTarget } from "./utils";
+import {
+  compareItemOrder,
+  getShortcutFromKey,
+  isAnswerFilled,
+  isRadioTarget,
+  isTextEntryTarget,
+} from "./utils";
 
 type UseQuestionnaireRootParameters = Pick<
   QuestionnaireRootProps,
-  "defaultItem" | "item" | "items" | "noValidate" | "onItemChange" | "onReset" | "onSubmit" | "ref" | "shortcuts"
+  | "defaultItem"
+  | "item"
+  | "items"
+  | "noValidate"
+  | "onItemChange"
+  | "onReset"
+  | "onSubmit"
+  | "ref"
+  | "shortcuts"
 >;
 
 function useQuestionnaireRoot({
@@ -33,7 +47,10 @@ function useQuestionnaireRoot({
   ref,
   shortcuts: shortcutMode,
 }: UseQuestionnaireRootParameters) {
-  const collection = React.useMemo(() => createQuestionnaireCollection(itemDefinitions), [itemDefinitions]);
+  const collection = React.useMemo(
+    () => createQuestionnaireCollection(itemDefinitions),
+    [itemDefinitions],
+  );
   const [registrations, setRegistrations] = React.useState<ItemRegistration[]>([]);
   const [uncontrolledItem, setUncontrolledItem] = React.useState<string | null>(() =>
     getInitialItemName(collection, defaultItem),
@@ -110,11 +127,17 @@ function useQuestionnaireRoot({
   );
   const logicalItems = collection?.enabledItems ?? runtimeItems;
   const currentIndex = logicalItems.findIndex((logicalItem) => logicalItem.name === activeItemName);
-  const activeItem = currentIndex < 0 || !activeItemName ? null : (runtimeItemByName.get(activeItemName) ?? null);
+  const activeItem =
+    currentIndex < 0 || !activeItemName ? null : (runtimeItemByName.get(activeItemName) ?? null);
   const activeDefinition = activeItemName ? collection?.itemByName.get(activeItemName) : undefined;
   const activeItemRequired =
-    currentIndex < 0 ? null : activeDefinition ? Boolean(activeDefinition.required) : (activeItem?.required ?? false);
-  const activeItemStatus = currentIndex < 0 ? null : (activeItem?.status ?? (activeItemName ? "unanswered" : null));
+    currentIndex < 0
+      ? null
+      : activeDefinition
+        ? Boolean(activeDefinition.required)
+        : (activeItem?.required ?? false);
+  const activeItemStatus =
+    currentIndex < 0 ? null : (activeItem?.status ?? (activeItemName ? "unanswered" : null));
   const orderedRegistrations = React.useMemo(
     () =>
       collection
@@ -193,7 +216,8 @@ function useQuestionnaireRoot({
     setRegistrations((currentRegistrations) => [
       ...currentRegistrations.filter(
         (currentRegistration) =>
-          currentRegistration.element !== registration.element && currentRegistration.name !== registration.name,
+          currentRegistration.element !== registration.element &&
+          currentRegistration.name !== registration.name,
       ),
       registration,
     ]);
@@ -274,7 +298,8 @@ function useQuestionnaireRoot({
 
     const resetItemName = collection
       ? getInitialItemName(collection, defaultItem)
-      : (runtimeItems.find((registration) => registration.name === defaultItem)?.name ?? runtimeItems[0]?.name);
+      : (runtimeItems.find((registration) => registration.name === defaultItem)?.name ??
+        runtimeItems[0]?.name);
 
     if (resetItemName) {
       setItem(resetItemName);
@@ -286,6 +311,7 @@ function useQuestionnaireRoot({
 
     if (firstInvalidItem) {
       event.preventDefault();
+
       setItem(firstInvalidItem.name, "invalid");
 
       if (firstInvalidItem.name === activeItemName) {
@@ -310,7 +336,12 @@ function useQuestionnaireRoot({
       return;
     }
 
-    if (event.key === "Enter" && (event.metaKey || event.ctrlKey) && !event.altKey && !event.shiftKey) {
+    if (
+      event.key === "Enter" &&
+      (event.metaKey || event.ctrlKey) &&
+      !event.altKey &&
+      !event.shiftKey
+    ) {
       event.preventDefault();
 
       if (!event.repeat) {
@@ -325,7 +356,10 @@ function useQuestionnaireRoot({
     }
 
     if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-      const moved = activeItem.moveAnswerFocus(event.target, event.key === "ArrowDown" ? "next" : "previous");
+      const moved = activeItem.moveAnswerFocus(
+        event.target,
+        event.key === "ArrowDown" ? "next" : "previous",
+      );
 
       if (moved) {
         event.preventDefault();
@@ -437,6 +471,7 @@ function useQuestionnaireRoot({
   const setRootRef = React.useCallback(
     (element: HTMLFormElement | null) => {
       setRootElement(element);
+
       composeRefs(ref)?.(element);
     },
     [ref],

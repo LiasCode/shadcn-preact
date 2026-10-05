@@ -1,4 +1,11 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@registry/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@registry/ui/card";
 import {
   MessageScroller,
   MessageScrollerButton,
@@ -29,7 +36,9 @@ export function MessageScrollerScrollable() {
       <Card className="h-140 w-full gap-0 overflow-hidden">
         <CardHeader className="gap-1 border-b">
           <CardTitle>Scroll Status</CardTitle>
-          <CardDescription>Where the reader can go scroll to based on current scroll position.</CardDescription>
+          <CardDescription>
+            Where the reader can go scroll to based on current scroll position.
+          </CardDescription>
         </CardHeader>
         <MessageScrollerProvider defaultScrollPosition="start">
           <CardContent className="flex-1 overflow-hidden p-0">
@@ -70,7 +79,9 @@ function ScrollStateFooter() {
   const status = getScrollStatus({ start, end });
 
   return (
-    <CardFooter className="justify-center border-t text-center text-sm text-muted-foreground">{status}</CardFooter>
+    <CardFooter className="justify-center border-t text-center text-sm text-muted-foreground">
+      {status}
+    </CardFooter>
   );
 }
 

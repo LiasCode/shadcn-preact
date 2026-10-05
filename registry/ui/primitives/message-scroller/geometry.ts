@@ -3,7 +3,11 @@ import {
   EMPTY_MESSAGE_SCROLLER_VISIBILITY_STATE,
   SCROLL_POSITION_EPSILON,
 } from "./types";
-import type { MessageScrollerScrollable, MessageScrollerScrollAlign, MessageScrollerVisibilityState } from "./types";
+import type {
+  MessageScrollerScrollable,
+  MessageScrollerScrollAlign,
+  MessageScrollerVisibilityState,
+} from "./types";
 
 function getMessageScrollerScrollable({
   content,
@@ -117,7 +121,10 @@ function getNewScrollAnchor(items: HTMLElement[], previousItemCount: number) {
   return null;
 }
 
-function getUnanchoredScrollAnchor(items: HTMLElement[], handledAnchors: { has(element: HTMLElement): boolean }) {
+function getUnanchoredScrollAnchor(
+  items: HTMLElement[],
+  handledAnchors: { has(element: HTMLElement): boolean },
+) {
   for (const item of items) {
     if (item.dataset.scrollAnchor === "true" && !handledAnchors.has(item)) {
       return item;
@@ -203,7 +210,10 @@ function getElementScrollTop({
   const contentPadding = getContentBlockPadding(spacer);
 
   if (align === "center") {
-    const insetHeight = Math.max(0, viewport.clientHeight - contentPadding.start - contentPadding.end);
+    const insetHeight = Math.max(
+      0,
+      viewport.clientHeight - contentPadding.start - contentPadding.end,
+    );
 
     return elementTop - contentPadding.start - (insetHeight - elementHeight) / 2 - scrollMargin;
   }
@@ -276,7 +286,10 @@ function getContentBottom({
   for (const item of items) {
     const rect = item.getBoundingClientRect();
 
-    contentBottom = Math.max(contentBottom, rect.bottom - viewportRect.top + scrollTop + padding.end);
+    contentBottom = Math.max(
+      contentBottom,
+      rect.bottom - viewportRect.top + scrollTop + padding.end,
+    );
   }
 
   return contentBottom;
@@ -287,7 +300,10 @@ function getMaxScrollTop(viewport: HTMLElement) {
 }
 
 function getBlockPadding(element: HTMLElement) {
-  if (typeof window === "undefined") return { start: 0, end: 0 };
+  if (typeof window === "undefined") {
+    return { start: 0, end: 0 };
+  }
+
   const style = window.getComputedStyle(element);
 
   return {

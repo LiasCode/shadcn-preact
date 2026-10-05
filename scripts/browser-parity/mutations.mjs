@@ -19,14 +19,21 @@ for (const mutation of ["visual", "behavior"]) {
     `${mutation}: comparison must reject the mutation\n${result.stdout}\n${result.stderr}`,
   );
   const report = JSON.parse(
-    readFileSync(resolve(import.meta.dirname, `../../.cache/browser-parity/mutation-${mutation}/report.json`), "utf8"),
+    readFileSync(
+      resolve(import.meta.dirname, `../../.cache/browser-parity/mutation-${mutation}/report.json`),
+      "utf8",
+    ),
   );
   assert.equal(report.failures.length, 4);
+
   assert.ok(
     report.failures.every((failure) =>
-      mutation === "visual" ? failure.error.includes("pixels differ") : failure.error.includes("clicked"),
+      mutation === "visual"
+        ? failure.error.includes("pixels differ")
+        : failure.error.includes("clicked"),
     ),
     `Unexpected failure: ${JSON.stringify(report.failures)}`,
   );
+
   console.log(`✓ ${mutation} mutation rejected at both widths and in both themes`);
 }

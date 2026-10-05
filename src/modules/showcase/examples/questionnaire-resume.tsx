@@ -51,7 +51,9 @@ export function QuestionnaireResume() {
 
       <QuestionnaireItem name="change" required>
         <QuestionnaireTitle>What kind of migration is this?</QuestionnaireTitle>
-        <QuestionnaireDescription>This answer was saved during the previous session.</QuestionnaireDescription>
+        <QuestionnaireDescription>
+          This answer was saved during the previous session.
+        </QuestionnaireDescription>
         <QuestionnaireChoices>
           <QuestionnaireChoice value="incremental" defaultChecked>
             Incremental migration
@@ -63,7 +65,9 @@ export function QuestionnaireResume() {
 
       <QuestionnaireItem name="verification" multiple required>
         <QuestionnaireTitle>How should the migration be verified?</QuestionnaireTitle>
-        <QuestionnaireDescription>These checks were selected during the previous session.</QuestionnaireDescription>
+        <QuestionnaireDescription>
+          These checks were selected during the previous session.
+        </QuestionnaireDescription>
         <QuestionnaireChoices>
           <QuestionnaireChoice value="tests" defaultChecked>
             Run migration tests
@@ -79,7 +83,10 @@ export function QuestionnaireResume() {
       <QuestionnaireItem name="notes">
         <QuestionnaireTitle>Anything else the agent should remember?</QuestionnaireTitle>
         <QuestionnaireDescription>This note was saved with the draft.</QuestionnaireDescription>
-        <QuestionnaireInput aria-label="Saved migration note" defaultValue="Keep the existing public API stable." />
+        <QuestionnaireInput
+          aria-label="Saved migration note"
+          defaultValue="Keep the existing public API stable."
+        />
       </QuestionnaireItem>
 
       <QuestionnaireActions>

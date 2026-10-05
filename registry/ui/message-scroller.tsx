@@ -14,17 +14,26 @@ function MessageScrollerProvider(props: ComponentProps<typeof MessageScrollerPri
   return <MessageScrollerPrimitive.Provider {...props} />;
 }
 
-function MessageScroller({ className, ...props }: ComponentProps<typeof MessageScrollerPrimitive.Root>) {
+function MessageScroller({
+  className,
+  ...props
+}: ComponentProps<typeof MessageScrollerPrimitive.Root>) {
   return (
     <MessageScrollerPrimitive.Root
       data-slot="message-scroller"
-      className={cn("group/message-scroller relative flex size-full min-h-0 flex-col overflow-hidden", className)}
+      className={cn(
+        "group/message-scroller relative flex size-full min-h-0 flex-col overflow-hidden",
+        className,
+      )}
       {...props}
     />
   );
 }
 
-function MessageScrollerViewport({ className, ...props }: ComponentProps<typeof MessageScrollerPrimitive.Viewport>) {
+function MessageScrollerViewport({
+  className,
+  ...props
+}: ComponentProps<typeof MessageScrollerPrimitive.Viewport>) {
   return (
     <MessageScrollerPrimitive.Viewport
       data-slot="message-scroller-viewport"
@@ -37,7 +46,10 @@ function MessageScrollerViewport({ className, ...props }: ComponentProps<typeof 
   );
 }
 
-function MessageScrollerContent({ className, ...props }: ComponentProps<typeof MessageScrollerPrimitive.Content>) {
+function MessageScrollerContent({
+  className,
+  ...props
+}: ComponentProps<typeof MessageScrollerPrimitive.Content>) {
   return (
     <MessageScrollerPrimitive.Content
       data-slot="message-scroller-content"
@@ -56,7 +68,10 @@ function MessageScrollerItem({
     <MessageScrollerPrimitive.Item
       data-slot="message-scroller-item"
       scrollAnchor={scrollAnchor}
-      className={cn("min-w-0 shrink-0 [contain-intrinsic-size:auto_10rem] [content-visibility:auto]", className)}
+      className={cn(
+        "min-w-0 shrink-0 [contain-intrinsic-size:auto_10rem] [content-visibility:auto]",
+        className,
+      )}
       {...props}
     />
   );
@@ -70,7 +85,8 @@ function MessageScrollerButton({
   variant = "secondary",
   size = "icon-sm",
   ...props
-}: ComponentProps<typeof MessageScrollerPrimitive.Button> & Pick<ComponentProps<typeof Button>, "variant" | "size">) {
+}: ComponentProps<typeof MessageScrollerPrimitive.Button> &
+  Pick<ComponentProps<typeof Button>, "variant" | "size">) {
   return (
     <MessageScrollerPrimitive.Button
       data-slot="message-scroller-button"
@@ -88,7 +104,9 @@ function MessageScrollerButton({
       {children ?? (
         <>
           <ArrowDownIcon />
-          <span className="sr-only">{direction === "end" ? "Scroll to end" : "Scroll to start"}</span>
+          <span className="sr-only">
+            {direction === "end" ? "Scroll to end" : "Scroll to start"}
+          </span>
         </>
       )}
     </MessageScrollerPrimitive.Button>

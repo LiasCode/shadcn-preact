@@ -51,7 +51,14 @@ export function AttachmentImage() {
               </AttachmentAction>
             </AttachmentActions>
             <AttachmentTrigger
-              render={<a href={image.src} target="_blank" rel="noreferrer" aria-label={`Open ${image.name}`} />}
+              render={
+                <a
+                  href={image.src}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Open ${image.name}`}
+                />
+              }
             />
           </Attachment>
         ))}

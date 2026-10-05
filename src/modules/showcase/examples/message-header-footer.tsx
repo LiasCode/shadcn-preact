@@ -15,7 +15,9 @@ export function MessageHeaderFooterDemo() {
       <Message align="end">
         <MessageContent>
           <Bubble>
-            <BubbleContent>Send the report to the team. Ping @shadcn if you need help.</BubbleContent>
+            <BubbleContent>
+              Send the report to the team. Ping @shadcn if you need help.
+            </BubbleContent>
           </Bubble>
           <MessageFooter>
             <div>
