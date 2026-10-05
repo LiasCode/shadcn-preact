@@ -27,3 +27,8 @@ dist-ssr
 
 # Generated upstream reference
 .cache/
+
+# Local agent context and planning files
+/.skills/
+/docs/
+/TODO.md

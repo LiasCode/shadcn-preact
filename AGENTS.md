@@ -1,105 +1,156 @@
 # AGENTS.md
 
-## What this is
+## Project and current scope
 
-An unofficial **Preact port of shadcn/ui**. It is not an npm library: it is a collection of copy-paste components.
+This is an unofficial **Preact 11 port of shadcn/ui**, distributed as copy-paste components, not an npm library.
 
-- `registry/ui/` is the **product**: the components and their shared primitives (`registry/ui/primitives/`). People copy
-  this folder into their projects.
-- `src/` is the **documentation site** that demonstrates every component. It is deployed, not distributed.
+- `registry/ui/` is the product. Its components and `primitives/` must work when copied into another project.
+- `src/` is the deployed documentation/showcase app; it is not distributed with the components.
+- `main` contains the Base UI + nova rebuild. `v3` is the maintained older release line.
+- All catalog phases are complete: 62 upstream wrappers, 61 showcase sections (Theme is a provider).
+  No wrapper uses the retired `share/` primitives. Do not reintroduce that implementation style.
+- Keep external runtime dependencies minimal. Port headless primitives to Preact before adding dependencies.
+  Existing upstream libraries may remain when they work through `preact/compat`.
+- This file is the shared source of agent context. Record essential architectural changes, reviewed deviations,
+  and remaining limitations here so a fresh clone contains everything needed to work.
 
-A core goal is **minimal external dependencies**. shadcn/ui is built on Radix UI; this port reimplements the Radix
-primitives it needs (Slot, Portal, controlled state, focus trap, floating positioning) in `registry/ui/primitives/`. When
-adding a component, prefer porting a primitive over adding a dependency.
+## Setup and commands
 
-Read the decision records in [`docs/decisions/`](./docs/decisions/README.md) before changing an area. Never edit an
-accepted, committed record; supersede it with a new one.
+Use **Bun**, exact dependency versions, `bun.lock`, and `bunfig.toml`.
 
-## Commands
+- Clone with `git clone --recurse-submodules`; existing clones use `bun run upstream:setup`.
+- Install with `bun install --frozen-lockfile`.
+- `bun run dev`: network-exposed Vite development server.
+- `bun run build`: TypeScript project checks and Vite production build with prerendering.
+- `bun run preview`: serve the production build.
+- `bun run format`: write Oxfmt formatting; `bunx oxfmt --check`: verify formatting.
+- `bun run lint`: Oxlint.
+- `bun run test`: primitive regressions using Bun and happy-dom.
+- `bun run reference`: generate resolved base-nova components/examples in `.cache/shadcn-reference/base-nova`.
+- `bun run parity`: compare all wrappers, vendored CSS, and theme tokens with the pinned upstream.
+- `bun run parity:test`: mutation and CLI regressions for the parity checker.
+- `bun run check`: formatting, primitive tests, parity regressions, parity, lint, and production build.
+- `bun run performance`: server-render benchmark for the showcase demos.
+- `bun run parity:browser`: independent React/Base UI and Preact behavior/screenshot comparisons.
+- `bun run parity:browser:test`: deliberate visual/behavior mutations must fail those comparisons.
 
-Package manager is **Bun** (`bun.lock`, exact versions, `bunfig.toml`).
+Finish implementation changes with `bun run check` and check affected pages in a browser, or report the missing
+browser check. Browser parity is separate from `check`; install Chromium with `bunx playwright install chromium`
+(or `--with-deps` where system packages are needed). Artifacts go in `.cache/browser-parity/results`.
+`BROWSER_PARITY_CASE` accepts a case or comma-separated cases; `BROWSER_PARITY_DIRECTION` accepts `ltr` or `rtl`.
 
-- `bun run dev`: Vite dev server, exposed on the network
-- `bun run build`: type check (`tsc -b`) and Vite build with prerendering
-- `bun run preview`: preview the production build
-- `bun run lint`: oxlint
-- `bun run test`: core primitive regression tests with Bun and happy-dom (ADR 0011)
-- `bun run format`: oxfmt (writes); `bunx oxfmt --check` verifies
-- `bun run reference`: writes the upstream base-nova reference (components and examples) to
-  `.cache/shadcn-reference/base-nova` (ADR 0009)
-- `bun run upstream:setup`: initialize the pinned shadcn Git submodule; clone with `--recurse-submodules` to fetch it initially.
-- `bun run check`: format check, tests, parity regression checks, parity, lint, and build.
-- `bun run parity`: checks the vendored CSS, the theme tokens, and every rebuilt component against upstream
+## Upstream reference and parity contract
 
-A change is done only when `bunx oxfmt --check`, `test`, `lint`, and `build` all pass, and the affected
-pages were checked in a browser (or the missing browser check is reported).
+- `upstream/shadcn` is a pinned Git submodule of `https://github.com/shadcn-ui/ui.git`.
+  The parent repository's gitlink locks the revision. Never advance it during routine checks.
+- Components: `upstream/shadcn/apps/v4/registry/bases/base/ui/<name>.tsx`.
+  Resolve semantic `cn-*` classes through `upstream/shadcn/apps/v4/registry/styles/style-nova.css`.
+  Examples: `upstream/shadcn/apps/v4/examples/base`.
+- Use root development dependencies for reference transforms. Do not install or modify the upstream workspace
+  or require sibling checkouts. `SHADCN_DIR` is an explicit optional override only.
+- Preserve upstream filenames, exports, props (`render`, state-dependent `className`/`style`), defaults,
+  `data-slot`/other attributes, element nesting/order, and resolved Tailwind classes.
+- Replace `IconPlaceholder` with the `lucide-preact` icon named by its `lucide` prop. Use only Lucide icons.
+- Import Base UI ports through `./primitives/<name>` instead of `@base-ui/react/<name>`.
+  The primitive reference is Base UI **1.6.0**; inspect its source and API before changing behavior.
+  Authoring reference files belong inside this repository's ignored `.cache/`.
+- Public primitive entry points mirror Base UI subpaths. Shared modules live in
+  `registry/ui/primitives/internals/<UpstreamModule>.ts`. Preserve the Base UI MIT license.
+- Message Scroller and Questionnaire port `upstream/shadcn/packages/react/src` instead of Base UI.
+  Their shared `internals/ShadcnUseRender.ts` preserves their distinct rendering/cancellation semantics.
+- Static parity checks export names, literal counts, declared prop/default signatures, JSX/render structure,
+  byte-identical vendored CSS, and neutral theme tokens. It does not certify primitive behavior or pixel parity.
+- The reviewed wrapper exception is ChartTooltipContent's explicit optional `color` prop, needed because
+  Preact div props omit React's legacy field. `scripts/parity-adaptations.ts` checks exact canonical hashes;
+  never broaden exemptions to hide drift. Record any new unavoidable deviation here with its reason.
+- Port upstream examples to `src/modules/showcase/examples/` and render them through the showcase entry.
+  Adapt Next Image/Link to native elements, prefix ids/labels per example, and remove unused imports.
 
-## Registry rules (`registry/ui/`)
+## Preact, types, and component conventions
 
-**Strict rule (ADR 0008):** every component matches the original shadcn/ui checked out in `upstream/shadcn`, so the API,
-the look, and the Tailwind classes stay interoperable:
+- Components are plain functions with `ref` as a prop. Do not use `forwardRef` or `"use client"`.
+- Import React APIs from `preact/compat` or `preact/hooks`, never directly from `react`.
+  Native `HTMLAttributes`/`CSSProperties` come from the `preact` root.
+- Use `import type`; TypeScript is strict with `noUncheckedIndexedAccess` and `noUnused*`.
+- Shared `ComponentProps` combines intrinsic union fields, unwraps Signals, and permits compatible callback refs.
+  `BaseUIComponentProps` omits `class`; use `className` consistently.
+- Use `cva`/`VariantProps`, exporting the component and its `*Variants` object where upstream does.
+  Merge classes through `./lib/utils` (`cn`).
+- Native DOM events support `preventBaseUIHandler()`. Merged event handlers run right-to-left.
+  Input text changes use `onInput`; public callbacks retain upstream names and cancelability.
+- Render-element refs come from `vnode.ref` for DOM elements and `props.ref` for components.
+  Stable callbacks store their latest implementation during render; ids use Preact `useId` with `base-ui-` prefix.
+- Restore controlled Questionnaire inputs/radio siblings when owners reject changes.
+- Guard browser globals, observers, scheduling, and storage for SSR/prerendering with
+  `typeof window !== "undefined"` before browser-only work.
+- Keep all registry imports relative. Never import from `src/` or use app aliases in registry files.
+- Write readable multiline blocks. Every `if`/`else` body and loop uses braces; ordinary `else if` chains are fine.
+  Separate consecutive standalone function calls and logical groups with blank lines. Give functions, types,
+  early returns, and control blocks semantic breathing room; formatting alone does not provide this structure.
 
-- Reference: `upstream/shadcn/apps/v4/registry/bases/base/ui/<name>.tsx` (the Base UI base), with its `cn-*` classes resolved
-  through the **nova** style, `upstream/shadcn/apps/v4/registry/styles/style-nova.css`. Demos come from
-  `upstream/shadcn/apps/v4/examples/base`.
-- Same file name, exports, props (`render`, state-dependent `className`), `data-slot` and other `data-*` attributes,
-  structure, and resolved classes. A deviation needs its own record.
-- `IconPlaceholder` becomes the `lucide-preact` icon named in its `lucide` prop. Icons come only from `lucide-preact`.
-  (ADR 0004)
-- `@base-ui/react/<name>` is ported to Preact in `registry/ui/primitives/<name>` and imported as
-  `./primitives/<name>`. The primitive reference is Base UI 1.6.0 (code and `docs/`); install its source locally when porting a new primitive. The parity commands use the submodule and root development dependencies without installing the upstream monorepo.
-- Primitives keep Base UI's structure: public entry points in `primitives/<name>`, shared code in
-  `primitives/internals/<UpstreamModule>.ts`. Preact adaptations are listed in ADR 0010; add new ones there or in a
-  new record. Type and phase-2 adaptations are in ADR 0012.
-- Components are plain functions that receive `ref` as a prop (Preact 11), without `forwardRef` or `"use client"`.
-  React APIs come from `preact/compat` or `preact/hooks`.
-- Variants with `cva` and `VariantProps`, exporting the component and its `*Variants` object; class merging with
-  `cn()`, as upstream.
-- A rebuilt component is done only when `bun run parity` passes. Port its upstream examples from the reference to
-  `src/modules/showcase/examples/<example>.tsx` and render them from its showcase entry. (ADR 0009)
-- Class merging comes from `./lib/utils` (the `cn` package), like upstream.
-- Follow the phase order in ADR 0008. Until a component is rewritten, its old file (using `./share/`, `asChild`, and
-  `forwardRef`) stays as is; do not mix the two styles in one file.
+## Floating behavior and performance invariants
 
-Always:
+- Use native Floating UI `computePosition`/`autoUpdate` from the existing `@floating-ui/react-dom` dependency;
+  Preact owns interactions, contexts, refs, and asynchronous state. Reject stale positioning results.
+- Preserve RTL/logical sides, collision behavior, size/origin variables, and device-pixel coordinate rounding.
+  Closed keepMounted content must not track anchors. Reuse unchanged positioning state to avoid rerenders.
+- Focus and dismissal must preserve modal trapping, nested-layer ordering, cancelable events, return focus,
+  nonmodal Tab order, pointer/touch intent, composition handling, portals, and custom document containers.
+- Reconcile background inert/aria-hidden locks by element/attribute; retain unchanged locks, reference counts,
+  original attributes, live regions, nested exclusions, and newly inserted background content.
+- Scroll locks are per-document and reference-counted. Lock html with overflow hidden; use overflow clip on body
+  unless body is the document scrolling element. Making body a new scroll container hides sticky navigation.
+  Restore original inline values/priorities, scrollbar compensation, and markers after the final lock.
+- Cache computed ancestor styles only within one tabbable traversal, never across interactions.
+- Preserve stable Slider observers, memoized Combobox filtering, ScrollArea observation cleanup, and
+  Message Scroller's event-driven/coalesced frames, stable store snapshots, prepend anchors, and cleanup.
 
-- **Self-contained:** files import each other only with relative paths (`./button`, `./primitives/dialog`). Never
-  import from `src/` and never use an alias. `grep -rn 'from "@/' registry` must be empty. (ADR 0002)
-- Code that touches `window`, `document`, or `localStorage` must guard with `typeof window !== "undefined"`: it runs
-  at build time during prerendering.
+## Field/Form semantics
 
-## Documentation app (`src/`)
+- The shadcn `field.tsx` wrapper is presentational. Validation lives in `primitives/field`, `form`, and `fieldset`.
+- Registered controls: Input, Checkbox, Switch, RadioGroup, Select, Combobox, and Slider.
+  Keep raw validation values separate from submitted serialization, native constraints, and visible focus targets.
+  Combobox's query must not register as a second control or replace the selected value.
+- Field.Item provides local label/description scopes; Fieldset propagates disabled state and legend associations.
+  Disabled controls are excluded from submitted values; moving focus within a composite is not a field blur.
+- Native reset updates run in a task after dispatch/default actions and honor cancellation and controlled owners.
+  Generation checks discard stale validation after edits, reset, removal, or disabling; assimilate thenables.
+- Submission remains synchronous: outstanding async validators do not delay `onFormSubmit`.
+  Blur-required checks respect interaction history; submission/imperative validation bypass debounce.
+- Field reset restores local dirty/touched state; browser comparison does not claim those flags match upstream.
 
-- Preact with `preact-iso` routing. `src/main.tsx` hydrates `#app` and exports `prerender`; `src/App.tsx` holds the
-  providers and `src/routes.tsx` every route. Layout follows ADR 0003 as amended by ADR 0005.
-- Imports components through `@registry/*`; app code uses `@/*`.
-- The site has only two views (ADR 0005): an introduction (`/`) and a showcase of every component (`/components`).
-  There is no per-component documentation; do not add it back without a new record.
-- Adding a component: its file in `registry/ui/`, a demo in `src/modules/showcase/demos/<name>-demo.tsx`, and an
-  entry in `src/modules/showcase/demos/index.ts`.
-- A new static route goes in `src/routes.tsx` and in `additionalPrerenderRoutes` in `vite.config.ts`.
+## Documentation app and styling
 
-## Styling
+- Use `preact-iso`: `src/main.tsx` hydrates `#app` and exports `prerender`; `src/App.tsx` holds providers;
+  `src/routes.tsx` defines routes. Only introduction `/` and showcase `/components` are product views.
+  Do not restore per-component documentation routes.
+- App imports use `@/*`; registry consumers use `@registry/*`.
+  Keep aliases aligned in `vite.config.ts` and `tsconfig.app.json`: `react`/`react-dom` to `preact/compat`,
+  JSX runtimes to `preact/jsx-runtime`.
+- Add components with a registry file, `src/modules/showcase/demos/<name>-demo.tsx`, an entry in its `index.ts`,
+  and upstream examples. New static routes also belong in `additionalPrerenderRoutes` in `vite.config.ts`.
+- Keep the showcase lazily loaded; notification viewports belong there so the introduction stays lightweight.
+  Measure section heights in batches before applying content-visibility containment; refresh on width changes.
+  Keep offscreen demo state. Calendar, Sidebar, and newer conversation examples mount one selected example.
+  Pause documentation-only OTP polling and carousel autoplay offscreen without changing registry defaults.
+- Tailwind v4 uses `@tailwindcss/postcss`, without a Tailwind config. Tokens/global styles: `src/index.css`.
+  `src/styles/shadcn-tailwind.css` is vendored upstream CSS; never hand-format or casually edit it.
+- ThemeProvider/useTheme in `registry/ui/theme.tsx` apply `.dark` to html. Native color-scheme follows the theme.
+  Site scrollbar styling belongs to the documentation app, not the copy-paste registry.
+- Chat demos use deterministic local streaming fixtures, reduced-motion CSS entrances, and a limited safe
+  Markdown helper. These app helpers do not promise AI SDK, Motion physics, or general Markdown equivalence.
 
-- **Tailwind CSS v4** via `@tailwindcss/postcss`, no config file. Theme tokens and global styles are in
-  `src/index.css`.
-- Dark mode is class-based (`.dark` on `<html>`), managed by `ThemeProvider` and `useTheme` in
-  `registry/ui/theme.tsx`.
+## Remaining scope and verification limits
 
-## Aliases and React compatibility
-
-Defined in both `vite.config.ts` and `tsconfig.app.json`; keep them in sync:
-
-- `@/*` → `src/*`
-- `@registry/*` → `registry/*`
-- `react/jsx-runtime` and `react/jsx-dev-runtime` → `preact/jsx-runtime`
-- `react` and `react-dom` → `preact/compat`, so React-targeting libraries (`react-day-picker`, `recharts`,
-  `@floating-ui/react-dom`, `cmdk`, `input-otp`, `embla-carousel-react`, `react-resizable-panels`, `sonner`) work. Import React APIs from `preact/compat`, never from `react`.
-
-## TypeScript
-
-Strict, with `noUncheckedIndexedAccess` and `noUnused*`. `import type` for type-only imports.
-
-## Branches
-
-The maintained release line is the **`v3` branch**; `main` carries newer component work.
+- The live browser suite covers 14 fixtures, 328 states across LTR/RTL, light/dark, and desktop/mobile Chromium.
+  It uses real React/Base UI reference pages generated independently from the pinned upstream wrappers.
+  Keep expected behavior assertions on both runtimes and zero differing pixels under the configured pixelmatch
+  threshold; never replace this with an approvable local screenshot baseline.
+- Next work: remaining catalog browser comparisons, touch gestures, additional engines, animation timing,
+  actual fonts, physical devices, and complex nested overlays. Select's ordinary anchored fixture excludes
+  selected-item alignment. Native scroll locking does not claim every historical iOS workaround.
+- Deferred primitives: CheckboxGroup/multiple-input registration, initial values across control replacement,
+  unused store/part APIs, Combobox grid/virtualization, and anchored Toast parts. Do not claim complete Base UI parity.
+- Deferred examples: upstream language-dependent RTL infrastructure, calendar-hijri's extra calendar/font setup,
+  and sidebar-rsc's React Server Components environment.
+- Date Picker, Form, and Data Table recipes are separate from the upstream component-file catalog.

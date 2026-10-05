@@ -49,20 +49,18 @@ bunx degit https://github.com/LiasCode/shadcn-preact/registry/ui#main ./src/comp
 
 > The components moved from `src/components/ui` to `registry/ui`. Update your `degit` source if you used the old path.
 
-The [catalog performance report](./docs/performance/2026-10-04-components.md) records the 55-component baseline before phase 8.
-Run `bun run performance` for the server-render benchmark; the report also documents optional browser profiling.
+Run `bun run performance` for the server-render benchmark of the component showcase.
 
-All 62 upstream components are ported, with 61 showcase sections and 57 additional examples from
-[phase 8](./docs/decisions/0021-conversation-and-questionnaire-components.md). To run its browser regression checks,
+All 62 upstream components are ported, with 61 showcase sections and 57 additional conversation and
+questionnaire examples. To run their browser regression checks,
 build the site, start `bun run preview`, and run `node scripts/phase8-browser.mjs`. Playwright is an optional
 external tool: set `PERFORMANCE_PLAYWRIGHT_MODULE` to its installed module path and `PERFORMANCE_URL` if the
 preview uses another port.
 
 `bun run parity` checks upstream exports, runtime literal counts, declared props/defaults, and JSX/render structure,
 plus CSS and theme tokens. `bun run parity:test` runs its mutation regression checks. Both require the upstream
-checkout described in [ADR 0009](./docs/decisions/0009-upstream-reference-and-parity-tooling.md). Static wrapper
-parity does not certify full primitive behavior or visual equivalence; see
-[ADR 0022](./docs/decisions/0022-structural-wrapper-parity.md).
+submodule described below. Static wrapper parity does not certify full primitive behavior or visual equivalence.
+Architecture, porting conventions, and verification limits are recorded in [AGENTS.md](./AGENTS.md).
 
 ## Development
 
@@ -82,7 +80,7 @@ change to the recorded upstream revision, run `bun run upstream:setup` again.
 The shadcn reference lives in `upstream/shadcn`, pinned by the parent repository. Reference/parity commands use
 the root development dependencies; installing the upstream monorepo is unnecessary. `bun run reference` generates
 its output in the ignored `.cache/shadcn-reference/base-nova` directory. Updating the upstream pin is an explicit
-change that must pass the parity checks; see [ADR 0023](./docs/decisions/0023-pinned-upstream-submodule.md).
+change that must pass the parity checks.
 
 ## Browser comparison with upstream
 
@@ -105,9 +103,8 @@ Screenshots, differences, geometry and the revision/browser report are written t
 `.cache/browser-parity/results`. To inspect one fixture, use `BROWSER_PARITY_CASE=select bun run parity:browser`.
 Use a comma-separated case list to select several fixtures and `BROWSER_PARITY_DIRECTION=rtl` to select one direction.
 This is a separate check requiring Chromium; `bun run check` remains usable without browser binaries.
-Animations, fonts, additional engines and the remaining catalog need further coverage; see
-[ADR 0029](./docs/decisions/0029-independent-browser-parity.md) and
-[ADR 0030](./docs/decisions/0030-browser-controls-overlays-and-rtl.md).
+Animations, fonts, additional engines and the remaining catalog need further coverage.
+The current scope and remaining limitations are recorded in [AGENTS.md](./AGENTS.md).
 
 ## v3
 
