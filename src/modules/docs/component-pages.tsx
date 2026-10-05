@@ -5,7 +5,7 @@ import { componentCatalog } from "@/lib/component-catalog";
 
 import type { ComponentDocumentation } from "./views/component";
 
-const demos = import.meta.glob<Record<string, ComponentType>>("../showcase/demos/*-demo.tsx");
+const examples = import.meta.glob<Record<string, ComponentType>>("../showcase/examples/*.tsx");
 const documents = import.meta.glob<ComponentDocumentation>(
   "../../../.cache/component-docs/*.json",
   { import: "default" },
@@ -14,26 +14,60 @@ const documents = import.meta.glob<ComponentDocumentation>(
 export const componentPages = componentCatalog.map(({ slug }) => ({
   path: `/docs/components/${slug}`,
   View: lazy(async () => {
-    const loadDemo = demos[`../showcase/demos/${slug}-demo.tsx`];
     const loadDocument = documents[`../../../.cache/component-docs/${slug}.json`];
 
-    if (!loadDemo || !loadDocument) {
+    if (!loadDocument) {
       throw new Error(`Missing component page: ${slug}`);
     }
 
-    const [demo, documentation, { ComponentView }] = await Promise.all([
-      loadDemo(),
-      loadDocument(),
-      import("./views/component"),
-    ]);
-    const Demo = Object.entries(demo).find(([name]) => name.endsWith("Demo"))?.[1];
+    const documentation = await loadDocument();
+    const first = documentation.examples[0];
 
-    if (!Demo) {
-      throw new Error(`Missing demo export: ${slug}`);
+    if (!first) {
+      throw new Error(`Missing component examples: ${slug}`);
     }
 
+    const loadFirst = examples[first.modulePath];
+
+    if (!loadFirst) {
+      throw new Error(`Missing example module: ${first.modulePath}`);
+    }
+
+    const [firstModule, { ComponentView }] = await Promise.all([
+      loadFirst(),
+      import("./views/component"),
+    ]);
+    const previews = documentation.examples.map((example, index) => {
+      const load = examples[example.modulePath];
+
+      if (!load) {
+        throw new Error(`Missing example module: ${example.modulePath}`);
+      }
+
+      const Preview =
+        index === 0
+          ? firstModule[example.exportName]
+          : lazy(() =>
+              load().then((module) => {
+                const Preview = module[example.exportName];
+
+                if (!Preview) {
+                  throw new Error(`Missing example export: ${example.id}`);
+                }
+
+                return Preview;
+              }),
+            );
+
+      if (!Preview) {
+        throw new Error(`Missing example export: ${example.id}`);
+      }
+
+      return { ...example, Preview };
+    });
+
     return function ComponentPage() {
-      return <ComponentView documentation={documentation} Demo={Demo} />;
+      return <ComponentView documentation={documentation} examples={previews} />;
     };
   }),
 }));

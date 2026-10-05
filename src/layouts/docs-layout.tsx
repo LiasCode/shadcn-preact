@@ -13,7 +13,7 @@ const gettingStarted = [
 
 type DocsLayoutProps = {
   children: ComponentChildren;
-  toc?: readonly { id: string; title: string }[];
+  toc?: readonly { id: string; title: string; nested?: boolean }[];
 };
 
 export function DocsLayout({ children, toc }: DocsLayoutProps) {
@@ -35,11 +35,11 @@ export function DocsLayout({ children, toc }: DocsLayoutProps) {
           <div className="min-w-0 max-w-4xl">{children}</div>
           {toc && (
             <nav aria-label="On this page" className="hidden xl:block">
-              <div className="sticky top-20 space-y-3">
+              <div className="sticky top-20 max-h-[calc(100dvh-6rem)] space-y-3 overflow-y-auto pr-2">
                 <p className="text-sm font-medium">On this page</p>
                 <ul className="space-y-2 text-sm">
-                  {toc.map(({ id, title }) => (
-                    <li key={id}>
+                  {toc.map(({ id, title, nested }) => (
+                    <li key={id} className={nested ? "pl-3 text-xs" : undefined}>
                       <a
                         href={`#${id}`}
                         className="text-muted-foreground hover:text-foreground hover:underline underline-offset-4"

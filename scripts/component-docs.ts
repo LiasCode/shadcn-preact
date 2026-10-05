@@ -7,6 +7,7 @@ import type { Plugin } from "vite";
 
 import { componentCatalog } from "../src/lib/component-catalog";
 import { repositoryUrl } from "../src/lib/site";
+import { componentExamples, sourceExportNames } from "./component-examples";
 
 const root = resolve(import.meta.dirname, "..");
 const registry = join(root, "registry/ui");
@@ -34,7 +35,7 @@ export function componentDocsPlugin(): Plugin {
   for (const component of componentCatalog) {
     const source = project.addSourceFileAtPath(join(registry, `${component.slug}.tsx`));
 
-    for (const name of source.getExportedDeclarations().keys()) {
+    for (const name of sourceExportNames(source)) {
       if (/^[A-Z]/.test(name)) {
         exports.set(name, component);
       }
@@ -221,16 +222,6 @@ export function componentDocsPlugin(): Plugin {
       );
     }
 
-    const helpers = [...example.matchAll(/from "(\.\.\/support\/[^"\n]+)"/g)].map((match) => {
-      const base = resolve(dirname(exampleFile), match[1]!);
-      const path = [`${base}.tsx`, `${base}.ts`].find(existsSync);
-
-      if (!path) {
-        throw new Error(`Missing example helper: ${base}`);
-      }
-
-      return relative(root, path);
-    });
     files.add(join(registry, "primitives/LICENSE"));
 
     const sourceFiles = [...files].map((file) => relative(registry, file)).sort();
@@ -254,9 +245,7 @@ export function componentDocsPlugin(): Plugin {
         files: sourceFiles,
         installCommand,
         usage,
-        example,
-        examplePath: relative(root, exampleFile),
-        helpers: [...new Set(helpers)],
+        examples: componentExamples(project, root, slug, mdx, versions),
         relatedComponents: [...related.values()],
         referenceUrl: `https://ui.shadcn.com/docs/components/${slug === "sonner" ? "radix" : "base"}/${slug}`,
       }),

@@ -107,3 +107,46 @@ test("component guides use the port's packages and usage imports", () => {
     expect(doc.usage.join("\n")).not.toContain('from "@/components/ui/');
   }
 });
+
+test("each documented preview has its own complete source and resolves to a local example", () => {
+  for (const { slug } of componentCatalog) {
+    const doc = JSON.parse(readFileSync(join(cache, `${slug}.json`), "utf8"));
+    const demo = readFileSync(join(root, `src/modules/showcase/demos/${slug}-demo.tsx`), "utf8");
+    const imports = [...demo.matchAll(/from "\.\.\/examples\/([^"\n]+)"/g)].map(
+      (match) => match[1],
+    );
+    const ids = doc.examples.map((example: { id: string }) => example.id);
+
+    expect(ids.length).toBeGreaterThan(0);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect([...ids].sort()).toEqual(imports.sort());
+
+    for (const example of doc.examples) {
+      expect(example.modulePath).toBe(`../showcase/examples/${example.id}.tsx`);
+      expect(example.title.length).toBeGreaterThan(0);
+      expect(example.exportName.length).toBeGreaterThan(0);
+      expect(example.code).not.toContain("@registry/ui/");
+      expect(example.code).not.toContain("VisibleInputOTP");
+      expect(readFileSync(join(root, example.sourcePath), "utf8")).toContain("export");
+
+      for (const helper of example.helpers) {
+        expect(existsSync(join(root, helper))).toBe(true);
+      }
+    }
+
+    const primary = slug === "drawer" ? "drawer-non-modal" : `${slug}-demo`;
+
+    if (imports.includes(primary)) {
+      expect(ids[0]).toBe(primary);
+    }
+  }
+
+  const button = JSON.parse(readFileSync(join(cache, "button.json"), "utf8"));
+  const outline = button.examples.find(
+    (example: { id: string }) => example.id === "button-outline",
+  );
+  expect(outline.code).toContain('variant="outline"');
+
+  const drawer = JSON.parse(readFileSync(join(cache, "drawer.json"), "utf8"));
+  expect(drawer.examples[0].id).toBe("drawer-non-modal");
+});

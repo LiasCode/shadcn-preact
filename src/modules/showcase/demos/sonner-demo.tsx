@@ -1,26 +1,19 @@
-import { Button } from "@registry/ui/button";
-import { toast } from "sonner";
+import Example0 from "../examples/sonner-demo";
+import Example2 from "../examples/sonner-error";
+import Example3 from "../examples/sonner-info";
+import Example5 from "../examples/sonner-promise";
+import Example1 from "../examples/sonner-success";
+import Example4 from "../examples/sonner-warning";
 
 export function SonnerDemo() {
   return (
     <div className="flex flex-wrap gap-3">
-      <Button
-        variant="outline"
-        onClick={() =>
-          toast("Event has been created", {
-            description: "Sunday, December 03, 2023 at 9:00 AM",
-            action: { label: "Undo", onClick: () => toast.info("Event undone") },
-          })
-        }
-      >
-        Show Toast
-      </Button>
-      <Button variant="outline" onClick={() => toast.success("Saved successfully")}>
-        Success
-      </Button>
-      <Button variant="outline" onClick={() => toast.error("Something went wrong")}>
-        Error
-      </Button>
+      <Example0 />
+      <Example1 />
+      <Example2 />
+      <Example3 />
+      <Example4 />
+      <Example5 />
     </div>
   );
 }
