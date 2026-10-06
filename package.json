@@ -1,10 +1,21 @@
 {
   "name": "shadcn-preact",
+  "version": "0.1.0",
+  "private": true,
   "author": {
     "name": "LiasCode",
     "email": "liascode.dev@gmail.com",
     "url": "https://lias-code.pages.dev"
   },
+  "bin": {
+    "shadcn-preact": "cli/index.ts"
+  },
+  "files": [
+    "cli/",
+    "registry/ui/",
+    "src/styles/shadcn-tailwind.css",
+    "LICENSE.md"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,14 +24,17 @@
     "format": "oxfmt",
     "lint": "oxlint",
     "upstream:setup": "git submodule update --init --recursive",
-    "check": "bunx oxfmt --check && bun run test && bun run parity:test && bun run parity && bun run lint && bun run build",
+    "check": "bunx oxfmt --check && bun run registry:check && bun run test && bun run parity:test && bun run parity && bun run lint && bun run build",
     "reference": "bun scripts/reference.ts",
     "parity": "bun scripts/parity.ts",
     "parity:test": "bun scripts/parity-regressions.ts",
     "test": "bun test",
     "performance": "bun scripts/performance.mjs",
     "parity:browser": "bun scripts/browser-parity/prepare.ts && node scripts/browser-parity/compare.mjs",
-    "parity:browser:test": "bun scripts/browser-parity/prepare.ts && node scripts/browser-parity/mutations.mjs"
+    "parity:browser:test": "bun scripts/browser-parity/prepare.ts && node scripts/browser-parity/mutations.mjs",
+    "cli": "bun cli/index.ts",
+    "registry:build": "bun scripts/component-registry.ts && bunx oxfmt cli/registry.json",
+    "registry:check": "bun scripts/component-registry.ts --check"
   },
   "dependencies": {
     "@floating-ui/react-dom": "2.1.9",

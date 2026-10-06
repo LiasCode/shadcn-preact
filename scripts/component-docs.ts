@@ -1,13 +1,14 @@
 import { randomUUID } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 
-import { Project, SyntaxKind } from "ts-morph";
+import { Project } from "ts-morph";
 import type { Plugin } from "vite";
 
 import { componentCatalog } from "../src/lib/component-catalog";
 import { repositoryUrl } from "../src/lib/site";
 import { componentExamples, sourceExportNames } from "./component-examples";
+import { createComponentRegistry } from "./component-registry";
 
 const root = resolve(import.meta.dirname, "..");
 const registry = join(root, "registry/ui");
@@ -42,71 +43,14 @@ export function componentDocsPlugin(): Plugin {
     }
   }
 
-  function resolveLocal(owner: string, specifier: string) {
-    const base = resolve(dirname(owner), specifier);
-    const file = [
-      base,
-      `${base}.ts`,
-      `${base}.tsx`,
-      join(base, "index.ts"),
-      join(base, "index.tsx"),
-    ].find((candidate) => existsSync(candidate) && /\.(?:ts|tsx)$/.test(candidate));
-
-    if (!file || !file.startsWith(`${registry}/`)) {
-      throw new Error(`Unresolved registry import: ${owner}: ${specifier}`);
-    }
-
-    return file;
-  }
+  const installationRegistry = createComponentRegistry();
 
   for (const { slug, name } of componentCatalog) {
-    const files = new Set<string>();
-    const packages = new Set<string>(["preact", "tw-animate-css"]);
-
-    function visit(file: string) {
-      if (files.has(file)) {
-        return;
-      }
-
-      files.add(file);
-
-      const source = project.addSourceFileAtPath(file);
-      const imports = [
-        ...source.getImportDeclarations().map((item) => item.getModuleSpecifierValue()),
-        ...source
-          .getExportDeclarations()
-          .map((item) => item.getModuleSpecifierValue())
-          .filter((item): item is string => Boolean(item)),
-        ...source.getDescendantsOfKind(SyntaxKind.ImportType).map((item) =>
-          item
-            .getArgument()
-            .getText()
-            .replace(/^['"]|['"]$/g, ""),
-        ),
-      ];
-
-      for (const specifier of imports) {
-        if (specifier.startsWith(".")) {
-          visit(resolveLocal(file, specifier));
-        } else {
-          packages.add(
-            specifier.startsWith("@")
-              ? specifier.split("/").slice(0, 2).join("/")
-              : specifier.split("/")[0]!,
-          );
-        }
-      }
-    }
-
-    visit(join(registry, `${slug}.tsx`));
-
-    const packageList = [...packages].sort().map((name) => {
-      if (!versions[name]) {
-        throw new Error(`Missing dependency version: ${name}`);
-      }
-
-      return `${name}@${versions[name]}`;
-    });
+    const component = installationRegistry.components[slug]!;
+    const files = new Set(component.files.map((file) => join(registry, file)));
+    const packageList = Object.entries(component.dependencies).map(
+      ([name, version]) => `${name}@${version}`,
+    );
     const mdxPath = join(
       root,
       `upstream/shadcn/apps/v4/content/docs/components/${slug === "sonner" ? "radix" : "base"}`,

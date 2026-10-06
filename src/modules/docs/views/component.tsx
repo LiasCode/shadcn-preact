@@ -6,7 +6,7 @@ import { useState } from "preact/hooks";
 import { DocsLayout } from "@/layouts/docs-layout";
 import { componentCatalog } from "@/lib/component-catalog";
 import type { ComponentExample } from "@/lib/component-examples";
-import { repositoryUrl } from "@/lib/site";
+import { cliCommand, repositoryUrl } from "@/lib/site";
 import { CodeBlock } from "@/modules/showcase/components/code-block";
 
 import { ExampleCard, type DocumentationExample } from "../components/example-card";
@@ -111,51 +111,75 @@ export function ComponentView({
             </a>{" "}
             first, including Tailwind CSS v4, theme tokens, and Preact compatibility aliases.
           </p>
-          <h3 className="font-medium">1. Install dependencies</h3>
-          <CodeBlock code={`bun add --exact ${doc.packages.join(" ")}`} />
-          {doc.relatedComponents.length > 0 && (
-            <p className="text-sm leading-7 text-muted-foreground">
-              The usage example also needs{" "}
-              {doc.relatedComponents.map((component, index) => (
-                <span key={component.slug}>
-                  {index > 0 && ", "}
-                  <a
-                    href={`/docs/components/${component.slug}`}
-                    className="underline underline-offset-4"
-                  >
-                    {component.name}
-                  </a>
-                </span>
-              ))}
-              . Follow their installation guides as well.
-            </p>
-          )}
-          <h3 className="font-medium">2. Copy the component with degit</h3>
+          <h3 className="font-medium">CLI</h3>
           <p className="text-sm leading-7 text-muted-foreground">
-            Run this from your project root. It selects {doc.slug}.tsx, its local dependencies, and
-            both licenses directly from the repository, then copies them into src/components/ui.
+            Run init once using the{" "}
+            <a href="/docs/installation#cli" className="underline underline-offset-4">
+              installation guide
+            </a>
+            , then add this component. The CLI copies the required source files and installs their
+            exact dependencies with Bun.
           </p>
-          <CodeBlock code={doc.installCommand} />
+          <CodeBlock
+            code={`${cliCommand} add ${[doc.slug, ...doc.relatedComponents.map((component) => component.slug)].join(" ")}`}
+          />
           <p className="text-sm text-muted-foreground">
-            The temporary copy lives in .cache/shadcn-preact/{doc.slug}. Existing components stay in
-            place; shared source files are updated from main.
+            Add --dry-run to review the changes. Existing modified files are protected; use
+            --overwrite only when you want to replace them.
           </p>
-          <details className="rounded-lg border p-4">
+          <details className="rounded-xl border p-4">
             <summary className="cursor-pointer text-sm font-medium">
-              Selected source files ({doc.files.length})
+              Manual installation / degit (optional)
             </summary>
-            <ul className="mt-3 max-h-72 space-y-1 overflow-auto text-xs">
-              {doc.files.map((file) => (
-                <li key={file}>
-                  <a
-                    className="underline underline-offset-4"
-                    href={`${repositoryUrl}/blob/main/registry/ui/${file}`}
-                  >
-                    {file}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="mt-5 space-y-4">
+              <h3 className="font-medium">1. Install dependencies</h3>
+              <CodeBlock code={`bun add --exact ${doc.packages.join(" ")}`} />
+              {doc.relatedComponents.length > 0 && (
+                <p className="text-sm leading-7 text-muted-foreground">
+                  The usage example also needs{" "}
+                  {doc.relatedComponents.map((component, index) => (
+                    <span key={component.slug}>
+                      {index > 0 && ", "}
+                      <a
+                        href={`/docs/components/${component.slug}`}
+                        className="underline underline-offset-4"
+                      >
+                        {component.name}
+                      </a>
+                    </span>
+                  ))}
+                  . Follow their installation guides as well.
+                </p>
+              )}
+              <h3 className="font-medium">2. Copy the component with degit</h3>
+              <p className="text-sm leading-7 text-muted-foreground">
+                Run this from your project root. It selects {doc.slug}.tsx, its local dependencies,
+                and both licenses directly from the repository, then copies them into
+                src/components/ui.
+              </p>
+              <CodeBlock code={doc.installCommand} />
+              <p className="text-sm text-muted-foreground">
+                The temporary copy lives in .cache/shadcn-preact/{doc.slug}. Existing components
+                stay in place; shared source files are updated from main.
+              </p>
+              <details className="rounded-lg border p-4">
+                <summary className="cursor-pointer text-sm font-medium">
+                  Selected source files ({doc.files.length})
+                </summary>
+                <ul className="mt-3 max-h-72 space-y-1 overflow-auto text-xs">
+                  {doc.files.map((file) => (
+                    <li key={file}>
+                      <a
+                        className="underline underline-offset-4"
+                        href={`${repositoryUrl}/blob/main/registry/ui/${file}`}
+                      >
+                        {file}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </div>
           </details>
           {(doc.slug === "toast" || doc.slug === "sonner") && (
             <div className="space-y-3">

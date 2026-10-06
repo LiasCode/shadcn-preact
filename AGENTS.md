@@ -25,11 +25,14 @@ Use **Bun**, exact dependency versions, `bun.lock`, and `bunfig.toml`.
 - `bun run preview`: serve the production build.
 - `bun run format`: write Oxfmt formatting; `bunx oxfmt --check`: verify formatting.
 - `bun run lint`: Oxlint.
+- `bun run cli`: Bun-based GitHub-distributed installer; commands `init`, `add`, and `list`.
+- `bun run registry:build`: regenerate the checked-in CLI dependency metadata and nova theme.
+- `bun run registry:check`: reject stale CLI metadata without modifying it.
 - `bun run test`: primitive and component-installation regressions using Bun and happy-dom.
 - `bun run reference`: generate resolved base-nova components/examples in `.cache/shadcn-reference/base-nova`.
 - `bun run parity`: compare all wrappers, vendored CSS, and theme tokens with the pinned upstream.
 - `bun run parity:test`: mutation and CLI regressions for the parity checker.
-- `bun run check`: formatting, primitive tests, parity regressions, parity, lint, and production build.
+- `bun run check`: formatting, CLI registry consistency, primitive/installation tests, parity regressions, parity, lint, and production build.
 - `bun run performance`: server-render benchmark for the showcase demos.
 - `bun run parity:browser`: independent React/Base UI and Preact behavior/screenshot comparisons.
 - `bun run parity:browser:test`: deliberate visual/behavior mutations must fail those comparisons.
@@ -137,7 +140,17 @@ browser check. Browser parity is separate from `check`; install Chromium with `b
   `scripts/component-examples.ts` pairs the demo imports with local example exports and pinned upstream section
   titles/order. `src/modules/docs/components/example-card.tsx` controls preview loading and code disclosure.
   Validate example exports syntactically to avoid repeatedly rebuilding the TypeScript program during generation.
-  Each guide uses `degit@3.10.0 --files` to select the component's relative-import dependency closure
+  `cli/` is the Bun-only installer distributed through the repository's `shadcn-preact` binary on GitHub.
+  It needs no submodule or new runtime dependencies. `init` writes `shadcn-preact.json`, adds cn/the nova CSS
+  and exact shared dependencies to an existing Preact/Tailwind v4 project; framework aliases and Tailwind
+  integration remain project configuration. `add` installs selected registry closures and exact packages.
+  All writes are preflighted; changed existing files require `--overwrite`. `--dry-run` writes nothing,
+  `--no-install` skips Bun dependency installation, and `--all` includes the Theme provider.
+  `scripts/component-registry.ts` is the shared dependency-closure source for CLI metadata and docs.
+  `cli/registry.json` is checked in so GitHub installs work without ts-morph or upstream; regenerate it after
+  changing registry imports, package versions, or theme tokens. `registry:check` is part of `check`.
+  CLI installation is primary; manual copying and degit remain optional in the guides.
+  Optional degit guides use `degit@3.10.0 --files` to select the component's relative-import dependency closure
   and both MIT licenses from the repository. Selection happens in `.cache/shadcn-preact/<slug>` before
   copying into `src/components/ui`: degit's file filter prunes the destination, so never point a filtered
   `--force` clone directly at a consumer's existing component directory.

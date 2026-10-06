@@ -1,3 +1,5 @@
 export const repositoryUrl = "https://github.com/LiasCode/shadcn-preact";
 
 export const copyComponentsCommand = `bunx degit ${repositoryUrl}/registry/ui#main ./src/components/ui`;
+
+export const cliCommand = "bunx --bun github:LiasCode/shadcn-preact#main";

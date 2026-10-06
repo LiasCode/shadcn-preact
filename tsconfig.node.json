@@ -25,5 +25,5 @@
   },
 
   /* ===================== Project Structure ===================== */
-  "include": ["vite.config.ts", "scripts"]
+  "include": ["vite.config.ts", "scripts", "cli"]
 }

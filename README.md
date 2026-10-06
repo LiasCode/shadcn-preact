@@ -42,17 +42,42 @@ Combobox, Toast, Message Scroller, and Questionnaire use local Preact primitives
 Start with the [introduction](https://shadcn-preact.onrender.com/docs) and
 [installation guide](https://shadcn-preact.onrender.com/docs/installation), then browse the
 [component catalog](https://shadcn-preact.onrender.com/docs/components). Every catalog component has an
-independent page with usage, demos, exact dependencies, and a component-specific degit command.
+independent page with usage, demos, exact dependencies, and a CLI command. Manual copying and degit remain optional.
 
 The [legacy showcase](https://shadcn-preact.onrender.com/components) remains available.
 
-The components live in [`registry/ui`](./registry/ui). Copy them into your project with:
+## Install components with the CLI
+
+Use an existing Preact 11 project with Tailwind CSS v4 and Preact compatibility aliases. Run the CLI
+from GitHub without publishing or installing a component library from npm:
 
 ```sh
-bunx degit https://github.com/LiasCode/shadcn-preact/registry/ui#main ./src/components/ui
+bunx --bun github:LiasCode/shadcn-preact#main init
+bunx --bun github:LiasCode/shadcn-preact#main add button dialog
 ```
 
-> The components moved from `src/components/ui` to `registry/ui`. Update your `degit` source if you used the old path.
+`init` records component/global CSS paths in `shadcn-preact.json`, merges a stylesheet import without
+removing your CSS, installs shared dependencies, and adds the nova theme and vendored styles. Keep your
+framework's Preact compatibility aliases and Tailwind integration configured. `add` copies the selected
+components and all relative imports, preserves both MIT licenses, and installs exact package versions.
+
+```sh
+bunx --bun github:LiasCode/shadcn-preact#main list
+bunx --bun github:LiasCode/shadcn-preact#main add calendar --dry-run
+bunx --bun github:LiasCode/shadcn-preact#main init --path src/ui --css src/app.css
+```
+
+Existing modified files are protected. Use `--overwrite` to replace them after reviewing the changes,
+`--no-install` to copy source without running `bun add`, `--all` for the full catalog including Theme,
+and `--cwd` to target a project in a monorepo. The CLI uses Bun and built-in modules; it needs no upstream submodule.
+
+For local development, run `bun run cli init --cwd /path/to/app`, then
+`bun run cli add button --cwd /path/to/app`. Regenerate the checked-in dependency metadata with
+`bun run registry:build`; `bun run registry:check` detects stale selections and theme tokens.
+
+Manual installation and component-specific degit selections remain in the
+[installation guide](https://shadcn-preact.onrender.com/docs/installation).
+The source lives in [`registry/ui`](./registry/ui); it remains yours to customize.
 
 Run `bun run performance` for the server-render benchmark of the component showcase.
 
