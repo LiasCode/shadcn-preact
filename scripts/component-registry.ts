@@ -107,7 +107,14 @@ export function createComponentRegistry(): Registry {
       preact: versions.preact!,
       cn: versions.cn!,
       "tw-animate-css": versions["tw-animate-css"]!,
+    },
+    setupDevDependencies: {
       tailwindcss: versions.tailwindcss!,
+      "@tailwindcss/vite": versions["@tailwindcss/vite"]!,
+      "@preact/preset-vite": versions["@preact/preset-vite"]!,
+      vite: versions.vite!,
+      typescript: versions.typescript!,
+      "@types/node": versions["@types/node"]!,
     },
   };
 }

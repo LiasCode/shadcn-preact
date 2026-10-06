@@ -48,18 +48,21 @@ The [legacy showcase](https://shadcn-preact.onrender.com/components) remains ava
 
 ## Install components with the CLI
 
-Use an existing Preact 11 project with Tailwind CSS v4 and Preact compatibility aliases. Run the CLI
-from GitHub without publishing or installing a component library from npm:
+Run the CLI from GitHub in an existing Vite project or an empty directory. Bun is required:
 
 ```sh
 bunx --bun github:LiasCode/shadcn-preact#main init
 bunx --bun github:LiasCode/shadcn-preact#main add button dialog
 ```
 
-`init` records component/global CSS paths in `shadcn-preact.json`, merges a stylesheet import without
-removing your CSS, installs shared dependencies, and adds the nova theme and vendored styles. Keep your
-framework's Preact compatibility aliases and Tailwind integration configured. `add` copies the selected
-components and all relative imports, preserves both MIT licenses, and installs exact package versions.
+`init` configures TypeScript JSX and compatibility paths, Vite aliases, the Preact preset, Tailwind v4,
+and automatic global style loading. It installs exact runtime/tooling versions and adds the nova theme,
+styles, and `shadcn-preact.json`. Existing Vite settings are preserved in an imported backup; TypeScript
+comments and unrelated settings are retained. An empty directory also gets a minimal app and dev/build
+scripts. Run `bun run dev` immediately after initialization.
+
+`add` copies the selected components and all relative imports, preserves both MIT licenses, and installs
+exact package versions.
 
 ```sh
 bunx --bun github:LiasCode/shadcn-preact#main list

@@ -2456,7 +2456,14 @@
   "setupDependencies": {
     "preact": "11.0.0",
     "cn": "0.4.0",
-    "tw-animate-css": "1.4.0",
-    "tailwindcss": "4.3.3"
+    "tw-animate-css": "1.4.0"
+  },
+  "setupDevDependencies": {
+    "tailwindcss": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
+    "@preact/preset-vite": "2.10.6",
+    "vite": "8.3.2",
+    "typescript": "7.0.2",
+    "@types/node": "26.6.4"
   }
 }

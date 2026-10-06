@@ -141,9 +141,12 @@ browser check. Browser parity is separate from `check`; install Chromium with `b
   titles/order. `src/modules/docs/components/example-card.tsx` controls preview loading and code disclosure.
   Validate example exports syntactically to avoid repeatedly rebuilding the TypeScript program during generation.
   `cli/` is the Bun-only installer distributed through the repository's `shadcn-preact` binary on GitHub.
-  It needs no submodule or new runtime dependencies. `init` writes `shadcn-preact.json`, adds cn/the nova CSS
-  and exact shared dependencies to an existing Preact/Tailwind v4 project; framework aliases and Tailwind
-  integration remain project configuration. `add` installs selected registry closures and exact packages.
+  It needs no submodule or new runtime dependencies. `init` prepares an existing Vite app or an empty directory: TypeScript JSX/compatibility paths
+  (including referenced configurations), Vite aliases, Preact/Tailwind plugins, automatic global CSS loading,
+  exact runtime/development dependencies, and missing dev/build scripts. It preserves the original Vite
+  config in a sibling backup imported by a wrapper, with generated integration in `shadcn-preact.vite.mts`.
+  A Vite HTML transform loads the global stylesheet without editing existing app entry code. JSONC edits
+  retain unrelated settings/comments and migrate retired TypeScript `baseUrl` to equivalent paths. Empty projects receive a minimal HTML/Preact entry. `add` installs selected registry closures and exact packages.
   All writes are preflighted; changed existing files require `--overwrite`. `--dry-run` writes nothing,
   `--no-install` skips Bun dependency installation, and `--all` includes the Theme provider.
   `scripts/component-registry.ts` is the shared dependency-closure source for CLI metadata and docs.

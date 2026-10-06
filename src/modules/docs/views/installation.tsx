@@ -45,18 +45,15 @@ export function InstallationView() {
             Installation
           </h1>
           <p className="text-sm leading-7 text-muted-foreground">
-            Start with a Preact 11 project with Tailwind CSS v4 configured. Follow the{" "}
-            <a href="https://tailwindcss.com/docs/installation/using-vite" className={linkClass}>
-              Tailwind Vite guide
-            </a>{" "}
-            if you need to add Tailwind.
+            Use Bun in an existing Vite project or an empty directory. The CLI configures Preact 11,
+            TypeScript, Vite, and Tailwind CSS v4 for you.
           </p>
           <section id="cli" className="scroll-mt-20 space-y-4" aria-labelledby="cli-title">
             <h2 id="cli-title" className="font-semibold text-2xl tracking-tight">
               CLI (recommended)
             </h2>
             <p className="text-sm leading-7 text-muted-foreground">
-              Run these commands in your existing project. The CLI runs directly from GitHub with
+              Run these commands from your project directory. The CLI runs directly from GitHub with
               Bun; no npm publication or upstream submodule is required.
             </p>
             <CodeBlock
@@ -64,8 +61,10 @@ export function InstallationView() {
 ${cliCommand} add button`}
             />
             <p className="text-sm leading-7 text-muted-foreground">
-              init creates shadcn-preact.json, adds the nova theme and vendored styles alongside
-              your global stylesheet, and installs shared dependencies. add copies only the
+              init configures TypeScript and Vite, adds Preact compatibility aliases and the
+              Tailwind plugin, loads your global styles automatically, and installs exact
+              dependencies. It adds shadcn-preact.json and the nova theme while preserving existing
+              settings and CSS. An empty directory also gets a minimal app. add copies only the
               requested components and their local imports, preserves both MIT licenses, and
               installs the packages they use.
             </p>
@@ -92,9 +91,9 @@ ${cliCommand} add --all`}
               </div>
             </details>
             <p className="text-sm leading-7 text-muted-foreground">
-              The CLI works with an existing Preact and Tailwind v4 setup. Keep the Preact
-              compatibility aliases below and import your global stylesheet from your app entry
-              point. Mount Toaster when using Toast or Sonner.
+              After init, run bun run dev. No extra TypeScript, Vite, or stylesheet setup is
+              required. Your original Vite configuration is preserved in a sibling backup. Mount
+              Toaster in your app when using Toast or Sonner.
             </p>
           </section>
           <details id="manual" className="scroll-mt-20 rounded-xl border p-4 sm:p-6">

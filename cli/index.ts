@@ -7,7 +7,7 @@ import type { Options } from "./types";
 const help = `shadcn-preact — copy-paste Preact components, Base UI + nova
 
 Usage:
-  shadcn-preact init                  Configure paths, theme CSS and shared dependencies
+  shadcn-preact init                  Configure Vite, TypeScript, Tailwind, styles and dependencies
   shadcn-preact add button dialog     Install components and their dependency closures
   shadcn-preact list                  List available components
 
@@ -21,7 +21,7 @@ Options:
   --no-install            Copy files without running bun add
   -h, --help              Show help
 
-Requires Bun and an existing Preact project with Tailwind v4 and compatibility aliases.
+Requires Bun. init prepares an existing Vite project or creates a minimal Preact app.
 Manual installation and degit remain available in the documentation.`;
 
 export function run(args: string[]) {

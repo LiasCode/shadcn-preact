@@ -58,6 +58,7 @@
     "@happy-dom/global-registrator": "20.14.5",
     "@preact/preset-vite": "2.10.6",
     "@tailwindcss/postcss": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
     "@types/bun": "1.4.2",
     "@types/node": "26.6.4",
     "happy-dom": "20.14.5",

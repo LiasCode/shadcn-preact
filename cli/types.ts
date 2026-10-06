@@ -6,6 +6,7 @@ export type Registry = {
   >;
   theme: string;
   setupDependencies: Record<string, string>;
+  setupDevDependencies: Record<string, string>;
 };
 
 export type Configuration = {
@@ -23,3 +24,5 @@ export type Options = {
   install: boolean;
   all: boolean;
 };
+
+export type FileChange = { path: string; content: string; merge?: boolean };

@@ -109,7 +109,8 @@ export function ComponentView({
             <a href="/docs/installation" className="underline underline-offset-4">
               project setup
             </a>{" "}
-            first, including Tailwind CSS v4, theme tokens, and Preact compatibility aliases.
+            first. The init command configures TypeScript, Vite, Tailwind CSS v4, and Preact
+            compatibility.
           </p>
           <h3 className="font-medium">CLI</h3>
           <p className="text-sm leading-7 text-muted-foreground">

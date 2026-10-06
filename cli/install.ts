@@ -9,61 +9,27 @@ import {
   rmSync,
   writeFileSync,
 } from "node:fs";
-import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 
-import type { Configuration, Options, Registry } from "./types";
+import { projectPath } from "./project-path";
+import { projectSetup } from "./project-setup";
+import type { Configuration, FileChange, Options, Registry } from "./types";
 
 export const sourceRoot = resolve(import.meta.dirname, "..");
 const configName = "shadcn-preact.json";
-
-type Change = { path: string; content: string; merge?: boolean };
-
-export function projectPath(cwd: string, path: string) {
-  if (!path || isAbsolute(path)) {
-    throw new Error(`Use a project-relative path: ${path}`);
-  }
-
-  const destination = resolve(cwd, path);
-  const local = relative(cwd, destination);
-
-  if (
-    !local ||
-    local === ".." ||
-    local.startsWith(`..${sep}`) ||
-    local.split(sep).includes("node_modules")
-  ) {
-    throw new Error(`Path must stay inside the project: ${path}`);
-  }
-
-  let current = cwd;
-
-  const parts = local.split(sep);
-
-  for (const [index, part] of parts.entries()) {
-    current = join(current, part);
-    const information = lstatSync(current, { throwIfNoEntry: false });
-
-    if (information?.isSymbolicLink()) {
-      throw new Error(`Refusing to write through a symlink: ${path}`);
-    }
-
-    if (information && index < parts.length - 1 && !information.isDirectory()) {
-      throw new Error(`Expected a directory: ${relative(cwd, current)}`);
-    }
-  }
-
-  return destination;
-}
 
 export function readRegistry(): Registry {
   return JSON.parse(readFileSync(join(sourceRoot, "cli/registry.json"), "utf8"));
 }
 
-function readProject(cwd: string) {
+function readProject(cwd: string): {
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+} {
   const path = join(cwd, "package.json");
 
   if (!existsSync(path)) {
-    throw new Error("No package.json found. Start in an existing Preact project or use --cwd.");
+    return {};
   }
 
   return JSON.parse(readFileSync(path, "utf8")) as {
@@ -99,13 +65,21 @@ export function readConfiguration(cwd: string): Configuration {
   return config;
 }
 
-function apply(changes: Change[], dependencies: Record<string, string>, options: Options) {
+function apply(
+  changes: FileChange[],
+  dependencies: Record<string, string>,
+  options: Options,
+  development: Record<string, string> = {},
+) {
   const project = readProject(options.cwd);
   const installed = { ...project.devDependencies, ...project.dependencies };
   const packages = Object.entries(dependencies)
     .filter(([name, version]) => installed[name] !== version)
     .map(([name, version]) => `${name}@${version}`);
-  const writes: Change[] = [];
+  const devPackages = Object.entries(development)
+    .filter(([name, version]) => project.devDependencies?.[name] !== version)
+    .map(([name, version]) => `${name}@${version}`);
+  const writes: FileChange[] = [];
   const conflicts: string[] = [];
 
   for (const change of changes) {
@@ -138,6 +112,10 @@ function apply(changes: Change[], dependencies: Record<string, string>, options:
     console.log(`Dependencies: bun add --exact ${packages.join(" ")}`);
   }
 
+  if (devPackages.length > 0) {
+    console.log(`Development dependencies: bun add --dev --exact ${devPackages.join(" ")}`);
+  }
+
   if (conflicts.length > 0) {
     const message = `Existing files differ:\n${conflicts.map((path) => `  ${path}`).join("\n")}\nReview them, then use --overwrite to replace them.`;
 
@@ -153,18 +131,13 @@ function apply(changes: Change[], dependencies: Record<string, string>, options:
     return;
   }
 
-  if (options.install && packages.length > 0) {
-    const result = spawnSync("bun", ["add", "--exact", ...packages], {
-      cwd: options.cwd,
-      stdio: "inherit",
-    });
-
-    if (result.error || result.status !== 0) {
-      throw new Error("Dependency installation failed. No component files were changed.");
-    }
-  }
-
   const written: { path: string; previous?: Buffer }[] = [];
+
+  const dependencyFiles = ["package.json", "bun.lock", "bun.lockb"].map((file) => {
+    const path = projectPath(options.cwd, file);
+
+    return { path, previous: existsSync(path) ? readFileSync(path) : undefined };
+  });
 
   try {
     for (const change of writes) {
@@ -183,8 +156,30 @@ function apply(changes: Change[], dependencies: Record<string, string>, options:
 
       written.push({ path, previous });
     }
+
+    if (options.install) {
+      for (const [names, flags] of [
+        [packages, []],
+        [devPackages, ["--dev"]],
+      ] as const) {
+        if (names.length === 0) {
+          continue;
+        }
+
+        const result = spawnSync("bun", ["add", "--exact", ...flags, ...names], {
+          cwd: options.cwd,
+          stdio: "inherit",
+        });
+
+        if (result.error || result.status !== 0) {
+          throw new Error(
+            "Dependency installation failed. Configuration and source changes were rolled back.",
+          );
+        }
+      }
+    }
   } catch (error) {
-    for (const { path, previous } of written.reverse()) {
+    for (const { path, previous } of [...written.reverse(), ...dependencyFiles]) {
       if (previous) {
         writeFileSync(path, previous);
       } else {
@@ -245,11 +240,12 @@ export function initialize(registry: Registry, options: Options) {
 
   apply(
     [
+      ...projectSetup(options.cwd, config),
       { path: configName, content: `${JSON.stringify(config, null, 2)}\n` },
       { path: config.paths.css, content: globalCss, merge: true },
       {
         path: join(cssDirectory, "shadcn-preact.css"),
-        content: `@import "tw-animate-css";\n@import "./shadcn-tailwind.css";\n\n@custom-variant dark (&:is(.dark *));\n\n${registry.theme}\n`,
+        content: `@import "tw-animate-css";\n@import "./shadcn-tailwind.css";\n\n@source ${JSON.stringify((relative(cssDirectory, ".") || ".").split(sep).join("/"))};\n@source ${JSON.stringify((relative(cssDirectory, config.paths.ui) || ".").split(sep).join("/"))};\n\n@custom-variant dark (&:is(.dark *));\n\n${registry.theme}\n`,
       },
       {
         path: join(cssDirectory, "shadcn-tailwind.css"),
@@ -266,10 +262,15 @@ export function initialize(registry: Registry, options: Options) {
     ],
     registry.setupDependencies,
     options,
+    registry.setupDevDependencies,
   );
 
   console.log(
-    "Use your framework's Preact compatibility aliases and Tailwind v4 integration. Import your global stylesheet from the app entry point.",
+    options.dryRun
+      ? "The project would be ready for bun run dev."
+      : options.install
+        ? "Project ready. Run bun run dev, or add components with shadcn-preact add."
+        : "Configuration ready. Install the dependencies printed above, then run bun run dev.",
   );
 }
 
@@ -305,7 +306,7 @@ export function addComponents(registry: Registry, names: string[], options: Opti
   const destination = options.path ?? config.paths.ui;
   projectPath(options.cwd, destination);
 
-  const changes = [...files].sort().map((file): Change => ({
+  const changes = [...files].sort().map((file): FileChange => ({
     path: join(destination, file),
     content: readFileSync(projectPath(join(sourceRoot, "registry/ui"), file), "utf8"),
   }));
