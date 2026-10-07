@@ -1,7 +1,6 @@
 import { buttonVariants } from "@registry/ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-preact";
 import { lazy } from "preact-iso";
-import { useState } from "preact/hooks";
 
 import { DocsLayout } from "@/layouts/docs-layout";
 import { componentCatalog } from "@/lib/component-catalog";
@@ -44,14 +43,6 @@ export function ComponentView({
 }) {
   const primary = examples[0]!;
   const variants = examples.slice(1);
-  const [activeExample, setActiveExample] = useState(primary.id);
-  const exclusive = [
-    "calendar",
-    "sidebar",
-    "message",
-    "message-scroller",
-    "questionnaire",
-  ].includes(doc.slug);
   const contents = [
     ...toc.slice(0, 2),
     ...(variants.length > 0
@@ -68,16 +59,7 @@ export function ComponentView({
   ];
 
   function renderExample(example: DocumentationExample, primary = false) {
-    return (
-      <ExampleCard
-        key={example.id}
-        example={example}
-        slug={doc.slug}
-        primary={primary}
-        active={activeExample === example.id}
-        onActivate={exclusive ? () => setActiveExample(example.id) : undefined}
-      />
-    );
+    return <ExampleCard key={example.id} example={example} slug={doc.slug} primary={primary} />;
   }
 
   const index = componentCatalog.findIndex(({ slug }) => slug === doc.slug);

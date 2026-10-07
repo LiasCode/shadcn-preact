@@ -3,7 +3,7 @@ import { cn } from "@registry/ui/lib/utils";
 import { CodeIcon, ExternalLinkIcon, LinkIcon } from "lucide-preact";
 import type { ComponentType } from "preact";
 import { Suspense } from "preact/compat";
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 
 import type { ComponentExample } from "@/lib/component-examples";
 import { repositoryUrl } from "@/lib/site";
@@ -15,45 +15,14 @@ export function ExampleCard({
   example,
   slug,
   primary = false,
-  active,
-  onActivate,
 }: {
   example: DocumentationExample;
   slug: string;
   primary?: boolean;
-  active?: boolean;
-  onActivate?: () => void;
 }) {
   const { Preview } = example;
-  const container = useRef<HTMLDivElement>(null);
-  const [visited, setVisited] = useState(primary);
   const [showCode, setShowCode] = useState(false);
-  const mounted = onActivate ? active : visited;
   const id = `example-${example.id}`;
-
-  useEffect(() => {
-    if (visited || onActivate || !container.current) {
-      return;
-    }
-
-    if (typeof IntersectionObserver === "undefined") {
-      setVisited(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setVisited(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "240px" },
-    );
-    observer.observe(container.current);
-
-    return () => observer.disconnect();
-  }, [visited, onActivate]);
 
   return (
     <section
@@ -101,7 +70,6 @@ export function ExampleCard({
           </a>
         </div>
         <div
-          ref={container}
           data-example-preview={example.id}
           className={cn(
             "relative flex min-h-52 w-full min-w-0 items-center justify-center overflow-x-auto p-6 sm:p-10",
@@ -113,23 +81,15 @@ export function ExampleCard({
               "items-start [&>div]:w-full [&>div]:min-w-0",
           )}
         >
-          {mounted ? (
-            <Suspense
-              fallback={
-                <p role="status" className="text-sm text-muted-foreground">
-                  Loading preview…
-                </p>
-              }
-            >
-              <Preview />
-            </Suspense>
-          ) : onActivate ? (
-            <Button variant="outline" onClick={onActivate}>
-              Show preview
-            </Button>
-          ) : (
-            <span className="text-sm text-muted-foreground">Preview</span>
-          )}
+          <Suspense
+            fallback={
+              <p role="status" className="text-sm text-muted-foreground">
+                Loading preview…
+              </p>
+            }
+          >
+            <Preview />
+          </Suspense>
         </div>
         <div className="border-t bg-muted/20">
           <Button

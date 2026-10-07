@@ -131,11 +131,10 @@ browser check. Browser parity is separate from `check`; install Chromium with `b
   Documentation uses `src/layouts/docs-layout.tsx` with shared sidebar navigation and optional page contents.
   `src/lib/component-catalog.ts` is the shared navigation metadata; it must not import demo code.
   `/docs/components/<slug>` gives each catalog component its own installation, usage, and examples page.
-  Each page imports its documentation and primary example; additional example modules load when their previews
-  approach the viewport. `/components` retains the legacy full showcase. Examples have separate titled cards,
+  Each page imports its documentation and primary example; every example preview mounts immediately and stays
+  mounted (no lazy activation, no "Show preview" button, no exclusive previews). `/components` retains the legacy full showcase. Examples have separate titled cards,
   anchor links, matching source code, and per-example component/package/helper requirements. The primary preview
-  precedes installation. Calendar, Sidebar, and conversation pages keep only one active preview mounted;
-  other mounted previews retain their state while offscreen.
+  precedes installation.
   `scripts/component-docs.ts` generates page data in `.cache/component-docs` when Vite starts.
   `scripts/component-examples.ts` pairs the demo imports with local example exports and pinned upstream section
   titles/order. `src/modules/docs/components/example-card.tsx` controls preview loading and code disclosure.
