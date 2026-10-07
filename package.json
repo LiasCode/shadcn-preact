@@ -34,7 +34,8 @@
     "parity:browser:test": "bun scripts/browser-parity/prepare.ts && node scripts/browser-parity/mutations.mjs",
     "cli": "bun cli/index.ts",
     "registry:build": "bun scripts/component-registry.ts && bunx oxfmt cli/registry.json",
-    "registry:check": "bun scripts/component-registry.ts --check"
+    "registry:check": "bun scripts/component-registry.ts --check",
+    "clean": "rm -rf .cache node_modules bun.lock package-lock.json dist"
   },
   "dependencies": {
     "@floating-ui/react-dom": "2.1.9",
