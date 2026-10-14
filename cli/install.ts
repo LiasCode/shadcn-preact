@@ -238,6 +238,17 @@ export function initialize(registry: Registry, options: Options) {
     globalCss = `@import "tailwindcss";\n${globalCss}`;
   }
 
+  const themeTokens = new Set(registry.theme.match(/--[\w-]+(?=\s*:)/g));
+  const conflicts = [
+    ...new Set(scanned.match(/--[\w-]+(?=\s*:)/g)?.filter((name) => themeTokens.has(name))),
+  ];
+
+  if (conflicts.length > 0) {
+    console.warn(
+      `Warning: ${config.paths.css} already declares ${conflicts.join(", ")}. The shadcn-preact theme defines the same custom properties, so rules that load later override it and change component colors. Remove or rename these declarations, for example the Vite starter styles; see the installation guide, "Clean the starter styles".`,
+    );
+  }
+
   apply(
     [
       ...projectSetup(options.cwd, config),

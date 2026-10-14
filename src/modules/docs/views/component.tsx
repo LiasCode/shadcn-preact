@@ -97,7 +97,7 @@ export function ComponentView({
           <h3 className="font-medium">CLI</h3>
           <p className="text-sm leading-7 text-muted-foreground">
             Run init once using the{" "}
-            <a href="/docs/installation#cli" className="underline underline-offset-4">
+            <a href="/docs/installation#quick-start" className="underline underline-offset-4">
               installation guide
             </a>
             , then add this component. The CLI copies the required source files and installs their

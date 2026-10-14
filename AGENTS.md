@@ -152,6 +152,11 @@ browser check. Browser parity is separate from `check`; install Chromium with `b
   `cli/registry.json` is checked in so GitHub installs work without ts-morph or upstream; regenerate it after
   changing registry imports, package versions, or theme tokens. `registry:check` is part of `check`.
   CLI installation is primary; manual copying and degit remain optional in the guides.
+  `/docs/installation` is a verified end-to-end quick start: `bun create vite --template preact-ts`, clean the
+  starter CSS (its `--border`/`--accent` and `#app`/`h1` rules override the theme), `init`, Geist font
+  (`@fontsource-variable/geist`, which the theme names but never loads), `add`, usage, verification. `init` warns
+  when the global stylesheet redeclares theme custom properties. Manual commands derive versions from
+  `cli/registry.json`. Re-run the whole flow on a fresh Vite template when changing `init` or the guide.
   Optional degit guides use `degit@3.10.0 --files` to select the component's relative-import dependency closure
   and both MIT licenses from the repository. Selection happens in `.cache/shadcn-preact/<slug>` before
   copying into `src/components/ui`: degit's file filter prunes the destination, so never point a filtered

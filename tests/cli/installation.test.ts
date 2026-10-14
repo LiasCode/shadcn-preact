@@ -75,6 +75,20 @@ test("init preserves existing CSS, is idempotent, and records custom component p
   expect(existsSync(join(cwd, "src/components/ui/button.tsx"))).toBe(false);
 });
 
+test("init warns when the global stylesheet redeclares theme tokens", () => {
+  const cwd = project();
+  expect(cli(cwd, "init", "--dry-run").output).not.toContain("Warning");
+
+  writeFileSync(
+    join(cwd, "src/index.css"),
+    '@import "tailwindcss";\n/* --muted: ignored */\n:root { --border: #e5e4e7; --accent: #aa3bff; --custom-text: #6b6375; }\n',
+  );
+
+  const { status, output } = cli(cwd, "init", "--dry-run");
+  expect(status).toBe(0);
+  expect(output).toContain("src/index.css already declares --border, --accent.");
+});
+
 test("dry-run leaves the project unchanged and lists exact dependencies", () => {
   const cwd = project();
   const manifest = readFileSync(join(cwd, "package.json"), "utf8");
