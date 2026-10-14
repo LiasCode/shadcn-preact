@@ -221,3 +221,11 @@ p {
     animation: none;
   }
 }
+
+/* Syntax highlighting: Shiki emits light and dark colors per token as custom properties. */
+.shiki span {
+  color: var(--shiki-light);
+}
+.dark .shiki span {
+  color: var(--shiki-dark);
+}

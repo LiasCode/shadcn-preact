@@ -12,6 +12,7 @@ import {
 import { dirname, join, resolve } from "node:path";
 
 import { componentDocsPlugin } from "../../scripts/component-docs";
+import { highlightCode } from "../../scripts/highlight";
 import { componentCatalog } from "../../src/lib/component-catalog";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -33,7 +34,7 @@ test("degit selections copy complete components and licenses while preserving in
 
       writeFileSync(join(destination, "existing.tsx"), "existing component");
 
-      const [clone, ...copy] = (doc.installCommand as string).split("\n");
+      const [clone, ...copy] = (doc.installCommand.code as string).split("\n");
       const parts = clone!.split(" ");
       expect(parts.slice(0, 3)).toEqual([
         "bunx",
@@ -103,8 +104,10 @@ test("component guides use the port's packages and usage imports", () => {
     expect(doc.packages).not.toContain("@base-ui/react@1.6.0");
     expect(doc.description.length).toBeGreaterThan(0);
     expect(doc.usage.length).toBeGreaterThan(0);
-    expect(doc.usage.join("\n")).not.toContain('from "react"');
-    expect(doc.usage.join("\n")).not.toContain('from "@/components/ui/');
+
+    const usage = doc.usage.map((block: { code: string }) => block.code).join("\n");
+    expect(usage).not.toContain('from "react"');
+    expect(usage).not.toContain('from "@/components/ui/');
   }
 });
 
@@ -149,4 +152,80 @@ test("each documented preview has its own complete source and resolves to a loca
 
   const drawer = JSON.parse(readFileSync(join(cache, "drawer.json"), "utf8"));
   expect(drawer.examples[0].id).toBe("drawer-non-modal");
+});
+
+const entities: Record<string, string> = { "&amp;": "&", "&lt;": "<", "&gt;": ">" };
+
+/** What a browser shows for highlighted markup: tags removed, entities decoded. */
+function textOf(html: string) {
+  return html.replace(/<[^>]+>/g, "").replace(/&(?:amp|lt|gt);/g, (entity) => entities[entity]!);
+}
+
+test("highlighted markup reads back as the source and never injects code", () => {
+  const source = 'const a = <div title="x & y">{"</code><script>alert(1)</script>"}</div>;\n';
+
+  for (const language of ["tsx", "bash", "css", "json", "text"] as const) {
+    const { code, html } = highlightCode(source, language);
+
+    expect(code).toBe(source);
+    expect(textOf(html)).toBe(source);
+    expect(html).not.toContain("<script");
+    expect(html).not.toContain("</code>");
+  }
+
+  expect(highlightCode(source, "tsx").html).toContain("--shiki-light:");
+  expect(highlightCode(source, "tsx").html).toContain("--shiki-dark:");
+  expect(highlightCode(source, "text").html).not.toContain("<span");
+});
+
+test("every generated code block is highlighted and matches its plain source", () => {
+  const blocks: { name: string; code: string; html: string }[] = [];
+
+  for (const { slug } of componentCatalog) {
+    const doc = JSON.parse(readFileSync(join(cache, `${slug}.json`), "utf8"));
+
+    for (const [index, block] of (doc.usage as { code: string; html: string }[]).entries()) {
+      blocks.push({ name: `${slug} usage ${index}`, ...block });
+    }
+
+    for (const [name, block] of Object.entries({
+      add: doc.addCommand,
+      packages: doc.packagesCommand,
+      degit: doc.installCommand,
+      mount: doc.mountSnippet,
+    })) {
+      if (block) {
+        blocks.push({ name: `${slug} ${name}`, ...block });
+      }
+    }
+
+    for (const example of doc.examples) {
+      blocks.push({ name: example.id, code: example.code, html: example.html });
+
+      if (example.packagesCommand) {
+        blocks.push({ name: `${example.id} packages`, ...example.packagesCommand });
+      }
+    }
+  }
+
+  const guide = JSON.parse(
+    readFileSync(join(root, ".cache/guide-docs/installation.json"), "utf8"),
+  ) as Record<string, { code: string; html: string }>;
+
+  for (const [name, block] of Object.entries(guide)) {
+    blocks.push({ name: `installation ${name}`, ...block });
+  }
+
+  expect(blocks.length).toBeGreaterThan(500);
+
+  for (const { name, code, html } of blocks) {
+    expect(textOf(html), name).toBe(code);
+
+    if (name !== "installation tree") {
+      expect(html, name).toContain("--shiki-light:");
+    }
+  }
+
+  expect(Object.keys(guide)).toContain("themeCss");
+  expect(guide.themeCss!.code).toContain("@theme inline");
 });

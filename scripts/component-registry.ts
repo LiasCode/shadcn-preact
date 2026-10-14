@@ -3,8 +3,8 @@ import { dirname, join, relative, resolve } from "node:path";
 
 import { Project, SyntaxKind } from "ts-morph";
 
-import type { Registry } from "../cli/types";
-import { componentCatalog } from "../src/lib/component-catalog";
+import type { Registry } from "../cli/types.ts";
+import { componentCatalog } from "../src/lib/component-catalog.ts";
 
 const root = resolve(import.meta.dirname, "..");
 

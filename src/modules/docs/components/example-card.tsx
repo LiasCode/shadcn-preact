@@ -107,7 +107,7 @@ export function ExampleCard({
             hidden={!showCode}
             className="max-h-[32rem] overflow-auto border-t p-3 sm:p-4"
           >
-            {showCode && <CodeBlock code={example.code} />}
+            {showCode && <CodeBlock code={example.code} html={example.html} />}
           </div>
         </div>
       </div>
@@ -136,9 +136,7 @@ export function ExampleCard({
                 .
               </p>
             )}
-            {example.packages.length > 0 && (
-              <CodeBlock code={`bun add --exact ${example.packages.join(" ")}`} />
-            )}
+            {example.packagesCommand && <CodeBlock {...example.packagesCommand} />}
             {example.helpers.length > 0 && (
               <p>
                 Copy the example’s local helpers and preserve their relative imports:{" "}

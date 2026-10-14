@@ -3,31 +3,30 @@ import { ArrowLeftIcon, ArrowRightIcon } from "lucide-preact";
 import type { ComponentChildren } from "preact";
 
 import { DocsLayout } from "@/layouts/docs-layout";
-import { cliCommand, copyComponentsCommand, repositoryUrl } from "@/lib/site";
+import type { InstallationSnippets } from "@/lib/installation-snippets";
+import { cliCommand, repositoryUrl } from "@/lib/site";
 import { CodeBlock } from "@/modules/showcase/components/code-block";
 
 import { setupDependencies, setupDevDependencies } from "../../../../cli/registry.json";
-import { dependencies as manifestDependencies } from "../../../../package.json";
 
-import globalStyles from "@/index.css?raw";
+// Every code block of this page is highlighted at build time by `scripts/installation-docs.ts`.
+// The file is generated, so it is loaded through a glob that tolerates its absence while type-checking.
+const generated = import.meta.glob<InstallationSnippets>(
+  "../../../../.cache/guide-docs/installation.json",
+  { eager: true, import: "default" },
+);
 
-// Reuse the verified theme blocks without documentation-only styles.
-const themeStyles =
-  globalStyles.match(/@theme inline \{[\s\S]*?@layer base \{[\s\S]*?\n\}/)?.[0] ?? "";
+function loadSnippets(): InstallationSnippets {
+  const found = generated["../../../../.cache/guide-docs/installation.json"];
 
-// Versions come from the CLI registry and the root manifest, never retyped. Named JSON imports are
-// tree-shaken, so component metadata and the theme string stay out of the client bundle.
-const sharedPackages = ["class-variance-authority", "@floating-ui/react-dom", "lucide-preact"];
+  if (!found) {
+    throw new Error("Missing installation snippets: run the Vite build to generate them.");
+  }
 
-function exact(versions: Record<string, string>, names?: string[]) {
-  return Object.entries(versions)
-    .filter(([name]) => !names || names.includes(name))
-    .map(([name, version]) => `${name}@${version}`)
-    .join(" ");
+  return found;
 }
 
-const runtimeInstall = `bun add --exact ${exact(setupDependencies)} ${exact(manifestDependencies, sharedPackages)}`;
-const developmentInstall = `bun add --dev --exact ${exact(setupDevDependencies)}`;
+const snippets = loadSnippets();
 
 const sections = [
   { id: "quick-start", title: "Quick start" },
@@ -146,11 +145,7 @@ export function InstallationView() {
               Choose the <strong>Preact + TypeScript</strong> template. The components are TSX, so
               the TypeScript template (preact-ts) is required.
             </P>
-            <CodeBlock
-              code={`bun create vite my-app --template preact-ts
-cd my-app
-bun install`}
-            />
+            <CodeBlock {...snippets.create} />
           </Step>
 
           <Step id="starter-styles" title="2. Clean the starter styles">
@@ -161,24 +156,13 @@ bun install`}
               theme and silently override it, so remove them before running init. Skip this step
               only for an empty directory, which init bootstraps for you.
             </P>
-            <CodeBlock
-              code={`rm src/app.css
-rm -r src/assets`}
-            />
-            <CodeBlock
-              code={`/* src/index.css — replace the whole file */
-@import "tailwindcss";`}
-            />
-            <CodeBlock
-              code={`// src/app.tsx — replace the whole file
-export function App() {
-  return <main className="p-8">Hello</main>;
-}`}
-            />
+            <CodeBlock {...snippets.cleanFiles} />
+            <CodeBlock {...snippets.cleanCss} />
+            <CodeBlock {...snippets.cleanApp} />
           </Step>
 
           <Step id="init" title="3. Run init">
-            <CodeBlock code={`${cliCommand} init`} />
+            <CodeBlock {...snippets.init} />
             <P>
               This single command prepares everything: it merges the TypeScript settings and aliases
               (including referenced configs), wraps your Vite config with the Preact and Tailwind
@@ -197,17 +181,12 @@ export function App() {
               The nova theme uses Geist Variable but does not load it. Install it and import it in
               your global stylesheet, between Tailwind and the theme:
             </P>
-            <CodeBlock code="bun add --exact @fontsource-variable/geist" />
-            <CodeBlock
-              code={`/* src/index.css */
-@import "tailwindcss";
-@import "@fontsource-variable/geist";
-@import "./shadcn-preact.css";`}
-            />
+            <CodeBlock {...snippets.geistInstall} />
+            <CodeBlock {...snippets.geistCss} />
           </Step>
 
           <Step id="add" title="5. Add components">
-            <CodeBlock code={`${cliCommand} add button dialog`} />
+            <CodeBlock {...snippets.add} />
             <P>
               Each component is copied with its local dependencies (<code>lib/</code> and{" "}
               <code>primitives/</code>) and both MIT licenses; the packages it needs are installed
@@ -220,36 +199,7 @@ export function App() {
           </Step>
 
           <Step id="usage" title="6. Use them">
-            <CodeBlock
-              code={`// src/app.tsx
-import { Button } from "./components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./components/ui/dialog";
-
-export function App() {
-  return (
-    <main className="flex gap-3 p-8">
-      <Button>Continue</Button>
-
-      <Dialog>
-        <DialogTrigger render={<Button variant="outline" />}>Open</DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Hello</DialogTitle>
-            <DialogDescription>Your project is configured.</DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </main>
-  );
-}`}
-            />
+            <CodeBlock {...snippets.usage} />
             <P>
               Imports are relative on purpose: the copied files never depend on an alias or on this
               repository.
@@ -257,10 +207,7 @@ export function App() {
           </Step>
 
           <Step id="verify" title="7. Verify">
-            <CodeBlock
-              code={`bun run dev     # open the printed URL
-bun run build   # type-checks and builds for production`}
-            />
+            <CodeBlock {...snippets.verify} />
             <P>You are done when all of these are true:</P>
             <ul className={`${textClass} list-disc space-y-1 pl-5`}>
               <li>
@@ -285,22 +232,8 @@ bun run build   # type-checks and builds for production`}
             html element, follows the system preference by default, and remembers the choice. Use{" "}
             <code>useTheme()</code> to switch between light, dark and system.
           </P>
-          <CodeBlock code={`${cliCommand} add theme`} />
-          <CodeBlock
-            code={`// src/main.tsx
-import { render } from "preact";
-
-import { App } from "./app";
-import { ThemeProvider } from "./components/ui/theme";
-import "./index.css";
-
-render(
-  <ThemeProvider defaultTheme="system" storageKey="ui-theme">
-    <App />
-  </ThemeProvider>,
-  document.getElementById("app")!,
-);`}
-          />
+          <CodeBlock {...snippets.addTheme} />
+          <CodeBlock {...snippets.main} />
           <P>
             Toast and Sonner need a viewport: add <code>add sonner</code> (or <code>toast</code>)
             and render <code>{"<Toaster />"}</code> once, for example next to your routes.
@@ -340,14 +273,7 @@ render(
               folder.
             </li>
           </ul>
-          <CodeBlock
-            code={`${cliCommand} init --path src/components/ui --css src/index.css
-${cliCommand} add button --cwd ./apps/web
-${cliCommand} add button --overwrite
-${cliCommand} add chart --no-install
-${cliCommand} add --all
-${cliCommand} add sidebar --dry-run`}
-          />
+          <CodeBlock {...snippets.options} />
           <P>
             The CLI protects existing files that differ: <code>--overwrite</code> replaces them,{" "}
             <code>--dry-run</code> only reports changes, <code>--no-install</code> copies files and
@@ -359,21 +285,7 @@ ${cliCommand} add sidebar --dry-run`}
           <h2 id="changes-title" className={headingClass}>
             What init changes
           </h2>
-          <CodeBlock
-            code={`my-app/
-├─ shadcn-preact.json                      # paths used by add
-├─ vite.config.ts                          # wrapper: Preact, Tailwind, aliases, stylesheet
-├─ vite.config.shadcn-preact.original.ts   # your original config: keep editing this one
-├─ shadcn-preact.vite.mts                  # managed integration, regenerated by init
-├─ tsconfig*.json                          # jsx, paths, "@/*" alias (comments preserved)
-└─ src/
-   ├─ index.css                            # + @import "./shadcn-preact.css"
-   ├─ shadcn-preact.css                    # animations, @source, dark variant, nova theme
-   ├─ shadcn-tailwind.css                  # vendored upstream utilities
-   └─ components/ui/
-      ├─ lib/utils.ts                      # cn()
-      └─ LICENSE.md`}
-          />
+          <CodeBlock {...snippets.tree} />
           <P>
             Packages installed with exact versions:{" "}
             <code>{Object.keys(setupDependencies).join(", ")}</code> and, as development
@@ -430,8 +342,8 @@ ${cliCommand} add sidebar --dry-run`}
             <ol className="mt-6 space-y-8">
               <li className="space-y-3">
                 <h3 className="font-medium">1. Install dependencies</h3>
-                <CodeBlock code={runtimeInstall} />
-                <CodeBlock code={developmentInstall} />
+                <CodeBlock {...snippets.runtimeInstall} />
+                <CodeBlock {...snippets.developmentInstall} />
               </li>
               <li className="space-y-3">
                 <h3 className="font-medium">2. Configure Vite</h3>
@@ -439,16 +351,7 @@ ${cliCommand} add sidebar --dry-run`}
                   @preact/preset-vite aliases React imports to Preact for the upstream libraries;
                   add the Tailwind plugin next to it.
                 </P>
-                <CodeBlock
-                  code={`// vite.config.ts
-import preact from "@preact/preset-vite";
-import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "vite";
-
-export default defineConfig({
-  plugins: [preact(), tailwindcss()],
-});`}
-                />
+                <CodeBlock {...snippets.manualVite} />
               </li>
               <li className="space-y-3">
                 <h3 className="font-medium">3. Configure TypeScript</h3>
@@ -456,20 +359,7 @@ export default defineConfig({
                   Merge into <code>compilerOptions</code> of tsconfig.app.json (or tsconfig.json
                   when there is a single file).
                 </P>
-                <CodeBlock
-                  code={`{
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact",
-    "paths": {
-      "react": ["./node_modules/preact/compat/"],
-      "react-dom": ["./node_modules/preact/compat/"],
-      "react/jsx-runtime": ["./node_modules/preact/jsx-runtime/"],
-      "react/jsx-dev-runtime": ["./node_modules/preact/jsx-runtime/"]
-    }
-  }
-}`}
-                />
+                <CodeBlock {...snippets.manualTypescript} />
               </li>
               <li className="space-y-3">
                 <h3 id="source" className="scroll-mt-20 font-medium">
@@ -489,7 +379,7 @@ export default defineConfig({
                     Copy the entire catalog instead
                   </summary>
                   <div className="mt-4 space-y-3">
-                    <CodeBlock code={copyComponentsCommand} />
+                    <CodeBlock {...snippets.copyCatalog} />
                     <P>
                       This copies the full catalog. Keep lib/ and primitives/ alongside the
                       wrappers: their imports are relative. You can remove components you do not
@@ -516,15 +406,7 @@ export default defineConfig({
                   <code>bun add --exact @fontsource-variable/geist</code>, and use this global
                   stylesheet, importing it from src/main.tsx.
                 </P>
-                <CodeBlock
-                  code={`/* src/index.css */
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "@fontsource-variable/geist";
-@import "./styles/shadcn-tailwind.css";
-
-@custom-variant dark (&:is(.dark *));`}
-                />
+                <CodeBlock {...snippets.manualCss} />
                 <P>
                   Then add the theme tokens below after the imports. They match this port's nova
                   styles.
@@ -532,7 +414,7 @@ export default defineConfig({
                 <details className="rounded-lg border p-4">
                   <summary className="cursor-pointer text-sm font-medium">Show theme CSS</summary>
                   <div className="mt-4">
-                    <CodeBlock code={themeStyles} />
+                    <CodeBlock {...snippets.themeCss} />
                   </div>
                 </details>
               </li>

@@ -3,6 +3,7 @@
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
     "types": ["bun"],
+    "allowImportingTsExtensions": true,
     "tsBuildInfoFile": "node_modules/.tmp/.tsconfig.test.tsbuildinfo"
   },
   "include": ["tests"]

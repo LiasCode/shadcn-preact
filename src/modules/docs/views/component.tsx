@@ -5,7 +5,8 @@ import { lazy } from "preact-iso";
 import { DocsLayout } from "@/layouts/docs-layout";
 import { componentCatalog } from "@/lib/component-catalog";
 import type { ComponentExample } from "@/lib/component-examples";
-import { cliCommand, repositoryUrl } from "@/lib/site";
+import type { HighlightedCode } from "@/lib/highlighted-code";
+import { repositoryUrl } from "@/lib/site";
 import { CodeBlock } from "@/modules/showcase/components/code-block";
 
 import { ExampleCard, type DocumentationExample } from "../components/example-card";
@@ -27,8 +28,12 @@ export type ComponentDocumentation = {
   packages: string[];
   needsNotifications: boolean;
   files: string[];
-  installCommand: string;
-  usage: string[];
+  addCommand: HighlightedCode;
+  packagesCommand: HighlightedCode;
+  installCommand: HighlightedCode;
+  /** The notification viewport setup, only for Toast and Sonner. */
+  mountSnippet: HighlightedCode | null;
+  usage: HighlightedCode[];
   examples: ComponentExample[];
   referenceUrl: string;
   relatedComponents: { slug: string; name: string }[];
@@ -103,9 +108,7 @@ export function ComponentView({
             , then add this component. The CLI copies the required source files and installs their
             exact dependencies with Bun.
           </p>
-          <CodeBlock
-            code={`${cliCommand} add ${[doc.slug, ...doc.relatedComponents.map((component) => component.slug)].join(" ")}`}
-          />
+          <CodeBlock {...doc.addCommand} />
           <p className="text-sm text-muted-foreground">
             Add --dry-run to review the changes. Existing modified files are protected; use
             --overwrite only when you want to replace them.
@@ -116,7 +119,7 @@ export function ComponentView({
             </summary>
             <div className="mt-5 space-y-4">
               <h3 className="font-medium">1. Install dependencies</h3>
-              <CodeBlock code={`bun add --exact ${doc.packages.join(" ")}`} />
+              <CodeBlock {...doc.packagesCommand} />
               {doc.relatedComponents.length > 0 && (
                 <p className="text-sm leading-7 text-muted-foreground">
                   The usage example also needs{" "}
@@ -140,7 +143,7 @@ export function ComponentView({
                 and both licenses directly from the repository, then copies them into
                 src/components/ui.
               </p>
-              <CodeBlock code={doc.installCommand} />
+              <CodeBlock {...doc.installCommand} />
               <p className="text-sm text-muted-foreground">
                 The temporary copy lives in .cache/shadcn-preact/{doc.slug}. Existing components
                 stay in place; shared source files are updated from main.
@@ -164,24 +167,13 @@ export function ComponentView({
               </details>
             </div>
           </details>
-          {(doc.slug === "toast" || doc.slug === "sonner") && (
+          {doc.mountSnippet && (
             <div className="space-y-3">
               <h3 className="font-medium">3. Mount the notification viewport</h3>
               <p className="text-sm text-muted-foreground">
                 Render Toaster once in your app so notifications are visible.
               </p>
-              <CodeBlock
-                code={`import { Toaster } from "./components/ui/${doc.slug}";
-
-export function App() {
-  return (
-    <>
-      {/* Your app content */}
-      <Toaster />
-    </>
-  );
-}`}
-              />
+              <CodeBlock {...doc.mountSnippet} />
             </div>
           )}
         </section>
@@ -189,8 +181,8 @@ export function App() {
           <h2 id="usage-title" className="font-semibold text-2xl tracking-tight">
             Usage
           </h2>
-          {doc.usage.map((code, index) => (
-            <CodeBlock key={index} code={code} />
+          {doc.usage.map((block, index) => (
+            <CodeBlock key={index} {...block} />
           ))}
         </section>
         {variants.length > 0 && (

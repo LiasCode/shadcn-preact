@@ -5,14 +5,17 @@ import { dirname, join, relative, resolve } from "node:path";
 import { Project } from "ts-morph";
 import type { Plugin } from "vite";
 
-import { componentCatalog } from "../src/lib/component-catalog";
-import { repositoryUrl } from "../src/lib/site";
-import { componentExamples, sourceExportNames } from "./component-examples";
-import { createComponentRegistry } from "./component-registry";
+import { componentCatalog } from "../src/lib/component-catalog.ts";
+import { cliCommand, repositoryUrl } from "../src/lib/site.ts";
+import { componentExamples, sourceExportNames } from "./component-examples.ts";
+import { createComponentRegistry } from "./component-registry.ts";
+import { highlightCode } from "./highlight.ts";
+import { installationSnippets } from "./installation-docs.ts";
 
 const root = resolve(import.meta.dirname, "..");
 const registry = join(root, "registry/ui");
 const output = join(root, ".cache/component-docs");
+const guideOutput = join(root, ".cache/guide-docs");
 
 function writeAtomic(path: string, data: string) {
   const temporary = `${path}.${randomUUID()}.tmp`;
@@ -44,6 +47,13 @@ export function componentDocsPlugin(): Plugin {
   }
 
   const installationRegistry = createComponentRegistry();
+
+  mkdirSync(guideOutput, { recursive: true });
+
+  writeAtomic(
+    join(guideOutput, "installation.json"),
+    JSON.stringify(installationSnippets(root, installationRegistry, versions)),
+  );
 
   for (const { slug, name } of componentCatalog) {
     const component = installationRegistry.components[slug]!;
@@ -178,6 +188,8 @@ export function componentDocsPlugin(): Plugin {
       `cp ${staging}/LICENSE.md ./src/components/ui/LICENSE.md`,
     ].join("\n");
 
+    const addCommand = `${cliCommand} add ${[slug, ...[...related.values()].map((component) => component.slug)].join(" ")}`;
+
     writeAtomic(
       join(output, `${slug}.json`),
       JSON.stringify({
@@ -187,8 +199,17 @@ export function componentDocsPlugin(): Plugin {
         packages: packageList,
         needsNotifications,
         files: sourceFiles,
-        installCommand,
-        usage,
+        addCommand: highlightCode(addCommand, "bash"),
+        packagesCommand: highlightCode(`bun add --exact ${packageList.join(" ")}`, "bash"),
+        installCommand: highlightCode(installCommand, "bash"),
+        mountSnippet:
+          slug === "toast" || slug === "sonner"
+            ? highlightCode(
+                `import { Toaster } from "./components/ui/${slug}";\n\nexport function App() {\n  return (\n    <>\n      {/* Your app content */}\n      <Toaster />\n    </>\n  );\n}`,
+                "tsx",
+              )
+            : null,
+        usage: usage.map((code) => highlightCode(code, "tsx")),
         examples: componentExamples(project, root, slug, mdx, versions),
         relatedComponents: [...related.values()],
         referenceUrl: `https://ui.shadcn.com/docs/components/${slug === "sonner" ? "radix" : "base"}/${slug}`,

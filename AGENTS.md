@@ -141,6 +141,18 @@ browser check. Browser parity is separate from `check`; install Chromium with `b
   `scripts/component-examples.ts` pairs the demo imports with local example exports and pinned upstream section
   titles/order. `src/modules/docs/components/example-card.tsx` controls preview loading and code disclosure.
   Validate example exports syntactically to avoid repeatedly rebuilding the TypeScript program during generation.
+  Code highlighting happens at build time and ships no JavaScript: `scripts/highlight.ts` (Shiki, a devDependency,
+  fine-grained core with the JavaScript regex engine; `tsx`, `bash`, `css`, `json`, `text`) turns code into escaped
+  `<span>` markup whose tokens carry `--shiki-light`/`--shiki-dark` custom properties, picked by the `.dark` rules in
+  `src/index.css`. `scripts/component-docs.ts` stores every block as `HighlightedCode` (`{ code, html }`, see
+  `src/lib/highlighted-code.ts`) in `.cache/component-docs/<slug>.json` (usage, add/packages/degit commands, Toast
+  mount snippet, example code and its `packagesCommand`); `scripts/installation-docs.ts` does the same for the guide
+  in `.cache/guide-docs/installation.json`, typed by `InstallationSnippetKey` in `src/lib/installation-snippets.ts`.
+  `CodeBlock` only injects that markup (`dangerouslySetInnerHTML`; safe because `highlightCode` escapes `&<>`), so
+  prerendered HTML is already colored and hydration keeps it. Never import `scripts/highlight.ts` or `shiki` from
+  `src/` or `registry/ui`; add a grammar there only when a new language appears in the docs. A new documented code
+  block means a new generated `HighlightedCode`, not a runtime call. Tests in `tests/docs` check that every
+  block's markup reads back as its source.
   `cli/` is the Bun-only installer distributed through the repository's `shadcn-preact` binary on GitHub.
   It needs no submodule or new runtime dependencies. `init` prepares an existing Vite app or an empty directory: TypeScript JSX/compatibility paths
   (including referenced configurations), Vite aliases, Preact/Tailwind plugins, automatic global CSS loading,

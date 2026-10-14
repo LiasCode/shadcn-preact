@@ -1,8 +1,14 @@
 import { Button } from "@registry/ui/button";
 import { CheckIcon, CopyIcon } from "lucide-preact";
-import { useState } from "preact/compat";
+import { useState } from "preact/hooks";
 
-export function CodeBlock({ code }: { code: string }) {
+import type { HighlightedCode } from "@/lib/highlighted-code";
+
+/**
+ * Shows code that was highlighted at build time. The markup is static and already escaped by
+ * `scripts/highlight.ts`, so this component ships no highlighter and runs no work in the browser.
+ */
+export function CodeBlock({ code, html }: HighlightedCode) {
   const [copied, setCopied] = useState(false);
 
   return (
@@ -26,8 +32,8 @@ export function CodeBlock({ code }: { code: string }) {
       >
         {copied ? <CheckIcon /> : <CopyIcon />}
       </Button>
-      <pre className="overflow-x-auto p-4 pr-12 text-sm leading-relaxed">
-        <code>{code}</code>
+      <pre className="shiki overflow-x-auto p-4 pr-12 text-sm leading-relaxed">
+        <code dangerouslySetInnerHTML={{ __html: html }} />
       </pre>
     </div>
   );

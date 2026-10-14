@@ -3,8 +3,9 @@ import { dirname, relative, resolve } from "node:path";
 
 import type { Project, SourceFile } from "ts-morph";
 
-import { componentCatalog } from "../src/lib/component-catalog";
-import type { ComponentExample } from "../src/lib/component-examples";
+import { componentCatalog } from "../src/lib/component-catalog.ts";
+import type { ComponentExample } from "../src/lib/component-examples.ts";
+import { highlightCode } from "./highlight.ts";
 
 function plainText(value: string) {
   return value
@@ -129,22 +130,29 @@ export function componentExamples(
       }
     }
 
+    const code = readFileSync(sourcePath, "utf8")
+      .replaceAll("@registry/ui/", "./components/ui/")
+      .replace(
+        'import { VisibleInputOTP as InputOTP } from "../components/visible-input-otp";',
+        'import { InputOTP } from "./components/ui/input-otp";',
+      );
+
     return {
       id,
       title: section?.title ?? fallback,
       description: section?.description ?? "",
       modulePath: `../showcase/examples/${id}.tsx`,
       exportName,
-      code: readFileSync(sourcePath, "utf8")
-        .replaceAll("@registry/ui/", "./components/ui/")
-        .replace(
-          'import { VisibleInputOTP as InputOTP } from "../components/visible-input-otp";',
-          'import { InputOTP } from "./components/ui/input-otp";',
-        ),
+      code,
+      html: highlightCode(code, "tsx").html,
       sourcePath: relative(root, sourcePath),
       helpers,
       components: [...components.values()],
       packages: [...packages],
+      packagesCommand:
+        packages.size > 0
+          ? highlightCode(`bun add --exact ${[...packages].join(" ")}`, "bash")
+          : null,
     };
   });
 
