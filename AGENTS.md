@@ -7,7 +7,8 @@ This is an unofficial **Preact 11 port of shadcn/ui**, distributed as copy-paste
 - `registry/ui/` is the product. Its components and `primitives/` must work when copied into another project.
 - `src/` is the deployed documentation/showcase app; it is not distributed with the components.
 - `main` contains the Base UI + nova rebuild. `v3` is the maintained older release line.
-- All catalog phases are complete: 62 upstream wrappers, 61 showcase sections (Theme is a provider).
+- All catalog phases are complete: 62 upstream wrappers, 62 showcase sections, plus the Theme provider
+  (63 installable registry entries).
   No wrapper uses the retired `share/` primitives. Do not reintroduce that implementation style.
 - Keep external runtime dependencies minimal. Port headless primitives to Preact before adding dependencies.
   Existing upstream libraries may remain when they work through `preact/compat`.
@@ -192,6 +193,7 @@ browser check. Browser parity is separate from `check`; install Chromium with `b
   selected-item alignment. Native scroll locking does not claim every historical iOS workaround.
 - Deferred primitives: CheckboxGroup/multiple-input registration, initial values across control replacement,
   unused store/part APIs, Combobox grid/virtualization, and anchored Toast parts. Do not claim complete Base UI parity.
-- Deferred examples: upstream language-dependent RTL infrastructure, calendar-hijri's extra calendar/font setup,
-  and sidebar-rsc's React Server Components environment.
+- Deferred examples: upstream language-dependent RTL infrastructure (Direction's example ports `card-rtl`
+  with a local language switcher instead of upstream's `language-selector`), calendar-hijri's extra
+  calendar/font setup, and sidebar-rsc's React Server Components environment.
 - Date Picker, Form, and Data Table recipes are separate from the upstream component-file catalog.

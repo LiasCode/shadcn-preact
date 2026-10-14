@@ -21,6 +21,7 @@ export const componentCatalog = [
   { slug: "command", name: "Command" },
   { slug: "context-menu", name: "Context Menu" },
   { slug: "dialog", name: "Dialog" },
+  { slug: "direction", name: "Direction" },
   { slug: "drawer", name: "Drawer" },
   { slug: "dropdown-menu", name: "Dropdown Menu" },
   { slug: "empty", name: "Empty" },

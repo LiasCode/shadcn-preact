@@ -23,6 +23,7 @@ import { ComboboxDemo } from "./combobox-demo";
 import { CommandDemo } from "./command-demo";
 import { ContextMenuDemo } from "./context-menu-demo";
 import { DialogDemo } from "./dialog-demo";
+import { DirectionDemo } from "./direction-demo";
 import { DrawerDemo } from "./drawer-demo";
 import { DropdownMenuDemo } from "./dropdown-menu-demo";
 import { EmptyDemo } from "./empty-demo";
@@ -93,6 +94,7 @@ const demos = {
   command: CommandDemo,
   "context-menu": ContextMenuDemo,
   dialog: DialogDemo,
+  direction: DirectionDemo,
   drawer: DrawerDemo,
   "dropdown-menu": DropdownMenuDemo,
   empty: EmptyDemo,

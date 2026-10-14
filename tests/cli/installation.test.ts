@@ -127,12 +127,12 @@ test("modified shared files abort the whole operation; explicit overwrite preser
   expect(cli(cwd, "add", "dialog").output).toContain("Already up to date");
 });
 
-test("all 62 components install byte-identical source and both licenses", () => {
+test("all 63 components install byte-identical source and both licenses", () => {
   const cwd = project();
   expect(cli(cwd, "init").status).toBe(0);
   expect(cli(cwd, "add", "--all").status).toBe(0);
   const registry = readRegistry();
-  expect(Object.keys(registry.components)).toHaveLength(62);
+  expect(Object.keys(registry.components)).toHaveLength(63);
   const destination = join(cwd, "src/components/ui");
 
   for (const [slug, component] of Object.entries(registry.components)) {

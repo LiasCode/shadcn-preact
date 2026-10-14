@@ -84,7 +84,7 @@ The source lives in [`registry/ui`](./registry/ui); it remains yours to customiz
 
 Run `bun run performance` for the server-render benchmark of the component showcase.
 
-All 62 upstream components are ported, with 61 showcase sections and 57 additional conversation and
+All 62 upstream components are ported, with 62 showcase sections and 57 additional conversation and
 questionnaire examples. To run their browser regression checks,
 build the site, start `bun run preview`, and run `node scripts/phase8-browser.mjs`. Playwright is an optional
 external tool: set `PERFORMANCE_PLAYWRIGHT_MODULE` to its installed module path and `PERFORMANCE_URL` if the

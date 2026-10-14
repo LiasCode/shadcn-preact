@@ -132,7 +132,7 @@ if (import.meta.main) {
       throw new Error("CLI registry is outdated. Run bun run registry:build.");
     }
 
-    console.log("CLI registry matches all 62 component dependency closures and nova theme tokens.");
+    console.log("CLI registry matches all 63 component dependency closures and nova theme tokens.");
   } else {
     writeFileSync(path, generated);
 

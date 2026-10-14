@@ -25,7 +25,7 @@ try {
 
   await page.waitForTimeout(1000);
 
-  assert.equal(await page.locator("section[id]").count(), 61);
+  assert.equal(await page.locator("section[id]").count(), 62);
   const names = ["attachment", "bubble", "marker", "message", "message-scroller", "questionnaire"];
 
   for (const width of [1440, 390, 320]) {
@@ -103,7 +103,7 @@ try {
 
   assert.ok(await page.locator("header").first().isVisible());
 
-  assert.ok(await page.locator('nav[aria-label="Components"]').isVisible());
+  assert.ok(await page.locator('nav[aria-label="Main navigation"]').isVisible());
 
   assert.ok((await page.locator("header").first().boundingBox()).y >= 0);
 
