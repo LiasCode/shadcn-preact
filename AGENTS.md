@@ -14,6 +14,8 @@ This is an unofficial **Preact 11 port of shadcn/ui**, distributed as copy-paste
   Existing upstream libraries may remain when they work through `preact/compat`.
 - This file is the shared source of agent context. Record essential architectural changes, reviewed deviations,
   and remaining limitations here so a fresh clone contains everything needed to work.
+- `README.md` is only the front page (what this is, quick start, links). User and contributor documentation lives
+  in `DOCUMENTATION.md`; the site holds the interactive guides. Do not grow the README: add documentation there.
 
 ## Setup and commands
 
