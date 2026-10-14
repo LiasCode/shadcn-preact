@@ -29,6 +29,7 @@ Use **Bun**, exact dependency versions, `bun.lock`, and `bunfig.toml`.
 - `bun run cli`: Bun-based GitHub-distributed installer; commands `init`, `add`, and `list`.
 - `bun run registry:build`: regenerate the checked-in CLI dependency metadata and nova theme.
 - `bun run registry:check`: reject stale CLI metadata without modifying it.
+- `bun run install:flow`: replay the installation guide on a fresh Vite `preact-ts` project and build it.
 - `bun run test`: primitive and component-installation regressions using Bun and happy-dom.
 - `bun run reference`: generate resolved base-nova components/examples in `.cache/shadcn-reference/base-nova`.
 - `bun run parity`: compare all wrappers, vendored CSS, and theme tokens with the pinned upstream.
@@ -157,7 +158,10 @@ browser check. Browser parity is separate from `check`; install Chromium with `b
   starter CSS (its `--border`/`--accent` and `#app`/`h1` rules override the theme), `init`, Geist font
   (`@fontsource-variable/geist`, which the theme names but never loads), `add`, usage, verification. `init` warns
   when the global stylesheet redeclares theme custom properties. Manual commands derive versions from
-  `cli/registry.json`. Re-run the whole flow on a fresh Vite template when changing `init` or the guide.
+  `cli/registry.json`. Re-run the whole flow on a fresh Vite template when changing `init` or the guide:
+  `bun run install:flow` replays it with the local CLI (network required, so it is not part of `check`; the
+  `Installation flow` workflow runs it weekly and on CLI/guide changes). Its code snippets mirror the guide;
+  update both together.
   Optional degit guides use `degit@3.10.0 --files` to select the component's relative-import dependency closure
   and both MIT licenses from the repository. Selection happens in `.cache/shadcn-preact/<slug>` before
   copying into `src/components/ui`: degit's file filter prunes the destination, so never point a filtered

@@ -1,0 +1,39 @@
+name: Installation flow
+
+# Replays the installation guide on a fresh Vite template. It depends on the network and on the
+# upstream Vite template, so it runs weekly, on demand, and only when files it exercises change.
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - cli/**
+      - registry/ui/**
+      - src/styles/shadcn-tailwind.css
+      - scripts/install-flow.ts
+      - src/modules/docs/views/installation.tsx
+  pull_request:
+    paths:
+      - cli/**
+      - registry/ui/**
+      - src/styles/shadcn-tailwind.css
+      - scripts/install-flow.ts
+      - src/modules/docs/views/installation.tsx
+
+permissions:
+  contents: read
+
+jobs:
+  flow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+
+      - run: bun run install:flow

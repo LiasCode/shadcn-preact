@@ -35,6 +35,7 @@
     "cli": "bun cli/index.ts",
     "registry:build": "bun scripts/component-registry.ts && bunx oxfmt cli/registry.json",
     "registry:check": "bun scripts/component-registry.ts --check",
+    "install:flow": "bun scripts/install-flow.ts",
     "clean": "rm -rf .cache node_modules bun.lock package-lock.json dist"
   },
   "dependencies": {
