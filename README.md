@@ -48,12 +48,23 @@ The [legacy showcase](https://shadcn-preact.onrender.com/components) remains ava
 
 ## Install components with the CLI
 
-Run the CLI from GitHub in an existing Vite project or an empty directory. Bun is required:
+Run the CLI from GitHub in an existing Vite project or an empty directory. Bun is required. From a new
+Vite project (`bun create vite my-app --template preact-ts`), clean the starter styles first: its
+`src/index.css` redeclares `--border` and `--accent`, and its `#app`/`h1` rules override the theme.
+Replace `src/index.css` with `@import "tailwindcss";`, delete `src/app.css` and `src/assets`, replace
+`src/app.tsx` with a component that imports neither, then:
 
 ```sh
 bunx --bun github:LiasCode/shadcn-preact#main init
+bun add --exact @fontsource-variable/geist
 bunx --bun github:LiasCode/shadcn-preact#main add button dialog
 ```
+
+The theme names Geist Variable but never loads it. Add `@import "@fontsource-variable/geist";` to your
+global stylesheet between `@import "tailwindcss";` and `@import "./shadcn-preact.css";`. `init` warns when
+your stylesheet redeclares theme custom properties. The
+[installation guide](https://shadcn-preact.onrender.com/docs/installation) covers every step, dark mode,
+existing projects, and troubleshooting.
 
 `init` configures TypeScript JSX and compatibility paths, Vite aliases, the Preact preset, Tailwind v4,
 and automatic global style loading. It installs exact runtime/tooling versions and adds the nova theme,
