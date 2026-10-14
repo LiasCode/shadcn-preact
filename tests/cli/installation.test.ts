@@ -24,7 +24,10 @@ function project() {
 
   writeFileSync(
     join(cwd, "package.json"),
-    JSON.stringify({ name: "test-app", dependencies: { preact: "11.0.0" } }),
+    JSON.stringify({
+      name: "test-app",
+      dependencies: { preact: readRegistry().setupDependencies.preact },
+    }),
   );
 
   mkdirSync(join(cwd, "src"));

@@ -17,6 +17,8 @@ import { componentCatalog } from "../../src/lib/component-catalog";
 
 const root = resolve(import.meta.dirname, "../..");
 const cache = join(root, ".cache/component-docs");
+const preactVersion = JSON.parse(readFileSync(join(root, "package.json"), "utf8")).dependencies
+  .preact as string;
 
 beforeAll(() => {
   componentDocsPlugin();
@@ -100,8 +102,8 @@ test("component guides use the port's packages and usage imports", () => {
     const doc = JSON.parse(readFileSync(join(cache, `${slug}.json`), "utf8"));
 
     expect(doc.name).toBe(name);
-    expect(doc.packages).toContain("preact@11.0.0");
-    expect(doc.packages).not.toContain("@base-ui/react@1.6.0");
+    expect(doc.packages).toContain(`preact@${preactVersion}`);
+    expect(doc.packages.some((name: string) => name.startsWith("@base-ui/react@"))).toBe(false);
     expect(doc.description.length).toBeGreaterThan(0);
     expect(doc.usage.length).toBeGreaterThan(0);
 

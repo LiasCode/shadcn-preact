@@ -3,7 +3,8 @@
 A Preact port of [Base UI](https://base-ui.com) 1.6.0, the headless library behind the Base UI base of shadcn/ui.
 Each folder mirrors a `@base-ui/react/<name>` entry point, so components import `./primitives/<name>` where upstream
 imports `@base-ui/react/<name>`. `internals/` holds the shared code that Base UI keeps in `internals`, `utils`, and
-the `@base-ui/utils` package.
+the `@base-ui/utils` package. The repository's `@base-ui/react` development dependency is only the live React
+reference of the browser comparison; it can be newer than the ported 1.6.0.
 
 Base UI is released under the MIT license; see [LICENSE](./LICENSE).
 

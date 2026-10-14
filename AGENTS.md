@@ -44,6 +44,18 @@ browser check. Browser parity is separate from `check`; install Chromium with `b
 (or `--with-deps` where system packages are needed). Artifacts go in `.cache/browser-parity/results`.
 `BROWSER_PARITY_CASE` accepts a case or comma-separated cases; `BROWSER_PARITY_DIRECTION` accepts `ltr` or `rtl`.
 
+### Updating dependencies
+
+Versions are exact. After changing `package.json`: `bun install`, `bun run registry:build` (the CLI pins and every
+documented install command come from it, so `registry:check` fails until it is regenerated), `bun run check`, and
+`bun run install:flow`. When Base UI, Preact, Vite, Tailwind, Playwright, or pixelmatch change, also run
+`bunx playwright install chromium`, `bun run parity:browser`, and `bun run parity:browser:test`. Read the release
+notes of major bumps. Tests derive the Preact version from the manifest and registry; never hard-code versions.
+- happy-dom 21 disables CSS file and iframe loading by default (SSRF hardening). The tests do not rely on either;
+  enable them in the happy-dom settings only for a test that truly needs them.
+- pixelmatch 8 compares colors in OKLab instead of YIQ. `threshold` keeps its scale and 0.1 value, but pixel counts
+  differ from v7. The bar stays zero differing pixels, and the mutation checks must still be rejected.
+
 ## Upstream reference and parity contract
 
 - `upstream/shadcn` is a pinned Git submodule of `https://github.com/shadcn-ui/ui.git`.
@@ -57,8 +69,10 @@ browser check. Browser parity is separate from `check`; install Chromium with `b
   `data-slot`/other attributes, element nesting/order, and resolved Tailwind classes.
 - Replace `IconPlaceholder` with the `lucide-preact` icon named by its `lucide` prop. Use only Lucide icons.
 - Import Base UI ports through `./primitives/<name>` instead of `@base-ui/react/<name>`.
-  The primitive reference is Base UI **1.6.0**; inspect its source and API before changing behavior.
-  Authoring reference files belong inside this repository's ignored `.cache/`.
+  The primitives are a port of Base UI **1.6.0** (`registry/ui/primitives/README.md`); inspect that version's
+  source and API before changing behavior. The `@base-ui/react` devDependency is bumped independently and is only
+  the live React reference of `parity:browser` (currently 1.9.0): fixes from later releases are not in the port
+  unless that comparison shows a difference. Authoring reference files belong inside this repository's ignored `.cache/`.
 - Public primitive entry points mirror Base UI subpaths. Shared modules live in
   `registry/ui/primitives/internals/<UpstreamModule>.ts`. Preserve the Base UI MIT license.
 - Message Scroller and Questionnaire port `upstream/shadcn/packages/react/src` instead of Base UI.

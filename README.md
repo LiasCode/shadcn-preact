@@ -130,6 +130,9 @@ change that must pass the parity checks.
 
 The comparison tool mounts the port with Preact and the pinned upstream wrappers with real React/Base UI
 in independent browser pages. Everything uses the repository's submodule and development dependencies.
+The React side runs the `@base-ui/react` development dependency, which is updated independently and can be
+newer than the Base UI 1.6.0 the primitives were ported from, so a behavior change in a newer release shows up here
+as a failing state. pixelmatch compares colors in OKLab (v8) and the bar is zero differing pixels.
 
 ```sh
 bunx playwright install chromium
