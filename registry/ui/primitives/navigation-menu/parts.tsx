@@ -464,10 +464,11 @@ export namespace Content {
 
 export function Positioner(props: OverlayPositioner.Props) {
   const nav = useNav();
+  const ctx = useOverlayContext();
   return (
     <OverlayPositioner
       {...props}
-      anchor={props.anchor ?? nav.list}
+      anchor={props.anchor ?? ctx.reference}
       style={(state) => ({
         "--positioner-width": `${nav.size.width}px`,
         "--positioner-height": `${nav.size.height}px`,

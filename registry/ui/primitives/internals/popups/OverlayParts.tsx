@@ -1,5 +1,5 @@
 import { createContext, type ComponentChildren } from "preact";
-import { useContext, useRef } from "preact/hooks";
+import { useContext, useRef, useState } from "preact/hooks";
 
 import { FloatingFocusManager, type FloatingFocusManagerProps } from "../FloatingFocusManager";
 import { FloatingPortal, type FloatingPortalProps } from "../FloatingPortal";
@@ -270,6 +270,7 @@ export function OverlayPositioner(props: OverlayPositionerProps) {
     ...elementProps
   } = props;
   const context = useOverlayContext();
+  const [instant, setInstant] = useState(false);
   const position = useAnchorPositioning({
     mounted: context.mounted,
     floatingRootContext: context.floatingContext,
@@ -286,6 +287,16 @@ export function OverlayPositioner(props: OverlayPositionerProps) {
     arrowPadding,
     disableAnchorTracking,
   });
+  // Prevent the initial position from transitioning out of the portal's unpositioned origin.
+  useIsoLayoutEffect(() => {
+    if (context.kind !== "navigation-menu" || !context.open || typeof window === "undefined") {
+      return undefined;
+    }
+
+    setInstant(true);
+    const frame = window.requestAnimationFrame(() => setInstant(false));
+    return () => window.cancelAnimationFrame(frame);
+  }, [context.kind, context.open]);
   const node = useRenderElement("div", props, {
     state: {
       open: context.open,
@@ -298,6 +309,8 @@ export function OverlayPositioner(props: OverlayPositionerProps) {
       {
         role: "presentation",
         hidden: !context.mounted,
+        "data-instant":
+          context.kind === "navigation-menu" && context.open && instant ? "" : undefined,
         style: { ...position.positionerStyles, pointerEvents: context.open ? undefined : "none" },
         children: (
           <PositionContext.Provider value={position}>
