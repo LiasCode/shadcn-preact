@@ -29,6 +29,7 @@ dist-ssr
 .cache/
 
 # Local agent context and planning files
+/.pi/
 /.skills/
 /docs/
 /TODO.md
